@@ -1,0 +1,125 @@
+// Prisma schema for WashWise - Smart Laundromat Management Platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// Tenant (Multi-tenancy root entity)
+// ============================================
+model Tenant {
+  id        String     @id @default(uuid())
+  name      String     @db.VarChar(100)
+  plan      TenantPlan @default(FREE)
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+
+  // Relations
+  users    User[]
+  machines Machine[]
+
+  @@map("tenants")
+}
+
+enum TenantPlan {
+  FREE
+  BASIC
+  PRO
+  ENTERPRISE
+}
+
+// ============================================
+// User
+// ============================================
+model User {
+  id        String   @id @default(uuid())
+  email     String   @db.VarChar(255)
+  password  String   @db.VarChar(255) // Argon2id hash
+  name      String   @db.VarChar(100)
+  role      UserRole @default(STAFF)
+  tenantId  String   @map("tenant_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  tenant        Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  refreshTokens RefreshToken[]
+
+  // Unique constraint: email unique per tenant
+  @@unique([tenantId, email])
+  @@index([tenantId])
+  @@index([email])
+  @@map("users")
+}
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  STAFF
+}
+
+// ============================================
+// Machine
+// ============================================
+model Machine {
+  id            String        @id @default(uuid())
+  tenantId      String        @map("tenant_id")
+  serialNumber  String        @map("serial_number") @db.VarChar(50)
+  label         String        @db.VarChar(100)
+  type          MachineType
+  capacityKg    Float         @map("capacity_kg")
+  status        MachineStatus @default(AVAILABLE)
+  pricePerCycle Float         @default(0) @map("price_per_cycle")
+  location      String?       @db.VarChar(200)
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+
+  // Relations
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  // Unique constraint: serial number unique per tenant
+  @@unique([tenantId, serialNumber])
+  @@index([tenantId])
+  @@index([tenantId, status])
+  @@index([tenantId, type])
+  @@map("machines")
+}
+
+enum MachineType {
+  WASHER
+  DRYER
+}
+
+enum MachineStatus {
+  AVAILABLE
+  BUSY
+  OFFLINE
+  MAINTENANCE
+}
+
+// ============================================
+// Refresh Token (for token rotation & theft detection)
+// ============================================
+model RefreshToken {
+  id          String   @id @default(uuid())
+  hashedToken String   @unique @map("hashed_token") @db.VarChar(255)
+  userId      String   @map("user_id")
+  familyId    String   @map("family_id") // Token family for rotation detection
+  revoked     Boolean  @default(false)
+  expiresAt   DateTime @map("expires_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([familyId])
+  @@index([hashedToken])
+  @@index([expiresAt])
+  @@map("refresh_tokens")
+}
