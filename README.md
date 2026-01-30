@@ -6,17 +6,17 @@ A production-ready, multi-tenant SaaS platform for smart laundromat management w
 
 ### Tech Stack (2026 Standards)
 
-| Layer | Technology |
-|-------|-----------|
-| **Monorepo** | Turborepo v2 + pnpm v9 |
-| **Frontend** | Next.js 15 (App Router), React 19, TypeScript 5.7+ |
-| **State** | TanStack Query v5 (Server), Zustand v5 (Client) |
-| **UI** | Tailwind CSS v4, Shadcn UI, Lucide React |
-| **Backend** | Node.js 22 LTS, Fastify v5 |
-| **Validation** | Zod v3.24 |
-| **Real-time** | Socket.io v4 + Redis 7 |
-| **Database** | PostgreSQL 17 + Prisma v6 |
-| **Testing** | Vitest v3 + Testcontainers |
+| Layer          | Technology                                         |
+| -------------- | -------------------------------------------------- |
+| **Monorepo**   | Turborepo v2 + pnpm v9                             |
+| **Frontend**   | Next.js 15 (App Router), React 19, TypeScript 5.7+ |
+| **State**      | TanStack Query v5 (Server), Zustand v5 (Client)    |
+| **UI**         | Tailwind CSS v4, Shadcn UI, Lucide React           |
+| **Backend**    | Node.js 22 LTS, Fastify v5                         |
+| **Validation** | Zod v3.24                                          |
+| **Real-time**  | Socket.io v4 + Redis 7                             |
+| **Database**   | PostgreSQL 17 + Prisma v6                          |
+| **Testing**    | Vitest v3 + Testcontainers                         |
 
 ### Repository Structure
 
@@ -120,31 +120,31 @@ pnpm db:studio    # Open Prisma Studio
 
 ### Authentication
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/auth/register` | Register new tenant & admin user |
-| POST | `/api/auth/login` | Login and receive tokens |
-| POST | `/api/auth/refresh` | Refresh access token |
-| POST | `/api/auth/logout` | Invalidate refresh token |
-| GET | `/api/auth/me` | Get current user profile |
+| Method | Endpoint             | Description                      |
+| ------ | -------------------- | -------------------------------- |
+| POST   | `/api/auth/register` | Register new tenant & admin user |
+| POST   | `/api/auth/login`    | Login and receive tokens         |
+| POST   | `/api/auth/refresh`  | Refresh access token             |
+| POST   | `/api/auth/logout`   | Invalidate refresh token         |
+| GET    | `/api/auth/me`       | Get current user profile         |
 
 ### Machines
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/machines` | List machines (tenant-scoped) |
-| GET | `/api/machines/:id` | Get machine details |
-| POST | `/api/machines` | Create new machine |
-| PATCH | `/api/machines/:id` | Update machine |
-| DELETE | `/api/machines/:id` | Delete machine |
+| Method | Endpoint            | Description                   |
+| ------ | ------------------- | ----------------------------- |
+| GET    | `/api/machines`     | List machines (tenant-scoped) |
+| GET    | `/api/machines/:id` | Get machine details           |
+| POST   | `/api/machines`     | Create new machine            |
+| PATCH  | `/api/machines/:id` | Update machine                |
+| DELETE | `/api/machines/:id` | Delete machine                |
 
 ### Simulation (Development)
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/simulation/machine/:id/start` | Start wash cycle |
-| POST | `/api/simulation/machine/:id/complete` | Complete cycle |
-| POST | `/api/simulation/machine/:id/error` | Simulate error |
+| Method | Endpoint                               | Description      |
+| ------ | -------------------------------------- | ---------------- |
+| POST   | `/api/simulation/machine/:id/start`    | Start wash cycle |
+| POST   | `/api/simulation/machine/:id/complete` | Complete cycle   |
+| POST   | `/api/simulation/machine/:id/error`    | Simulate error   |
 
 ## 🔌 Real-Time Events
 
@@ -152,13 +152,13 @@ pnpm db:studio    # Open Prisma Studio
 
 ```typescript
 // Client → Server
-socket.emit('join:tenant', { tenantId });
-socket.emit('subscribe:machine', { machineId });
+socket.emit("join:tenant", { tenantId });
+socket.emit("subscribe:machine", { machineId });
 
 // Server → Client
-socket.on('machine:status', { machineId, status, progress });
-socket.on('machine:error', { machineId, errorCode, message });
-socket.on('cycle:complete', { machineId, cycleId, duration });
+socket.on("machine:status", { machineId, status, progress });
+socket.on("machine:error", { machineId, errorCode, message });
+socket.on("cycle:complete", { machineId, cycleId, duration });
 ```
 
 ## 🧪 Testing
@@ -179,6 +179,7 @@ pnpm test:int
 ```
 
 Tests cover:
+
 - ✅ User registration and login
 - ✅ Token rotation and refresh
 - ✅ IDOR protection (cross-tenant access blocked)
@@ -237,15 +238,15 @@ model RefreshToken {
 
 ## 🌐 Environment Variables
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `DATABASE_URL` | PostgreSQL connection string | - |
-| `REDIS_URL` | Redis connection string | - |
-| `JWT_ACCESS_SECRET` | Secret for access tokens | - |
-| `JWT_REFRESH_SECRET` | Secret for refresh tokens | - |
-| `PORT` | API server port | 3001 |
-| `CORS_ORIGIN` | Allowed CORS origin | http://localhost:3000 |
-| `NEXT_PUBLIC_API_URL` | API URL for frontend | http://localhost:3001 |
+| Variable              | Description                  | Default               |
+| --------------------- | ---------------------------- | --------------------- |
+| `DATABASE_URL`        | PostgreSQL connection string | -                     |
+| `REDIS_URL`           | Redis connection string      | -                     |
+| `JWT_ACCESS_SECRET`   | Secret for access tokens     | -                     |
+| `JWT_REFRESH_SECRET`  | Secret for refresh tokens    | -                     |
+| `PORT`                | API server port              | 3001                  |
+| `CORS_ORIGIN`         | Allowed CORS origin          | http://localhost:3000 |
+| `NEXT_PUBLIC_API_URL` | API URL for frontend         | http://localhost:3001 |
 
 ## 📝 Demo Credentials
 
@@ -264,4 +265,3 @@ MIT License - see [LICENSE](LICENSE) for details.
 ---
 
 Built with ❤️ using the 2026 tech stack
-

@@ -10,54 +10,54 @@ let socket: Socket | null = null;
  * Authenticates using the access token from memory
  */
 export function getSocket(): Socket | null {
-    const token = getAuthState().accessToken;
+  const token = getAuthState().accessToken;
 
-    if (!token) {
-        console.warn("No access token available for socket connection");
-        return null;
-    }
+  if (!token) {
+    console.warn("No access token available for socket connection");
+    return null;
+  }
 
-    if (!socket || !socket.connected) {
-        socket = io(WS_URL, {
-            auth: { token },
-            transports: ["websocket", "polling"],
-            reconnection: true,
-            reconnectionAttempts: 5,
-            reconnectionDelay: 1000,
-        });
+  if (!socket || !socket.connected) {
+    socket = io(WS_URL, {
+      auth: { token },
+      transports: ["websocket", "polling"],
+      reconnection: true,
+      reconnectionAttempts: 5,
+      reconnectionDelay: 1000,
+    });
 
-        socket.on("connect", () => {
-            console.log("Socket connected:", socket?.id);
-        });
+    socket.on("connect", () => {
+      console.log("Socket connected:", socket?.id);
+    });
 
-        socket.on("disconnect", (reason) => {
-            console.log("Socket disconnected:", reason);
-        });
+    socket.on("disconnect", (reason) => {
+      console.log("Socket disconnected:", reason);
+    });
 
-        socket.on("connect_error", (error) => {
-            console.error("Socket connection error:", error.message);
-        });
-    }
+    socket.on("connect_error", (error) => {
+      console.error("Socket connection error:", error.message);
+    });
+  }
 
-    return socket;
+  return socket;
 }
 
 /**
  * Disconnect socket
  */
 export function disconnectSocket(): void {
-    if (socket) {
-        socket.disconnect();
-        socket = null;
-    }
+  if (socket) {
+    socket.disconnect();
+    socket = null;
+  }
 }
 
 /**
  * Reconnect socket with new token
  */
 export function reconnectSocket(): Socket | null {
-    disconnectSocket();
-    return getSocket();
+  disconnectSocket();
+  return getSocket();
 }
 
 export default getSocket;

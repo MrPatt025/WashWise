@@ -1,36 +1,40 @@
-import Fastify from 'fastify';
-import cors from '@fastify/cors';
-import helmet from '@fastify/helmet';
-import cookie from '@fastify/cookie';
-import rateLimit from '@fastify/rate-limit';
-import swagger from '@fastify/swagger';
-import swaggerUi from '@fastify/swagger-ui';
-import { API_CONSTANTS } from '@washwise/config';
-import type { Server as SocketIOServer } from 'socket.io';
+import Fastify from "fastify";
+import cors from "@fastify/cors";
+import helmet from "@fastify/helmet";
+import cookie from "@fastify/cookie";
+import rateLimit from "@fastify/rate-limit";
+import swagger from "@fastify/swagger";
+import swaggerUi from "@fastify/swagger-ui";
+import { ZodError } from "zod";
+import { API_CONSTANTS } from "@washwise/config";
+import type { Server as SocketIOServer } from "socket.io";
 
-import { env } from './config/index.js';
-import { authPlugin, zodPlugin } from './plugins/index.js';
-import { authRoutes, machineRoutes, simulationRoutes } from './routes/index.js';
+import { env } from "./config/index.js";
+import { authPlugin, zodPlugin } from "./plugins/index.js";
+import { authRoutes, machineRoutes, simulationRoutes } from "./routes/index.js";
 
-export interface AppOptions {
-    io?: SocketIOServer;
+// Extend Fastify types for Socket.io
+declare module "fastify" {
+    interface FastifyInstance {
+        io?: SocketIOServer;
+    }
 }
 
 /**
  * Build Fastify application with all plugins and routes
  */
-export async function buildApp(options: AppOptions = {}) {
+export async function buildApp() {
     const fastify = Fastify({
         logger: {
-            level: env.NODE_ENV === 'production' ? 'info' : 'debug',
+            level: env.NODE_ENV === "production" ? "info" : "debug",
             transport:
-                env.NODE_ENV === 'development'
-                    ? {
-                        target: 'pino-pretty',
-                        options: {
-                            colorize: true,
-                            translateTime: 'HH:MM:ss',
-                            ignore: 'pid,hostname',
+              env.NODE_ENV === "development"
+                  ? {
+                      target: "pino-pretty",
+                      options: {
+                          colorize: true,
+                            translateTime: "HH:MM:ss",
+                            ignore: "pid,hostname",
                         },
                     }
                     : undefined,
@@ -47,8 +51,8 @@ export async function buildApp(options: AppOptions = {}) {
     await fastify.register(cors, {
         origin: env.CORS_ORIGIN,
         credentials: true,
-        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-        allowedHeaders: ['Content-Type', 'Authorization'],
+        methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+        allowedHeaders: ["Content-Type", "Authorization"],
     });
 
     // Cookie parsing
@@ -66,37 +70,37 @@ export async function buildApp(options: AppOptions = {}) {
     await fastify.register(swagger, {
         openapi: {
             info: {
-                title: 'WashWise API',
-                description: 'Smart Laundromat Management Platform API',
-                version: '1.0.0',
+                title: "WashWise API",
+                description: "Smart Laundromat Management Platform API",
+                version: "1.0.0",
             },
             servers: [
                 {
                     url: `http://localhost:${env.PORT}`,
-                    description: 'Development server',
+                    description: "Development server",
                 },
             ],
             components: {
                 securitySchemes: {
                     bearerAuth: {
-                        type: 'http',
-                        scheme: 'bearer',
-                        bearerFormat: 'JWT',
+                        type: "http",
+                        scheme: "bearer",
+                        bearerFormat: "JWT",
                     },
                 },
             },
             tags: [
-                { name: 'Auth', description: 'Authentication endpoints' },
-                { name: 'Machines', description: 'Machine management endpoints' },
-                { name: 'Simulation', description: 'IoT simulation endpoints' },
+                { name: "Auth", description: "Authentication endpoints" },
+                { name: "Machines", description: "Machine management endpoints" },
+                { name: "Simulation", description: "IoT simulation endpoints" },
             ],
         },
     });
 
     await fastify.register(swaggerUi, {
-        routePrefix: '/docs',
+        routePrefix: "/docs",
         uiConfig: {
-            docExpansion: 'list',
+            docExpansion: "list",
             deepLinking: true,
         },
     });
@@ -106,50 +110,68 @@ export async function buildApp(options: AppOptions = {}) {
     await fastify.register(authPlugin);
 
     // Health check
-    fastify.get('/health', async () => ({
-        status: 'ok',
+    fastify.get("/health", async () => ({
+        status: "ok",
         timestamp: new Date().toISOString(),
-        version: '1.0.0',
+        version: "1.0.0",
     }));
 
     // API routes
-    await fastify.register(authRoutes, { prefix: `${API_CONSTANTS.PREFIX}/auth` });
-    await fastify.register(machineRoutes, { prefix: `${API_CONSTANTS.PREFIX}/machines` });
+    await fastify.register(authRoutes, {
+        prefix: `${API_CONSTANTS.PREFIX}/auth`,
+    });
+    await fastify.register(machineRoutes, {
+        prefix: `${API_CONSTANTS.PREFIX}/machines`,
+    });
 
-    // Simulation routes with Socket.io
-    if (options.io) {
-        await fastify.register(
-            async (instance) => {
-                await simulationRoutes(instance, { io: options.io! });
-            },
-            { prefix: `${API_CONSTANTS.PREFIX}/simulation` }
-        );
-    }
+    // Simulation routes (will use fastify.io if available)
+    await fastify.register(simulationRoutes, {
+        prefix: `${API_CONSTANTS.PREFIX}/simulation`,
+    });
 
     // Global error handler
-    fastify.setErrorHandler((error: Error & { validation?: unknown; statusCode?: number }, _request, reply) => {
-        fastify.log.error(error);
+    fastify.setErrorHandler(
+        (
+            error: Error & { validation?: unknown; statusCode?: number },
+            _request,
+            reply,
+        ) => {
+            fastify.log.error(error);
 
-        // Handle known error types
-        if (error.validation) {
-            return reply.status(400).send({
-                statusCode: 400,
-                error: 'Validation Error',
-                message: error.message,
+            // Handle Zod validation errors
+            if (error instanceof ZodError) {
+                return reply.status(400).send({
+                    statusCode: 400,
+                    error: "Validation Error",
+                    message: "Request validation failed",
+                    details: error.errors.map((e) => ({
+                        path: e.path.join("."),
+                        message: e.message,
+                    })),
+                });
+            }
+
+            // Handle Fastify validation errors
+            if (error.validation) {
+                return reply.status(400).send({
+                    statusCode: 400,
+                    error: "Validation Error",
+                    message: error.message,
+                });
+            }
+
+            // Default error response
+            const statusCode = error.statusCode || 500;
+            return reply.status(statusCode).send({
+                statusCode,
+                error: error.name || "Internal Server Error",
+                message:
+                    env.NODE_ENV === "production"
+                        ? "An unexpected error occurred"
+                        : error.message,
             });
-        }
-
-        // Default error response
-        const statusCode = error.statusCode || 500;
-        return reply.status(statusCode).send({
-            statusCode,
-            error: error.name || 'Internal Server Error',
-            message:
-                env.NODE_ENV === 'production'
-                    ? 'An unexpected error occurred'
-                    : error.message,
-        });
-    });
+        },
+    );
 
     return fastify;
 }

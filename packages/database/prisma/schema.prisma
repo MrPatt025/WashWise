@@ -1,4 +1,4 @@
-// Prisma schema for WashWise - Smart Laundromat Management Platform
+// Prisma schema for WashWise - Smart Laundromat Management Platform v2.x
 
 generator client {
   provider = "prisma-client-js"
@@ -10,7 +10,7 @@ datasource db {
 }
 
 // ============================================
-// Tenant (Multi-tenancy root entity)
+// 1. Tenant (Multi-tenancy root entity)
 // ============================================
 model Tenant {
   id        String     @id @default(uuid())
@@ -34,37 +34,41 @@ enum TenantPlan {
 }
 
 // ============================================
-// User
+// 2. User (RBAC & Auth)
 // ============================================
 model User {
-  id        String   @id @default(uuid())
-  email     String   @db.VarChar(255)
-  password  String   @db.VarChar(255) // Argon2id hash
-  name      String   @db.VarChar(100)
-  role      UserRole @default(STAFF)
-  tenantId  String   @map("tenant_id")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id               String    @id @default(uuid())
+  email            String    @unique @db.VarChar(255)
+  password         String    @db.VarChar(255)
+  name             String    @db.VarChar(100)
+  role             UserRole  @default(STAFF)
+  tenantId         String    @map("tenant_id")
+
+  // Security
+  failedLoginCount Int       @default(0) @map("failed_login_count")
+  lockedUntil      DateTime? @map("locked_until")
+
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
 
   // Relations
   tenant        Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   refreshTokens RefreshToken[]
+  transactions  Transaction[]
 
-  // Unique constraint: email unique per tenant
-  @@unique([tenantId, email])
   @@index([tenantId])
-  @@index([email])
   @@map("users")
 }
 
 enum UserRole {
-  ADMIN
-  MANAGER
+  SUPER_ADMIN
+  OWNER
   STAFF
+  CUSTOMER
 }
 
 // ============================================
-// Machine
+// 3. Machine (Core Business Logic)
 // ============================================
 model Machine {
   id            String        @id @default(uuid())
@@ -76,17 +80,18 @@ model Machine {
   status        MachineStatus @default(AVAILABLE)
   pricePerCycle Float         @default(0) @map("price_per_cycle")
   location      String?       @db.VarChar(200)
+
   createdAt     DateTime      @default(now()) @map("created_at")
   updatedAt     DateTime      @updatedAt @map("updated_at")
 
   // Relations
-  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenant       Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+  iotLogs      IoTLog[]
 
-  // Unique constraint: serial number unique per tenant
+  // Constraint: Serial unique per shop
   @@unique([tenantId, serialNumber])
   @@index([tenantId])
-  @@index([tenantId, status])
-  @@index([tenantId, type])
   @@map("machines")
 }
 
@@ -103,13 +108,13 @@ enum MachineStatus {
 }
 
 // ============================================
-// Refresh Token (for token rotation & theft detection)
+// 4. Security (Token Rotation)
 // ============================================
 model RefreshToken {
   id          String   @id @default(uuid())
   hashedToken String   @unique @map("hashed_token") @db.VarChar(255)
   userId      String   @map("user_id")
-  familyId    String   @map("family_id") // Token family for rotation detection
+  familyId    String   @map("family_id")
   revoked     Boolean  @default(false)
   expiresAt   DateTime @map("expires_at")
   createdAt   DateTime @default(now()) @map("created_at")
@@ -119,7 +124,49 @@ model RefreshToken {
 
   @@index([userId])
   @@index([familyId])
-  @@index([hashedToken])
-  @@index([expiresAt])
   @@map("refresh_tokens")
+}
+
+// ============================================
+// 5. IoT Telemetry & Analytics
+// ============================================
+model IoTLog {
+  id        String   @id @default(uuid())
+  machineId String   @map("machine_id")
+  event     String
+  payload   Json?
+  timestamp DateTime @default(now())
+
+  machine Machine @relation(fields: [machineId], references: [id], onDelete: Cascade)
+
+  @@index([machineId])
+  @@index([timestamp])
+  @@map("iot_logs")
+}
+
+// ============================================
+// 6. Transaction (Payment Tracking)
+// ============================================
+model Transaction {
+  id        String        @id @default(uuid())
+  amount    Int           // minor units (satang/cents)
+  status    PaymentStatus @default(PENDING)
+
+  userId    String?       @map("user_id")
+  machineId String        @map("machine_id")
+
+  createdAt DateTime      @default(now()) @map("created_at")
+
+  user    User?   @relation(fields: [userId], references: [id])
+  machine Machine @relation(fields: [machineId], references: [id])
+
+  @@index([userId])
+  @@index([machineId])
+  @@map("transactions")
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
 }

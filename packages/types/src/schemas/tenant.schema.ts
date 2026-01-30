@@ -1,22 +1,22 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 // ============================================
 // Tenant Schemas
 // ============================================
 
-export const TenantPlanSchema = z.enum(['FREE', 'BASIC', 'PRO', 'ENTERPRISE']);
+export const TenantPlanSchema = z.enum(["FREE", "BASIC", "PRO", "ENTERPRISE"]);
 
 export const TenantSchema = z.object({
-    id: z.string().uuid(),
-    name: z.string().min(2).max(100),
-    plan: TenantPlanSchema,
-    createdAt: z.date(),
-    updatedAt: z.date(),
+  id: z.string().uuid(),
+  name: z.string().min(2).max(100),
+  plan: TenantPlanSchema,
+  createdAt: z.date(),
+  updatedAt: z.date(),
 });
 
 export const CreateTenantSchema = z.object({
-    name: z.string().min(2).max(100),
-    plan: TenantPlanSchema.optional().default('FREE'),
+  name: z.string().min(2).max(100),
+  plan: TenantPlanSchema.optional().default("FREE"),
 });
 
 export type TenantPlan = z.infer<typeof TenantPlanSchema>;

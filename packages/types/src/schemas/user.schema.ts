@@ -1,36 +1,40 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 // ============================================
-// User Schemas
+// User Schemas (Updated for WashWise v2.x)
 // ============================================
 
-export const UserRoleSchema = z.enum(['ADMIN', 'MANAGER', 'STAFF']);
+export const UserRoleSchema = z.enum(["SUPER_ADMIN", "OWNER", "STAFF", "CUSTOMER"]);
 
 export const UserSchema = z.object({
-    id: z.string().uuid(),
-    email: z.string().email(),
-    name: z.string().min(2).max(100),
-    role: UserRoleSchema,
-    tenantId: z.string().uuid(),
-    createdAt: z.date(),
-    updatedAt: z.date(),
+  id: z.string().uuid(),
+  email: z.string().email(),
+  name: z.string().min(2).max(100),
+  role: UserRoleSchema,
+  tenantId: z.string().uuid(),
+  failedLoginCount: z.number().int().default(0),
+  lockedUntil: z.date().nullable().optional(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
 });
 
 export const UserPublicSchema = UserSchema.omit({
-    createdAt: true,
-    updatedAt: true,
+  createdAt: true,
+  updatedAt: true,
+  failedLoginCount: true,
+  lockedUntil: true,
 });
 
 export const CreateUserSchema = z.object({
-    email: z.string().email(),
-    password: z.string().min(8).max(100),
-    name: z.string().min(2).max(100),
-    role: UserRoleSchema.optional().default('STAFF'),
+  email: z.string().email(),
+  password: z.string().min(8).max(100),
+  name: z.string().min(2).max(100),
+  role: UserRoleSchema.optional().default("STAFF"),
 });
 
 export const UpdateUserSchema = z.object({
-    name: z.string().min(2).max(100).optional(),
-    role: UserRoleSchema.optional(),
+  name: z.string().min(2).max(100).optional(),
+  role: UserRoleSchema.optional(),
 });
 
 export type UserRole = z.infer<typeof UserRoleSchema>;
