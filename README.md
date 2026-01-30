@@ -1,10 +1,54 @@
 # WashWise - Smart Laundromat Management Platform
 
-A production-ready, multi-tenant SaaS platform for smart laundromat management with real-time IoT capabilities.
+<div align="center">
+
+![WashWise Logo](docs/assets/logo.png)
+
+**Enterprise-grade, AI-powered SaaS platform for smart laundromat management**
+
+[![Build Status](https://github.com/washwise/washwise/workflows/CI/badge.svg)](https://github.com/washwise/washwise/actions)
+[![Coverage](https://codecov.io/gh/washwise/washwise/branch/main/graph/badge.svg)](https://codecov.io/gh/washwise/washwise)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+[Demo](https://demo.washwise.io) • [Documentation](docs/) • [API Reference](docs/04-API.md)
+
+</div>
+
+---
+
+## 🌟 Overview
+
+WashWise is a **production-ready, multi-tenant SaaS platform** designed to revolutionize laundromat operations through intelligent automation and AI-powered customer experiences.
+
+### Key Features
+
+| Feature | Description |
+|---------|-------------|
+| 🏢 **Multi-Tenant** | Full tenant isolation with separate data, billing, and customization |
+| 🤖 **AI-Powered** | Natural language chatbot, demand forecasting, anomaly detection |
+| 📱 **Real-Time** | WebSocket-based live machine status and notifications |
+| 💳 **Payments** | PromptPay, credit card, and wallet integration |
+| 📊 **Analytics** | Revenue insights, usage patterns, and custom reports |
+| 🔒 **Enterprise Security** | OAuth2/OIDC, RBAC/ABAC, OWASP Top 10 compliant |
+
+---
 
 ## 🏗 Architecture
 
-### Tech Stack (2026 Standards)
+### Enterprise Tech Stack
+
+| Layer | Technology | Purpose |
+|-------|------------|---------|
+| **Core API** | Java 21 + Spring Boot 4.x | Main business logic, Virtual Threads |
+| **AI Worker** | Python 3.12 + FastAPI | LLM integration, ML pipelines |
+| **Frontend** | Next.js 16 + React 19 | Admin dashboard, Customer app |
+| **Database** | PostgreSQL 16 + pgvector | Relational data + vector embeddings |
+| **Cache** | Redis 7 | Caching, Pub/Sub, Rate limiting |
+| **AI/ML** | LangChain + CrewAI | Multi-agent AI orchestration |
+| **Infrastructure** | AWS ECS Fargate | Serverless containers |
+| **IaC** | Terraform | Infrastructure as Code |
+
+### Current Implementation (MVP)
 
 | Layer          | Technology                                         |
 | -------------- | -------------------------------------------------- |
@@ -68,6 +112,25 @@ washwise/
 
 - **Argon2id**: OWASP-recommended password hashing
 - **Password Policy**: Minimum 8 characters (configurable)
+
+---
+
+## 📚 Documentation
+
+Comprehensive enterprise documentation is available in the [docs/](docs/) folder:
+
+| Document | Description |
+|----------|-------------|
+| [01-PRD.md](docs/01-PRD.md) | Product Requirements - personas, user journeys, features |
+| [02-ARCHITECTURE.md](docs/02-ARCHITECTURE.md) | System architecture - microservices, data flows |
+| [03-DATABASE.md](docs/03-DATABASE.md) | Database design - PostgreSQL, MongoDB, Redis |
+| [04-API.md](docs/04-API.md) | REST API specifications - endpoints, payloads |
+| [05-SECURITY.md](docs/05-SECURITY.md) | Security design - OAuth2, RBAC, OWASP compliance |
+| [06-DEVOPS.md](docs/06-DEVOPS.md) | DevOps & CI/CD - GitHub Actions, Terraform |
+| [07-OBSERVABILITY.md](docs/07-OBSERVABILITY.md) | Monitoring - metrics, logging, tracing |
+| [08-ROADMAP.md](docs/08-ROADMAP.md) | Roadmap & Business Plan - phases, pricing |
+
+---
 
 ## 🚀 Getting Started
 
@@ -258,10 +321,58 @@ Password: password123
 Tenant: CleanWave Laundromat
 ```
 
+---
+
+## 🎯 Roadmap
+
+### Phase 1: MVP Foundation (Q1 2025) ✅
+- Multi-tenant architecture
+- User authentication & RBAC
+- Machine management & booking
+- Basic AI chatbot
+
+### Phase 2: Production Ready (Q2 2025)
+- Mobile apps (iOS/Android)
+- Payment integration (PromptPay, Cards)
+- Enhanced IoT dashboard
+- Push notifications
+
+### Phase 3: Scale & Intelligence (Q3 2025)
+- Demand forecasting AI
+- Dynamic pricing engine
+- Multi-region deployment
+- Advanced analytics
+
+### Phase 4: AI Platform (Q4 2025)
+- Autonomous AI agents
+- Voice assistant
+- Predictive maintenance
+- Computer vision
+
+See [08-ROADMAP.md](docs/08-ROADMAP.md) for detailed timeline.
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing`)
+5. Open a Pull Request
+
+---
+
 ## 📄 License
 
 MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-Built with ❤️ using the 2026 tech stack
+<div align="center">
+
+**Built with ❤️ for the modern laundromat industry**
+
+[⬆ Back to Top](#washwise---smart-laundromat-management-platform)
+
+</div>
