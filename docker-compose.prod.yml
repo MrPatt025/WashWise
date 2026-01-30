@@ -1,0 +1,84 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: washwise-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: washwise
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-washwise_secure_password}
+      POSTGRES_DB: washwise
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U washwise"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - washwise-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: washwise-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - washwise-network
+
+  api-server:
+    build:
+      context: .
+      dockerfile: ./docker/api-server.Dockerfile
+    container_name: washwise-api
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DATABASE_URL: postgresql://washwise:${POSTGRES_PASSWORD:-washwise_secure_password}@postgres:5432/washwise
+      REDIS_URL: redis://redis:6379
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
+      COOKIE_SECURE: "true"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - washwise-network
+
+  web-admin:
+    build:
+      context: .
+      dockerfile: ./docker/web-admin.Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3001}
+        NEXT_PUBLIC_WS_URL: ${NEXT_PUBLIC_WS_URL:-ws://localhost:3001}
+    container_name: washwise-web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+    depends_on:
+      - api-server
+    networks:
+      - washwise-network
+
+volumes:
+  postgres-data:
+  redis-data:
+
+networks:
+  washwise-network:
+    driver: bridge

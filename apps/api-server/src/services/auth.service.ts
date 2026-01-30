@@ -1,8 +1,7 @@
-import { prisma, Prisma, User, Tenant } from '@washwise/database';
+import { prisma, type User, type Tenant } from '@washwise/database';
 import { hash, verify } from 'argon2';
 import { randomUUID, createHash } from 'crypto';
 import jwt from 'jsonwebtoken';
-import type { FastifyInstance } from 'fastify';
 import { AUTH_CONSTANTS } from '@washwise/config';
 import type {
     LoginRequest,
@@ -27,8 +26,6 @@ interface UserWithTenant extends User {
 }
 
 export class AuthService {
-    constructor(private fastify: FastifyInstance) { }
-
     /**
      * Register a new user and tenant
      */

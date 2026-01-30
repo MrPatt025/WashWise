@@ -1,5 +1,5 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
-import { useAuthStore } from "@/stores/auth.store";
+import { getAuthState, setAuthState } from "@/stores/auth.store";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
@@ -36,7 +36,7 @@ const processQueue = (error: Error | null, token: string | null = null) => {
 // Request interceptor - Add access token to requests
 api.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
-        const token = useAuthStore.getState().accessToken;
+        const token = getAuthState().accessToken;
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -83,7 +83,7 @@ api.interceptors.response.use(
             );
 
             const { accessToken } = response.data;
-            useAuthStore.getState().setAccessToken(accessToken);
+            setAuthState({ accessToken });
 
             // Process queued requests
             processQueue(null, accessToken);
@@ -94,7 +94,12 @@ api.interceptors.response.use(
         } catch (refreshError) {
             // Refresh failed - clear auth and redirect to login
             processQueue(refreshError as Error, null);
-            useAuthStore.getState().clearAuth();
+            setAuthState({
+                accessToken: null,
+                user: null,
+                isAuthenticated: false,
+                isLoading: false,
+            });
 
             // Redirect to login page (client-side only)
             if (typeof window !== "undefined") {

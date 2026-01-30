@@ -17,7 +17,7 @@ declare module 'fastify' {
  */
 async function authPlugin(fastify: FastifyInstance) {
     // Decorator for user context
-    fastify.decorateRequest('user', null);
+    fastify.decorateRequest('user', undefined);
 
     /**
      * Middleware to verify JWT and inject user context

@@ -39,7 +39,7 @@ describe('WashWise API Integration Tests', () => {
         process.env.DATABASE_URL = databaseUrl;
         process.env.JWT_ACCESS_SECRET = 'test-access-secret-minimum-32-characters-long';
         process.env.JWT_REFRESH_SECRET = 'test-refresh-secret-minimum-32-characters-long';
-        process.env.NODE_ENV = 'test';
+        (process.env as Record<string, string>).NODE_ENV = 'test';
         process.env.REDIS_URL = 'redis://localhost:6379'; // Not used in tests
 
         // Run Prisma migrations
@@ -512,7 +512,7 @@ describe('WashWise API Integration Tests', () => {
 
         it('should get machine statistics', async () => {
             // Create machines with different statuses
-            const machines = [
+            const machines: Array<{ serialNumber: string; status: 'AVAILABLE' | 'BUSY' | 'OFFLINE' | 'MAINTENANCE' }> = [
                 { serialNumber: 'STAT-001', status: 'AVAILABLE' },
                 { serialNumber: 'STAT-002', status: 'AVAILABLE' },
                 { serialNumber: 'STAT-003', status: 'BUSY' },
@@ -522,7 +522,8 @@ describe('WashWise API Integration Tests', () => {
             for (const m of machines) {
                 await prisma.machine.create({
                     data: {
-                        ...m,
+                        serialNumber: m.serialNumber,
+                        status: m.status,
                         label: `Machine ${m.serialNumber}`,
                         type: 'WASHER',
                         capacityKg: 10,

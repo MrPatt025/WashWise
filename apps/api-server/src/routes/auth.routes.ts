@@ -1,4 +1,4 @@
-import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import type { FastifyInstance } from 'fastify';
 import { AUTH_CONSTANTS } from '@washwise/config';
 import {
     LoginRequestSchema,
@@ -14,7 +14,7 @@ import env from '../config/env.js';
  * Implements secure dual-token authentication with rotation
  */
 export async function authRoutes(fastify: FastifyInstance) {
-    const authService = new AuthService(fastify);
+    const authService = new AuthService();
 
     /**
      * POST /auth/register
@@ -142,6 +142,14 @@ export async function authRoutes(fastify: FastifyInstance) {
                         type: 'object',
                         properties: {
                             accessToken: { type: 'string' },
+                        },
+                    },
+                    401: {
+                        type: 'object',
+                        properties: {
+                            statusCode: { type: 'number' },
+                            error: { type: 'string' },
+                            message: { type: 'string' },
                         },
                     },
                 },

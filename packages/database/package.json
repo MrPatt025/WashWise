@@ -23,7 +23,8 @@
     "clean": "rm -rf dist .turbo"
   },
   "dependencies": {
-    "@prisma/client": "^6.2.0"
+    "@prisma/client": "^6.2.0",
+    "argon2": "^0.41.0"
   },
   "devDependencies": {
     "prisma": "^6.2.0",

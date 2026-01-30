@@ -3,7 +3,6 @@ import {
     useQuery,
     useMutation,
     useQueryClient,
-    QueryClient,
 } from "@tanstack/react-query";
 import api from "@/lib/api";
 import { getSocket } from "@/lib/socket";

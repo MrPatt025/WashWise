@@ -9,7 +9,7 @@ import { ZodError, ZodSchema } from 'zod';
 async function zodPlugin(fastify: FastifyInstance) {
     // Global error handler for Zod validation errors
     fastify.setErrorHandler(
-        (error: Error | ZodError, request: FastifyRequest, reply: FastifyReply) => {
+        (error: Error | ZodError, _request: FastifyRequest, reply: FastifyReply) => {
             if (error instanceof ZodError) {
                 return reply.status(400).send({
                     statusCode: 400,

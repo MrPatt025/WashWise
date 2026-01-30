@@ -1,4 +1,4 @@
-import Redis from 'ioredis';
+import { Redis } from 'ioredis';
 import env from './env.js';
 
 let redis: Redis | null = null;
@@ -10,7 +10,7 @@ export function getRedis(): Redis {
             lazyConnect: true,
         });
 
-        redis.on('error', (err) => {
+        redis.on('error', (err: Error) => {
             console.error('Redis connection error:', err);
         });
 
@@ -18,7 +18,7 @@ export function getRedis(): Redis {
             console.log('✅ Connected to Redis');
         });
     }
-    return redis;
+    return redis!;
 }
 
 export async function closeRedis(): Promise<void> {

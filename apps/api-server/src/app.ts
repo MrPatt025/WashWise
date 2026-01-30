@@ -127,7 +127,7 @@ export async function buildApp(options: AppOptions = {}) {
     }
 
     // Global error handler
-    fastify.setErrorHandler((error, request, reply) => {
+    fastify.setErrorHandler((error: Error & { validation?: unknown; statusCode?: number }, _request, reply) => {
         fastify.log.error(error);
 
         // Handle known error types
@@ -140,8 +140,9 @@ export async function buildApp(options: AppOptions = {}) {
         }
 
         // Default error response
-        return reply.status(error.statusCode || 500).send({
-            statusCode: error.statusCode || 500,
+        const statusCode = error.statusCode || 500;
+        return reply.status(statusCode).send({
+            statusCode,
             error: error.name || 'Internal Server Error',
             message:
                 env.NODE_ENV === 'production'

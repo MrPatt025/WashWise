@@ -1,5 +1,5 @@
 import { io, Socket } from "socket.io-client";
-import { useAuthStore } from "@/stores/auth.store";
+import { getAuthState } from "@/stores/auth.store";
 
 const WS_URL = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:3001";
 
@@ -10,7 +10,7 @@ let socket: Socket | null = null;
  * Authenticates using the access token from memory
  */
 export function getSocket(): Socket | null {
-    const token = useAuthStore.getState().accessToken;
+    const token = getAuthState().accessToken;
 
     if (!token) {
         console.warn("No access token available for socket connection");

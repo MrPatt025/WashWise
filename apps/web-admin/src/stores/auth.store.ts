@@ -1,3 +1,5 @@
+"use client";
+
 import { create } from "zustand";
 import type { AuthResponse } from "@washwise/types";
 
@@ -63,3 +65,7 @@ export const useAuthStore = create<AuthState>((set) => ({
             isLoading: loading,
         })),
 }));
+
+// Export direct store access for non-React usage
+export const getAuthState = () => useAuthStore.getState();
+export const setAuthState = useAuthStore.setState;
