@@ -1,0 +1,272 @@
+# WashWise v2.0 - Microservices Docker Compose
+# Development Environment Configuration
+
+services:
+  # ===========================================
+  # DATABASES
+  # ===========================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: washwise-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: washwise
+      POSTGRES_USER: washwise
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-washwise_dev_password}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U washwise -d washwise"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - washwise-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: washwise-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-washwise_redis_dev}
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "redis-cli",
+          "--pass",
+          "${REDIS_PASSWORD:-washwise_redis_dev}",
+          "ping",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - washwise-network
+
+  mongodb:
+    image: mongo:7
+    container_name: washwise-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: washwise
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD:-washwise_mongo_dev}
+      MONGO_INITDB_DATABASE: washwise_ai
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - washwise-network
+
+  # ===========================================
+  # CORE SERVICES
+  # ===========================================
+  core-api:
+    build:
+      context: ./services/core-api
+      dockerfile: Dockerfile
+    container_name: washwise-core-api
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/washwise
+      SPRING_DATASOURCE_USERNAME: washwise
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-washwise_dev_password}
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PASSWORD: ${REDIS_PASSWORD:-washwise_redis_dev}
+      JWT_SECRET: ${JWT_SECRET:-your-256-bit-secret-key-for-jwt-tokens-min-32-chars}
+      CORS_ALLOWED_ORIGINS: http://localhost:3000,http://localhost:3001
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - washwise-network
+
+  ai-worker:
+    build:
+      context: ./services/ai-worker
+      dockerfile: Dockerfile
+    container_name: washwise-ai-worker
+    restart: unless-stopped
+    environment:
+      ENVIRONMENT: development
+      DEBUG: "true"
+      REDIS_URL: redis://:${REDIS_PASSWORD:-washwise_redis_dev}@redis:6379/1
+      MONGODB_URL: mongodb://washwise:${MONGODB_PASSWORD:-washwise_mongo_dev}@mongodb:27017/washwise_ai?authSource=admin
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+      CORS_ORIGINS: '["http://localhost:3000", "http://localhost:3001"]'
+    ports:
+      - "8081:8000"
+    depends_on:
+      redis:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - washwise-network
+
+  # ===========================================
+  # WEB APPLICATIONS
+  # ===========================================
+  web-admin:
+    build:
+      context: ./apps/web-admin
+      dockerfile: ../../docker/web-admin.Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8080
+        NEXT_PUBLIC_AI_API_URL: http://localhost:8081
+        NEXT_PUBLIC_WS_URL: ws://localhost:8080
+    container_name: washwise-web-admin
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8080
+      NEXT_PUBLIC_AI_API_URL: http://localhost:8081
+    ports:
+      - "3000:3000"
+    depends_on:
+      - core-api
+      - ai-worker
+    networks:
+      - washwise-network
+
+  # ===========================================
+  # OBSERVABILITY
+  # ===========================================
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    container_name: washwise-prometheus
+    restart: unless-stopped
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/etc/prometheus/console_libraries"
+      - "--web.console.templates=/etc/prometheus/consoles"
+      - "--web.enable-lifecycle"
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./observability/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    networks:
+      - washwise-network
+
+  grafana:
+    image: grafana/grafana:10.2.2
+    container_name: washwise-grafana
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    ports:
+      - "3001:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./observability/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./observability/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on:
+      - prometheus
+    networks:
+      - washwise-network
+
+  # ===========================================
+  # DEVELOPMENT TOOLS
+  # ===========================================
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: washwise-pgadmin
+    restart: unless-stopped
+    profiles:
+      - dev-tools
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@washwise.local
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    networks:
+      - washwise-network
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: washwise-redis-commander
+    restart: unless-stopped
+    profiles:
+      - dev-tools
+    environment:
+      REDIS_HOSTS: local:redis:6379:1:${REDIS_PASSWORD:-washwise_redis_dev}
+    ports:
+      - "8082:8081"
+    depends_on:
+      - redis
+    networks:
+      - washwise-network
+
+  mongo-express:
+    image: mongo-express:1.0.2
+    container_name: washwise-mongo-express
+    restart: unless-stopped
+    profiles:
+      - dev-tools
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: washwise
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGODB_PASSWORD:-washwise_mongo_dev}
+      ME_CONFIG_MONGODB_URL: mongodb://washwise:${MONGODB_PASSWORD:-washwise_mongo_dev}@mongodb:27017/
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: ${MONGO_EXPRESS_PASSWORD:-admin}
+    ports:
+      - "8083:8081"
+    depends_on:
+      - mongodb
+    networks:
+      - washwise-network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  mongodb_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+
+networks:
+  washwise-network:
+    driver: bridge

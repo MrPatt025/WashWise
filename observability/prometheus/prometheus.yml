@@ -1,0 +1,47 @@
+# Prometheus Configuration for WashWise
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+rule_files: []
+
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Core API (Spring Boot Actuator)
+  - job_name: 'core-api'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['core-api:8080']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'core-api'
+
+  # AI Worker (FastAPI + prometheus-client)
+  - job_name: 'ai-worker'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['ai-worker:8000']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'ai-worker'
+
+  # Redis
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:6379']
+
+  # PostgreSQL (if using postgres_exporter)
+  # - job_name: 'postgresql'
+  #   static_configs:
+  #     - targets: ['postgres-exporter:9187']

@@ -1,0 +1,13 @@
+# Grafana Dashboards Provisioning
+apiVersion: 1
+
+providers:
+  - name: 'WashWise Dashboards'
+    orgId: 1
+    folder: 'WashWise'
+    folderUid: ''
+    type: file
+    disableDeletion: false
+    editable: true
+    options:
+      path: /var/lib/grafana/dashboards
