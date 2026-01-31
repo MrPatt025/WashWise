@@ -46,9 +46,10 @@ export default defineConfig({
     ],
 
     webServer: {
-        command: 'pnpm dev',
+        command: 'pnpm --filter @washwise/web-admin dev',
         url: 'http://localhost:3000',
         reuseExistingServer: !process.env.CI,
         timeout: 120 * 1000,
+        cwd: '..',
     },
 });

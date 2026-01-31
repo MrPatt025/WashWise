@@ -1,6 +1,7 @@
 """
 WashWise AI Worker - Main Application
 """
+import logging
 import structlog
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
@@ -22,7 +23,7 @@ structlog.configure(
         structlog.processors.TimeStamper(fmt="iso"),
         structlog.processors.JSONRenderer(),
     ],
-    wrapper_class=structlog.make_filtering_bound_logger(structlog.stdlib.INFO),
+    wrapper_class=structlog.make_filtering_bound_logger(logging.INFO),
     context_class=dict,
     logger_factory=structlog.PrintLoggerFactory(),
     cache_logger_on_first_use=True,

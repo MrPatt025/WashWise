@@ -1,0 +1,3887 @@
+{
+  "config": {
+    "configFile": "C:\\Users\\PATTANAKORN\\WASHWISE\\e2e\\playwright.config.ts",
+    "rootDir": "C:/Users/PATTANAKORN/WASHWISE/e2e/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/PATTANAKORN/WASHWISE/e2e/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/PATTANAKORN/WASHWISE/e2e/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/PATTANAKORN/WASHWISE/e2e/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "C:/Users/PATTANAKORN/WASHWISE/e2e/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/PATTANAKORN/WASHWISE/e2e/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "C:/Users/PATTANAKORN/WASHWISE/e2e/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/PATTANAKORN/WASHWISE/e2e/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "Mobile Chrome",
+        "name": "Mobile Chrome",
+        "testDir": "C:/Users/PATTANAKORN/WASHWISE/e2e/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/PATTANAKORN/WASHWISE/e2e/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "Mobile Safari",
+        "name": "Mobile Safari",
+        "testDir": "C:/Users/PATTANAKORN/WASHWISE/e2e/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "reports/html"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "reports/results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "reports/junit.xml"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.1",
+    "workers": 8,
+    "webServer": {
+      "command": "pnpm dev",
+      "url": "http://localhost:3000",
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "auth.spec.ts",
+      "file": "auth.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Authentication Flow",
+          "file": "auth.spec.ts",
+          "line": 6,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "Registration",
+              "file": "auth.spec.ts",
+              "line": 7,
+              "column": 10,
+              "specs": [
+                {
+                  "title": "should successfully register a new owner",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-ecd885b91647f1519014",
+                  "file": "auth.spec.ts",
+                  "line": 8,
+                  "column": 13
+                },
+                {
+                  "title": "should show error for duplicate email",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-7e4af32f864928fbe1ab",
+                  "file": "auth.spec.ts",
+                  "line": 26,
+                  "column": 13
+                },
+                {
+                  "title": "should validate password requirements",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-8ee737b7f49f46767029",
+                  "file": "auth.spec.ts",
+                  "line": 56,
+                  "column": 13
+                },
+                {
+                  "title": "should successfully register a new owner",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-fd1258f7d326db809b43",
+                  "file": "auth.spec.ts",
+                  "line": 8,
+                  "column": 13
+                },
+                {
+                  "title": "should show error for duplicate email",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-5131735928253fcfcd38",
+                  "file": "auth.spec.ts",
+                  "line": 26,
+                  "column": 13
+                },
+                {
+                  "title": "should validate password requirements",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-66d03c6cd821e896afb8",
+                  "file": "auth.spec.ts",
+                  "line": 56,
+                  "column": 13
+                },
+                {
+                  "title": "should successfully register a new owner",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-fce6efdada5a590866d7",
+                  "file": "auth.spec.ts",
+                  "line": 8,
+                  "column": 13
+                },
+                {
+                  "title": "should show error for duplicate email",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-8b6965207790ff7a9af9",
+                  "file": "auth.spec.ts",
+                  "line": 26,
+                  "column": 13
+                },
+                {
+                  "title": "should validate password requirements",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-643cd445fd2bf4a05662",
+                  "file": "auth.spec.ts",
+                  "line": 56,
+                  "column": 13
+                },
+                {
+                  "title": "should successfully register a new owner",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-35f8b7b9980e825039b1",
+                  "file": "auth.spec.ts",
+                  "line": 8,
+                  "column": 13
+                },
+                {
+                  "title": "should show error for duplicate email",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-6418a50960443fb680cd",
+                  "file": "auth.spec.ts",
+                  "line": 26,
+                  "column": 13
+                },
+                {
+                  "title": "should validate password requirements",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-b0c1136ed192e435e9f5",
+                  "file": "auth.spec.ts",
+                  "line": 56,
+                  "column": 13
+                },
+                {
+                  "title": "should successfully register a new owner",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-7b20e7fd91dc6ee4d39d",
+                  "file": "auth.spec.ts",
+                  "line": 8,
+                  "column": 13
+                },
+                {
+                  "title": "should show error for duplicate email",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-de2d1ed307b6b8e14f62",
+                  "file": "auth.spec.ts",
+                  "line": 26,
+                  "column": 13
+                },
+                {
+                  "title": "should validate password requirements",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-f444d615197397205918",
+                  "file": "auth.spec.ts",
+                  "line": 56,
+                  "column": 13
+                }
+              ]
+            },
+            {
+              "title": "Login",
+              "file": "auth.spec.ts",
+              "line": 73,
+              "column": 10,
+              "specs": [
+                {
+                  "title": "should login successfully with valid credentials",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-04402a8b9e08bc8c075a",
+                  "file": "auth.spec.ts",
+                  "line": 90,
+                  "column": 13
+                },
+                {
+                  "title": "should show error for invalid password",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-c79409fb8ad5acfe44dd",
+                  "file": "auth.spec.ts",
+                  "line": 101,
+                  "column": 13
+                },
+                {
+                  "title": "should show error for non-existent user",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-38be6a65a99fa39fc6e5",
+                  "file": "auth.spec.ts",
+                  "line": 113,
+                  "column": 13
+                },
+                {
+                  "title": "should login successfully with valid credentials",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-6a8c9bd7540c85d34bd0",
+                  "file": "auth.spec.ts",
+                  "line": 90,
+                  "column": 13
+                },
+                {
+                  "title": "should show error for invalid password",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-f298b09fe49b9ced184b",
+                  "file": "auth.spec.ts",
+                  "line": 101,
+                  "column": 13
+                },
+                {
+                  "title": "should show error for non-existent user",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-b0bfcb93065e8a0ff5e8",
+                  "file": "auth.spec.ts",
+                  "line": 113,
+                  "column": 13
+                },
+                {
+                  "title": "should login successfully with valid credentials",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-7d782695132e4b03c1c0",
+                  "file": "auth.spec.ts",
+                  "line": 90,
+                  "column": 13
+                },
+                {
+                  "title": "should show error for invalid password",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-5f5297772a39b2207503",
+                  "file": "auth.spec.ts",
+                  "line": 101,
+                  "column": 13
+                },
+                {
+                  "title": "should show error for non-existent user",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-c5a0e8f3fe5cba6ae931",
+                  "file": "auth.spec.ts",
+                  "line": 113,
+                  "column": 13
+                },
+                {
+                  "title": "should login successfully with valid credentials",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-8370036959c56c07984b",
+                  "file": "auth.spec.ts",
+                  "line": 90,
+                  "column": 13
+                },
+                {
+                  "title": "should show error for invalid password",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-b601a477487da8638bdc",
+                  "file": "auth.spec.ts",
+                  "line": 101,
+                  "column": 13
+                },
+                {
+                  "title": "should show error for non-existent user",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-aafc1346c88e146f7883",
+                  "file": "auth.spec.ts",
+                  "line": 113,
+                  "column": 13
+                },
+                {
+                  "title": "should login successfully with valid credentials",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-ef1b4908b02785b156ef",
+                  "file": "auth.spec.ts",
+                  "line": 90,
+                  "column": 13
+                },
+                {
+                  "title": "should show error for invalid password",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-292a7f54ed30f7946af5",
+                  "file": "auth.spec.ts",
+                  "line": 101,
+                  "column": 13
+                },
+                {
+                  "title": "should show error for non-existent user",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-a8c10c65d0754b8d2a86",
+                  "file": "auth.spec.ts",
+                  "line": 113,
+                  "column": 13
+                }
+              ]
+            },
+            {
+              "title": "Protected Routes",
+              "file": "auth.spec.ts",
+              "line": 125,
+              "column": 10,
+              "specs": [
+                {
+                  "title": "should redirect to login when accessing dashboard without auth",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-82ef52e4cc6d8cfe7368",
+                  "file": "auth.spec.ts",
+                  "line": 126,
+                  "column": 13
+                },
+                {
+                  "title": "should redirect to login when accessing machines without auth",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-9f1a4068c77d9cf9f91a",
+                  "file": "auth.spec.ts",
+                  "line": 133,
+                  "column": 13
+                },
+                {
+                  "title": "should persist login across page refresh",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-b300ee0d883481fa3116",
+                  "file": "auth.spec.ts",
+                  "line": 140,
+                  "column": 13
+                },
+                {
+                  "title": "should redirect to login when accessing dashboard without auth",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-b6dcf10d05452a5d8abb",
+                  "file": "auth.spec.ts",
+                  "line": 126,
+                  "column": 13
+                },
+                {
+                  "title": "should redirect to login when accessing machines without auth",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-eefbea784b1b4c082573",
+                  "file": "auth.spec.ts",
+                  "line": 133,
+                  "column": 13
+                },
+                {
+                  "title": "should persist login across page refresh",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-31a8bd3b4243b0adf4ef",
+                  "file": "auth.spec.ts",
+                  "line": 140,
+                  "column": 13
+                },
+                {
+                  "title": "should redirect to login when accessing dashboard without auth",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-449c178628316e23358c",
+                  "file": "auth.spec.ts",
+                  "line": 126,
+                  "column": 13
+                },
+                {
+                  "title": "should redirect to login when accessing machines without auth",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-b44ffd371e75f20f04bd",
+                  "file": "auth.spec.ts",
+                  "line": 133,
+                  "column": 13
+                },
+                {
+                  "title": "should persist login across page refresh",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-20ad187a9ab3c9928838",
+                  "file": "auth.spec.ts",
+                  "line": 140,
+                  "column": 13
+                },
+                {
+                  "title": "should redirect to login when accessing dashboard without auth",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-f8e380fce9281440254b",
+                  "file": "auth.spec.ts",
+                  "line": 126,
+                  "column": 13
+                },
+                {
+                  "title": "should redirect to login when accessing machines without auth",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-73aa6edf08c2c0ef7d06",
+                  "file": "auth.spec.ts",
+                  "line": 133,
+                  "column": 13
+                },
+                {
+                  "title": "should persist login across page refresh",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-158d704f7a1da07cae12",
+                  "file": "auth.spec.ts",
+                  "line": 140,
+                  "column": 13
+                },
+                {
+                  "title": "should redirect to login when accessing dashboard without auth",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-531f5265ab0ea51510b3",
+                  "file": "auth.spec.ts",
+                  "line": 126,
+                  "column": 13
+                },
+                {
+                  "title": "should redirect to login when accessing machines without auth",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-bde1489736a20de515bb",
+                  "file": "auth.spec.ts",
+                  "line": 133,
+                  "column": 13
+                },
+                {
+                  "title": "should persist login across page refresh",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-469622a283760ff76e6c",
+                  "file": "auth.spec.ts",
+                  "line": 140,
+                  "column": 13
+                }
+              ]
+            },
+            {
+              "title": "Logout",
+              "file": "auth.spec.ts",
+              "line": 157,
+              "column": 10,
+              "specs": [
+                {
+                  "title": "should logout successfully",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-0581cf91a262af5282d8",
+                  "file": "auth.spec.ts",
+                  "line": 158,
+                  "column": 13
+                },
+                {
+                  "title": "should logout successfully",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-2df2a24632e0472cab3d",
+                  "file": "auth.spec.ts",
+                  "line": 158,
+                  "column": 13
+                },
+                {
+                  "title": "should logout successfully",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-84bb83e1304988ea5577",
+                  "file": "auth.spec.ts",
+                  "line": 158,
+                  "column": 13
+                },
+                {
+                  "title": "should logout successfully",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-5ef260765b42d0ca2f36",
+                  "file": "auth.spec.ts",
+                  "line": 158,
+                  "column": 13
+                },
+                {
+                  "title": "should logout successfully",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "d748ac400d08b85935ef-cf856448b0a7053b3ed8",
+                  "file": "auth.spec.ts",
+                  "line": 158,
+                  "column": 13
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "chat.spec.ts",
+      "file": "chat.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "AI Chat Widget",
+          "file": "chat.spec.ts",
+          "line": 6,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "Chat Widget Toggle",
+              "file": "chat.spec.ts",
+              "line": 34,
+              "column": 10,
+              "specs": [
+                {
+                  "title": "should display chat widget trigger button",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-84cce2c6fdf2aa1baeb6",
+                  "file": "chat.spec.ts",
+                  "line": 35,
+                  "column": 13
+                },
+                {
+                  "title": "should open chat window when clicking trigger",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-7d4ea8115f4c49918db2",
+                  "file": "chat.spec.ts",
+                  "line": 39,
+                  "column": 13
+                },
+                {
+                  "title": "should close chat window when clicking close button",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-0ba067db2c2d71596673",
+                  "file": "chat.spec.ts",
+                  "line": 46,
+                  "column": 13
+                },
+                {
+                  "title": "should display chat widget trigger button",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-520fc6eff39a84069f1e",
+                  "file": "chat.spec.ts",
+                  "line": 35,
+                  "column": 13
+                },
+                {
+                  "title": "should open chat window when clicking trigger",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-65aba81cdc91564af2c5",
+                  "file": "chat.spec.ts",
+                  "line": 39,
+                  "column": 13
+                },
+                {
+                  "title": "should close chat window when clicking close button",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-6264fa65fb2b142468ad",
+                  "file": "chat.spec.ts",
+                  "line": 46,
+                  "column": 13
+                },
+                {
+                  "title": "should display chat widget trigger button",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-29db09e3cdc04a956439",
+                  "file": "chat.spec.ts",
+                  "line": 35,
+                  "column": 13
+                },
+                {
+                  "title": "should open chat window when clicking trigger",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-1cbe6d3a63fd7058c7ce",
+                  "file": "chat.spec.ts",
+                  "line": 39,
+                  "column": 13
+                },
+                {
+                  "title": "should close chat window when clicking close button",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-b2c9cca494bf81a59e4d",
+                  "file": "chat.spec.ts",
+                  "line": 46,
+                  "column": 13
+                },
+                {
+                  "title": "should display chat widget trigger button",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-37ad10cc49c34af6e8ac",
+                  "file": "chat.spec.ts",
+                  "line": 35,
+                  "column": 13
+                },
+                {
+                  "title": "should open chat window when clicking trigger",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-ff2f3cfc1bcb3d25353c",
+                  "file": "chat.spec.ts",
+                  "line": 39,
+                  "column": 13
+                },
+                {
+                  "title": "should close chat window when clicking close button",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-bea183e49dc7e009a6bd",
+                  "file": "chat.spec.ts",
+                  "line": 46,
+                  "column": 13
+                },
+                {
+                  "title": "should display chat widget trigger button",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-c275ea28f8df52562fc3",
+                  "file": "chat.spec.ts",
+                  "line": 35,
+                  "column": 13
+                },
+                {
+                  "title": "should open chat window when clicking trigger",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-91d7d6b8e65e88d35cf5",
+                  "file": "chat.spec.ts",
+                  "line": 39,
+                  "column": 13
+                },
+                {
+                  "title": "should close chat window when clicking close button",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-2de46828f0c1de88efef",
+                  "file": "chat.spec.ts",
+                  "line": 46,
+                  "column": 13
+                }
+              ]
+            },
+            {
+              "title": "Chat Interaction",
+              "file": "chat.spec.ts",
+              "line": 55,
+              "column": 10,
+              "specs": [
+                {
+                  "title": "should send message and receive response",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-006ca616ca1f355b9203",
+                  "file": "chat.spec.ts",
+                  "line": 60,
+                  "column": 13
+                },
+                {
+                  "title": "should display typing indicator while waiting",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-974afde4f9b34d9af997",
+                  "file": "chat.spec.ts",
+                  "line": 78,
+                  "column": 13
+                },
+                {
+                  "title": "should show suggestions after response",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-23522d4364166383e67c",
+                  "file": "chat.spec.ts",
+                  "line": 86,
+                  "column": 13
+                },
+                {
+                  "title": "should handle suggestion click",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-a164b46f946f9aa2091d",
+                  "file": "chat.spec.ts",
+                  "line": 98,
+                  "column": 13
+                },
+                {
+                  "title": "should preserve chat history on widget toggle",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-2260919ef16b429d7c62",
+                  "file": "chat.spec.ts",
+                  "line": 113,
+                  "column": 13
+                },
+                {
+                  "title": "should send message and receive response",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-51e5a70c71bae7fb4126",
+                  "file": "chat.spec.ts",
+                  "line": 60,
+                  "column": 13
+                },
+                {
+                  "title": "should display typing indicator while waiting",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-5bd400ed3d68d0065876",
+                  "file": "chat.spec.ts",
+                  "line": 78,
+                  "column": 13
+                },
+                {
+                  "title": "should show suggestions after response",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-c06763b0de0f41294ea1",
+                  "file": "chat.spec.ts",
+                  "line": 86,
+                  "column": 13
+                },
+                {
+                  "title": "should handle suggestion click",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-9afccff29d2e7a038da2",
+                  "file": "chat.spec.ts",
+                  "line": 98,
+                  "column": 13
+                },
+                {
+                  "title": "should preserve chat history on widget toggle",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-b8c154e3967ff6916d2d",
+                  "file": "chat.spec.ts",
+                  "line": 113,
+                  "column": 13
+                },
+                {
+                  "title": "should send message and receive response",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-83811216d10745006213",
+                  "file": "chat.spec.ts",
+                  "line": 60,
+                  "column": 13
+                },
+                {
+                  "title": "should display typing indicator while waiting",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-04e8f269a3ebf719e863",
+                  "file": "chat.spec.ts",
+                  "line": 78,
+                  "column": 13
+                },
+                {
+                  "title": "should show suggestions after response",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-119075ad752a7ead6543",
+                  "file": "chat.spec.ts",
+                  "line": 86,
+                  "column": 13
+                },
+                {
+                  "title": "should handle suggestion click",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-c7bf80e186a84c3ea523",
+                  "file": "chat.spec.ts",
+                  "line": 98,
+                  "column": 13
+                },
+                {
+                  "title": "should preserve chat history on widget toggle",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-5310c7842f188bafca66",
+                  "file": "chat.spec.ts",
+                  "line": 113,
+                  "column": 13
+                },
+                {
+                  "title": "should send message and receive response",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-1a29bb5041b3ead58eec",
+                  "file": "chat.spec.ts",
+                  "line": 60,
+                  "column": 13
+                },
+                {
+                  "title": "should display typing indicator while waiting",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-a5a0abff7c43ca14033a",
+                  "file": "chat.spec.ts",
+                  "line": 78,
+                  "column": 13
+                },
+                {
+                  "title": "should show suggestions after response",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-360c752e30a51532b416",
+                  "file": "chat.spec.ts",
+                  "line": 86,
+                  "column": 13
+                },
+                {
+                  "title": "should handle suggestion click",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-a0e51bb7e122ba7cb582",
+                  "file": "chat.spec.ts",
+                  "line": 98,
+                  "column": 13
+                },
+                {
+                  "title": "should preserve chat history on widget toggle",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-1d294056d6d5d5cbb29b",
+                  "file": "chat.spec.ts",
+                  "line": 113,
+                  "column": 13
+                },
+                {
+                  "title": "should send message and receive response",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-04ed1686ed7b263d2177",
+                  "file": "chat.spec.ts",
+                  "line": 60,
+                  "column": 13
+                },
+                {
+                  "title": "should display typing indicator while waiting",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-023d8f16a8fe59d3c1c5",
+                  "file": "chat.spec.ts",
+                  "line": 78,
+                  "column": 13
+                },
+                {
+                  "title": "should show suggestions after response",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-d27a1477d4b2e6b4ca81",
+                  "file": "chat.spec.ts",
+                  "line": 86,
+                  "column": 13
+                },
+                {
+                  "title": "should handle suggestion click",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-16033dda2969995f3af7",
+                  "file": "chat.spec.ts",
+                  "line": 98,
+                  "column": 13
+                },
+                {
+                  "title": "should preserve chat history on widget toggle",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-c8efefac6aec479e2219",
+                  "file": "chat.spec.ts",
+                  "line": 113,
+                  "column": 13
+                }
+              ]
+            },
+            {
+              "title": "Intent-based Responses",
+              "file": "chat.spec.ts",
+              "line": 131,
+              "column": 10,
+              "specs": [
+                {
+                  "title": "should detect machine availability intent",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-3ae095563fbe49ff4713",
+                  "file": "chat.spec.ts",
+                  "line": 136,
+                  "column": 13
+                },
+                {
+                  "title": "should detect booking intent",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-3b2a0c45df2da79172ff",
+                  "file": "chat.spec.ts",
+                  "line": 149,
+                  "column": 13
+                },
+                {
+                  "title": "should handle Thai language input",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-df6deb18e2969e867b5c",
+                  "file": "chat.spec.ts",
+                  "line": 160,
+                  "column": 13
+                },
+                {
+                  "title": "should detect machine availability intent",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-43d3b041bb9f72104a57",
+                  "file": "chat.spec.ts",
+                  "line": 136,
+                  "column": 13
+                },
+                {
+                  "title": "should detect booking intent",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-6571c01a5562444e7b68",
+                  "file": "chat.spec.ts",
+                  "line": 149,
+                  "column": 13
+                },
+                {
+                  "title": "should handle Thai language input",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-ecfe65136f347883b3e1",
+                  "file": "chat.spec.ts",
+                  "line": 160,
+                  "column": 13
+                },
+                {
+                  "title": "should detect machine availability intent",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-b127faf9ac28e7868b22",
+                  "file": "chat.spec.ts",
+                  "line": 136,
+                  "column": 13
+                },
+                {
+                  "title": "should detect booking intent",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-f38070694582b88a1832",
+                  "file": "chat.spec.ts",
+                  "line": 149,
+                  "column": 13
+                },
+                {
+                  "title": "should handle Thai language input",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-d6ba04bb84f195228be5",
+                  "file": "chat.spec.ts",
+                  "line": 160,
+                  "column": 13
+                },
+                {
+                  "title": "should detect machine availability intent",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-279689602d383644f4ce",
+                  "file": "chat.spec.ts",
+                  "line": 136,
+                  "column": 13
+                },
+                {
+                  "title": "should detect booking intent",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-0384618e8f6a53a9ec50",
+                  "file": "chat.spec.ts",
+                  "line": 149,
+                  "column": 13
+                },
+                {
+                  "title": "should handle Thai language input",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-85c42047c2fced345879",
+                  "file": "chat.spec.ts",
+                  "line": 160,
+                  "column": 13
+                },
+                {
+                  "title": "should detect machine availability intent",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-23dfaf2d71d16cec82f7",
+                  "file": "chat.spec.ts",
+                  "line": 136,
+                  "column": 13
+                },
+                {
+                  "title": "should detect booking intent",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-9f6645e3bb83282ea0ee",
+                  "file": "chat.spec.ts",
+                  "line": 149,
+                  "column": 13
+                },
+                {
+                  "title": "should handle Thai language input",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-6924e368fac828ac8406",
+                  "file": "chat.spec.ts",
+                  "line": 160,
+                  "column": 13
+                }
+              ]
+            },
+            {
+              "title": "Chat Error Handling",
+              "file": "chat.spec.ts",
+              "line": 172,
+              "column": 10,
+              "specs": [
+                {
+                  "title": "should handle empty message submission",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-9ebe097e9b0b3ff3bec0",
+                  "file": "chat.spec.ts",
+                  "line": 173,
+                  "column": 13
+                },
+                {
+                  "title": "should show error state on network failure",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-1bfeb09b30a9681aa1e2",
+                  "file": "chat.spec.ts",
+                  "line": 184,
+                  "column": 13
+                },
+                {
+                  "title": "should handle empty message submission",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-5a3467183f35d723a975",
+                  "file": "chat.spec.ts",
+                  "line": 173,
+                  "column": 13
+                },
+                {
+                  "title": "should show error state on network failure",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-66f6134fb4fc88e594aa",
+                  "file": "chat.spec.ts",
+                  "line": 184,
+                  "column": 13
+                },
+                {
+                  "title": "should handle empty message submission",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-019c3f61cc6c272be0ba",
+                  "file": "chat.spec.ts",
+                  "line": 173,
+                  "column": 13
+                },
+                {
+                  "title": "should show error state on network failure",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-f0f29f733a93dff892e7",
+                  "file": "chat.spec.ts",
+                  "line": 184,
+                  "column": 13
+                },
+                {
+                  "title": "should handle empty message submission",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-57a1c529338c6c361c91",
+                  "file": "chat.spec.ts",
+                  "line": 173,
+                  "column": 13
+                },
+                {
+                  "title": "should show error state on network failure",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-c71a4ff0fa65ac651033",
+                  "file": "chat.spec.ts",
+                  "line": 184,
+                  "column": 13
+                },
+                {
+                  "title": "should handle empty message submission",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-36debc5721a6d34b4545",
+                  "file": "chat.spec.ts",
+                  "line": 173,
+                  "column": 13
+                },
+                {
+                  "title": "should show error state on network failure",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "6dac514d5d837ca37b9e-10750f300f6a51c16f2c",
+                  "file": "chat.spec.ts",
+                  "line": 184,
+                  "column": 13
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "machines.spec.ts",
+      "file": "machines.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Machine Management",
+          "file": "machines.spec.ts",
+          "line": 6,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "Machine List",
+              "file": "machines.spec.ts",
+              "line": 36,
+              "column": 10,
+              "specs": [
+                {
+                  "title": "should display empty state when no machines",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-0b3d8b8c295b6294ee36",
+                  "file": "machines.spec.ts",
+                  "line": 37,
+                  "column": 13
+                },
+                {
+                  "title": "should display machines in a grid",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-a549fcdd25f92bbdea7b",
+                  "file": "machines.spec.ts",
+                  "line": 42,
+                  "column": 13
+                },
+                {
+                  "title": "should filter machines by type",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-436ad2b8a2ecf7e73e4a",
+                  "file": "machines.spec.ts",
+                  "line": 61,
+                  "column": 13
+                },
+                {
+                  "title": "should filter machines by status",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-74812359ab1e739d70e4",
+                  "file": "machines.spec.ts",
+                  "line": 94,
+                  "column": 13
+                },
+                {
+                  "title": "should display empty state when no machines",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-a0fc8d9c7afacc7749d7",
+                  "file": "machines.spec.ts",
+                  "line": 37,
+                  "column": 13
+                },
+                {
+                  "title": "should display machines in a grid",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-1848464fff37defa0c82",
+                  "file": "machines.spec.ts",
+                  "line": 42,
+                  "column": 13
+                },
+                {
+                  "title": "should filter machines by type",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-c93d9c957e2d01d0d536",
+                  "file": "machines.spec.ts",
+                  "line": 61,
+                  "column": 13
+                },
+                {
+                  "title": "should filter machines by status",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-d9d908dba21c23bca068",
+                  "file": "machines.spec.ts",
+                  "line": 94,
+                  "column": 13
+                },
+                {
+                  "title": "should display empty state when no machines",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-c2d9c01c0d760e397e77",
+                  "file": "machines.spec.ts",
+                  "line": 37,
+                  "column": 13
+                },
+                {
+                  "title": "should display machines in a grid",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-19a29a726e1462c48b40",
+                  "file": "machines.spec.ts",
+                  "line": 42,
+                  "column": 13
+                },
+                {
+                  "title": "should filter machines by type",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-4a467ff00a1d25b646b7",
+                  "file": "machines.spec.ts",
+                  "line": 61,
+                  "column": 13
+                },
+                {
+                  "title": "should filter machines by status",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-184c5b0fecf19505fa7c",
+                  "file": "machines.spec.ts",
+                  "line": 94,
+                  "column": 13
+                },
+                {
+                  "title": "should display empty state when no machines",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-64e93f95482a074554c2",
+                  "file": "machines.spec.ts",
+                  "line": 37,
+                  "column": 13
+                },
+                {
+                  "title": "should display machines in a grid",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-4ae7cf1c98b19b4b08e9",
+                  "file": "machines.spec.ts",
+                  "line": 42,
+                  "column": 13
+                },
+                {
+                  "title": "should filter machines by type",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-8d6b3bbd902d89bdfdb7",
+                  "file": "machines.spec.ts",
+                  "line": 61,
+                  "column": 13
+                },
+                {
+                  "title": "should filter machines by status",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-19a6cd11693d11b35b61",
+                  "file": "machines.spec.ts",
+                  "line": 94,
+                  "column": 13
+                },
+                {
+                  "title": "should display empty state when no machines",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-9fa72b93b876c40f0f3b",
+                  "file": "machines.spec.ts",
+                  "line": 37,
+                  "column": 13
+                },
+                {
+                  "title": "should display machines in a grid",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-898b7611b8e181844a01",
+                  "file": "machines.spec.ts",
+                  "line": 42,
+                  "column": 13
+                },
+                {
+                  "title": "should filter machines by type",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-4a6b223a3c49cfd17521",
+                  "file": "machines.spec.ts",
+                  "line": 61,
+                  "column": 13
+                },
+                {
+                  "title": "should filter machines by status",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-26eb366d78ba7e8cbb99",
+                  "file": "machines.spec.ts",
+                  "line": 94,
+                  "column": 13
+                }
+              ]
+            },
+            {
+              "title": "Create Machine",
+              "file": "machines.spec.ts",
+              "line": 110,
+              "column": 10,
+              "specs": [
+                {
+                  "title": "should open create machine dialog",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-dfc65cc3412002ee2a7d",
+                  "file": "machines.spec.ts",
+                  "line": 111,
+                  "column": 13
+                },
+                {
+                  "title": "should create a new machine successfully",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-642a41842277e2ab14cb",
+                  "file": "machines.spec.ts",
+                  "line": 118,
+                  "column": 13
+                },
+                {
+                  "title": "should show error for duplicate code",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-1754fbf52b714af6beec",
+                  "file": "machines.spec.ts",
+                  "line": 136,
+                  "column": 13
+                },
+                {
+                  "title": "should validate required fields",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-1a1cd2cd258782dbd97d",
+                  "file": "machines.spec.ts",
+                  "line": 163,
+                  "column": 13
+                },
+                {
+                  "title": "should open create machine dialog",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-207ba1dd0c3c4f8c108d",
+                  "file": "machines.spec.ts",
+                  "line": 111,
+                  "column": 13
+                },
+                {
+                  "title": "should create a new machine successfully",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-19514ceaf2137a277f97",
+                  "file": "machines.spec.ts",
+                  "line": 118,
+                  "column": 13
+                },
+                {
+                  "title": "should show error for duplicate code",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-69ba50d82448884252a1",
+                  "file": "machines.spec.ts",
+                  "line": 136,
+                  "column": 13
+                },
+                {
+                  "title": "should validate required fields",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-e06ffa57fd8409219979",
+                  "file": "machines.spec.ts",
+                  "line": 163,
+                  "column": 13
+                },
+                {
+                  "title": "should open create machine dialog",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-8e06a4c8fd7e58ee53b7",
+                  "file": "machines.spec.ts",
+                  "line": 111,
+                  "column": 13
+                },
+                {
+                  "title": "should create a new machine successfully",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-993f6a06cf36bc4db6eb",
+                  "file": "machines.spec.ts",
+                  "line": 118,
+                  "column": 13
+                },
+                {
+                  "title": "should show error for duplicate code",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-093b73ada4d9d83ae63a",
+                  "file": "machines.spec.ts",
+                  "line": 136,
+                  "column": 13
+                },
+                {
+                  "title": "should validate required fields",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-466d284b6e25c676f303",
+                  "file": "machines.spec.ts",
+                  "line": 163,
+                  "column": 13
+                },
+                {
+                  "title": "should open create machine dialog",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-1cd503158c87ac7cd3bd",
+                  "file": "machines.spec.ts",
+                  "line": 111,
+                  "column": 13
+                },
+                {
+                  "title": "should create a new machine successfully",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-70c3801a33f06f31e832",
+                  "file": "machines.spec.ts",
+                  "line": 118,
+                  "column": 13
+                },
+                {
+                  "title": "should show error for duplicate code",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-578212c38048cc2ae12e",
+                  "file": "machines.spec.ts",
+                  "line": 136,
+                  "column": 13
+                },
+                {
+                  "title": "should validate required fields",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-9f0d61c98a9f52c1799b",
+                  "file": "machines.spec.ts",
+                  "line": 163,
+                  "column": 13
+                },
+                {
+                  "title": "should open create machine dialog",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-c2649fd23012d84b4407",
+                  "file": "machines.spec.ts",
+                  "line": 111,
+                  "column": 13
+                },
+                {
+                  "title": "should create a new machine successfully",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-7f4971f746bfd8f4e46f",
+                  "file": "machines.spec.ts",
+                  "line": 118,
+                  "column": 13
+                },
+                {
+                  "title": "should show error for duplicate code",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-8a7df8a1860aca2bb0c4",
+                  "file": "machines.spec.ts",
+                  "line": 136,
+                  "column": 13
+                },
+                {
+                  "title": "should validate required fields",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-71eb55be704d2be9c711",
+                  "file": "machines.spec.ts",
+                  "line": 163,
+                  "column": 13
+                }
+              ]
+            },
+            {
+              "title": "Machine Details",
+              "file": "machines.spec.ts",
+              "line": 175,
+              "column": 10,
+              "specs": [
+                {
+                  "title": "should display machine details when clicked",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-ba42b24abee458393ff6",
+                  "file": "machines.spec.ts",
+                  "line": 194,
+                  "column": 13
+                },
+                {
+                  "title": "should show machine statistics",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-6028f6cbb5e2a38c49a1",
+                  "file": "machines.spec.ts",
+                  "line": 205,
+                  "column": 13
+                },
+                {
+                  "title": "should display machine details when clicked",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-b2548565d32b5969a019",
+                  "file": "machines.spec.ts",
+                  "line": 194,
+                  "column": 13
+                },
+                {
+                  "title": "should show machine statistics",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-e1b604c1a002e1fbd7b7",
+                  "file": "machines.spec.ts",
+                  "line": 205,
+                  "column": 13
+                },
+                {
+                  "title": "should display machine details when clicked",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-8fc2e56c2e1e9f0add7f",
+                  "file": "machines.spec.ts",
+                  "line": 194,
+                  "column": 13
+                },
+                {
+                  "title": "should show machine statistics",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-3048757ff89f63a2e322",
+                  "file": "machines.spec.ts",
+                  "line": 205,
+                  "column": 13
+                },
+                {
+                  "title": "should display machine details when clicked",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-da0a7528793a8675aa03",
+                  "file": "machines.spec.ts",
+                  "line": 194,
+                  "column": 13
+                },
+                {
+                  "title": "should show machine statistics",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-9b61294a0451cdd3c6b3",
+                  "file": "machines.spec.ts",
+                  "line": 205,
+                  "column": 13
+                },
+                {
+                  "title": "should display machine details when clicked",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-fe3467b60b3738a5e6e6",
+                  "file": "machines.spec.ts",
+                  "line": 194,
+                  "column": 13
+                },
+                {
+                  "title": "should show machine statistics",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-f52ab3a753fcba14ea7f",
+                  "file": "machines.spec.ts",
+                  "line": 205,
+                  "column": 13
+                }
+              ]
+            },
+            {
+              "title": "Cycle Management",
+              "file": "machines.spec.ts",
+              "line": 214,
+              "column": 10,
+              "specs": [
+                {
+                  "title": "should start a cycle on available machine",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-34d0d3d2d503cf32e564",
+                  "file": "machines.spec.ts",
+                  "line": 233,
+                  "column": 13
+                },
+                {
+                  "title": "should show remaining time for active cycle",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-3551cbdb56ac9cb0711c",
+                  "file": "machines.spec.ts",
+                  "line": 248,
+                  "column": 13
+                },
+                {
+                  "title": "should end cycle manually",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-98704806b6113718df7a",
+                  "file": "machines.spec.ts",
+                  "line": 262,
+                  "column": 13
+                },
+                {
+                  "title": "should start a cycle on available machine",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-b679f98b1cd83d2a5223",
+                  "file": "machines.spec.ts",
+                  "line": 233,
+                  "column": 13
+                },
+                {
+                  "title": "should show remaining time for active cycle",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-9a99c2e44d6308e4a38e",
+                  "file": "machines.spec.ts",
+                  "line": 248,
+                  "column": 13
+                },
+                {
+                  "title": "should end cycle manually",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-d777668c626954665dcc",
+                  "file": "machines.spec.ts",
+                  "line": 262,
+                  "column": 13
+                },
+                {
+                  "title": "should start a cycle on available machine",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-fe774585b879f3459537",
+                  "file": "machines.spec.ts",
+                  "line": 233,
+                  "column": 13
+                },
+                {
+                  "title": "should show remaining time for active cycle",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-900936d0776603bf7620",
+                  "file": "machines.spec.ts",
+                  "line": 248,
+                  "column": 13
+                },
+                {
+                  "title": "should end cycle manually",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-db33ba036a8205930ea1",
+                  "file": "machines.spec.ts",
+                  "line": 262,
+                  "column": 13
+                },
+                {
+                  "title": "should start a cycle on available machine",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-e2d9f5651fc3d96b7312",
+                  "file": "machines.spec.ts",
+                  "line": 233,
+                  "column": 13
+                },
+                {
+                  "title": "should show remaining time for active cycle",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-f13b6662c0318bb33654",
+                  "file": "machines.spec.ts",
+                  "line": 248,
+                  "column": 13
+                },
+                {
+                  "title": "should end cycle manually",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Chrome",
+                      "projectName": "Mobile Chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-74a0833815260ff837d6",
+                  "file": "machines.spec.ts",
+                  "line": 262,
+                  "column": 13
+                },
+                {
+                  "title": "should start a cycle on available machine",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-e57ac7f018e1d9c0202a",
+                  "file": "machines.spec.ts",
+                  "line": 233,
+                  "column": 13
+                },
+                {
+                  "title": "should show remaining time for active cycle",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-0d92c086210af31423cf",
+                  "file": "machines.spec.ts",
+                  "line": 248,
+                  "column": 13
+                },
+                {
+                  "title": "should end cycle manually",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "Mobile Safari",
+                      "projectName": "Mobile Safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "82f139d336c3b3094b88-6078091b231f306ed044",
+                  "file": "machines.spec.ts",
+                  "line": 262,
+                  "column": 13
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-01-31T08:21:30.279Z",
+    "duration": 227.1929999999993,
+    "expected": 0,
+    "skipped": 180,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

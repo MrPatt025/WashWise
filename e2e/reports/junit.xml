@@ -1,0 +1,752 @@
+<testsuites id="" name="" tests="180" failures="0" skipped="180" errors="0" time="0.2271929999999993">
+<testsuite name="auth.spec.ts" timestamp="2026-01-31T08:21:30.506Z" hostname="chromium" tests="10" failures="0" skipped="10" time="0" errors="0">
+<testcase name="Authentication Flow › Registration › should successfully register a new owner" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Registration › should show error for duplicate email" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Registration › should validate password requirements" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Login › should login successfully with valid credentials" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Login › should show error for invalid password" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Login › should show error for non-existent user" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Protected Routes › should redirect to login when accessing dashboard without auth" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Protected Routes › should redirect to login when accessing machines without auth" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Protected Routes › should persist login across page refresh" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Logout › should logout successfully" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="chat.spec.ts" timestamp="2026-01-31T08:21:30.506Z" hostname="chromium" tests="13" failures="0" skipped="13" time="0" errors="0">
+<testcase name="AI Chat Widget › Chat Widget Toggle › should display chat widget trigger button" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Widget Toggle › should open chat window when clicking trigger" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Widget Toggle › should close chat window when clicking close button" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should send message and receive response" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should display typing indicator while waiting" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should show suggestions after response" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should handle suggestion click" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should preserve chat history on widget toggle" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Intent-based Responses › should detect machine availability intent" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Intent-based Responses › should detect booking intent" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Intent-based Responses › should handle Thai language input" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Error Handling › should handle empty message submission" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Error Handling › should show error state on network failure" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="machines.spec.ts" timestamp="2026-01-31T08:21:30.506Z" hostname="chromium" tests="13" failures="0" skipped="13" time="0" errors="0">
+<testcase name="Machine Management › Machine List › should display empty state when no machines" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine List › should display machines in a grid" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine List › should filter machines by type" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine List › should filter machines by status" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Create Machine › should open create machine dialog" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Create Machine › should create a new machine successfully" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Create Machine › should show error for duplicate code" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Create Machine › should validate required fields" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine Details › should display machine details when clicked" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine Details › should show machine statistics" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Cycle Management › should start a cycle on available machine" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Cycle Management › should show remaining time for active cycle" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Cycle Management › should end cycle manually" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="auth.spec.ts" timestamp="2026-01-31T08:21:30.506Z" hostname="firefox" tests="10" failures="0" skipped="10" time="0" errors="0">
+<testcase name="Authentication Flow › Registration › should successfully register a new owner" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Registration › should show error for duplicate email" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Registration › should validate password requirements" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Login › should login successfully with valid credentials" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Login › should show error for invalid password" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Login › should show error for non-existent user" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Protected Routes › should redirect to login when accessing dashboard without auth" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Protected Routes › should redirect to login when accessing machines without auth" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Protected Routes › should persist login across page refresh" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Logout › should logout successfully" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="chat.spec.ts" timestamp="2026-01-31T08:21:30.506Z" hostname="firefox" tests="13" failures="0" skipped="13" time="0" errors="0">
+<testcase name="AI Chat Widget › Chat Widget Toggle › should display chat widget trigger button" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Widget Toggle › should open chat window when clicking trigger" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Widget Toggle › should close chat window when clicking close button" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should send message and receive response" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should display typing indicator while waiting" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should show suggestions after response" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should handle suggestion click" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should preserve chat history on widget toggle" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Intent-based Responses › should detect machine availability intent" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Intent-based Responses › should detect booking intent" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Intent-based Responses › should handle Thai language input" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Error Handling › should handle empty message submission" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Error Handling › should show error state on network failure" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="machines.spec.ts" timestamp="2026-01-31T08:21:30.506Z" hostname="firefox" tests="13" failures="0" skipped="13" time="0" errors="0">
+<testcase name="Machine Management › Machine List › should display empty state when no machines" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine List › should display machines in a grid" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine List › should filter machines by type" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine List › should filter machines by status" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Create Machine › should open create machine dialog" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Create Machine › should create a new machine successfully" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Create Machine › should show error for duplicate code" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Create Machine › should validate required fields" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine Details › should display machine details when clicked" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine Details › should show machine statistics" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Cycle Management › should start a cycle on available machine" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Cycle Management › should show remaining time for active cycle" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Cycle Management › should end cycle manually" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="auth.spec.ts" timestamp="2026-01-31T08:21:30.506Z" hostname="webkit" tests="10" failures="0" skipped="10" time="0" errors="0">
+<testcase name="Authentication Flow › Registration › should successfully register a new owner" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Registration › should show error for duplicate email" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Registration › should validate password requirements" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Login › should login successfully with valid credentials" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Login › should show error for invalid password" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Login › should show error for non-existent user" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Protected Routes › should redirect to login when accessing dashboard without auth" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Protected Routes › should redirect to login when accessing machines without auth" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Protected Routes › should persist login across page refresh" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Logout › should logout successfully" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="chat.spec.ts" timestamp="2026-01-31T08:21:30.506Z" hostname="webkit" tests="13" failures="0" skipped="13" time="0" errors="0">
+<testcase name="AI Chat Widget › Chat Widget Toggle › should display chat widget trigger button" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Widget Toggle › should open chat window when clicking trigger" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Widget Toggle › should close chat window when clicking close button" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should send message and receive response" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should display typing indicator while waiting" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should show suggestions after response" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should handle suggestion click" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should preserve chat history on widget toggle" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Intent-based Responses › should detect machine availability intent" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Intent-based Responses › should detect booking intent" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Intent-based Responses › should handle Thai language input" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Error Handling › should handle empty message submission" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Error Handling › should show error state on network failure" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="machines.spec.ts" timestamp="2026-01-31T08:21:30.506Z" hostname="webkit" tests="13" failures="0" skipped="13" time="0" errors="0">
+<testcase name="Machine Management › Machine List › should display empty state when no machines" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine List › should display machines in a grid" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine List › should filter machines by type" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine List › should filter machines by status" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Create Machine › should open create machine dialog" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Create Machine › should create a new machine successfully" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Create Machine › should show error for duplicate code" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Create Machine › should validate required fields" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine Details › should display machine details when clicked" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine Details › should show machine statistics" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Cycle Management › should start a cycle on available machine" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Cycle Management › should show remaining time for active cycle" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Cycle Management › should end cycle manually" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="auth.spec.ts" timestamp="2026-01-31T08:21:30.506Z" hostname="Mobile Chrome" tests="10" failures="0" skipped="10" time="0" errors="0">
+<testcase name="Authentication Flow › Registration › should successfully register a new owner" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Registration › should show error for duplicate email" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Registration › should validate password requirements" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Login › should login successfully with valid credentials" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Login › should show error for invalid password" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Login › should show error for non-existent user" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Protected Routes › should redirect to login when accessing dashboard without auth" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Protected Routes › should redirect to login when accessing machines without auth" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Protected Routes › should persist login across page refresh" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Logout › should logout successfully" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="chat.spec.ts" timestamp="2026-01-31T08:21:30.506Z" hostname="Mobile Chrome" tests="13" failures="0" skipped="13" time="0" errors="0">
+<testcase name="AI Chat Widget › Chat Widget Toggle › should display chat widget trigger button" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Widget Toggle › should open chat window when clicking trigger" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Widget Toggle › should close chat window when clicking close button" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should send message and receive response" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should display typing indicator while waiting" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should show suggestions after response" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should handle suggestion click" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should preserve chat history on widget toggle" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Intent-based Responses › should detect machine availability intent" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Intent-based Responses › should detect booking intent" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Intent-based Responses › should handle Thai language input" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Error Handling › should handle empty message submission" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Error Handling › should show error state on network failure" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="machines.spec.ts" timestamp="2026-01-31T08:21:30.506Z" hostname="Mobile Chrome" tests="13" failures="0" skipped="13" time="0" errors="0">
+<testcase name="Machine Management › Machine List › should display empty state when no machines" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine List › should display machines in a grid" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine List › should filter machines by type" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine List › should filter machines by status" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Create Machine › should open create machine dialog" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Create Machine › should create a new machine successfully" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Create Machine › should show error for duplicate code" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Create Machine › should validate required fields" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine Details › should display machine details when clicked" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine Details › should show machine statistics" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Cycle Management › should start a cycle on available machine" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Cycle Management › should show remaining time for active cycle" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Cycle Management › should end cycle manually" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="auth.spec.ts" timestamp="2026-01-31T08:21:30.506Z" hostname="Mobile Safari" tests="10" failures="0" skipped="10" time="0" errors="0">
+<testcase name="Authentication Flow › Registration › should successfully register a new owner" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Registration › should show error for duplicate email" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Registration › should validate password requirements" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Login › should login successfully with valid credentials" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Login › should show error for invalid password" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Login › should show error for non-existent user" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Protected Routes › should redirect to login when accessing dashboard without auth" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Protected Routes › should redirect to login when accessing machines without auth" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Protected Routes › should persist login across page refresh" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › Logout › should logout successfully" classname="auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="chat.spec.ts" timestamp="2026-01-31T08:21:30.506Z" hostname="Mobile Safari" tests="13" failures="0" skipped="13" time="0" errors="0">
+<testcase name="AI Chat Widget › Chat Widget Toggle › should display chat widget trigger button" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Widget Toggle › should open chat window when clicking trigger" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Widget Toggle › should close chat window when clicking close button" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should send message and receive response" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should display typing indicator while waiting" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should show suggestions after response" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should handle suggestion click" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Interaction › should preserve chat history on widget toggle" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Intent-based Responses › should detect machine availability intent" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Intent-based Responses › should detect booking intent" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Intent-based Responses › should handle Thai language input" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Error Handling › should handle empty message submission" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Chat Widget › Chat Error Handling › should show error state on network failure" classname="chat.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="machines.spec.ts" timestamp="2026-01-31T08:21:30.506Z" hostname="Mobile Safari" tests="13" failures="0" skipped="13" time="0" errors="0">
+<testcase name="Machine Management › Machine List › should display empty state when no machines" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine List › should display machines in a grid" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine List › should filter machines by type" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine List › should filter machines by status" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Create Machine › should open create machine dialog" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Create Machine › should create a new machine successfully" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Create Machine › should show error for duplicate code" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Create Machine › should validate required fields" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine Details › should display machine details when clicked" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Machine Details › should show machine statistics" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Cycle Management › should start a cycle on available machine" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Cycle Management › should show remaining time for active cycle" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Machine Management › Cycle Management › should end cycle manually" classname="machines.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+</testsuites>

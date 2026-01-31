@@ -2,7 +2,7 @@
 Integration tests for AI Worker Chat API
 """
 import pytest
-from httpx import AsyncClient
+from httpx import AsyncClient, ASGITransport
 from uuid import uuid4
 from unittest.mock import patch, AsyncMock, MagicMock
 
@@ -18,7 +18,8 @@ def app():
 @pytest.fixture
 async def client(app):
     """Create async test client."""
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as ac:
         yield ac
 
 
