@@ -1,6 +1,7 @@
 package io.washwise.repository;
 
 import io.washwise.domain.booking.Booking;
+import io.washwise.domain.booking.BookingStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,11 +35,11 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
         @Param("machineId") UUID machineId,
         @Param("startTime") Instant startTime,
         @Param("endTime") Instant endTime,
-        @Param("statuses") List<Booking.BookingStatus> statuses
+        @Param("statuses") List<BookingStatus> statuses
     );
     
     @Query("SELECT b FROM Booking b WHERE b.tenant.id = :tenantId AND b.status = :status")
-    List<Booking> findByTenantIdAndStatus(@Param("tenantId") UUID tenantId, @Param("status") Booking.BookingStatus status);
+    List<Booking> findByTenantIdAndStatus(@Param("tenantId") UUID tenantId, @Param("status") BookingStatus status);
     
     @Query("SELECT b FROM Booking b WHERE b.tenant.id = :tenantId AND b.startTime BETWEEN :start AND :end")
     List<Booking> findByTenantIdAndDateRange(
@@ -57,7 +58,34 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
     @Query("SELECT COUNT(b) FROM Booking b WHERE b.tenant.id = :tenantId AND b.status = :status AND b.createdAt BETWEEN :start AND :end")
     long countByTenantIdAndStatusAndDateRange(
         @Param("tenantId") UUID tenantId,
-        @Param("status") Booking.BookingStatus status,
+        @Param("status") BookingStatus status,
+        @Param("start") Instant start,
+        @Param("end") Instant end
+    );
+
+    @Query("SELECT COUNT(b) FROM Booking b WHERE b.tenant.id = :tenantId AND b.createdAt BETWEEN :start AND :end")
+    long countByTenantIdAndDateRange(
+        @Param("tenantId") UUID tenantId,
+        @Param("start") Instant start,
+        @Param("end") Instant end
+    );
+
+    @Query("SELECT COUNT(b) FROM Booking b WHERE b.tenant.id = :tenantId AND b.status IN :statuses")
+    long countByTenantIdAndStatusIn(
+        @Param("tenantId") UUID tenantId,
+        @Param("statuses") List<BookingStatus> statuses
+    );
+
+    @Query("SELECT COUNT(b) FROM Booking b WHERE b.tenant.id = :tenantId AND b.status = 'COMPLETED' AND b.createdAt BETWEEN :start AND :end")
+    long countCompletedByDateRange(
+        @Param("tenantId") UUID tenantId,
+        @Param("start") Instant start,
+        @Param("end") Instant end
+    );
+
+    @Query("SELECT COUNT(DISTINCT b.user.id) FROM Booking b WHERE b.tenant.id = :tenantId AND b.createdAt BETWEEN :start AND :end")
+    long countDistinctUsersByDateRange(
+        @Param("tenantId") UUID tenantId,
         @Param("start") Instant start,
         @Param("end") Instant end
     );

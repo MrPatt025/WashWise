@@ -1,6 +1,6 @@
 package io.washwise.dto.machine;
 
-import io.washwise.domain.machine.Machine;
+import io.washwise.domain.machine.MachineStatus;
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
@@ -13,7 +13,7 @@ public record UpdateMachineRequest(
         @Size(min = 1, max = 50, message = "Name must be between 1 and 50 characters")
         String name,
 
-        Machine.MachineStatus status,
+                MachineStatus status,
 
         @DecimalMin(value = "0.01", message = "Price must be greater than 0")
         @Digits(integer = 8, fraction = 2)

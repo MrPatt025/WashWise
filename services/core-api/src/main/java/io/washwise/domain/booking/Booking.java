@@ -104,34 +104,6 @@ public class Booking {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
-    public enum BookingStatus {
-        PENDING,        // Created, awaiting payment/confirmation
-        CONFIRMED,      // Paid and confirmed
-        IN_PROGRESS,    // Machine is running
-        COMPLETED,      // Successfully completed
-        CANCELLED,      // Cancelled by user or system
-        NO_SHOW,        // User didn't show up
-        REFUNDED        // Payment refunded
-    }
-
-    public enum PaymentStatus {
-        PENDING,
-        PAID,
-        FAILED,
-        REFUNDED,
-        PARTIALLY_REFUNDED
-    }
-
-    public enum PaymentMethod {
-        CASH,
-        CREDIT_CARD,
-        DEBIT_CARD,
-        PROMPTPAY,
-        WALLET,
-        LINE_PAY,
-        TRUE_MONEY
-    }
-
     /**
      * Confirm the booking after payment.
      */

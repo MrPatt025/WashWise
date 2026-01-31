@@ -1,6 +1,6 @@
 package io.washwise.dto.machine;
 
-import io.washwise.domain.machine.Machine;
+import io.washwise.domain.machine.MachineType;
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
@@ -15,7 +15,7 @@ public record CreateMachineRequest(
         String machineNumber,
 
         @NotNull(message = "Machine type is required")
-        Machine.MachineType type,
+        MachineType type,
 
         @DecimalMin(value = "0.01", message = "Price must be greater than 0")
         @Digits(integer = 8, fraction = 2)

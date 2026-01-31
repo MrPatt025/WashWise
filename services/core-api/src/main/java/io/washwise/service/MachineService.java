@@ -1,6 +1,8 @@
 package io.washwise.service;
 
 import io.washwise.domain.machine.Machine;
+import io.washwise.domain.machine.MachineStatus;
+import io.washwise.domain.machine.MachineType;
 import io.washwise.domain.tenant.Tenant;
 import io.washwise.dto.machine.CreateMachineRequest;
 import io.washwise.dto.machine.MachineResponse;
@@ -74,7 +76,7 @@ public class MachineService {
                 .name(request.name())
                 .machineNumber(request.machineNumber())
                 .type(request.type())
-                .status(Machine.MachineStatus.IDLE)
+                .status(MachineStatus.IDLE)
                 .pricePerCycle(request.pricePerCycle())
                 .cycleDurationMinutes(request.cycleDurationMinutes())
                 .capacityKg(request.capacityKg())
@@ -132,7 +134,7 @@ public class MachineService {
         Machine machine = machineRepository.findByIdAndTenantId(machineId, tenantId)
                 .orElseThrow(() -> new NotFoundException("Machine not found"));
 
-        if (machine.getStatus() == Machine.MachineStatus.IN_USE) {
+        if (machine.getStatus() == MachineStatus.RUNNING) {
             throw new ConflictException("Cannot delete machine while in use");
         }
 
@@ -189,8 +191,8 @@ public class MachineService {
      * Get available machines by type.
      */
     @Transactional(readOnly = true)
-    public List<MachineResponse> getAvailableMachines(UUID tenantId, Machine.MachineType type) {
-        return machineRepository.findAvailableByType(tenantId, type, Machine.MachineStatus.IDLE).stream()
+    public List<MachineResponse> getAvailableMachines(UUID tenantId, MachineType type) {
+        return machineRepository.findAvailableByType(tenantId, type, MachineStatus.IDLE).stream()
                 .map(MachineResponse::from)
                 .toList();
     }
@@ -201,10 +203,10 @@ public class MachineService {
     @Transactional(readOnly = true)
     public MachineStats getStats(UUID tenantId) {
         long total = machineRepository.countByTenantId(tenantId);
-        long idle = machineRepository.countByTenantIdAndStatus(tenantId, Machine.MachineStatus.IDLE);
-        long inUse = machineRepository.countByTenantIdAndStatus(tenantId, Machine.MachineStatus.IN_USE);
-        long error = machineRepository.countByTenantIdAndStatus(tenantId, Machine.MachineStatus.ERROR);
-        long maintenance = machineRepository.countByTenantIdAndStatus(tenantId, Machine.MachineStatus.MAINTENANCE);
+        long idle = machineRepository.countByTenantIdAndStatus(tenantId, MachineStatus.IDLE);
+        long inUse = machineRepository.countByTenantIdAndStatus(tenantId, MachineStatus.RUNNING);
+        long error = machineRepository.countByTenantIdAndStatus(tenantId, MachineStatus.ERROR);
+        long maintenance = machineRepository.countByTenantIdAndStatus(tenantId, MachineStatus.MAINTENANCE);
 
         return new MachineStats(total, idle, inUse, error, maintenance);
     }

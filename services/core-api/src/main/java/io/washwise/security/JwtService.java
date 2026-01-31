@@ -3,6 +3,7 @@ package io.washwise.security;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.washwise.domain.user.User;
+import io.washwise.domain.user.UserRole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -130,9 +131,9 @@ public class JwtService {
     /**
      * Extract role from access token.
      */
-    public User.UserRole extractRole(String token) {
+    public UserRole extractRole(String token) {
         Claims claims = parseAccessToken(token);
-        return User.UserRole.valueOf(claims.get("role", String.class));
+        return UserRole.valueOf(claims.get("role", String.class));
     }
 
     /**

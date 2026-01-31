@@ -145,11 +145,13 @@ CREATE TABLE audit_logs (
     user_id UUID,
     action VARCHAR(50) NOT NULL,
     entity_type VARCHAR(50) NOT NULL,
-    entity_id UUID,
+    entity_id VARCHAR(100),
     old_values JSONB,
     new_values JSONB,
     ip_address VARCHAR(45),
-    user_agent VARCHAR(500),
+    user_agent TEXT,
+    request_id VARCHAR(100),
+    metadata JSONB DEFAULT '{}',
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 

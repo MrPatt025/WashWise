@@ -1,11 +1,13 @@
 package io.washwise.repository;
 
 import io.washwise.domain.user.User;
+import io.washwise.domain.user.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,5 +30,20 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     boolean existsByEmailAndTenantId(String email, UUID tenantId);
     
     @Query("SELECT COUNT(u) FROM User u WHERE u.tenant.id = :tenantId AND u.role = :role")
-    long countByTenantIdAndRole(@Param("tenantId") UUID tenantId, @Param("role") User.UserRole role);
+    long countByTenantIdAndRole(@Param("tenantId") UUID tenantId, @Param("role") UserRole role);
+
+    @Query("SELECT u FROM User u WHERE u.tenant.id = :tenantId AND u.role IN ('OWNER', 'STAFF')")
+    List<User> findStaffByTenantId(@Param("tenantId") UUID tenantId);
+
+    @Query("SELECT COUNT(u) FROM User u WHERE u.tenant.id = :tenantId AND u.role = 'CUSTOMER'")
+    long countCustomersByTenantId(@Param("tenantId") UUID tenantId);
+
+    @Query("SELECT COUNT(u) FROM User u WHERE u.tenant.id = :tenantId AND u.role = 'CUSTOMER' AND u.createdAt BETWEEN :start AND :end")
+    long countNewCustomersByDateRange(
+        @Param("tenantId") UUID tenantId,
+        @Param("start") Instant start,
+        @Param("end") Instant end
+    );
+
+    Optional<User> findByLineUserId(String lineUserId);
 }

@@ -3,6 +3,7 @@ package io.washwise.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.washwise.domain.machine.Machine;
+import io.washwise.domain.machine.MachineType;
 import io.washwise.dto.machine.CreateMachineRequest;
 import io.washwise.dto.machine.MachineResponse;
 import io.washwise.security.AuthenticatedUser;
@@ -95,7 +96,7 @@ public class MachineController {
     @Operation(summary = "Get available machines by type")
     @GetMapping("/available")
     public ResponseEntity<List<MachineResponse>> getAvailableMachines(
-            @RequestParam Machine.MachineType type,
+            @RequestParam MachineType type,
             @AuthenticationPrincipal AuthenticatedUser user) {
         
         List<MachineResponse> machines = machineService.getAvailableMachines(user.tenantId(), type);

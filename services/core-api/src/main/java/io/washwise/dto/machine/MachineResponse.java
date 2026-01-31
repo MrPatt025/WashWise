@@ -1,6 +1,8 @@
 package io.washwise.dto.machine;
 
 import io.washwise.domain.machine.Machine;
+import io.washwise.domain.machine.MachineType;
+import io.washwise.domain.machine.MachineStatus;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -10,8 +12,8 @@ public record MachineResponse(
         UUID id,
         String name,
         String machineNumber,
-        Machine.MachineType type,
-        Machine.MachineStatus status,
+        MachineType type,
+        MachineStatus status,
         BigDecimal pricePerCycle,
         Integer cycleDurationMinutes,
         BigDecimal capacityKg,

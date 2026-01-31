@@ -3,6 +3,8 @@ package io.washwise.service;
 import io.washwise.domain.tenant.Tenant;
 import io.washwise.domain.user.RefreshToken;
 import io.washwise.domain.user.User;
+import io.washwise.domain.user.UserRole;
+import io.washwise.domain.user.UserStatus;
 import io.washwise.dto.auth.AuthResponse;
 import io.washwise.dto.auth.LoginRequest;
 import io.washwise.dto.auth.RegisterRequest;
@@ -71,8 +73,8 @@ public class AuthService {
                 .firstName(request.firstName())
                 .lastName(request.lastName())
                 .phone(request.phone())
-                .role(User.UserRole.OWNER)
-                .status(User.UserStatus.ACTIVE)
+                .role(UserRole.OWNER)
+                .status(UserStatus.ACTIVE)
                 .build();
         user = userRepository.save(user);
 
@@ -109,7 +111,7 @@ public class AuthService {
             throw new UnauthorizedException("Invalid email or password");
         }
 
-        if (user.getStatus() != User.UserStatus.ACTIVE) {
+        if (user.getStatus() != UserStatus.ACTIVE) {
             throw new UnauthorizedException("Account is not active");
         }
 
@@ -148,7 +150,7 @@ public class AuthService {
 
         User user = refreshToken.getUser();
         
-        if (user.getStatus() != User.UserStatus.ACTIVE) {
+        if (user.getStatus() != UserStatus.ACTIVE) {
             throw new UnauthorizedException("Account is not active");
         }
 

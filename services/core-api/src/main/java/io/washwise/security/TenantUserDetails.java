@@ -1,6 +1,8 @@
 package io.washwise.security;
 
 import io.washwise.domain.user.User;
+import io.washwise.domain.user.UserRole;
+import io.washwise.domain.user.UserStatus;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,8 +22,8 @@ public class TenantUserDetails implements UserDetails {
     private final UUID tenantId;
     private final String email;
     private final String password;
-    private final User.UserRole role;
-    private final User.UserStatus status;
+    private final UserRole role;
+    private final UserStatus status;
     private final Collection<? extends GrantedAuthority> authorities;
 
     public TenantUserDetails(User user) {
@@ -51,12 +53,12 @@ public class TenantUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return status != User.UserStatus.SUSPENDED;
+        return status != UserStatus.SUSPENDED;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return status != User.UserStatus.SUSPENDED;
+        return status != UserStatus.SUSPENDED;
     }
 
     @Override
@@ -66,6 +68,6 @@ public class TenantUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return status == User.UserStatus.ACTIVE;
+        return status == UserStatus.ACTIVE;
     }
 }

@@ -20,7 +20,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update  # Changed from validate to update for development - allows auto-creation of missing tables
     open-in-view: false
     properties:
       hibernate:

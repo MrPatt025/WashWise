@@ -1,6 +1,8 @@
 package io.washwise.dto.user;
 
 import io.washwise.domain.user.User;
+import io.washwise.domain.user.UserRole;
+import io.washwise.domain.user.UserStatus;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -11,8 +13,8 @@ public record UserResponse(
         String firstName,
         String lastName,
         String fullName,
-        User.UserRole role,
-        User.UserStatus status,
+                UserRole role,
+                UserStatus status,
         String phone,
         String avatarUrl,
         boolean emailVerified,

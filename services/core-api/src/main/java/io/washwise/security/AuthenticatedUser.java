@@ -1,6 +1,6 @@
 package io.washwise.security;
 
-import io.washwise.domain.user.User;
+import io.washwise.domain.user.UserRole;
 
 import java.util.UUID;
 
@@ -10,17 +10,17 @@ import java.util.UUID;
 public record AuthenticatedUser(
         UUID userId,
         UUID tenantId,
-        User.UserRole role
+        UserRole role
 ) {
     public boolean isOwner() {
-        return role == User.UserRole.OWNER;
+        return role == UserRole.OWNER;
     }
 
     public boolean isManager() {
-        return role == User.UserRole.MANAGER || role == User.UserRole.OWNER;
+        return role == UserRole.MANAGER || role == UserRole.OWNER;
     }
 
     public boolean isStaff() {
-        return role == User.UserRole.STAFF || isManager();
+        return role == UserRole.STAFF || isManager();
     }
 }

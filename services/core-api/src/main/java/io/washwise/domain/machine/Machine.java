@@ -105,20 +105,9 @@ public class Machine {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
-    public enum MachineType {
-        WASHER,
-        DRYER,
-        COMBO
-    }
-
-    public enum MachineStatus {
-        IDLE,           // Available for use
-        IN_USE,         // Currently running
-        RESERVED,       // Reserved for upcoming booking
-        MAINTENANCE,    // Under maintenance
-        ERROR,          // Has an error
-        OFFLINE         // Not communicating
-    }
+    @Column(name = "is_active")
+    @Builder.Default
+    private boolean isActive = true;
 
     /**
      * Start a new cycle on this machine.
@@ -127,7 +116,7 @@ public class Machine {
         if (this.status != MachineStatus.IDLE && this.status != MachineStatus.RESERVED) {
             throw new IllegalStateException("Machine is not available for use");
         }
-        this.status = MachineStatus.IN_USE;
+        this.status = MachineStatus.RUNNING;
         this.currentCycleStartedAt = Instant.now();
         this.currentCycleEndsAt = Instant.now().plusSeconds(cycleDurationMinutes * 60L);
         this.totalCycles++;

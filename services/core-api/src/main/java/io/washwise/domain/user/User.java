@@ -67,6 +67,9 @@ public class User {
     @Column(name = "avatar_url")
     private String avatarUrl;
 
+    @Column(name = "line_user_id", length = 100)
+    private String lineUserId;
+
     @Column(name = "email_verified")
     @Builder.Default
     private boolean emailVerified = false;
@@ -91,19 +94,5 @@ public class User {
         if (firstName == null) return lastName;
         if (lastName == null) return firstName;
         return firstName + " " + lastName;
-    }
-
-    public enum UserRole {
-        OWNER,      // Full access to tenant
-        MANAGER,    // Manage operations
-        STAFF,      // Basic operations
-        CUSTOMER    // Customer self-service
-    }
-
-    public enum UserStatus {
-        ACTIVE,
-        INACTIVE,
-        SUSPENDED,
-        PENDING_VERIFICATION
     }
 }

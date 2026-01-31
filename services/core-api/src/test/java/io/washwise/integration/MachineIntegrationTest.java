@@ -1,13 +1,13 @@
 package io.washwise.integration;
 
 import io.washwise.domain.machine.Machine;
-import io.washwise.domain.machine.Machine.MachineStatus;
-import io.washwise.domain.machine.Machine.MachineType;
+import io.washwise.domain.machine.MachineStatus;
+import io.washwise.domain.machine.MachineType;
 import io.washwise.domain.tenant.Tenant;
 import io.washwise.domain.tenant.Tenant.TenantStatus;
 import io.washwise.domain.user.User;
-import io.washwise.domain.user.User.UserRole;
-import io.washwise.domain.user.User.UserStatus;
+import io.washwise.domain.user.UserRole;
+import io.washwise.domain.user.UserStatus;
 import io.washwise.dto.machine.CreateMachineRequest;
 import io.washwise.dto.machine.UpdateMachineRequest;
 import io.washwise.repository.MachineRepository;
