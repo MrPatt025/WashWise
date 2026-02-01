@@ -12,8 +12,11 @@ export const LoginRequestSchema = z.object({
 export const RegisterRequestSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8).max(100),
-  name: z.string().min(2).max(100),
+  firstName: z.string().min(1).max(50),
+  lastName: z.string().min(1).max(50),
   tenantName: z.string().min(2).max(100),
+  tenantSlug: z.string().min(2).max(50).regex(/^[a-z0-9-]+$/, "Slug must contain only lowercase letters, numbers, and hyphens").optional(),
+  phone: z.string().max(20).optional(),
 });
 
 export const TokenPayloadSchema = z.object({
@@ -30,10 +33,19 @@ export const AuthResponseSchema = z.object({
   user: z.object({
     id: z.string().uuid(),
     email: z.string().email(),
-    name: z.string(),
+    firstName: z.string(),
+    lastName: z.string(),
+    fullName: z.string().optional(),
     role: z.string(),
-    tenantId: z.string().uuid(),
-    tenantName: z.string(),
+    status: z.string().optional(),
+    emailVerified: z.boolean().optional(),
+    lastLoginAt: z.string().optional(),
+    tenant: z.object({
+      id: z.string().uuid(),
+      name: z.string(),
+      slug: z.string(),
+    }),
+    createdAt: z.string().optional(),
   }),
 });
 

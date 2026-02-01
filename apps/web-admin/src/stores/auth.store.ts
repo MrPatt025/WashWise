@@ -3,13 +3,24 @@
 import { create } from "zustand";
 import type { AuthResponse } from "@washwise/types";
 
+interface Tenant {
+  id: string;
+  name: string;
+  slug: string;
+}
+
 interface User {
   id: string;
   email: string;
-  name: string;
+  firstName: string;
+  lastName: string;
+  fullName?: string;
   role: string;
-  tenantId: string;
-  tenantName: string;
+  status?: string;
+  emailVerified?: boolean;
+  lastLoginAt?: string;
+  tenant: Tenant;
+  createdAt?: string;
 }
 
 interface AuthState {

@@ -2,7 +2,7 @@
 
 export const dynamic = "force-dynamic";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,6 +21,18 @@ import {
 } from "@/components/ui/card";
 import { Loader2, WashingMachine } from "lucide-react";
 
+/**
+ * Convert a string to a URL-friendly slug
+ */
+function slugify(name: string): string {
+  return name
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 50);
+}
+
 export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
   const registerMutation = useRegister();
@@ -28,15 +40,37 @@ export default function RegisterPage() {
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<RegisterRequest>({
     resolver: zodResolver(RegisterRequestSchema),
+    defaultValues: {
+      tenantSlug: "",
+    },
   });
+
+  // Watch tenantName to auto-generate slug
+  const tenantNameValue = watch("tenantName");
+
+  // Auto-generate slug from tenant name if not manually edited
+  useEffect(() => {
+    if (tenantNameValue) {
+      setValue("tenantSlug", slugify(tenantNameValue));
+    }
+  }, [tenantNameValue, setValue]);
 
   const onSubmit = async (data: RegisterRequest) => {
     setError(null);
+
+    // Ensure tenantSlug is set
+    const payload: RegisterRequest = {
+      ...data,
+      tenantSlug: data.tenantSlug || slugify(data.tenantName),
+    };
+
     try {
-      await registerMutation.mutateAsync(data);
+      await registerMutation.mutateAsync(payload);
     } catch (err: any) {
       setError(err.response?.data?.message || "Registration failed");
     }
@@ -63,6 +97,8 @@ export default function RegisterPage() {
                 {error}
               </div>
             )}
+
+            {/* Laundromat Name */}
             <div className="space-y-2">
               <Label htmlFor="tenantName">Laundromat Name</Label>
               <Input
@@ -76,15 +112,56 @@ export default function RegisterPage() {
                 </p>
               )}
             </div>
+
+            {/* Laundromat Slug */}
             <div className="space-y-2">
-              <Label htmlFor="name">Your Name</Label>
-              <Input id="name" placeholder="John Doe" {...register("name")} />
-              {errors.name && (
+              <Label htmlFor="tenantSlug">Laundromat Slug</Label>
+              <Input
+                id="tenantSlug"
+                placeholder="my-laundromat"
+                {...register("tenantSlug")}
+              />
+              <p className="text-xs text-muted-foreground">
+                URL-friendly identifier (auto-generated from name)
+              </p>
+              {errors.tenantSlug && (
                 <p className="text-sm text-destructive">
-                  {errors.name.message}
+                  {errors.tenantSlug.message}
                 </p>
               )}
             </div>
+
+            {/* First Name & Last Name */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="firstName">First Name</Label>
+                <Input
+                  id="firstName"
+                  placeholder="John"
+                  {...register("firstName")}
+                />
+                {errors.firstName && (
+                  <p className="text-sm text-destructive">
+                    {errors.firstName.message}
+                  </p>
+                )}
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="lastName">Last Name</Label>
+                <Input
+                  id="lastName"
+                  placeholder="Doe"
+                  {...register("lastName")}
+                />
+                {errors.lastName && (
+                  <p className="text-sm text-destructive">
+                    {errors.lastName.message}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Email */}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -99,6 +176,8 @@ export default function RegisterPage() {
                 </p>
               )}
             </div>
+
+            {/* Password */}
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <Input
