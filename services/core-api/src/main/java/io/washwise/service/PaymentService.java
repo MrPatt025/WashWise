@@ -9,7 +9,6 @@ import io.washwise.domain.payment.PaymentWebhookEvent;
 import io.washwise.domain.user.User;
 import io.washwise.dto.payment.*;
 import io.washwise.exception.BusinessException;
-import io.washwise.exception.ConflictException;
 import io.washwise.exception.NotFoundException;
 import io.washwise.repository.BookingRepository;
 import io.washwise.repository.PaymentRepository;
@@ -37,6 +36,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@SuppressWarnings("null")
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;

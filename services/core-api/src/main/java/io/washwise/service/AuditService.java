@@ -8,7 +8,6 @@ import io.washwise.dto.audit.AuditLogResponse;
 import io.washwise.repository.AuditLogRepository;
 import io.washwise.repository.TenantRepository;
 import io.washwise.repository.UserRepository;
-import io.washwise.security.TenantContext;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +22,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.time.Instant;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -33,6 +31,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@SuppressWarnings("null")
 public class AuditService {
 
     private final AuditLogRepository auditLogRepository;

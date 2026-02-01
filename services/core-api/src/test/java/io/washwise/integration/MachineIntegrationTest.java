@@ -41,6 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @Testcontainers
+@SuppressWarnings({ "null", "resource" })
 class MachineIntegrationTest {
 
     @Container
@@ -215,7 +216,7 @@ class MachineIntegrationTest {
     @Test
     void shouldFilterMachinesByStatus() throws Exception {
         Machine washer = createTestMachine("Washer 1", "WASH-STATUS-1", MachineType.WASHER);
-        washer.setStatus(MachineStatus.IN_USE);
+        washer.setStatus(MachineStatus.RUNNING);
         machineRepository.save(washer);
 
         createTestMachine("Washer 2", "WASH-STATUS-2", MachineType.WASHER);
@@ -317,7 +318,7 @@ class MachineIntegrationTest {
     @Test
     void shouldPreventStartingBusyMachine() throws Exception {
         Machine machine = createTestMachine("Washer BUSY", "WASH-BUSY-1", MachineType.WASHER);
-        machine.setStatus(MachineStatus.IN_USE);
+        machine.setStatus(MachineStatus.RUNNING);
         machineRepository.save(machine);
 
         mockMvc.perform(post("/api/v1/machines/" + machine.getId() + "/start")
@@ -328,7 +329,7 @@ class MachineIntegrationTest {
     @Test
     void shouldCompleteMachineCycle() throws Exception {
         Machine machine = createTestMachine("Washer COMPLETE", "WASH-COMPLETE-1", MachineType.WASHER);
-        machine.setStatus(MachineStatus.IN_USE);
+        machine.setStatus(MachineStatus.RUNNING);
         machineRepository.save(machine);
 
         mockMvc.perform(post("/api/v1/machines/" + machine.getId() + "/complete")
@@ -354,7 +355,7 @@ class MachineIntegrationTest {
         createTestMachine("Washer 1", "WASH-STATS-1", MachineType.WASHER);
         createTestMachine("Washer 2", "WASH-STATS-2", MachineType.WASHER);
         Machine busyMachine = createTestMachine("Washer 3", "WASH-STATS-3", MachineType.WASHER);
-        busyMachine.setStatus(MachineStatus.IN_USE);
+        busyMachine.setStatus(MachineStatus.RUNNING);
         machineRepository.save(busyMachine);
 
         mockMvc.perform(get("/api/v1/machines/statistics")

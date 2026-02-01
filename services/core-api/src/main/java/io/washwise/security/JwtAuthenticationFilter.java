@@ -24,6 +24,7 @@ import java.util.UUID;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@SuppressWarnings("null")
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
@@ -72,7 +73,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
-        return path.startsWith("/auth/") || 
+        // Skip filter for public auth endpoints, but NOT for /auth/me, /auth/logout,
+        // etc.
+        return (path.startsWith("/auth/") &&
+                (path.equals("/auth/login") || path.equals("/auth/register") || path.equals("/auth/refresh"))) ||
                path.startsWith("/actuator/") ||
                path.startsWith("/docs/") ||
                path.equals("/health");

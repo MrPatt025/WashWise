@@ -1,14 +1,14 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 import { getAuthState, setAuthState } from "@/stores/auth.store";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 /**
  * Axios instance with interceptors for authentication
  * Implements "Silent Refresh" pattern
  */
 export const api = axios.create({
-  baseURL: `${API_URL}/api/v1`,
+  baseURL: `${API_URL}/api`,
   withCredentials: true, // Important for cookies
   headers: {
     "Content-Type": "application/json",
@@ -77,7 +77,7 @@ api.interceptors.response.use(
     try {
       // Attempt to refresh the token
       const response = await axios.post(
-        `${API_URL}/api/v1/auth/refresh`,
+        `${API_URL}/api/auth/refresh`,
         {},
         { withCredentials: true },
       );

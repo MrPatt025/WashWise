@@ -18,6 +18,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@SuppressWarnings("null")
 public class DashboardService {
 
     private final BookingRepository bookingRepository;
@@ -25,6 +26,9 @@ public class DashboardService {
     private final MachineRepository machineRepository;
     private final UserRepository userRepository;
     private final DailyTenantStatsRepository tenantStatsRepository;
+    // Note: Branch stats repository available for future branch-level statistics
+    // implementation
+    @SuppressWarnings("unused")
     private final DailyBranchStatsRepository branchStatsRepository;
 
     private static final ZoneId TIMEZONE = ZoneId.of("Asia/Bangkok");

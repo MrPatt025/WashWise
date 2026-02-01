@@ -2,7 +2,6 @@ package io.washwise.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import io.washwise.domain.machine.Machine;
 import io.washwise.domain.machine.MachineType;
 import io.washwise.dto.machine.CreateMachineRequest;
 import io.washwise.dto.machine.MachineResponse;

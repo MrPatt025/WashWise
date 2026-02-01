@@ -41,6 +41,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@SuppressWarnings("null")
 public class BookingService {
 
     private final BookingRepository bookingRepository;

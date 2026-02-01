@@ -18,8 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-
 @Tag(name = "Authentication", description = "User authentication and registration")
 @RestController
 @RequestMapping("/auth")
@@ -27,7 +25,6 @@ import java.util.Arrays;
 public class AuthController {
 
     private static final String REFRESH_TOKEN_COOKIE = "refreshToken";
-    private static final int REFRESH_TOKEN_MAX_AGE = 7 * 24 * 60 * 60; // 7 days
 
     private final AuthService authService;
 
