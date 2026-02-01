@@ -25,8 +25,23 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private static final String REFRESH_TOKEN_COOKIE = "refreshToken";
+    private static final int REFRESH_TOKEN_MAX_AGE = 7 * 24 * 60 * 60; // 7 days in seconds
 
     private final AuthService authService;
+
+    /**
+     * Set refresh token as HttpOnly cookie
+     */
+    private void setRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
+        Cookie cookie = new Cookie(REFRESH_TOKEN_COOKIE, refreshToken);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false); // Set to true in production with HTTPS
+        cookie.setPath("/");
+        cookie.setMaxAge(REFRESH_TOKEN_MAX_AGE);
+        // Note: SameSite=Lax is default in modern browsers, which works for same-site
+        // requests
+        response.addCookie(cookie);
+    }
 
     @Operation(summary = "Register new tenant and owner")
     @PostMapping("/register")
@@ -41,8 +56,10 @@ public class AuthController {
                 getClientIp(httpRequest)
         );
         
-        // Note: In production, refresh token would be returned in HttpOnly cookie
-        // For API testing, we're returning it in the response
+        // Set refresh token as HttpOnly cookie for security
+        if (authResponse.refreshToken() != null) {
+            setRefreshTokenCookie(response, authResponse.refreshToken());
+        }
         
         return ResponseEntity.status(HttpStatus.CREATED).body(authResponse);
     }
@@ -60,6 +77,11 @@ public class AuthController {
                 getClientIp(httpRequest)
         );
         
+        // Set refresh token as HttpOnly cookie for security
+        if (authResponse.refreshToken() != null) {
+            setRefreshTokenCookie(response, authResponse.refreshToken());
+        }
+
         return ResponseEntity.ok(authResponse);
     }
 
@@ -85,6 +107,11 @@ public class AuthController {
                 getClientIp(httpRequest)
         );
         
+        // Set new rotated refresh token as HttpOnly cookie
+        if (authResponse.refreshToken() != null) {
+            setRefreshTokenCookie(response, authResponse.refreshToken());
+        }
+
         return ResponseEntity.ok(authResponse);
     }
 

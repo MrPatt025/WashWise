@@ -179,6 +179,106 @@ pnpm db:seed      # Seed database with demo data
 pnpm db:studio    # Open Prisma Studio
 ```
 
+---
+
+## 🛠 Local Development Guide
+
+This guide helps you run services locally without rebuilding Docker containers for every code change.
+
+### Prerequisites
+
+- **Java 21+** for Core API (`java -version`)
+- **Maven 3.9+** for Core API (`mvn -version`)
+- **Node.js 22 LTS** for frontend (`node -v`)
+- **pnpm 9.x** for package management (`pnpm -v`)
+- **Docker** for infrastructure (PostgreSQL, Redis)
+
+### Step 1: Start Infrastructure Only
+
+```bash
+# Start only PostgreSQL and Redis (not the app containers)
+docker-compose up -d postgres redis
+```
+
+### Step 2: Run Core API (Spring Boot)
+
+```bash
+# Navigate to core-api directory
+cd services/core-api
+
+# Run with Maven (hot-reload enabled by default)
+mvn spring-boot:run
+
+# Or with specific profile
+mvn spring-boot:run -Dspring-boot.run.profiles=dev
+
+# Core API runs on http://localhost:8080
+```
+
+**Environment variables** (set in terminal or `.env` file):
+```bash
+export DATABASE_URL=jdbc:postgresql://localhost:5432/washwise
+export REDIS_HOST=localhost
+export REDIS_PORT=6379
+export JWT_SECRET=your-dev-secret-key
+```
+
+### Step 3: Run Frontend (Next.js)
+
+```bash
+# From project root
+pnpm dev --filter web-admin
+
+# Or navigate directly
+cd apps/web-admin
+pnpm dev
+
+# Frontend runs on http://localhost:3000
+```
+
+**Environment** (`.env.local`):
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:8080
+```
+
+### Step 4: Run API Server (Fastify) - Optional
+
+```bash
+# If using Node.js backend instead of/alongside Core API
+pnpm dev --filter api-server
+
+# Runs on http://localhost:3001
+```
+
+### Development Workflow Tips
+
+| Task | Command |
+|------|---------|
+| Start everything via Docker | `docker-compose up -d` |
+| Start infra only | `docker-compose up -d postgres redis` |
+| Run Core API locally | `cd services/core-api && mvn spring-boot:run` |
+| Run frontend locally | `pnpm dev --filter web-admin` |
+| View logs | `docker-compose logs -f [service]` |
+| Reset database | `docker-compose down -v && docker-compose up -d postgres` |
+| Rebuild one container | `docker-compose up -d --build core-api` |
+
+### Hot Reload
+
+- **Core API**: Spring Boot DevTools auto-restarts on class changes
+- **Frontend**: Next.js Fast Refresh updates on file save
+- **Fastify API**: Uses `tsx watch` for auto-restart
+
+### Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| Port already in use | Kill process: `lsof -ti:8080 \| xargs kill` (Mac/Linux) or `netstat -ano \| findstr :8080` (Windows) |
+| DB connection failed | Ensure PostgreSQL container is running: `docker ps` |
+| CORS errors | Check `CORS_ORIGIN` in backend matches frontend URL |
+| Actuator health DOWN | Normal if DB/Redis still starting; endpoints still work |
+
+---
+
 ## 📡 API Endpoints
 
 ### Authentication

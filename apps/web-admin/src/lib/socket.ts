@@ -1,7 +1,9 @@
 import { io, Socket } from "socket.io-client";
 import { getAuthState } from "@/stores/auth.store";
 
-const WS_URL = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:3001";
+// Socket.io uses HTTP URL (not ws://) and handles upgrade internally
+// Points to the Fastify API server which has Socket.io registered
+const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:3001";
 
 let socket: Socket | null = null;
 
@@ -18,12 +20,14 @@ export function getSocket(): Socket | null {
   }
 
   if (!socket || !socket.connected) {
-    socket = io(WS_URL, {
+    socket = io(SOCKET_URL, {
       auth: { token },
+      path: "/socket.io", // Default Socket.io path
       transports: ["websocket", "polling"],
       reconnection: true,
       reconnectionAttempts: 5,
       reconnectionDelay: 1000,
+      withCredentials: true,
     });
 
     socket.on("connect", () => {

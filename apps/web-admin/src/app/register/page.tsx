@@ -2,7 +2,7 @@
 
 export const dynamic = "force-dynamic";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,7 +19,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Loader2, WashingMachine } from "lucide-react";
+import { Loader2, WashingMachine, AlertCircle, Lightbulb } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+
+// Error codes from backend
+type ApiErrorCode =
+  | "MULTIPLE_TENANTS"
+  | "CONFLICT"
+  | "VALIDATION_ERROR"
+  | "DUPLICATE_EMAIL"
+  | "UNKNOWN";
 
 /**
  * Convert a string to a URL-friendly slug
@@ -33,8 +42,92 @@ function slugify(name: string): string {
     .slice(0, 50);
 }
 
+/**
+ * Generate alternative slug suggestions for conflict resolution
+ */
+function generateSlugSuggestions(baseSlug: string): string[] {
+  const suggestions: string[] = [];
+  
+  // Numbered suffixes
+  for (let i = 1; i <= 3; i++) {
+    suggestions.push(`${baseSlug}-${i}`);
+  }
+  
+  // Location-based suffixes
+  const locationSuffixes = ["bkk", "main", "central", "new"];
+  for (const suffix of locationSuffixes) {
+    if (!baseSlug.includes(suffix)) {
+      suggestions.push(`${baseSlug}-${suffix}`);
+      break;
+    }
+  }
+  
+  // Random short code
+  const randomCode = Math.random().toString(36).substring(2, 5);
+  suggestions.push(`${baseSlug}-${randomCode}`);
+  
+  return suggestions.slice(0, 4);
+}
+
+/**
+ * Map API error codes to user-friendly messages and UI actions
+ */
+function mapApiError(error: any): { 
+  message: string; 
+  code: ApiErrorCode;
+  suggestions?: string[];
+  focusField?: string;
+} {
+  const code = error?.response?.data?.code as ApiErrorCode || "UNKNOWN";
+  const serverMessage = error?.response?.data?.message;
+  const field = error?.response?.data?.field;
+  
+  switch (code) {
+    case "MULTIPLE_TENANTS":
+      return {
+        code,
+        message: "Please specify a unique tenant slug for your laundromat. The auto-generated slug may already exist.",
+        focusField: "tenantSlug",
+      };
+    
+    case "CONFLICT":
+      return {
+        code,
+        message: "This laundromat name or slug already exists. Please try one of the suggested alternatives or enter a different one.",
+        focusField: "tenantSlug",
+      };
+    
+    case "DUPLICATE_EMAIL":
+      return {
+        code,
+        message: "An account with this email already exists. Please sign in instead.",
+        focusField: "email",
+      };
+    
+    case "VALIDATION_ERROR":
+      return {
+        code,
+        message: serverMessage || "Please check your input and try again.",
+        focusField: field,
+      };
+    
+    default:
+      return {
+        code: "UNKNOWN",
+        message: serverMessage || "Registration failed. Please try again.",
+      };
+  }
+}
+
 export default function RegisterPage() {
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<{
+    message: string;
+    code: ApiErrorCode;
+  } | null>(null);
+  const [slugSuggestions, setSlugSuggestions] = useState<string[]>([]);
+  const [slugManuallyEdited, setSlugManuallyEdited] = useState(false);
+  const slugInputRef = useRef<HTMLInputElement>(null);
+  const emailInputRef = useRef<HTMLInputElement>(null);
   const registerMutation = useRegister();
 
   const {
@@ -42,6 +135,7 @@ export default function RegisterPage() {
     handleSubmit,
     watch,
     setValue,
+    setFocus,
     formState: { errors },
   } = useForm<RegisterRequest>({
     resolver: zodResolver(RegisterRequestSchema),
@@ -50,18 +144,43 @@ export default function RegisterPage() {
     },
   });
 
-  // Watch tenantName to auto-generate slug
+  // Watch tenantName and tenantSlug
   const tenantNameValue = watch("tenantName");
+  const tenantSlugValue = watch("tenantSlug");
 
   // Auto-generate slug from tenant name if not manually edited
   useEffect(() => {
-    if (tenantNameValue) {
+    if (tenantNameValue && !slugManuallyEdited) {
       setValue("tenantSlug", slugify(tenantNameValue));
     }
-  }, [tenantNameValue, setValue]);
+  }, [tenantNameValue, setValue, slugManuallyEdited]);
+
+  // Generate suggestions when slug changes (for conflict cases)
+  useEffect(() => {
+    if (tenantSlugValue && error?.code === "CONFLICT") {
+      setSlugSuggestions(generateSlugSuggestions(tenantSlugValue));
+    }
+  }, [tenantSlugValue, error?.code]);
+
+  const handleSlugChange = () => {
+    setSlugManuallyEdited(true);
+    // Clear conflict error when user starts typing
+    if (error?.code === "CONFLICT" || error?.code === "MULTIPLE_TENANTS") {
+      setError(null);
+      setSlugSuggestions([]);
+    }
+  };
+
+  const handleSlugSuggestionClick = (suggestion: string) => {
+    setValue("tenantSlug", suggestion);
+    setSlugManuallyEdited(true);
+    setError(null);
+    setSlugSuggestions([]);
+  };
 
   const onSubmit = async (data: RegisterRequest) => {
     setError(null);
+    setSlugSuggestions([]);
 
     // Ensure tenantSlug is set
     const payload: RegisterRequest = {
@@ -72,7 +191,31 @@ export default function RegisterPage() {
     try {
       await registerMutation.mutateAsync(payload);
     } catch (err: any) {
-      setError(err.response?.data?.message || "Registration failed");
+      const mappedError = mapApiError(err);
+      setError({ message: mappedError.message, code: mappedError.code });
+
+      // Generate slug suggestions for conflict errors
+      if (
+        mappedError.code === "CONFLICT" ||
+        mappedError.code === "MULTIPLE_TENANTS"
+      ) {
+        const baseSlug = payload.tenantSlug || slugify(payload.tenantName);
+        setSlugSuggestions(generateSlugSuggestions(baseSlug));
+      }
+
+      // Focus the relevant field
+      if (mappedError.focusField) {
+        setTimeout(() => {
+          if (mappedError.focusField === "tenantSlug") {
+            slugInputRef.current?.focus();
+            slugInputRef.current?.select();
+          } else if (mappedError.focusField === "email") {
+            emailInputRef.current?.focus();
+          } else {
+            setFocus(mappedError.focusField as keyof RegisterRequest);
+          }
+        }, 100);
+      }
     }
   };
 
@@ -93,9 +236,18 @@ export default function RegisterPage() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent className="space-y-4">
             {error && (
-              <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-                {error}
-              </div>
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>
+                  {error.code === "CONFLICT" && "Name/Slug Already Taken"}
+                  {error.code === "MULTIPLE_TENANTS" && "Slug Required"}
+                  {error.code === "DUPLICATE_EMAIL" &&
+                    "Email Already Registered"}
+                  {error.code === "VALIDATION_ERROR" && "Validation Error"}
+                  {error.code === "UNKNOWN" && "Registration Failed"}
+                </AlertTitle>
+                <AlertDescription>{error.message}</AlertDescription>
+              </Alert>
             )}
 
             {/* Laundromat Name */}
@@ -119,7 +271,17 @@ export default function RegisterPage() {
               <Input
                 id="tenantSlug"
                 placeholder="my-laundromat"
-                {...register("tenantSlug")}
+                {...register("tenantSlug", { onChange: handleSlugChange })}
+                ref={(e) => {
+                  register("tenantSlug").ref(e);
+                  (slugInputRef as any).current = e;
+                }}
+                className={
+                  error?.code === "CONFLICT" ||
+                  error?.code === "MULTIPLE_TENANTS"
+                    ? "border-destructive focus-visible:ring-destructive"
+                    : ""
+                }
               />
               <p className="text-xs text-muted-foreground">
                 URL-friendly identifier (auto-generated from name)
@@ -128,6 +290,30 @@ export default function RegisterPage() {
                 <p className="text-sm text-destructive">
                   {errors.tenantSlug.message}
                 </p>
+              )}
+
+              {/* Slug Suggestions */}
+              {slugSuggestions.length > 0 && (
+                <div className="rounded-md bg-muted p-3 space-y-2">
+                  <div className="flex items-center gap-2 text-sm font-medium">
+                    <Lightbulb className="h-4 w-4 text-amber-500" />
+                    <span>Try one of these available slugs:</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {slugSuggestions.map((suggestion) => (
+                      <Button
+                        key={suggestion}
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleSlugSuggestionClick(suggestion)}
+                        className="text-xs"
+                      >
+                        {suggestion}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
               )}
             </div>
 
@@ -169,10 +355,26 @@ export default function RegisterPage() {
                 type="email"
                 placeholder="you@example.com"
                 {...register("email")}
+                ref={(e) => {
+                  register("email").ref(e);
+                  (emailInputRef as any).current = e;
+                }}
+                className={
+                  error?.code === "DUPLICATE_EMAIL"
+                    ? "border-destructive focus-visible:ring-destructive"
+                    : ""
+                }
               />
               {errors.email && (
                 <p className="text-sm text-destructive">
                   {errors.email.message}
+                </p>
+              )}
+              {error?.code === "DUPLICATE_EMAIL" && (
+                <p className="text-sm text-primary">
+                  <Link href="/login" className="underline hover:no-underline">
+                    Sign in to your existing account →
+                  </Link>
                 </p>
               )}
             </div>

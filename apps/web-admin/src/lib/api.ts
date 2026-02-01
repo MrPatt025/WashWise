@@ -53,8 +53,35 @@ api.interceptors.response.use(
       _retry?: boolean;
     };
 
+    const requestUrl = originalRequest?.url || "";
+    const isRefreshRequest = requestUrl.includes("/auth/refresh");
+
+    // CRITICAL: If refresh endpoint itself returns 401, do NOT retry
+    // This prevents infinite loops
+    if (error.response?.status === 401 && isRefreshRequest) {
+      // Clear auth state and redirect to login
+      setAuthState({
+        accessToken: null,
+        user: null,
+        isAuthenticated: false,
+        isLoading: false,
+      });
+
+      // Only redirect if not already on login page
+      if (typeof window !== "undefined" && !window.location.pathname.includes("/login")) {
+        window.location.href = "/login";
+      }
+
+      return Promise.reject(error);
+    }
+
     // If not 401 or already retried, reject
     if (error.response?.status !== 401 || originalRequest._retry) {
+      return Promise.reject(error);
+    }
+
+    // Skip refresh for auth endpoints (login, register)
+    if (requestUrl.includes("/auth/login") || requestUrl.includes("/auth/register")) {
       return Promise.reject(error);
     }
 

@@ -72,39 +72,53 @@ export function useLogout() {
 /**
  * Hook to check auth status on app load
  * Attempts to refresh token from httpOnly cookie
+ * Uses a ref-based check to avoid stale closure issues
  */
 export function useCheckAuth() {
   const setAuth = useAuthStore((state) => state.setAuth);
   const clearAuth = useAuthStore((state) => state.clearAuth);
   const setLoading = useAuthStore((state) => state.setLoading);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   return useQuery({
     queryKey: ["auth", "check"],
     queryFn: async () => {
+      // Use direct store access to get current state (not stale closure)
+      const currentState = useAuthStore.getState();
+
+      // CRITICAL: If already authenticated with a valid token, skip refresh
+      if (currentState.isAuthenticated && currentState.accessToken) {
+        setLoading(false);
+        return { authenticated: true, skipped: true };
+      }
+
       try {
         // Try to refresh token (cookie is sent automatically)
         const refreshResponse = await api.post<{ accessToken: string }>(
           "/auth/refresh",
         );
-        const accessToken = refreshResponse.data.accessToken;
+        const newAccessToken = refreshResponse.data.accessToken;
 
         // Get user info with new token
         const meResponse = await api.get("/auth/me", {
-          headers: { Authorization: `Bearer ${accessToken}` },
+          headers: { Authorization: `Bearer ${newAccessToken}` },
         });
 
-        const user = meResponse.data.user;
-        setAuth({ accessToken, user });
+        const user = meResponse.data.user ?? meResponse.data;
+        setAuth({ accessToken: newAccessToken, user });
 
-        return { authenticated: true };
+        return { authenticated: true, skipped: false };
       } catch {
         clearAuth();
-        return { authenticated: false };
+        return { authenticated: false, skipped: false };
       } finally {
         setLoading(false);
       }
     },
     retry: false,
     staleTime: Infinity,
+    gcTime: 0, // Don't cache - always fresh check
+    // Don't run if already authenticated
+    enabled: !isAuthenticated,
   });
 }

@@ -50,6 +50,10 @@ export default function MachinesPage() {
   const deleteMutation = useDeleteMachine();
   const simulateMutation = useSimulateStatus();
 
+  // Safe defaults to prevent undefined errors
+  const items = data?.items ?? [];
+  const total = data?.total ?? 0;
+
   const {
     register,
     handleSubmit,
@@ -86,8 +90,9 @@ export default function MachinesPage() {
     }
   };
 
+  // Cycle through backend statuses - matches MachineStatus.java
   const getNextStatus = (current: string): string => {
-    const statuses = ["AVAILABLE", "BUSY", "OFFLINE", "MAINTENANCE"];
+    const statuses = ["IDLE", "RUNNING", "MAINTENANCE", "ERROR", "OFFLINE"];
     const currentIndex = statuses.indexOf(current);
     return statuses[(currentIndex + 1) % statuses.length];
   };
@@ -98,16 +103,25 @@ export default function MachinesPage() {
     }
   };
 
+  // Status badge helper - matches backend MachineStatus enum
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case "AVAILABLE":
+      case "IDLE":
         return <Badge variant="success">Available</Badge>;
-      case "BUSY":
-        return <Badge variant="warning">Busy</Badge>;
-      case "OFFLINE":
-        return <Badge variant="outline">Offline</Badge>;
+      case "RESERVED":
+        return <Badge variant="warning">Reserved</Badge>;
+      case "RUNNING":
+        return <Badge variant="warning">In Use</Badge>;
       case "MAINTENANCE":
         return <Badge variant="destructive">Maintenance</Badge>;
+      case "OUT_OF_ORDER":
+        return <Badge variant="destructive">Out of Order</Badge>;
+      case "ERROR":
+        return <Badge variant="destructive">Error</Badge>;
+      case "OFFLINE":
+        return <Badge variant="outline">Offline</Badge>;
+      case "DISABLED":
+        return <Badge variant="outline">Disabled</Badge>;
       default:
         return <Badge>{status}</Badge>;
     }
@@ -140,7 +154,20 @@ export default function MachinesPage() {
               </DialogHeader>
               <div className="space-y-4 py-4">
                 <div className="space-y-2">
-                  <Label htmlFor="serialNumber">Serial Number</Label>
+                  <Label htmlFor="name">Machine Name</Label>
+                  <Input
+                    id="name"
+                    placeholder="Washer 1"
+                    {...register("name")}
+                  />
+                  {errors.name && (
+                    <p className="text-sm text-destructive">
+                      {errors.name.message}
+                    </p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="serialNumber">Serial Number (optional)</Label>
                   <Input
                     id="serialNumber"
                     placeholder="WM-001"
@@ -149,19 +176,6 @@ export default function MachinesPage() {
                   {errors.serialNumber && (
                     <p className="text-sm text-destructive">
                       {errors.serialNumber.message}
-                    </p>
-                  )}
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="label">Label</Label>
-                  <Input
-                    id="label"
-                    placeholder="Washer 1"
-                    {...register("label")}
-                  />
-                  {errors.label && (
-                    <p className="text-sm text-destructive">
-                      {errors.label.message}
                     </p>
                   )}
                 </div>
@@ -215,11 +229,11 @@ export default function MachinesPage() {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="location">Location (optional)</Label>
+                  <Label htmlFor="model">Model (optional)</Label>
                   <Input
-                    id="location"
-                    placeholder="Row A"
-                    {...register("location")}
+                    id="model"
+                    placeholder="Samsung WF45"
+                    {...register("model")}
                   />
                 </div>
               </div>
@@ -258,7 +272,7 @@ export default function MachinesPage() {
             </Card>
           ))}
         </div>
-      ) : data?.items.length === 0 ? (
+      ) : items.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-16">
             <WashingMachine className="h-16 w-16 text-muted-foreground mb-4" />
@@ -274,7 +288,7 @@ export default function MachinesPage() {
         </Card>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {data?.items.map((machine) => (
+          {items.map((machine) => (
             <Card
               key={machine.id}
               className="relative overflow-hidden transition-shadow hover:shadow-lg"
@@ -298,8 +312,14 @@ export default function MachinesPage() {
                       />
                     </div>
                     <div>
-                      <CardTitle className="text-lg">{machine.label}</CardTitle>
-                      <CardDescription>{machine.serialNumber}</CardDescription>
+                      <CardTitle className="text-lg">
+                        {machine.name ?? machine.label}
+                      </CardTitle>
+                      <CardDescription>
+                        {machine.serialNumber ??
+                          machine.machineNumber ??
+                          "No serial"}
+                      </CardDescription>
                     </div>
                   </div>
                   {getStatusBadge(machine.status)}
@@ -313,18 +333,20 @@ export default function MachinesPage() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Capacity</span>
-                    <span className="font-medium">{machine.capacityKg} kg</span>
+                    <span className="font-medium">
+                      {machine.capacityKg ?? "-"} kg
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Price</span>
                     <span className="font-medium">
-                      ${machine.pricePerCycle.toFixed(2)}
+                      ${(machine.pricePerCycle ?? 0).toFixed(2)}
                     </span>
                   </div>
-                  {machine.location && (
+                  {machine.model && (
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Location</span>
-                      <span className="font-medium">{machine.location}</span>
+                      <span className="text-muted-foreground">Model</span>
+                      <span className="font-medium">{machine.model}</span>
                     </div>
                   )}
                 </div>
@@ -361,9 +383,9 @@ export default function MachinesPage() {
       )}
 
       {/* Pagination info */}
-      {data && data.total > 0 && (
+      {total > 0 && (
         <div className="text-center text-sm text-muted-foreground">
-          Showing {data.items.length} of {data.total} machines
+          Showing {items.length} of {total} machines
         </div>
       )}
     </div>

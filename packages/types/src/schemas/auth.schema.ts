@@ -7,6 +7,7 @@ import { z } from "zod";
 export const LoginRequestSchema = z.object({
   email: z.string().email(),
   password: z.string().min(1),
+  tenantSlug: z.string().min(1, "Laundromat slug is required").max(50).regex(/^[a-z0-9-]+$/, "Slug must contain only lowercase letters, numbers, and hyphens"),
 });
 
 export const RegisterRequestSchema = z.object({
@@ -30,6 +31,7 @@ export const TokenPayloadSchema = z.object({
 
 export const AuthResponseSchema = z.object({
   accessToken: z.string(),
+  refreshToken: z.string().optional(), // HttpOnly cookie preferred, but included for API testing
   user: z.object({
     id: z.string().uuid(),
     email: z.string().email(),

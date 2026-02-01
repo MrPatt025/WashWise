@@ -216,7 +216,7 @@ public class AuthService {
                 .build();
         refreshTokenRepository.save(refreshToken);
 
-        return new AuthResponse(accessToken, UserResponse.from(user));
+        return new AuthResponse(accessToken, refreshTokenValue, UserResponse.from(user));
     }
 
     private String generateSlug(String name) {

@@ -109,6 +109,7 @@ export function useMachine(id: string) {
 
 /**
  * Hook for machine statistics
+ * Backend returns: { total, idle, inUse, error, maintenance }
  */
 export function useMachineStats() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -118,9 +119,9 @@ export function useMachineStats() {
     queryFn: async () => {
       const response = await api.get<{
         total: number;
-        available: number;
-        busy: number;
-        offline: number;
+        idle: number;      // Maps to "Available" in UI
+        inUse: number;     // Maps to "Busy/In Use" in UI
+        error: number;     // Maps to "Error" in UI
         maintenance: number;
       }>("/machines/stats");
       return response.data;

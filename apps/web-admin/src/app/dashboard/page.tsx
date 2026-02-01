@@ -29,6 +29,7 @@ export default function DashboardPage() {
     limit: 5,
   });
 
+  // Stats mapped from backend: { total, idle, inUse, error, maintenance }
   const statCards = [
     {
       title: "Total Machines",
@@ -39,21 +40,21 @@ export default function DashboardPage() {
     },
     {
       title: "Available",
-      value: stats?.available ?? 0,
+      value: stats?.idle ?? 0, // Backend: IDLE status
       icon: CheckCircle,
       color: "text-green-500",
       bgColor: "bg-green-100",
     },
     {
       title: "In Use",
-      value: stats?.busy ?? 0,
+      value: stats?.inUse ?? 0, // Backend: RUNNING status
       icon: Clock,
       color: "text-yellow-500",
       bgColor: "bg-yellow-100",
     },
     {
-      title: "Offline",
-      value: stats?.offline ?? 0,
+      title: "Error",
+      value: stats?.error ?? 0, // Backend: ERROR status
       icon: WifiOff,
       color: "text-gray-500",
       bgColor: "bg-gray-100",
@@ -67,16 +68,25 @@ export default function DashboardPage() {
     },
   ];
 
+  // Status badge helper - matches backend MachineStatus enum
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case "AVAILABLE":
+      case "IDLE":
         return <Badge variant="success">Available</Badge>;
-      case "BUSY":
-        return <Badge variant="warning">Busy</Badge>;
-      case "OFFLINE":
-        return <Badge variant="outline">Offline</Badge>;
+      case "RESERVED":
+        return <Badge variant="warning">Reserved</Badge>;
+      case "RUNNING":
+        return <Badge variant="warning">In Use</Badge>;
       case "MAINTENANCE":
         return <Badge variant="destructive">Maintenance</Badge>;
+      case "OUT_OF_ORDER":
+        return <Badge variant="destructive">Out of Order</Badge>;
+      case "ERROR":
+        return <Badge variant="destructive">Error</Badge>;
+      case "OFFLINE":
+        return <Badge variant="outline">Offline</Badge>;
+      case "DISABLED":
+        return <Badge variant="outline">Disabled</Badge>;
       default:
         return <Badge>{status}</Badge>;
     }
@@ -88,7 +98,8 @@ export default function DashboardPage() {
       <div>
         <h1 className="text-3xl font-bold">Dashboard</h1>
         <p className="text-muted-foreground">
-          Welcome back, {user?.name}! Here&apos;s your laundromat overview.
+          Welcome back, {user?.firstName ?? user?.fullName ?? "User"}!
+          Here&apos;s your laundromat overview.
         </p>
       </div>
 
@@ -137,13 +148,13 @@ export default function DashboardPage() {
                   />
                 ))}
               </div>
-            ) : machines?.items.length === 0 ? (
+            ) : !machines?.items || machines.items.length === 0 ? (
               <p className="text-center text-muted-foreground py-8">
                 No machines found. Add your first machine to get started.
               </p>
             ) : (
               <div className="space-y-4">
-                {machines?.items.map((machine) => (
+                {(machines.items ?? []).map((machine) => (
                   <div
                     key={machine.id}
                     className="flex items-center justify-between rounded-lg border p-4"
@@ -153,9 +164,14 @@ export default function DashboardPage() {
                         <WashingMachine className="h-5 w-5 text-primary" />
                       </div>
                       <div>
-                        <p className="font-medium">{machine.label}</p>
+                        <p className="font-medium">
+                          {machine.name ?? machine.label}
+                        </p>
                         <p className="text-sm text-muted-foreground">
-                          {machine.serialNumber} • {machine.type}
+                          {machine.serialNumber ??
+                            machine.machineNumber ??
+                            "No serial"}{" "}
+                          • {machine.type}
                         </p>
                       </div>
                     </div>
