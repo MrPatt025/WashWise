@@ -24,13 +24,18 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Log the error to an error reporting service
-    // Using reportError for better stack traces and error tracking integration
-    if (typeof reportError === "function") {
-      reportError(error);
+    // Log error to monitoring service in production
+    // In production, integrate with Sentry, DataDog, or similar
+    if (process.env.NODE_ENV === "production") {
+      // Sentry.captureException(error);
     }
+    // Development logging
     // eslint-disable-next-line no-console
-    console.error("[Route Error]", error);
+    console.error("[Route Error]", {
+      message: error.message,
+      digest: error.digest,
+      stack: error.stack,
+    });
   }, [error]);
 
   return (

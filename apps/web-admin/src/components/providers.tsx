@@ -18,13 +18,11 @@ function getQueryClient() {
   if (isServer) {
     // Server: always make a new query client
     return createQueryClient();
-  } else {
-    // Browser: make a new query client if we don't already have one
-    if (!browserQueryClient) {
-      browserQueryClient = createQueryClient();
-    }
-    return browserQueryClient;
   }
+  // Browser: make a new query client if we don't already have one
+  // Using nullish coalescing assignment for cleaner code
+  browserQueryClient ??= createQueryClient();
+  return browserQueryClient;
 }
 
 interface ProvidersProps {

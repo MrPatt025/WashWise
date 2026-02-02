@@ -117,6 +117,7 @@ export default function GlobalError({
             <button
               type="button"
               onClick={() => reset()}
+              onKeyDown={(e) => e.key === "Enter" && reset()}
               style={{
                 padding: "0.75rem 1.5rem",
                 backgroundColor: "#3b82f6",
@@ -130,12 +131,15 @@ export default function GlobalError({
               }}
               onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#2563eb")}
               onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#3b82f6")}
+              onFocus={(e) => (e.currentTarget.style.backgroundColor = "#2563eb")}
+              onBlur={(e) => (e.currentTarget.style.backgroundColor = "#3b82f6")}
             >
               Try Again
             </button>
             <button
               type="button"
-              onClick={() => window.location.reload()}
+              onClick={() => globalThis.location.reload()}
+              onKeyDown={(e) => e.key === "Enter" && globalThis.location.reload()}
               style={{
                 padding: "0.75rem 1.5rem",
                 backgroundColor: "transparent",
@@ -149,12 +153,15 @@ export default function GlobalError({
               }}
               onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#f3f4f6")}
               onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+              onFocus={(e) => (e.currentTarget.style.backgroundColor = "#f3f4f6")}
+              onBlur={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
             >
               Reload Page
             </button>
             <button
               type="button"
-              onClick={() => (window.location.href = "/")}
+              onClick={() => (globalThis.location.href = "/")}
+              onKeyDown={(e) => e.key === "Enter" && (globalThis.location.href = "/")}
               style={{
                 padding: "0.75rem 1.5rem",
                 backgroundColor: "transparent",
