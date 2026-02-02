@@ -1,7 +1,7 @@
 /**
  * E2E Tests for Authentication Flow
  */
-import { test, expect, Page } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 test.describe("Authentication Flow", () => {
   test.describe("Registration", () => {

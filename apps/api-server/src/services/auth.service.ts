@@ -3,8 +3,8 @@ import { createHash, randomUUID } from "node:crypto";
 import { hash, verify } from "argon2";
 import jwt from "jsonwebtoken";
 
-import { prisma, type Tenant, type User } from "@washwise/database";
 import { AUTH_CONSTANTS } from "@washwise/config";
+import { prisma, type Tenant, type User } from "@washwise/database";
 import type { AuthResponse, LoginRequest, RegisterRequest, TokenPayload } from "@washwise/types";
 
 import env from "../config/env.js";
@@ -47,8 +47,8 @@ export class AuthService {
         data.tenantSlug ||
         data.tenantName
           .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/^-|-$/g, "");
+          .replaceAll(/[^a-z0-9]+/g, "-")
+          .replaceAll(/(?:^-)|(?:-$)/g, "");
       let slug = baseSlug;
       let counter = 0;
 

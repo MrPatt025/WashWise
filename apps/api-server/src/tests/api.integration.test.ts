@@ -1,9 +1,9 @@
-import { describe, it, expect, beforeAll, afterAll, beforeEach } from "vitest";
-import { PostgreSqlContainer, StartedPostgreSqlContainer } from "@testcontainers/postgresql";
 import { PrismaClient } from "@prisma/client";
-import { execSync } from "child_process";
-import type { FastifyInstance } from "fastify";
+import { PostgreSqlContainer, StartedPostgreSqlContainer } from "@testcontainers/postgresql";
 import { hash } from "argon2";
+import type { FastifyInstance } from "fastify";
+import { execSync } from "node:child_process";
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 
 /**
  * Integration tests using Testcontainers
@@ -15,10 +15,10 @@ describe("WashWise API Integration Tests", () => {
   let app: FastifyInstance;
 
   // Test users and tokens
-  let tenantAId: string;
-  let tenantBId: string;
+  let _tenantAId: string;
+  let _tenantBId: string;
   let userAToken: string;
-  let userBToken: string;
+  let _userBToken: string;
   let machineAId: string;
   let machineBId: string;
 
@@ -253,12 +253,12 @@ describe("WashWise API Integration Tests", () => {
       const tenantA = await prisma.tenant.create({
         data: { name: "Tenant A", plan: "PRO" },
       });
-      tenantAId = tenantA.id;
+      _tenantAId = tenantA.id;
 
       const tenantB = await prisma.tenant.create({
         data: { name: "Tenant B", plan: "FREE" },
       });
-      tenantBId = tenantB.id;
+      _tenantBId = tenantB.id;
 
       // Create users
       await prisma.user.create({
@@ -289,7 +289,7 @@ describe("WashWise API Integration Tests", () => {
           type: "WASHER",
           capacityKg: 10,
           status: "AVAILABLE",
-          pricePerCycle: 5.0,
+          pricePerCycle: 5,
           tenantId: tenantA.id,
         },
       });
@@ -302,7 +302,7 @@ describe("WashWise API Integration Tests", () => {
           type: "WASHER",
           capacityKg: 8,
           status: "AVAILABLE",
-          pricePerCycle: 4.0,
+          pricePerCycle: 4,
           tenantId: tenantB.id,
         },
       });
@@ -321,7 +321,7 @@ describe("WashWise API Integration Tests", () => {
         url: "/api/v1/auth/login",
         payload: { email: "admin@tenant-b.com", password: "PassB123!" },
       });
-      userBToken = JSON.parse(loginB.body).accessToken;
+      _userBToken = JSON.parse(loginB.body).accessToken;
     });
 
     it("should allow user to access their own tenant machines", async () => {
@@ -462,7 +462,7 @@ describe("WashWise API Integration Tests", () => {
           label: "First Machine",
           type: "WASHER",
           capacityKg: 8,
-          pricePerCycle: 4.0,
+          pricePerCycle: 4,
         },
       });
 
@@ -476,7 +476,7 @@ describe("WashWise API Integration Tests", () => {
           label: "Duplicate Machine",
           type: "DRYER",
           capacityKg: 10,
-          pricePerCycle: 3.0,
+          pricePerCycle: 3,
         },
       });
 

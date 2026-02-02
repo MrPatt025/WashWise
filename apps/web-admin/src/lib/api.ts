@@ -1,5 +1,5 @@
-import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 import { getAuthState, setAuthState } from "@/stores/auth.store";
+import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 import { z } from "zod";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
@@ -164,21 +164,24 @@ api.interceptors.response.use(
       });
 
       // Only redirect if not already on login page
-      if (typeof window !== "undefined" && !window.location.pathname.includes("/login")) {
-        window.location.href = "/login";
+      if (
+        globalThis.window !== undefined &&
+        !globalThis.window.location.pathname.includes("/login")
+      ) {
+        globalThis.window.location.href = "/login";
       }
 
-      return Promise.reject(error);
+      throw error;
     }
 
     // If not 401 or already retried, reject
     if (error.response?.status !== 401 || originalRequest._retry) {
-      return Promise.reject(error);
+      throw error;
     }
 
     // Skip refresh for auth endpoints (login, register)
     if (requestUrl.includes("/auth/login") || requestUrl.includes("/auth/register")) {
-      return Promise.reject(error);
+      throw error;
     }
 
     // If already refreshing, queue this request
@@ -225,11 +228,11 @@ api.interceptors.response.use(
       });
 
       // Redirect to login page (client-side only)
-      if (typeof window !== "undefined") {
-        window.location.href = "/login";
+      if (globalThis.window !== undefined) {
+        globalThis.window.location.href = "/login";
       }
 
-      return Promise.reject(refreshError);
+      throw refreshError;
     } finally {
       isRefreshing = false;
     }

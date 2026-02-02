@@ -1,7 +1,7 @@
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import type { RequestContext, TokenPayload } from "@washwise/types";
+import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import fp from "fastify-plugin";
 import jwt from "jsonwebtoken";
-import type { TokenPayload, RequestContext } from "@washwise/types";
 import env from "../config/env.js";
 
 // Extend Fastify request with user context
@@ -26,7 +26,7 @@ async function authPlugin(fastify: FastifyInstance) {
   fastify.decorate("authenticate", async function (request: FastifyRequest, reply: FastifyReply) {
     const authHeader = request.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    if (!authHeader?.startsWith("Bearer ")) {
       return reply.status(401).send({
         statusCode: 401,
         error: "Unauthorized",
