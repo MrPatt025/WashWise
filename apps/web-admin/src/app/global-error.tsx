@@ -2,6 +2,10 @@
 
 import { useEffect } from "react";
 
+/**
+ * Global error boundary - catches errors in root layout
+ * Uses inline styles since global CSS may not be available
+ */
 export default function GlobalError({
   error,
   reset,
@@ -10,11 +14,12 @@ export default function GlobalError({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error(error);
+    // Log to error tracking service
+    console.error("[Global Error]", error);
   }, [error]);
 
   return (
-    <html>
+    <html lang="en">
       <body>
         <div
           style={{
@@ -23,43 +28,161 @@ export default function GlobalError({
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: "#f9fafb",
+            backgroundColor: "#fafafa",
+            fontFamily: "system-ui, -apple-system, sans-serif",
+            padding: "1rem",
           }}
         >
-          <div style={{ textAlign: "center" }}>
-            <h1
-              style={{ fontSize: "3rem", fontWeight: "bold", color: "#dc2626" }}
+          {/* Error icon */}
+          <div
+            style={{
+              width: "80px",
+              height: "80px",
+              borderRadius: "50%",
+              backgroundColor: "#fef2f2",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginBottom: "1.5rem",
+            }}
+          >
+            <svg
+              width="40"
+              height="40"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#dc2626"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
-              500
-            </h1>
-            <h2
-              style={{
-                marginTop: "1rem",
-                fontSize: "1.5rem",
-                fontWeight: "600",
-                color: "#374151",
-              }}
-            >
-              Internal Server Error
-            </h2>
-            <p style={{ marginTop: "0.5rem", color: "#6b7280" }}>
-              Something went wrong on our end.
-            </p>
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+          </div>
+
+          {/* Error code */}
+          <h1
+            style={{
+              fontSize: "4rem",
+              fontWeight: "800",
+              color: "#e5e7eb",
+              margin: 0,
+              letterSpacing: "-0.05em",
+            }}
+          >
+            500
+          </h1>
+
+          {/* Title */}
+          <h2
+            style={{
+              marginTop: "0.5rem",
+              fontSize: "1.5rem",
+              fontWeight: "600",
+              color: "#111827",
+            }}
+          >
+            Something went wrong
+          </h2>
+
+          {/* Description */}
+          <p
+            style={{
+              marginTop: "0.5rem",
+              color: "#6b7280",
+              textAlign: "center",
+              maxWidth: "400px",
+            }}
+          >
+            We encountered a critical error. Our team has been notified and is
+            working to fix the issue.
+          </p>
+
+          {/* Actions */}
+          <div
+            style={{
+              marginTop: "2rem",
+              display: "flex",
+              gap: "0.75rem",
+              flexWrap: "wrap",
+              justifyContent: "center",
+            }}
+          >
             <button
               onClick={() => reset()}
               style={{
-                marginTop: "1.5rem",
                 padding: "0.75rem 1.5rem",
-                backgroundColor: "#2563eb",
+                backgroundColor: "#3b82f6",
                 color: "white",
-                borderRadius: "0.375rem",
+                borderRadius: "0.5rem",
                 border: "none",
                 cursor: "pointer",
+                fontWeight: "500",
+                fontSize: "0.875rem",
+                transition: "background-color 0.2s",
+              }}
+              onMouseOver={(e) =>
+                (e.currentTarget.style.backgroundColor = "#2563eb")
+              }
+              onMouseOut={(e) =>
+                (e.currentTarget.style.backgroundColor = "#3b82f6")
+              }
+            >
+              Try Again
+            </button>
+            <button
+              onClick={() => window.location.reload()}
+              style={{
+                padding: "0.75rem 1.5rem",
+                backgroundColor: "transparent",
+                color: "#374151",
+                borderRadius: "0.5rem",
+                border: "1px solid #d1d5db",
+                cursor: "pointer",
+                fontWeight: "500",
+                fontSize: "0.875rem",
+                transition: "background-color 0.2s",
+              }}
+              onMouseOver={(e) =>
+                (e.currentTarget.style.backgroundColor = "#f3f4f6")
+              }
+              onMouseOut={(e) =>
+                (e.currentTarget.style.backgroundColor = "transparent")
+              }
+            >
+              Reload Page
+            </button>
+            <button
+              onClick={() => (window.location.href = "/")}
+              style={{
+                padding: "0.75rem 1.5rem",
+                backgroundColor: "transparent",
+                color: "#6b7280",
+                borderRadius: "0.5rem",
+                border: "none",
+                cursor: "pointer",
+                fontWeight: "500",
+                fontSize: "0.875rem",
               }}
             >
-              Try again
+              Go Home
             </button>
           </div>
+
+          {/* Error digest (for support) */}
+          {error.digest && (
+            <p
+              style={{
+                marginTop: "2rem",
+                fontSize: "0.75rem",
+                color: "#9ca3af",
+              }}
+            >
+              Error ID: {error.digest}
+            </p>
+          )}
         </div>
       </body>
     </html>
