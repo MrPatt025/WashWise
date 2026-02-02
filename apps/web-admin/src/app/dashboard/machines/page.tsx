@@ -11,7 +11,11 @@ import {
 } from "@/hooks/use-machines";
 import { useDebouncedState } from "@/hooks/use-debounce";
 import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcuts";
-import { CreateMachineSchema, type CreateMachine, type MachineQuery } from "@washwise/types";
+import {
+  CreateMachineSchema,
+  type CreateMachine,
+  type MachineQuery,
+} from "@washwise/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,7 +31,10 @@ import { SkeletonMachine } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/ui/empty-state";
 import { SearchInput } from "@/components/ui/search-input";
 import { Pagination, usePagination } from "@/components/ui/pagination";
-import { ConfirmDialog, useDeleteConfirm } from "@/components/ui/confirm-dialog";
+import {
+  ConfirmDialog,
+  useDeleteConfirm,
+} from "@/components/ui/confirm-dialog";
 import {
   Dialog,
   DialogContent,
@@ -64,10 +71,12 @@ export default function MachinesPage() {
   // Dialog states
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [simulatingId, setSimulatingId] = useState<string | null>(null);
-  
+
   // Filter states
   const [search, debouncedSearch, setSearch] = useDebouncedState("", 300);
-  const [typeFilter, setTypeFilter] = useState<"all" | "WASHER" | "DRYER">("all");
+  const [typeFilter, setTypeFilter] = useState<"all" | "WASHER" | "DRYER">(
+    "all",
+  );
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [showFilters, setShowFilters] = useState(false);
 
@@ -91,7 +100,7 @@ export default function MachinesPage() {
   const createMutation = useCreateMachine();
   const deleteMutation = useDeleteMachine();
   const simulateMutation = useSimulateStatus();
-  
+
   // Delete confirmation
   const deleteConfirm = useDeleteConfirm();
 
@@ -122,12 +131,16 @@ export default function MachinesPage() {
   useKeyboardShortcut("ctrl+n", () => setIsCreateOpen(true), {
     description: "Add new machine",
   });
-  
-  useKeyboardShortcut("ctrl+f", () => {
-    document.getElementById("machine-search")?.focus();
-  }, {
-    description: "Focus search",
-  });
+
+  useKeyboardShortcut(
+    "ctrl+f",
+    () => {
+      document.getElementById("machine-search")?.focus();
+    },
+    {
+      description: "Focus search",
+    },
+  );
 
   // Handlers
   const onCreateSubmit = async (formData: CreateMachine) => {
@@ -156,18 +169,21 @@ export default function MachinesPage() {
     return statuses[(currentIndex + 1) % statuses.length];
   };
 
-  const handleDelete = useCallback(async (id: string, name: string) => {
-    const confirmed = await deleteConfirm.confirm({
-      title: "Delete Machine",
-      description: `Are you sure you want to delete "${name}"? This action cannot be undone.`,
-      confirmText: "Delete",
-      cancelText: "Cancel",
-    });
+  const handleDelete = useCallback(
+    async (id: string, name: string) => {
+      const confirmed = await deleteConfirm.confirm({
+        title: "Delete Machine",
+        description: `Are you sure you want to delete "${name}"? This action cannot be undone.`,
+        confirmText: "Delete",
+        cancelText: "Cancel",
+      });
 
-    if (confirmed) {
-      await deleteMutation.mutateAsync(id);
-    }
-  }, [deleteConfirm, deleteMutation]);
+      if (confirmed) {
+        await deleteMutation.mutateAsync(id);
+      }
+    },
+    [deleteConfirm, deleteMutation],
+  );
 
   const clearFilters = () => {
     setSearch("");
@@ -175,7 +191,8 @@ export default function MachinesPage() {
     setStatusFilter("all");
   };
 
-  const hasActiveFilters = debouncedSearch || typeFilter !== "all" || statusFilter !== "all";
+  const hasActiveFilters =
+    debouncedSearch || typeFilter !== "all" || statusFilter !== "all";
 
   return (
     <div className="space-y-6">
@@ -195,7 +212,9 @@ export default function MachinesPage() {
             disabled={isFetching}
             title="Refresh"
           >
-            <RefreshCw className={cn("h-4 w-4", isFetching && "animate-spin")} />
+            <RefreshCw
+              className={cn("h-4 w-4", isFetching && "animate-spin")}
+            />
           </Button>
           <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
             <DialogTrigger asChild>
@@ -227,7 +246,7 @@ export default function MachinesPage() {
                       </p>
                     )}
                   </div>
-                  
+
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>Type *</Label>
@@ -246,9 +265,11 @@ export default function MachinesPage() {
                         </SelectContent>
                       </Select>
                     </div>
-                    
+
                     <div className="space-y-2">
-                      <Label htmlFor="pricePerCycle">Price per Cycle ($) *</Label>
+                      <Label htmlFor="pricePerCycle">
+                        Price per Cycle ($) *
+                      </Label>
                       <Input
                         id="pricePerCycle"
                         type="number"
@@ -282,7 +303,7 @@ export default function MachinesPage() {
                         </p>
                       )}
                     </div>
-                    
+
                     <div className="space-y-2">
                       <Label htmlFor="serialNumber">Serial Number</Label>
                       <Input
@@ -343,7 +364,7 @@ export default function MachinesPage() {
             containerClassName="max-w-md"
           />
         </div>
-        
+
         <div className="flex items-center gap-2">
           <Button
             variant={showFilters ? "secondary" : "outline"}
@@ -356,7 +377,7 @@ export default function MachinesPage() {
               <span className="ml-2 rounded-full bg-primary w-2 h-2" />
             )}
           </Button>
-          
+
           {hasActiveFilters && (
             <Button
               variant="ghost"
@@ -378,7 +399,12 @@ export default function MachinesPage() {
             <div className="flex flex-wrap gap-4">
               <div className="space-y-2">
                 <Label>Type</Label>
-                <Select value={typeFilter} onValueChange={(v) => setTypeFilter(v as "all" | "WASHER" | "DRYER")}>
+                <Select
+                  value={typeFilter}
+                  onValueChange={(v) =>
+                    setTypeFilter(v as "all" | "WASHER" | "DRYER")
+                  }
+                >
                   <SelectTrigger className="w-[140px]">
                     <SelectValue />
                   </SelectTrigger>
@@ -389,7 +415,7 @@ export default function MachinesPage() {
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="space-y-2">
                 <Label>Status</Label>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -432,7 +458,10 @@ export default function MachinesPage() {
               action={
                 hasActiveFilters
                   ? { label: "Clear Filters", onClick: clearFilters }
-                  : { label: "Add Machine", onClick: () => setIsCreateOpen(true) }
+                  : {
+                      label: "Add Machine",
+                      onClick: () => setIsCreateOpen(true),
+                    }
               }
             />
           </CardContent>
@@ -446,7 +475,7 @@ export default function MachinesPage() {
                 className={cn(
                   "relative overflow-hidden transition-all duration-200",
                   "hover:shadow-lg hover:scale-[1.02]",
-                  "focus-within:ring-2 focus-within:ring-primary/50"
+                  "focus-within:ring-2 focus-within:ring-primary/50",
                 )}
               >
                 <CardHeader className="pb-2">
@@ -457,7 +486,7 @@ export default function MachinesPage() {
                           "flex-shrink-0 rounded-full p-2",
                           machine.type === "WASHER"
                             ? "bg-blue-100 dark:bg-blue-950"
-                            : "bg-orange-100 dark:bg-orange-950"
+                            : "bg-orange-100 dark:bg-orange-950",
                         )}
                       >
                         <WashingMachine
@@ -465,7 +494,7 @@ export default function MachinesPage() {
                             "h-5 w-5",
                             machine.type === "WASHER"
                               ? "text-blue-600 dark:text-blue-400"
-                              : "text-orange-600 dark:text-orange-400"
+                              : "text-orange-600 dark:text-orange-400",
                           )}
                         />
                       </div>
@@ -474,14 +503,16 @@ export default function MachinesPage() {
                           {machine.name}
                         </CardTitle>
                         <CardDescription className="truncate">
-                          {machine.serialNumber || machine.machineNumber || "No serial"}
+                          {machine.serialNumber ||
+                            machine.machineNumber ||
+                            "No serial"}
                         </CardDescription>
                       </div>
                     </div>
                     <StatusBadge status={machine.status} size="sm" />
                   </div>
                 </CardHeader>
-                
+
                 <CardContent>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
@@ -509,7 +540,7 @@ export default function MachinesPage() {
                       </div>
                     )}
                   </div>
-                  
+
                   <div className="mt-4 flex gap-2">
                     <Button
                       variant="outline"

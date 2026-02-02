@@ -302,7 +302,8 @@ export function DangerousActionDialog({
 
         <div className="mt-4 space-y-3">
           <p className="text-sm text-muted-foreground">
-            Type <strong className="text-foreground">{confirmationText}</strong> to confirm:
+            Type <strong className="text-foreground">{confirmationText}</strong>{" "}
+            to confirm:
           </p>
           <input
             type="text"
@@ -321,7 +322,9 @@ export function DangerousActionDialog({
             onClick={handleConfirm}
             disabled={!isConfirmEnabled || isLoading}
           >
-            {isLoading && <Spinner size="sm" variant="white" className="mr-2" />}
+            {isLoading && (
+              <Spinner size="sm" variant="white" className="mr-2" />
+            )}
             {confirmText}
           </Button>
         </AlertDialogFooter>
@@ -405,7 +408,7 @@ export function PromptDialog({
             }}
             className={cn(
               "w-full rounded-md border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary",
-              error && "border-destructive focus:ring-destructive"
+              error && "border-destructive focus:ring-destructive",
             )}
             placeholder={placeholder}
             autoFocus
@@ -414,7 +417,9 @@ export function PromptDialog({
         </div>
 
         <AlertDialogFooter className="mt-4">
-          <AlertDialogCancel disabled={isLoading}>{cancelText}</AlertDialogCancel>
+          <AlertDialogCancel disabled={isLoading}>
+            {cancelText}
+          </AlertDialogCancel>
           <Button onClick={handleConfirm} disabled={isLoading}>
             {isLoading && <Spinner size="sm" className="mr-2" />}
             {confirmText}
