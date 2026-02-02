@@ -22,7 +22,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/badge";
+import { SkeletonMachine } from "@/components/ui/skeleton";
+import { EmptyState } from "@/components/ui/empty-state";
 import {
   Dialog,
   DialogContent,
@@ -76,7 +78,7 @@ export default function MachinesPage() {
       setIsCreateOpen(false);
       reset();
     } catch (error) {
-      // Error handled by mutation
+      // Error handled by mutation with toast
     }
   };
 
@@ -100,30 +102,6 @@ export default function MachinesPage() {
   const handleDelete = async (id: string) => {
     if (confirm("Are you sure you want to delete this machine?")) {
       await deleteMutation.mutateAsync(id);
-    }
-  };
-
-  // Status badge helper - matches backend MachineStatus enum
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "IDLE":
-        return <Badge variant="success">Available</Badge>;
-      case "RESERVED":
-        return <Badge variant="warning">Reserved</Badge>;
-      case "RUNNING":
-        return <Badge variant="warning">In Use</Badge>;
-      case "MAINTENANCE":
-        return <Badge variant="destructive">Maintenance</Badge>;
-      case "OUT_OF_ORDER":
-        return <Badge variant="destructive">Out of Order</Badge>;
-      case "ERROR":
-        return <Badge variant="destructive">Error</Badge>;
-      case "OFFLINE":
-        return <Badge variant="outline">Offline</Badge>;
-      case "DISABLED":
-        return <Badge variant="outline">Disabled</Badge>;
-      default:
-        return <Badge>{status}</Badge>;
     }
   };
 
@@ -264,26 +242,22 @@ export default function MachinesPage() {
       {/* Machines Grid */}
       {isLoading ? (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {[...Array(6)].map((_, i) => (
-            <Card key={i} className="animate-pulse">
-              <CardContent className="p-6">
-                <div className="h-24 bg-gray-200 rounded" />
-              </CardContent>
-            </Card>
+          {Array.from({ length: 6 }).map((_, i) => (
+            <SkeletonMachine key={i} />
           ))}
         </div>
       ) : items.length === 0 ? (
         <Card>
-          <CardContent className="flex flex-col items-center justify-center py-16">
-            <WashingMachine className="h-16 w-16 text-muted-foreground mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No machines yet</h3>
-            <p className="text-muted-foreground mb-4 text-center">
-              Add your first machine to start managing your laundromat
-            </p>
-            <Button onClick={() => setIsCreateOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" />
-              Add Machine
-            </Button>
+          <CardContent>
+            <EmptyState
+              icon={WashingMachine}
+              title="No machines yet"
+              description="Add your first machine to start managing your laundromat"
+              action={{
+                label: "Add Machine",
+                onClick: () => setIsCreateOpen(true),
+              }}
+            />
           </CardContent>
         </Card>
       ) : (
@@ -291,7 +265,7 @@ export default function MachinesPage() {
           {items.map((machine) => (
             <Card
               key={machine.id}
-              className="relative overflow-hidden transition-shadow hover:shadow-lg"
+              className="relative overflow-hidden transition-all hover:shadow-lg hover:scale-[1.02]"
             >
               <CardHeader className="pb-2">
                 <div className="flex items-start justify-between">
@@ -322,7 +296,7 @@ export default function MachinesPage() {
                       </CardDescription>
                     </div>
                   </div>
-                  {getStatusBadge(machine.status)}
+                  <StatusBadge status={machine.status} />
                 </div>
               </CardHeader>
               <CardContent>

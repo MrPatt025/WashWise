@@ -1,5 +1,6 @@
-import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { getAuthState, setAuthState } from "@/stores/auth.store";
+import { z } from "zod";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
@@ -14,6 +15,103 @@ export const api = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+// ===========================================
+// API Contract Validation
+// ===========================================
+
+/**
+ * Validate API response data against Zod schema
+ * Throws detailed error if validation fails
+ */
+export function validateResponse<T>(
+  schema: z.ZodType<T>,
+  data: unknown,
+  endpoint: string
+): T {
+  const result = schema.safeParse(data);
+
+  if (!result.success) {
+    console.error(
+      `[API Contract Violation] Endpoint: ${endpoint}`,
+      `\nExpected schema: ${schema.description || 'unknown'}`,
+      `\nReceived data:`, data,
+      `\nValidation errors:`, result.error.format()
+    );
+
+    // In development, throw to catch issues early
+    if (process.env.NODE_ENV === 'development') {
+      throw new Error(
+        `API contract violation at ${endpoint}: ${result.error.errors
+          .map(e => `${e.path.join('.')}: ${e.message}`)
+          .join(', ')}`
+      );
+    }
+
+    // In production, log and return partial data (graceful degradation)
+    console.warn(`[API] Returning unvalidated data for ${endpoint}`);
+    return data as T;
+  }
+
+  return result.data;
+}
+
+/**
+ * Create a validated API request wrapper
+ */
+export function createValidatedRequest<TRequest, TResponse>(
+  requestSchema: z.ZodType<TRequest>,
+  responseSchema: z.ZodType<TResponse>
+) {
+  return async (
+    method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
+    url: string,
+    data?: TRequest
+  ): Promise<TResponse> => {
+    // Validate request data
+    if (data && requestSchema) {
+      const requestResult = requestSchema.safeParse(data);
+      if (!requestResult.success) {
+        throw new Error(
+          `Invalid request data: ${requestResult.error.errors
+            .map(e => `${e.path.join('.')}: ${e.message}`)
+            .join(', ')}`
+        );
+      }
+    }
+
+    const response = await api.request({
+      method,
+      url,
+      data,
+    });
+
+    // Validate response data
+    return validateResponse(responseSchema, response.data, url);
+  };
+}
+
+/**
+ * Paginated response schema factory
+ */
+export function createPaginatedSchema<T extends z.ZodTypeAny>(itemSchema: T) {
+  return z.object({
+    items: z.array(itemSchema),
+    total: z.number(),
+    page: z.number(),
+    limit: z.number(),
+    totalPages: z.number(),
+  });
+}
+
+// Type helper for paginated responses
+export type PaginatedResponse<T> = {
+  items: T[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+};
 
 // Flag to prevent multiple refresh attempts
 let isRefreshing = false;

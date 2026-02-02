@@ -11,12 +11,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/badge";
+import { SkeletonStat, SkeletonMachine } from "@/components/ui/skeleton";
 import {
   WashingMachine,
   CheckCircle,
   Clock,
-  WifiOff,
+  AlertTriangle,
   Wrench,
   Activity,
 } from "lucide-react";
@@ -55,42 +56,18 @@ export default function DashboardPage() {
     {
       title: "Error",
       value: stats?.error ?? 0, // Backend: ERROR status
-      icon: WifiOff,
-      color: "text-gray-500",
-      bgColor: "bg-gray-100",
+      icon: AlertTriangle,
+      color: "text-red-500",
+      bgColor: "bg-red-100",
     },
     {
       title: "Maintenance",
       value: stats?.maintenance ?? 0,
       icon: Wrench,
-      color: "text-red-500",
-      bgColor: "bg-red-100",
+      color: "text-orange-500",
+      bgColor: "bg-orange-100",
     },
   ];
-
-  // Status badge helper - matches backend MachineStatus enum
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "IDLE":
-        return <Badge variant="success">Available</Badge>;
-      case "RESERVED":
-        return <Badge variant="warning">Reserved</Badge>;
-      case "RUNNING":
-        return <Badge variant="warning">In Use</Badge>;
-      case "MAINTENANCE":
-        return <Badge variant="destructive">Maintenance</Badge>;
-      case "OUT_OF_ORDER":
-        return <Badge variant="destructive">Out of Order</Badge>;
-      case "ERROR":
-        return <Badge variant="destructive">Error</Badge>;
-      case "OFFLINE":
-        return <Badge variant="outline">Offline</Badge>;
-      case "DISABLED":
-        return <Badge variant="outline">Disabled</Badge>;
-      default:
-        return <Badge>{status}</Badge>;
-    }
-  };
 
   return (
     <div className="space-y-8">
@@ -141,10 +118,10 @@ export default function DashboardPage() {
           <CardContent>
             {machinesLoading ? (
               <div className="space-y-4">
-                {[...Array(3)].map((_, i) => (
+                {Array.from({ length: 3 }).map((_, i) => (
                   <div
                     key={i}
-                    className="h-16 animate-pulse rounded-lg bg-gray-100"
+                    className="h-16 animate-pulse rounded-lg bg-muted"
                   />
                 ))}
               </div>
@@ -157,7 +134,7 @@ export default function DashboardPage() {
                 {(machines.items ?? []).map((machine) => (
                   <div
                     key={machine.id}
-                    className="flex items-center justify-between rounded-lg border p-4"
+                    className="flex items-center justify-between rounded-lg border p-4 transition-colors hover:bg-muted/50"
                   >
                     <div className="flex items-center gap-4">
                       <div className="rounded-full bg-primary/10 p-2">
@@ -175,7 +152,7 @@ export default function DashboardPage() {
                         </p>
                       </div>
                     </div>
-                    {getStatusBadge(machine.status)}
+                    <StatusBadge status={machine.status} />
                   </div>
                 ))}
               </div>
@@ -193,7 +170,7 @@ export default function DashboardPage() {
           <CardContent className="space-y-4">
             <a
               href="/dashboard/machines"
-              className="flex items-center gap-4 rounded-lg border p-4 transition-colors hover:bg-gray-50"
+              className="flex items-center gap-4 rounded-lg border p-4 transition-colors hover:bg-muted/50"
             >
               <div className="rounded-full bg-blue-100 p-2">
                 <WashingMachine className="h-5 w-5 text-blue-500" />
@@ -207,7 +184,7 @@ export default function DashboardPage() {
             </a>
             <a
               href="/dashboard/machines"
-              className="flex items-center gap-4 rounded-lg border p-4 transition-colors hover:bg-gray-50"
+              className="flex items-center gap-4 rounded-lg border p-4 transition-colors hover:bg-muted/50"
             >
               <div className="rounded-full bg-green-100 p-2">
                 <Activity className="h-5 w-5 text-green-500" />

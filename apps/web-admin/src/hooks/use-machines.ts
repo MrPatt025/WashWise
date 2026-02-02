@@ -1,19 +1,28 @@
 import { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import api from "@/lib/api";
+import api, { validateResponse, createPaginatedSchema } from "@/lib/api";
 import { getSocket } from "@/lib/socket";
-import type {
-  Machine,
-  CreateMachine,
-  UpdateMachine,
-  MachineQuery,
-  PaginatedResponse,
-  MachineUpdateEvent,
+import { queryKeys, staleTimes } from "@/lib/query";
+import { showSuccessToast, showErrorToast } from "@/lib/errors";
+import {
+  MachineSchema,
+  MachineStatsSchema,
+  type Machine,
+  type CreateMachine,
+  type UpdateMachine,
+  type MachineQuery,
+  type PaginatedResponse,
+  type MachineUpdateEvent,
+  type MachineStats,
 } from "@washwise/types";
 import { useAuthStore } from "@/stores/auth.store";
 
+// Create paginated machine schema for validation
+const PaginatedMachineSchema = createPaginatedSchema(MachineSchema);
+
 /**
  * Hook for fetching machines with real-time updates
+ * Features: Pagination, filtering, Socket.io real-time updates, API contract validation
  */
 export function useMachines(query?: MachineQuery) {
   const queryClient = useQueryClient();
@@ -21,7 +30,7 @@ export function useMachines(query?: MachineQuery) {
 
   // Main query for machines
   const machinesQuery = useQuery({
-    queryKey: ["machines", query],
+    queryKey: queryKeys.machines.list(query),
     queryFn: async () => {
       const params = new URLSearchParams();
       if (query?.page) params.set("page", query.page.toString());
@@ -30,12 +39,14 @@ export function useMachines(query?: MachineQuery) {
       if (query?.status) params.set("status", query.status);
       if (query?.search) params.set("search", query.search);
 
-      const response = await api.get<PaginatedResponse<Machine>>(
-        `/machines?${params.toString()}`,
-      );
-      return response.data;
+      const url = `/machines?${params.toString()}`;
+      const response = await api.get<PaginatedResponse<Machine>>(url);
+
+      // Validate response against contract
+      return validateResponse(PaginatedMachineSchema, response.data, url);
     },
     enabled: isAuthenticated,
+    staleTime: staleTimes.realtime,
   });
 
   // Real-time updates via Socket.io
@@ -98,12 +109,14 @@ export function useMachine(id: string) {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   return useQuery({
-    queryKey: ["machines", id],
+    queryKey: queryKeys.machines.detail(id),
     queryFn: async () => {
-      const response = await api.get<Machine>(`/machines/${id}`);
-      return response.data;
+      const url = `/machines/${id}`;
+      const response = await api.get<Machine>(url);
+      return validateResponse(MachineSchema, response.data, url);
     },
     enabled: isAuthenticated && !!id,
+    staleTime: staleTimes.realtime,
   });
 }
 
@@ -115,58 +128,94 @@ export function useMachineStats() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   return useQuery({
-    queryKey: ["machines", "stats"],
+    queryKey: queryKeys.machines.stats(),
     queryFn: async () => {
-      const response = await api.get<{
-        total: number;
-        idle: number;      // Maps to "Available" in UI
-        inUse: number;     // Maps to "Busy/In Use" in UI
-        error: number;     // Maps to "Error" in UI
-        maintenance: number;
-      }>("/machines/stats");
-      return response.data;
+      const url = "/machines/stats";
+      const response = await api.get<MachineStats>(url);
+      return validateResponse(MachineStatsSchema, response.data, url);
     },
     enabled: isAuthenticated,
+    staleTime: staleTimes.stats,
+    // Refetch stats every 30 seconds for dashboard freshness
+    refetchInterval: 30000,
   });
 }
 
 /**
- * Hook for creating a machine
+ * Hook for creating a machine with optimistic updates
  */
 export function useCreateMachine() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (data: CreateMachine) => {
-      const response = await api.post<Machine>("/machines", data);
-      return response.data;
+      const url = "/machines";
+      const response = await api.post<Machine>(url, data);
+      return validateResponse(MachineSchema, response.data, url);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["machines"] });
+    onSuccess: (newMachine) => {
+      // Invalidate and refetch machines list
+      queryClient.invalidateQueries({ queryKey: queryKeys.machines.lists() });
+      // Invalidate stats
+      queryClient.invalidateQueries({ queryKey: queryKeys.machines.stats() });
+      // Show success toast
+      showSuccessToast("Machine created", `${newMachine.name} has been added successfully.`);
+    },
+    onError: (error) => {
+      showErrorToast(error, "Failed to create machine");
     },
   });
 }
 
 /**
- * Hook for updating a machine
+ * Hook for updating a machine with optimistic updates
  */
 export function useUpdateMachine() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({ id, data }: { id: string; data: UpdateMachine }) => {
-      const response = await api.patch<Machine>(`/machines/${id}`, data);
-      return response.data;
+      const url = `/machines/${id}`;
+      const response = await api.patch<Machine>(url, data);
+      return validateResponse(MachineSchema, response.data, url);
+    },
+    // Optimistic update
+    onMutate: async ({ id, data }) => {
+      // Cancel outgoing refetches
+      await queryClient.cancelQueries({ queryKey: queryKeys.machines.detail(id) });
+
+      // Snapshot previous value
+      const previousMachine = queryClient.getQueryData<Machine>(
+        queryKeys.machines.detail(id)
+      );
+
+      // Optimistically update
+      if (previousMachine) {
+        queryClient.setQueryData(queryKeys.machines.detail(id), {
+          ...previousMachine,
+          ...data,
+        });
+      }
+
+      return { previousMachine };
     },
     onSuccess: (machine) => {
-      queryClient.invalidateQueries({ queryKey: ["machines"] });
-      queryClient.setQueryData(["machines", machine.id], machine);
+      queryClient.invalidateQueries({ queryKey: queryKeys.machines.lists() });
+      queryClient.setQueryData(queryKeys.machines.detail(machine.id), machine);
+      showSuccessToast("Machine updated", `${machine.name} has been updated.`);
+    },
+    onError: (error, { id }, context) => {
+      // Rollback on error
+      if (context?.previousMachine) {
+        queryClient.setQueryData(queryKeys.machines.detail(id), context.previousMachine);
+      }
+      showErrorToast(error, "Failed to update machine");
     },
   });
 }
 
 /**
- * Hook for deleting a machine
+ * Hook for deleting a machine with optimistic updates
  */
 export function useDeleteMachine() {
   const queryClient = useQueryClient();
@@ -174,17 +223,55 @@ export function useDeleteMachine() {
   return useMutation({
     mutationFn: async (id: string) => {
       await api.delete(`/machines/${id}`);
+      return id;
+    },
+    // Optimistic update
+    onMutate: async (id) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.machines.lists() });
+
+      // Snapshot all list queries
+      const previousLists = queryClient.getQueriesData<PaginatedResponse<Machine>>({
+        queryKey: queryKeys.machines.lists(),
+      });
+
+      // Optimistically remove from all lists
+      queryClient.setQueriesData<PaginatedResponse<Machine>>(
+        { queryKey: queryKeys.machines.lists() },
+        (old) => {
+          if (!old) return old;
+          return {
+            ...old,
+            items: old.items.filter((m) => m.id !== id),
+            total: old.total - 1,
+          };
+        }
+      );
+
+      return { previousLists };
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["machines"] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.machines.stats() });
+      showSuccessToast("Machine deleted", "The machine has been removed.");
+    },
+    onError: (error, _id, context) => {
+      // Rollback on error
+      if (context?.previousLists) {
+        context.previousLists.forEach(([queryKey, data]) => {
+          queryClient.setQueryData(queryKey, data);
+        });
+      }
+      showErrorToast(error, "Failed to delete machine");
     },
   });
 }
 
 /**
  * Hook for simulating machine status change
+ * Used for testing real-time updates
  */
 export function useSimulateStatus() {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async ({
       machineId,
@@ -198,6 +285,11 @@ export function useSimulateStatus() {
         status,
       });
       return response.data;
+    },
+    onSuccess: () => {
+      // Invalidate to pick up the status change
+      queryClient.invalidateQueries({ queryKey: queryKeys.machines.lists() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.machines.stats() });
     },
   });
 }
