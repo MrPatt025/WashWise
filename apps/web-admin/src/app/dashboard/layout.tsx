@@ -6,6 +6,7 @@ import { useLogout } from "@/hooks/use-auth";
 import { useAuthStore } from "@/stores/auth.store";
 import { AuthGuard } from "@/components/auth-guard";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ui/theme-provider";
 import { cn } from "@/lib/utils";
 import {
   WashingMachine,
@@ -36,7 +37,7 @@ export default function DashboardLayout({
 
   return (
     <AuthGuard>
-      <div className="flex h-screen bg-gray-100">
+      <div className="flex h-screen bg-gray-100 dark:bg-gray-950">
         {/* Mobile sidebar backdrop */}
         {sidebarOpen && (
           <div
@@ -48,7 +49,7 @@ export default function DashboardLayout({
         {/* Sidebar */}
         <aside
           className={cn(
-            "fixed inset-y-0 left-0 z-50 w-64 transform bg-white shadow-lg transition-transform duration-200 lg:static lg:translate-x-0",
+            "fixed inset-y-0 left-0 z-50 w-64 transform bg-white dark:bg-gray-900 shadow-lg transition-transform duration-200 lg:static lg:translate-x-0",
             sidebarOpen ? "translate-x-0" : "-translate-x-full",
           )}
         >
@@ -61,12 +62,15 @@ export default function DashboardLayout({
                 </div>
                 <span className="text-xl font-bold">WashWise</span>
               </Link>
-              <button
-                className="lg:hidden"
-                onClick={() => setSidebarOpen(false)}
-              >
-                <X className="h-6 w-6" />
-              </button>
+              <div className="flex items-center space-x-2">
+                <ThemeToggle />
+                <button
+                  className="lg:hidden"
+                  onClick={() => setSidebarOpen(false)}
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
             </div>
 
             {/* Navigation */}
@@ -120,7 +124,7 @@ export default function DashboardLayout({
         {/* Main content */}
         <div className="flex flex-1 flex-col overflow-hidden">
           {/* Mobile header */}
-          <header className="flex h-16 items-center justify-between border-b bg-white px-4 lg:hidden">
+          <header className="flex h-16 items-center justify-between border-b bg-white px-4 lg:hidden dark:bg-gray-900">
             <button onClick={() => setSidebarOpen(true)}>
               <Menu className="h-6 w-6" />
             </button>
@@ -128,7 +132,7 @@ export default function DashboardLayout({
               <WashingMachine className="h-5 w-5 text-primary" />
               <span className="font-bold">WashWise</span>
             </div>
-            <div className="w-6" /> {/* Spacer */}
+            <ThemeToggle />
           </header>
 
           {/* Page content */}

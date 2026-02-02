@@ -5,6 +5,9 @@ import { QueryClientProvider, isServer } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "@/components/ui/sonner";
 import { ErrorBoundary } from "@/components/error-boundary";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { NetworkStatusIndicator } from "@/components/network-status";
+import { ThemeProvider } from "@/components/ui/theme-provider";
 import { createQueryClient } from "@/lib/query";
 
 // Singleton pattern for browser query client
@@ -29,7 +32,7 @@ interface ProvidersProps {
 
 /**
  * Root providers component
- * Includes: TanStack Query, Error Boundary, Toast notifications, DevTools
+ * Includes: TanStack Query, Error Boundary, Tooltip, Toast notifications, Network Status, DevTools
  */
 export function Providers({ children }: ProvidersProps) {
   // Create query client in state to prevent re-creation on re-renders
@@ -38,14 +41,22 @@ export function Providers({ children }: ProvidersProps) {
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
-        {children}
-        <Toaster position="top-right" richColors closeButton />
-        {process.env.NODE_ENV === "development" && (
-          <ReactQueryDevtools
-            initialIsOpen={false}
-            buttonPosition="bottom-left"
-          />
-        )}
+        <ThemeProvider defaultTheme="system" enableSystem>
+          <TooltipProvider delayDuration={300}>
+            {children}
+            <Toaster position="top-right" richColors closeButton />
+            <NetworkStatusIndicator
+              showOnlyWhenOffline
+              position="bottom-right"
+            />
+            {process.env.NODE_ENV === "development" && (
+              <ReactQueryDevtools
+                initialIsOpen={false}
+                buttonPosition="bottom-left"
+              />
+            )}
+          </TooltipProvider>
+        </ThemeProvider>
       </QueryClientProvider>
     </ErrorBoundary>
   );

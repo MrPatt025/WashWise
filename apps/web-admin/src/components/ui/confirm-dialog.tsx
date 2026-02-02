@@ -244,3 +244,183 @@ export function useDeleteConfirm() {
 
   return { confirmDelete, dialogProps, close };
 }
+
+/**
+ * Dangerous action confirmation (requires typing to confirm)
+ */
+interface DangerousActionDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  title: string;
+  description: string;
+  /** Text user must type to confirm */
+  confirmationText: string;
+  confirmText?: string;
+  isLoading?: boolean;
+  onConfirm: () => void | Promise<void>;
+}
+
+export function DangerousActionDialog({
+  open,
+  onOpenChange,
+  title,
+  description,
+  confirmationText,
+  confirmText = "I understand, proceed",
+  isLoading = false,
+  onConfirm,
+}: DangerousActionDialogProps) {
+  const [inputValue, setInputValue] = React.useState("");
+  const isConfirmEnabled = inputValue === confirmationText;
+
+  React.useEffect(() => {
+    if (!open) setInputValue("");
+  }, [open]);
+
+  const handleConfirm = async () => {
+    if (!isConfirmEnabled) return;
+    await onConfirm();
+    onOpenChange(false);
+  };
+
+  return (
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      <AlertDialogContent className="max-w-md">
+        <AlertDialogHeader>
+          <div className="flex items-start gap-4">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+              <AlertTriangle className="h-5 w-5" />
+            </div>
+            <div className="flex-1">
+              <AlertDialogTitle className="text-lg">{title}</AlertDialogTitle>
+              <AlertDialogDescription className="mt-2">
+                {description}
+              </AlertDialogDescription>
+            </div>
+          </div>
+        </AlertDialogHeader>
+
+        <div className="mt-4 space-y-3">
+          <p className="text-sm text-muted-foreground">
+            Type <strong className="text-foreground">{confirmationText}</strong> to confirm:
+          </p>
+          <input
+            type="text"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            className="w-full rounded-md border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-destructive"
+            placeholder={confirmationText}
+            autoComplete="off"
+          />
+        </div>
+
+        <AlertDialogFooter className="mt-4">
+          <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
+          <Button
+            variant="destructive"
+            onClick={handleConfirm}
+            disabled={!isConfirmEnabled || isLoading}
+          >
+            {isLoading && <Spinner size="sm" variant="white" className="mr-2" />}
+            {confirmText}
+          </Button>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+
+/**
+ * Prompt dialog for getting user input
+ */
+interface PromptDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  title: string;
+  description?: string;
+  label: string;
+  placeholder?: string;
+  defaultValue?: string;
+  confirmText?: string;
+  cancelText?: string;
+  isLoading?: boolean;
+  validate?: (value: string) => string | undefined;
+  onConfirm: (value: string) => void | Promise<void>;
+}
+
+export function PromptDialog({
+  open,
+  onOpenChange,
+  title,
+  description,
+  label,
+  placeholder,
+  defaultValue = "",
+  confirmText = "Submit",
+  cancelText = "Cancel",
+  isLoading = false,
+  validate,
+  onConfirm,
+}: PromptDialogProps) {
+  const [value, setValue] = React.useState(defaultValue);
+  const [error, setError] = React.useState<string>();
+
+  React.useEffect(() => {
+    if (open) {
+      setValue(defaultValue);
+      setError(undefined);
+    }
+  }, [open, defaultValue]);
+
+  const handleConfirm = async () => {
+    if (validate) {
+      const validationError = validate(value);
+      if (validationError) {
+        setError(validationError);
+        return;
+      }
+    }
+    await onConfirm(value);
+    onOpenChange(false);
+  };
+
+  return (
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      <AlertDialogContent className="max-w-md">
+        <AlertDialogHeader>
+          <AlertDialogTitle>{title}</AlertDialogTitle>
+          {description && (
+            <AlertDialogDescription>{description}</AlertDialogDescription>
+          )}
+        </AlertDialogHeader>
+
+        <div className="mt-4 space-y-2">
+          <label className="text-sm font-medium">{label}</label>
+          <input
+            type="text"
+            value={value}
+            onChange={(e) => {
+              setValue(e.target.value);
+              setError(undefined);
+            }}
+            className={cn(
+              "w-full rounded-md border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary",
+              error && "border-destructive focus:ring-destructive"
+            )}
+            placeholder={placeholder}
+            autoFocus
+          />
+          {error && <p className="text-sm text-destructive">{error}</p>}
+        </div>
+
+        <AlertDialogFooter className="mt-4">
+          <AlertDialogCancel disabled={isLoading}>{cancelText}</AlertDialogCancel>
+          <Button onClick={handleConfirm} disabled={isLoading}>
+            {isLoading && <Spinner size="sm" className="mr-2" />}
+            {confirmText}
+          </Button>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}

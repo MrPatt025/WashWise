@@ -12,7 +12,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
-import { SkeletonStat, SkeletonMachine } from "@/components/ui/skeleton";
+import { SkeletonStat } from "@/components/ui/skeleton";
+import {
+  StatCard,
+  StatsGrid,
+  CircularProgress,
+  ProgressBar,
+} from "@/components/ui/stat-card";
+import { CountUp } from "@/components/ui/animations";
 import {
   WashingMachine,
   CheckCircle,
@@ -20,6 +27,7 @@ import {
   AlertTriangle,
   Wrench,
   Activity,
+  TrendingUp,
 } from "lucide-react";
 
 export default function DashboardPage() {
@@ -30,77 +38,139 @@ export default function DashboardPage() {
     limit: 5,
   });
 
-  // Stats mapped from backend: { total, idle, inUse, error, maintenance }
-  const statCards = [
-    {
-      title: "Total Machines",
-      value: stats?.total ?? 0,
-      icon: WashingMachine,
-      color: "text-blue-500",
-      bgColor: "bg-blue-100",
-    },
-    {
-      title: "Available",
-      value: stats?.idle ?? 0, // Backend: IDLE status
-      icon: CheckCircle,
-      color: "text-green-500",
-      bgColor: "bg-green-100",
-    },
-    {
-      title: "In Use",
-      value: stats?.inUse ?? 0, // Backend: RUNNING status
-      icon: Clock,
-      color: "text-yellow-500",
-      bgColor: "bg-yellow-100",
-    },
-    {
-      title: "Error",
-      value: stats?.error ?? 0, // Backend: ERROR status
-      icon: AlertTriangle,
-      color: "text-red-500",
-      bgColor: "bg-red-100",
-    },
-    {
-      title: "Maintenance",
-      value: stats?.maintenance ?? 0,
-      icon: Wrench,
-      color: "text-orange-500",
-      bgColor: "bg-orange-100",
-    },
-  ];
+  // Calculate percentages for visualizations
+  const totalMachines = stats?.total ?? 0;
+  const availablePercent =
+    totalMachines > 0 ? ((stats?.idle ?? 0) / totalMachines) * 100 : 0;
+  const utilizationPercent =
+    totalMachines > 0 ? ((stats?.inUse ?? 0) / totalMachines) * 100 : 0;
 
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-        <p className="text-muted-foreground">
-          Welcome back, {user?.firstName ?? user?.fullName ?? "User"}!
-          Here&apos;s your laundromat overview.
-        </p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Dashboard</h1>
+          <p className="text-muted-foreground">
+            Welcome back, {user?.firstName ?? user?.fullName ?? "User"}!
+            Here&apos;s your laundromat overview.
+          </p>
+        </div>
+        <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300">
+          <TrendingUp className="h-4 w-4" />
+          <span className="text-sm font-medium">All systems operational</span>
+        </div>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-        {statCards.map((stat) => (
-          <Card key={stat.title}>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    {stat.title}
-                  </p>
-                  <p className="text-2xl font-bold">
-                    {statsLoading ? "..." : stat.value}
-                  </p>
-                </div>
-                <div className={`rounded-full p-3 ${stat.bgColor}`}>
-                  <stat.icon className={`h-5 w-5 ${stat.color}`} />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+      {/* Stats Grid with new StatCard component */}
+      {statsLoading ? (
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <SkeletonStat key={i} />
+          ))}
+        </div>
+      ) : (
+        <StatsGrid columns={5}>
+          <StatCard
+            title="Total Machines"
+            value={stats?.total ?? 0}
+            icon={<WashingMachine className="h-5 w-5" />}
+            variant="info"
+            helpText="Total number of machines in your laundromat"
+            onClick={() => (window.location.href = "/dashboard/machines")}
+          />
+          <StatCard
+            title="Available"
+            value={stats?.idle ?? 0}
+            icon={<CheckCircle className="h-5 w-5" />}
+            variant="success"
+            trendLabel="ready to use"
+            helpText="Machines available for customers"
+          />
+          <StatCard
+            title="In Use"
+            value={stats?.inUse ?? 0}
+            icon={<Clock className="h-5 w-5" />}
+            variant="warning"
+            trendLabel="currently running"
+            helpText="Machines currently being used"
+          />
+          <StatCard
+            title="Errors"
+            value={stats?.error ?? 0}
+            icon={<AlertTriangle className="h-5 w-5" />}
+            variant="danger"
+            helpText="Machines that need attention"
+          />
+          <StatCard
+            title="Maintenance"
+            value={stats?.maintenance ?? 0}
+            icon={<Wrench className="h-5 w-5" />}
+            variant="default"
+            helpText="Machines under scheduled maintenance"
+          />
+        </StatsGrid>
+      )}
+
+      {/* Utilization Overview */}
+      <div className="grid gap-4 md:grid-cols-3">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">Availability Rate</CardTitle>
+            <CardDescription>Machines ready for use</CardDescription>
+          </CardHeader>
+          <CardContent className="flex justify-center pt-4">
+            <CircularProgress
+              value={availablePercent}
+              variant="success"
+              label="Available"
+            />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">Utilization Rate</CardTitle>
+            <CardDescription>Current machine usage</CardDescription>
+          </CardHeader>
+          <CardContent className="flex justify-center pt-4">
+            <CircularProgress
+              value={utilizationPercent}
+              variant="warning"
+              label="In Use"
+            />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">Machine Status Overview</CardTitle>
+            <CardDescription>Status distribution</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4 pt-4">
+            <ProgressBar
+              value={stats?.idle ?? 0}
+              max={totalMachines || 1}
+              label="Available"
+              variant="success"
+              size="sm"
+            />
+            <ProgressBar
+              value={stats?.inUse ?? 0}
+              max={totalMachines || 1}
+              label="In Use"
+              variant="warning"
+              size="sm"
+            />
+            <ProgressBar
+              value={(stats?.error ?? 0) + (stats?.maintenance ?? 0)}
+              max={totalMachines || 1}
+              label="Unavailable"
+              variant="danger"
+              size="sm"
+            />
+          </CardContent>
+        </Card>
       </div>
 
       {/* Recent Activity */}
