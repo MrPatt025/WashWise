@@ -2,14 +2,36 @@
   "name": "washwise",
   "version": "1.0.0",
   "private": true,
+  "description": "WashWise - Enterprise Laundry Management Platform",
+  "author": "WashWise Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/washwise/washwise.git"
+  },
+  "homepage": "https://washwise.io",
+  "bugs": {
+    "url": "https://github.com/washwise/washwise/issues"
+  },
+  "keywords": [
+    "laundry",
+    "management",
+    "iot",
+    "enterprise",
+    "multi-tenant",
+    "saas"
+  ],
   "packageManager": "pnpm@9.15.0",
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=22.0.0",
+    "pnpm": ">=9.0.0"
   },
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
+    "start": "turbo start",
     "test": "turbo test",
+    "test:coverage": "turbo test -- --coverage",
     "test:integration": "turbo test:integration",
     "test:e2e": "pnpm --filter @washwise/e2e test",
     "lint": "turbo lint",
@@ -22,11 +44,23 @@
     "db:push": "pnpm --filter @washwise/database push",
     "db:seed": "pnpm --filter @washwise/database seed",
     "db:studio": "pnpm --filter @washwise/database studio",
+    "db:reset": "pnpm --filter @washwise/database migrate:reset",
     "clean": "turbo clean",
     "clean:cache": "turbo daemon stop",
-    "prepare": "husky"
+    "clean:all": "turbo clean && rimraf node_modules .turbo",
+    "prepare": "husky",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "pnpm build && changeset publish",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f",
+    "docker:tools": "docker compose --profile tools up -d",
+    "preinstall": "npx only-allow pnpm"
   },
   "devDependencies": {
+    "@changesets/changelog-github": "^0.5.1",
+    "@changesets/cli": "^2.29.4",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@eslint/js": "^9.28.0",
@@ -37,8 +71,10 @@
     "globals": "^16.2.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.0",
+    "only-allow": "^1.2.1",
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.6.12",
+    "rimraf": "^6.0.1",
     "sort-package-json": "^3.0.0",
     "turbo": "^2.8.1",
     "typescript": "^5.9.3",

@@ -1,0 +1,121 @@
+# EditorConfig helps maintain consistent coding styles across different editors
+# https://editorconfig.org
+
+root = true
+
+# ===========================================
+# Default settings for all files
+# ===========================================
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+# ===========================================
+# TypeScript / JavaScript
+# ===========================================
+[*.{ts,tsx,js,jsx,mjs,cjs}]
+indent_size = 2
+max_line_length = 100
+
+# ===========================================
+# JSON / YAML / Config files
+# ===========================================
+[*.{json,jsonc,json5}]
+indent_size = 2
+
+[*.{yml,yaml}]
+indent_size = 2
+
+[*.toml]
+indent_size = 2
+
+# ===========================================
+# Markdown
+# ===========================================
+[*.md]
+trim_trailing_whitespace = false
+max_line_length = off
+
+# ===========================================
+# Python (AI Worker)
+# ===========================================
+[*.py]
+indent_size = 4
+max_line_length = 88
+
+# ===========================================
+# Java (Core API)
+# ===========================================
+[*.java]
+indent_size = 4
+max_line_length = 120
+
+# ===========================================
+# HTML / CSS
+# ===========================================
+[*.{html,htm}]
+indent_size = 2
+
+[*.{css,scss,sass,less}]
+indent_size = 2
+
+# ===========================================
+# Prisma
+# ===========================================
+[*.prisma]
+indent_size = 2
+
+# ===========================================
+# Docker
+# ===========================================
+[Dockerfile*]
+indent_size = 4
+
+[docker-compose*.yml]
+indent_size = 2
+
+# ===========================================
+# Shell scripts
+# ===========================================
+[*.{sh,bash,zsh}]
+indent_size = 2
+end_of_line = lf
+
+# ===========================================
+# Windows batch files
+# ===========================================
+[*.{bat,cmd}]
+end_of_line = crlf
+
+# ===========================================
+# Makefiles
+# ===========================================
+[Makefile]
+indent_style = tab
+indent_size = 4
+
+# ===========================================
+# Git files
+# ===========================================
+[.git*]
+indent_size = 2
+
+# ===========================================
+# Lock files - don't modify
+# ===========================================
+[{pnpm-lock.yaml,package-lock.json,yarn.lock}]
+indent_size = 2
+insert_final_newline = false
+
+# ===========================================
+# XML / Maven (Java)
+# ===========================================
+[*.xml]
+indent_size = 4
+
+[pom.xml]
+indent_size = 4

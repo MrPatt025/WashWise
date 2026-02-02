@@ -1,0 +1,26 @@
+# Dev Container Compose Override
+# Extends docker-compose.yml for development container
+
+services:
+  devcontainer:
+    image: mcr.microsoft.com/devcontainers/base:ubuntu
+    container_name: washwise-devcontainer
+    volumes:
+      - ..:/workspace:cached
+      - devcontainer-node-modules:/workspace/node_modules
+    command: sleep infinity
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - washwise-network
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://washwise:washwise@postgres:5432/washwise?schema=public
+      - REDIS_URL=redis://redis:6379
+
+volumes:
+  devcontainer-node-modules:
+    name: washwise-devcontainer-node-modules

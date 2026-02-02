@@ -1,28 +1,49 @@
+# WashWise Development Docker Compose
+# Usage: docker compose up -d
+# Dashboard: http://localhost:5050 (pgAdmin)
+
 services:
+  # ===========================================
+  # PostgreSQL Database
+  # ===========================================
   postgres:
     image: postgres:17-alpine
     container_name: washwise-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: washwise
-      POSTGRES_PASSWORD: washwise
-      POSTGRES_DB: washwise
+      POSTGRES_USER: ${POSTGRES_USER:-washwise}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-washwise}
+      POSTGRES_DB: ${POSTGRES_DB:-washwise}
+      PGDATA: /var/lib/postgresql/data/pgdata
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
+      - ./docker/init-scripts:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U washwise"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-washwise} -d ${POSTGRES_DB:-washwise}"]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 30s
+    networks:
+      - washwise-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
+  # ===========================================
+  # Redis Cache
+  # ===========================================
   redis:
     image: redis:7-alpine
     container_name: washwise-redis
     restart: unless-stopped
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
     ports:
-      - "6379:6379"
+      - "${REDIS_PORT:-6379}:6379"
     volumes:
       - redis-data:/data
     healthcheck:
@@ -30,7 +51,83 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 10s
+    networks:
+      - washwise-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ===========================================
+  # pgAdmin (Database Management)
+  # ===========================================
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: washwise-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@washwise.io}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - washwise-network
+    profiles:
+      - tools
+
+  # ===========================================
+  # Redis Commander (Redis Management)
+  # ===========================================
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: washwise-redis-commander
+    restart: unless-stopped
+    environment:
+      REDIS_HOSTS: local:redis:6379
+    ports:
+      - "${REDIS_COMMANDER_PORT:-8081}:8081"
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - washwise-network
+    profiles:
+      - tools
+
+  # ===========================================
+  # Mailhog (Email Testing)
+  # ===========================================
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: washwise-mailhog
+    restart: unless-stopped
+    ports:
+      - "${MAILHOG_SMTP_PORT:-1025}:1025"
+      - "${MAILHOG_UI_PORT:-8025}:8025"
+    networks:
+      - washwise-network
+    profiles:
+      - tools
+
+networks:
+  washwise-network:
+    driver: bridge
+    name: washwise-network
 
 volumes:
   postgres-data:
+    name: washwise-postgres-data
   redis-data:
+    name: washwise-redis-data
+  pgadmin-data:
+    name: washwise-pgadmin-data
+

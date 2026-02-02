@@ -1,0 +1,106 @@
+# Development Container Configuration
+# https://containers.dev/
+# Usage: VS Code -> "Dev Containers: Open Folder in Container"
+
+{
+  "name": "WashWise Development",
+  "dockerComposeFile": ["../docker-compose.yml", "docker-compose.devcontainer.yml"],
+  "service": "devcontainer",
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+
+  // Features to install
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22",
+      "nodeGypDependencies": true
+    },
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "21",
+      "installMaven": true,
+      "installGradle": false
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12",
+      "installTools": true
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+
+  // Configure tool-specific properties
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "prisma.prisma",
+        "ms-vscode.vscode-typescript-next",
+        "yoavbls.pretty-ts-errors",
+        "streetsidesoftware.code-spell-checker",
+        "eamodio.gitlens",
+        "github.vscode-pull-request-github",
+        "vitest.explorer",
+        "ms-playwright.playwright",
+        "ms-azuretools.vscode-docker",
+        "cweijan.vscode-postgresql-client2",
+        "redis.redis-for-vscode",
+        "humao.rest-client",
+        "usernamehw.errorlens",
+        "gruntfuggly.todo-tree",
+        "pkief.material-icon-theme",
+        "yzhang.markdown-all-in-one",
+        "vscjava.vscode-java-pack",
+        "vmware.vscode-boot-dev-pack",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "charliermarsh.ruff"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "eslint.useFlatConfig": true,
+        "typescript.tsdk": "/workspace/node_modules/typescript/lib"
+      }
+    }
+  },
+
+  // Use 'forwardPorts' to make a list of ports inside the container available locally
+  "forwardPorts": [
+    3000, // Next.js web-admin
+    3001, // API server
+    5432, // PostgreSQL
+    6379, // Redis
+    5050, // pgAdmin
+    8025  // Mailhog
+  ],
+
+  // Port labels for better identification
+  "portsAttributes": {
+    "3000": { "label": "Web Admin", "onAutoForward": "openBrowser" },
+    "3001": { "label": "API Server" },
+    "5432": { "label": "PostgreSQL" },
+    "6379": { "label": "Redis" },
+    "5050": { "label": "pgAdmin" },
+    "8025": { "label": "Mailhog" }
+  },
+
+  // Use 'postCreateCommand' to run commands after the container is created
+  "postCreateCommand": "pnpm install && pnpm db:generate",
+
+  // Use 'postStartCommand' to run commands each time the container starts
+  "postStartCommand": "pnpm db:push",
+
+  // Connect as a non-root user
+  "remoteUser": "node",
+
+  // Environment variables
+  "remoteEnv": {
+    "NODE_ENV": "development",
+    "DATABASE_URL": "postgresql://washwise:washwise@postgres:5432/washwise?schema=public",
+    "REDIS_URL": "redis://redis:6379"
+  }
+}
