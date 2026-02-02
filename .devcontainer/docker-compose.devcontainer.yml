@@ -20,4 +20,5 @@ volumes:
 
 networks:
   washwise-network:
-    external: true
+    name: washwise-network
+    driver: bridge
