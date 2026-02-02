@@ -11,5 +11,20 @@ export * from "./use-focus-trap";
 export * from "./use-media-query";
 export * from "./use-local-storage";
 
-// Common utility hooks
-export * from "./use-common";
+// Common utility hooks (explicit exports to avoid conflicts)
+export {
+  useClickOutside,
+  useScrollPosition,
+  useScrollPast,
+  useInView,
+  useClipboard,
+  useOnlineStatus,
+  useToggle,
+  useAsync,
+  useCounter,
+  useDocumentTitle,
+  useHover,
+  useInterval,
+  useTimeout,
+  useIsMounted,
+} from "./use-common";

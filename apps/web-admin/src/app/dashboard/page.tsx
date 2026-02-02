@@ -19,7 +19,6 @@ import {
   CircularProgress,
   ProgressBar,
 } from "@/components/ui/stat-card";
-import { CountUp } from "@/components/ui/animations";
 import {
   WashingMachine,
   CheckCircle,

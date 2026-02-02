@@ -24,7 +24,7 @@
     "@washwise/config": "workspace:*",
     "@washwise/database": "workspace:*",
     "@washwise/types": "workspace:*",
-    "argon2": "^0.41.0",
+    "argon2": "^0.41.1",
     "dotenv": "^16.4.0",
     "fastify": "^5.1.0",
     "fastify-plugin": "^5.0.0",

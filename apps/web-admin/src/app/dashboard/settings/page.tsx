@@ -38,7 +38,7 @@ export default function SettingsPage() {
           <CardContent className="space-y-4">
             <div className="flex justify-between">
               <span className="text-muted-foreground">Name</span>
-              <span className="font-medium">{user?.name}</span>
+              <span className="font-medium">{user?.fullName || `${user?.firstName} ${user?.lastName}`}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Email</span>
@@ -62,11 +62,11 @@ export default function SettingsPage() {
           <CardContent className="space-y-4">
             <div className="flex justify-between">
               <span className="text-muted-foreground">Laundromat Name</span>
-              <span className="font-medium">{user?.tenantName}</span>
+              <span className="font-medium">{user?.tenant?.name}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Tenant ID</span>
-              <span className="font-mono text-xs">{user?.tenantId}</span>
+              <span className="font-mono text-xs">{user?.tenant?.id}</span>
             </div>
           </CardContent>
         </Card>

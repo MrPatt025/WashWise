@@ -70,7 +70,7 @@ export function useMachines(query?: MachineQuery) {
                 ? {
                     ...machine,
                     status: event.status as Machine["status"],
-                    updatedAt: new Date(event.updatedAt),
+                    updatedAt: event.updatedAt,
                   }
                 : machine,
             ),
@@ -86,7 +86,7 @@ export function useMachines(query?: MachineQuery) {
           return {
             ...oldData,
             status: event.status as Machine["status"],
-            updatedAt: new Date(event.updatedAt),
+            updatedAt: event.updatedAt,
           };
         },
       );

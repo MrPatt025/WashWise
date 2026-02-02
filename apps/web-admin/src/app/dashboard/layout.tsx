@@ -102,9 +102,9 @@ export default function DashboardLayout({
                   <User className="h-5 w-5 text-primary" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">{user?.name}</p>
+                  <p className="text-sm font-medium truncate">{user?.fullName || `${user?.firstName} ${user?.lastName}`}</p>
                   <p className="text-xs text-muted-foreground truncate">
-                    {user?.tenantName}
+                    {user?.tenant?.name}
                   </p>
                 </div>
               </div>

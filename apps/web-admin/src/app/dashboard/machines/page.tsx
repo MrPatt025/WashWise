@@ -77,7 +77,9 @@ export default function MachinesPage() {
   const [typeFilter, setTypeFilter] = useState<"all" | "WASHER" | "DRYER">(
     "all",
   );
-  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<
+    "all" | "IDLE" | "RESERVED" | "RUNNING" | "MAINTENANCE" | "OUT_OF_ORDER" | "ERROR" | "OFFLINE" | "DISABLED"
+  >("all");
   const [showFilters, setShowFilters] = useState(false);
 
   // Pagination
@@ -170,17 +172,10 @@ export default function MachinesPage() {
   };
 
   const handleDelete = useCallback(
-    async (id: string, name: string) => {
-      const confirmed = await deleteConfirm.confirm({
-        title: "Delete Machine",
-        description: `Are you sure you want to delete "${name}"? This action cannot be undone.`,
-        confirmText: "Delete",
-        cancelText: "Cancel",
-      });
-
-      if (confirmed) {
+    (id: string, name: string) => {
+      deleteConfirm.confirmDelete(name, async () => {
         await deleteMutation.mutateAsync(id);
-      }
+      });
     },
     [deleteConfirm, deleteMutation],
   );
@@ -418,7 +413,10 @@ export default function MachinesPage() {
 
               <div className="space-y-2">
                 <Label>Status</Label>
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <Select 
+                  value={statusFilter} 
+                  onValueChange={(v) => setStatusFilter(v as typeof statusFilter)}
+                >
                   <SelectTrigger className="w-[160px]">
                     <SelectValue />
                   </SelectTrigger>

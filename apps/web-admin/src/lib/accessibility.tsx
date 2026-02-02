@@ -45,15 +45,14 @@ export function LiveRegion({
 }: LiveRegionProps) {
     return (
         <div
-      aria - live= { priority }
-    aria - atomic={ atomic }
-    aria - relevant="additions text"
-    className = "sr-only"
+            aria-live={priority}
+            aria-atomic={atomic}
+            aria-relevant="additions text"
+            className="sr-only"
         >
-        { message || children
-}
-</div>
-  );
+            {message || children}
+        </div>
+    );
 }
 
 /**
@@ -102,18 +101,12 @@ export function SkipToMain({
 }) {
     return (
         <a
-      href= { href }
-    className = "
-    sr - only focus: not - sr - only
-    focus:absolute focus: top - 4 focus: left - 4 focus: z - [100]
-    focus: bg - background focus: px - 4 focus: py - 2
-    focus: ring - 2 focus: ring - ring focus: rounded - md
-    focus: text - foreground focus: font - medium
-    "
+            href={href}
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-background focus:px-4 focus:py-2 focus:ring-2 focus:ring-primary focus:rounded-md focus:text-foreground focus:font-medium"
         >
-        { children }
+            {children}
         </a>
-  );
+    );
 }
 
 /**
@@ -293,7 +286,7 @@ export const keyboardHelpers = {
         e.key === Keys.Enter || e.key === Keys.Space,
     isNavigation: (e: React.KeyboardEvent) =>
         [Keys.ArrowUp, Keys.ArrowDown, Keys.ArrowLeft, Keys.ArrowRight].includes(
-            e.key as typeof Keys[keyof typeof Keys]
+            e.key as "ArrowDown" | "ArrowUp" | "ArrowLeft" | "ArrowRight"
         ),
 };
 
