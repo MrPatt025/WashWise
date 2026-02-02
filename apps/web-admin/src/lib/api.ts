@@ -9,7 +9,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
  * Implements "Silent Refresh" pattern
  */
 export const api = axios.create({
-  baseURL: `${API_URL}/api`,
+  baseURL: `${API_URL}/api/v1`,
   withCredentials: true, // Important for cookies
   headers: {
     "Content-Type": "application/json",
@@ -202,7 +202,7 @@ api.interceptors.response.use(
     try {
       // Attempt to refresh the token
       const response = await axios.post(
-        `${API_URL}/api/auth/refresh`,
+        `${API_URL}/api/v1/auth/refresh`,
         {},
         { withCredentials: true },
       );
