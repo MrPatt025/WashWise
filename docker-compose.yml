@@ -1,11 +1,17 @@
+# ============================================
 # WashWise Development Docker Compose
-# Usage: docker compose up -d
-# Dashboard: http://localhost:5050 (pgAdmin)
+# ============================================
+# Usage:
+#   docker-compose up -d          # Start all services
+#   docker-compose down           # Stop all services
+#   docker-compose logs -f        # View logs
+#   docker-compose ps             # List services
+# ============================================
 
 services:
-  # ===========================================
+  # ==========================================
   # PostgreSQL Database
-  # ===========================================
+  # ==========================================
   postgres:
     image: postgres:17-alpine
     container_name: washwise-postgres
@@ -19,7 +25,7 @@ services:
       - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
-      - ./docker/init-scripts:/docker-entrypoint-initdb.d:ro
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-washwise} -d ${POSTGRES_DB:-washwise}"]
       interval: 10s
@@ -28,15 +34,13 @@ services:
       start_period: 30s
     networks:
       - washwise-network
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+    labels:
+      - "com.washwise.service=database"
+      - "com.washwise.description=PostgreSQL 17 Database"
 
-  # ===========================================
+  # ==========================================
   # Redis Cache
-  # ===========================================
+  # ==========================================
   redis:
     image: redis:7-alpine
     container_name: washwise-redis
@@ -54,28 +58,22 @@ services:
       start_period: 10s
     networks:
       - washwise-network
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+    labels:
+      - "com.washwise.service=cache"
+      - "com.washwise.description=Redis 7 Cache"
 
-  # ===========================================
-  # pgAdmin (Database Management)
-  # ===========================================
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: washwise-pgadmin
+  # ==========================================
+  # Adminer (Database UI) - Development Only
+  # ==========================================
+  adminer:
+    image: adminer:latest
+    container_name: washwise-adminer
     restart: unless-stopped
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@washwise.io}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
-      PGADMIN_CONFIG_SERVER_MODE: "False"
-      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
     ports:
-      - "${PGADMIN_PORT:-5050}:80"
-    volumes:
-      - pgadmin-data:/var/lib/pgadmin
+      - "${ADMINER_PORT:-8080}:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+      ADMINER_DESIGN: nette
     depends_on:
       postgres:
         condition: service_healthy
@@ -83,10 +81,13 @@ services:
       - washwise-network
     profiles:
       - tools
+    labels:
+      - "com.washwise.service=adminer"
+      - "com.washwise.description=Database Admin UI"
 
-  # ===========================================
-  # Redis Commander (Redis Management)
-  # ===========================================
+  # ==========================================
+  # Redis Commander (Redis UI) - Development Only
+  # ==========================================
   redis-commander:
     image: rediscommander/redis-commander:latest
     container_name: washwise-redis-commander
@@ -102,10 +103,13 @@ services:
       - washwise-network
     profiles:
       - tools
+    labels:
+      - "com.washwise.service=redis-commander"
+      - "com.washwise.description=Redis Admin UI"
 
-  # ===========================================
-  # Mailhog (Email Testing)
-  # ===========================================
+  # ==========================================
+  # MailHog (Email Testing) - Development Only
+  # ==========================================
   mailhog:
     image: mailhog/mailhog:latest
     container_name: washwise-mailhog
@@ -117,17 +121,24 @@ services:
       - washwise-network
     profiles:
       - tools
+    labels:
+      - "com.washwise.service=mailhog"
+      - "com.washwise.description=Email Testing Server"
 
-networks:
-  washwise-network:
-    driver: bridge
-    name: washwise-network
-
+# ==========================================
+# Volumes
+# ==========================================
 volumes:
   postgres-data:
     name: washwise-postgres-data
   redis-data:
     name: washwise-redis-data
-  pgadmin-data:
-    name: washwise-pgadmin-data
+
+# ==========================================
+# Networks
+# ==========================================
+networks:
+  washwise-network:
+    name: washwise-network
+    driver: bridge
 

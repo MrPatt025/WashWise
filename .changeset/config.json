@@ -1,19 +1,21 @@
 {
-  "$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
-  "changelog": [
-    "@changesets/changelog-github",
-    { "repo": "washwise/washwise" }
-  ],
+  "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
+  "changelog": ["@changesets/changelog-github", { "repo": "washwise/washwise" }],
   "commit": false,
   "fixed": [],
   "linked": [
-    ["@washwise/api-server", "@washwise/web-admin"],
-    ["@washwise/config", "@washwise/database", "@washwise/types"]
+    [
+      "@washwise/api-server",
+      "@washwise/web-admin",
+      "@washwise/database",
+      "@washwise/types",
+      "@washwise/config"
+    ]
   ],
   "access": "restricted",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@washwise/e2e"],
+  "ignore": [],
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true
   }

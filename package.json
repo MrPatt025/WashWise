@@ -2,24 +2,27 @@
   "name": "washwise",
   "version": "1.0.0",
   "private": true,
-  "description": "WashWise - Enterprise Laundry Management Platform",
+  "description": "WashWise - Smart Laundromat Management Platform",
   "author": "WashWise Team",
   "license": "MIT",
+  "homepage": "https://github.com/washwise/washwise#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/washwise/washwise.git"
+    "url": "git+https://github.com/washwise/washwise.git"
   },
-  "homepage": "https://washwise.io",
   "bugs": {
     "url": "https://github.com/washwise/washwise/issues"
   },
   "keywords": [
-    "laundry",
-    "management",
+    "laundromat",
     "iot",
-    "enterprise",
+    "smart-laundry",
+    "saas",
     "multi-tenant",
-    "saas"
+    "nextjs",
+    "fastify",
+    "prisma",
+    "typescript"
   ],
   "packageManager": "pnpm@9.15.0",
   "engines": {
@@ -31,9 +34,10 @@
     "build": "turbo build",
     "start": "turbo start",
     "test": "turbo test",
-    "test:coverage": "turbo test -- --coverage",
+    "test:watch": "turbo test:watch",
     "test:integration": "turbo test:integration",
     "test:e2e": "pnpm --filter @washwise/e2e test",
+    "test:coverage": "turbo test -- --coverage",
     "lint": "turbo lint",
     "lint:fix": "eslint --fix .",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\"",
@@ -44,19 +48,17 @@
     "db:push": "pnpm --filter @washwise/database push",
     "db:seed": "pnpm --filter @washwise/database seed",
     "db:studio": "pnpm --filter @washwise/database studio",
-    "db:reset": "pnpm --filter @washwise/database migrate:reset",
+    "db:reset": "pnpm --filter @washwise/database exec prisma migrate reset",
     "clean": "turbo clean",
     "clean:cache": "turbo daemon stop",
-    "clean:all": "turbo clean && rimraf node_modules .turbo",
+    "clean:all": "turbo clean && rimraf node_modules",
     "prepare": "husky",
     "changeset": "changeset",
-    "version-packages": "changeset version",
+    "changeset:version": "changeset version",
+    "changeset:publish": "changeset publish",
     "release": "pnpm build && changeset publish",
-    "docker:up": "docker compose up -d",
-    "docker:down": "docker compose down",
-    "docker:logs": "docker compose logs -f",
-    "docker:tools": "docker compose --profile tools up -d",
-    "preinstall": "npx only-allow pnpm"
+    "preinstall": "npx only-allow pnpm",
+    "postinstall": "pnpm db:generate"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.1",

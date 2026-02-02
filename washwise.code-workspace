@@ -1,0 +1,428 @@
+{
+    "folders": [
+        {
+            "name": "📦 Root",
+            "path": "."
+        },
+        {
+            "name": "🌐 Web Admin",
+            "path": "apps/web-admin"
+        },
+        {
+            "name": "🚀 API Server",
+            "path": "apps/api-server"
+        },
+        {
+            "name": "🗄️ Database",
+            "path": "packages/database"
+        },
+        {
+            "name": "📝 Types",
+            "path": "packages/types"
+        },
+        {
+            "name": "⚙️ Config",
+            "path": "packages/config"
+        },
+        {
+            "name": "🧪 E2E Tests",
+            "path": "e2e"
+        },
+        {
+            "name": "☕ Core API (Java)",
+            "path": "services/core-api"
+        },
+        {
+            "name": "🤖 AI Worker (Python)",
+            "path": "services/ai-worker"
+        },
+        {
+            "name": "📊 Observability",
+            "path": "observability"
+        },
+        {
+            "name": "📚 Documentation",
+            "path": "docs"
+        }
+    ],
+    "settings": {
+        // Editor
+        "editor.formatOnSave": true,
+        "editor.formatOnPaste": false,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.codeActionsOnSave": {
+            "source.fixAll.eslint": "explicit",
+            "source.organizeImports": "explicit"
+        },
+        "editor.rulers": [
+            100,
+            120
+        ],
+        "editor.wordWrap": "off",
+        "editor.tabSize": 2,
+        "editor.detectIndentation": false,
+        "editor.bracketPairColorization.enabled": true,
+        "editor.guides.bracketPairs": "active",
+        "editor.linkedEditing": true,
+        "editor.stickyScroll.enabled": true,
+        // Files
+        "files.trimTrailingWhitespace": true,
+        "files.insertFinalNewline": true,
+        "files.trimFinalNewlines": true,
+        "files.eol": "\n",
+        "files.exclude": {
+            "**/.git": true,
+            "**/.turbo": true,
+            "**/node_modules": true,
+            "**/.next": true,
+            "**/dist": true,
+            "**/coverage": true,
+            "**/*.log": true
+        },
+        "files.watcherExclude": {
+            "**/.git/objects/**": true,
+            "**/.git/subtree-cache/**": true,
+            "**/node_modules/**": true,
+            "**/.turbo/**": true
+        },
+        "files.associations": {
+            "*.css": "tailwindcss",
+            ".env*": "dotenv"
+        },
+        // TypeScript
+        "typescript.tsdk": "node_modules/typescript/lib",
+        "typescript.enablePromptUseWorkspaceTsdk": true,
+        "typescript.preferences.importModuleSpecifier": "relative",
+        "typescript.preferences.quoteStyle": "single",
+        "typescript.updateImportsOnFileMove.enabled": "always",
+        "typescript.suggest.autoImports": true,
+        "typescript.inlayHints.parameterNames.enabled": "all",
+        "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+        // JavaScript
+        "javascript.preferences.importModuleSpecifier": "relative",
+        "javascript.preferences.quoteStyle": "single",
+        "javascript.updateImportsOnFileMove.enabled": "always",
+        // ESLint
+        "eslint.enable": true,
+        "eslint.validate": [
+            "javascript",
+            "javascriptreact",
+            "typescript",
+            "typescriptreact"
+        ],
+        "eslint.workingDirectories": [
+            {
+                "mode": "auto"
+            }
+        ],
+        // Prettier
+        "prettier.enable": true,
+        "prettier.requireConfig": true,
+        // Language-specific formatters
+        "[typescript]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[typescriptreact]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[javascript]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[javascriptreact]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[json]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[jsonc]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[markdown]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode",
+            "editor.wordWrap": "on"
+        },
+        "[yaml]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[prisma]": {
+            "editor.defaultFormatter": "Prisma.prisma"
+        },
+        "[python]": {
+            "editor.defaultFormatter": "ms-python.black-formatter"
+        },
+        "[java]": {
+            "editor.defaultFormatter": "redhat.java"
+        },
+        "[dockercompose]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        // Tailwind CSS
+        "tailwindCSS.experimental.classRegex": [
+            [
+                "cva\\(([^)]*)\\)",
+                "[\"'`]([^\"'`]*).*?[\"'`]"
+            ],
+            [
+                "cn\\(([^)]*)\\)",
+                "(?:'|\"|`)([^']*)(?:'|\"|`)"
+            ]
+        ],
+        "tailwindCSS.includeLanguages": {
+            "typescript": "javascript",
+            "typescriptreact": "javascript"
+        },
+        // Prisma
+        "prisma.showPrismaDataPlatformNotification": false,
+        // Git
+        "git.enableSmartCommit": true,
+        "git.autofetch": true,
+        "git.confirmSync": false,
+        "git.pruneOnFetch": true,
+        // Terminal
+        "terminal.integrated.defaultProfile.windows": "PowerShell",
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "terminal.integrated.defaultProfile.osx": "zsh",
+        "terminal.integrated.scrollback": 10000,
+        // Search
+        "search.exclude": {
+            "**/node_modules": true,
+            "**/pnpm-lock.yaml": true,
+            "**/dist": true,
+            "**/.next": true,
+            "**/coverage": true,
+            "**/.turbo": true
+        },
+        // Explorer
+        "explorer.confirmDelete": false,
+        "explorer.confirmDragAndDrop": false,
+        "explorer.fileNesting.enabled": true,
+        "explorer.fileNesting.expand": false,
+        "explorer.fileNesting.patterns": {
+            "package.json": "package-lock.json, pnpm-lock.yaml, yarn.lock, .npmrc, .nvmrc",
+            "tsconfig.json": "tsconfig.*.json, tsconfig.tsbuildinfo",
+            ".eslintrc*": ".eslintignore, .eslintcache, eslint.config.*",
+            ".prettierrc*": ".prettierignore",
+            "*.ts": "${capture}.test.ts, ${capture}.spec.ts",
+            "*.tsx": "${capture}.test.tsx, ${capture}.spec.tsx"
+        },
+        // Todo Tree
+        "todo-tree.general.tags": [
+            "BUG",
+            "HACK",
+            "FIXME",
+            "TODO",
+            "XXX",
+            "NOTE",
+            "REVIEW",
+            "OPTIMIZE",
+            "DEPRECATED"
+        ],
+        "todo-tree.highlights.defaultHighlight": {
+            "icon": "alert",
+            "type": "text-and-comment",
+            "foreground": "#FFA500",
+            "iconColour": "#FFA500"
+        },
+        // Error Lens
+        "errorLens.enabledDiagnosticLevels": [
+            "error",
+            "warning"
+        ],
+        "errorLens.excludeBySource": [
+            "cSpell"
+        ],
+        // Spell Checker
+        "cSpell.words": [
+            "washwise",
+            "fastify",
+            "pnpm",
+            "turbo",
+            "turborepo",
+            "sonner",
+            "tanstack",
+            "radix",
+            "tailwindcss",
+            "clsx",
+            "lucide",
+            "argon",
+            "ioredis",
+            "prisma",
+            "testcontainers",
+            "opentelemetry",
+            "otel",
+            "commitlint",
+            "changesets"
+        ]
+    },
+    "extensions": {
+        "recommendations": [
+            "dbaeumer.vscode-eslint",
+            "esbenp.prettier-vscode",
+            "bradlc.vscode-tailwindcss",
+            "Prisma.prisma",
+            "ms-azuretools.vscode-docker",
+            "eamodio.gitlens",
+            "usernamehw.errorlens",
+            "streetsidesoftware.code-spell-checker",
+            "gruntfuggly.todo-tree",
+            "mikestead.dotenv",
+            "PKief.material-icon-theme",
+            "ZixuanChen.vitest-explorer",
+            "ms-playwright.playwright",
+            "redhat.vscode-yaml",
+            "yzhang.markdown-all-in-one",
+            "rangav.vscode-thunder-client",
+            "GitHub.copilot"
+        ],
+        "unwantedRecommendations": []
+    },
+    "launch": {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "name": "🚀 API Server",
+                "type": "node",
+                "request": "launch",
+                "cwd": "${workspaceFolder}/apps/api-server",
+                "runtimeExecutable": "pnpm",
+                "runtimeArgs": [
+                    "dev"
+                ],
+                "console": "integratedTerminal",
+                "skipFiles": [
+                    "<node_internals>/**"
+                ],
+                "env": {
+                    "NODE_ENV": "development"
+                }
+            },
+            {
+                "name": "🌐 Web Admin",
+                "type": "node",
+                "request": "launch",
+                "cwd": "${workspaceFolder}/apps/web-admin",
+                "runtimeExecutable": "pnpm",
+                "runtimeArgs": [
+                    "dev"
+                ],
+                "console": "integratedTerminal"
+            },
+            {
+                "name": "🧪 Debug Tests",
+                "type": "node",
+                "request": "launch",
+                "cwd": "${workspaceFolder}/apps/api-server",
+                "runtimeExecutable": "pnpm",
+                "runtimeArgs": [
+                    "test:watch"
+                ],
+                "console": "integratedTerminal"
+            },
+            {
+                "name": "🎭 Debug E2E Tests",
+                "type": "node",
+                "request": "launch",
+                "cwd": "${workspaceFolder}/e2e",
+                "runtimeExecutable": "pnpm",
+                "runtimeArgs": [
+                    "exec",
+                    "playwright",
+                    "test",
+                    "--debug"
+                ],
+                "console": "integratedTerminal"
+            }
+        ],
+        "compounds": [
+            {
+                "name": "🔥 Full Stack",
+                "configurations": [
+                    "🚀 API Server",
+                    "🌐 Web Admin"
+                ]
+            }
+        ]
+    },
+    "tasks": {
+        "version": "2.0.0",
+        "tasks": [
+            {
+                "label": "📦 Install Dependencies",
+                "type": "shell",
+                "command": "pnpm install",
+                "problemMatcher": [],
+                "presentation": {
+                    "reveal": "always",
+                    "panel": "new"
+                }
+            },
+            {
+                "label": "🔨 Build All",
+                "type": "shell",
+                "command": "pnpm build",
+                "problemMatcher": [
+                    "$tsc"
+                ],
+                "group": "build"
+            },
+            {
+                "label": "🧹 Lint",
+                "type": "shell",
+                "command": "pnpm lint",
+                "problemMatcher": [
+                    "$eslint-stylish"
+                ]
+            },
+            {
+                "label": "✨ Format",
+                "type": "shell",
+                "command": "pnpm format",
+                "problemMatcher": []
+            },
+            {
+                "label": "🧪 Test",
+                "type": "shell",
+                "command": "pnpm test",
+                "problemMatcher": [],
+                "group": "test"
+            },
+            {
+                "label": "🗄️ Database: Generate",
+                "type": "shell",
+                "command": "pnpm db:generate",
+                "problemMatcher": []
+            },
+            {
+                "label": "🗄️ Database: Migrate",
+                "type": "shell",
+                "command": "pnpm db:migrate",
+                "problemMatcher": []
+            },
+            {
+                "label": "🗄️ Database: Studio",
+                "type": "shell",
+                "command": "pnpm db:studio",
+                "problemMatcher": []
+            },
+            {
+                "label": "🐳 Docker: Up",
+                "type": "shell",
+                "command": "docker-compose up -d",
+                "problemMatcher": []
+            },
+            {
+                "label": "🐳 Docker: Down",
+                "type": "shell",
+                "command": "docker-compose down",
+                "problemMatcher": []
+            },
+            {
+                "label": "🚀 Dev: Full Stack",
+                "type": "shell",
+                "command": "pnpm dev",
+                "problemMatcher": [],
+                "isBackground": true
+            }
+        ]
+    }
+}

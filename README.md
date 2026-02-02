@@ -6,13 +6,31 @@
 
 **Enterprise-grade, AI-powered SaaS platform for smart laundromat management**
 
-[![Build Status](https://github.com/washwise/washwise/workflows/CI/badge.svg)](https://github.com/washwise/washwise/actions)
+[![CI](https://github.com/washwise/washwise/workflows/CI/badge.svg)](https://github.com/washwise/washwise/actions?query=workflow%3ACI)
 [![Coverage](https://codecov.io/gh/washwise/washwise/branch/main/graph/badge.svg)](https://codecov.io/gh/washwise/washwise)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-22-green.svg)](https://nodejs.org/)
+[![pnpm](https://img.shields.io/badge/pnpm-9.15-orange.svg)](https://pnpm.io/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[Demo](https://demo.washwise.io) • [Documentation](docs/) • [API Reference](docs/04-API.md)
+[Demo](https://demo.washwise.io) • [Documentation](docs/) • [API Reference](docs/04-API.md) • [Contributing](CONTRIBUTING.md)
 
 </div>
+
+---
+
+## 📋 Table of Contents
+
+- [Overview](#-overview)
+- [Features](#-features)
+- [Quick Start](#-quick-start)
+- [Architecture](#-architecture)
+- [Development](#-development)
+- [Testing](#-testing)
+- [Deployment](#-deployment)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ---
 
@@ -34,6 +52,60 @@ operations through intelligent automation and AI-powered customer experiences.
 
 ---
 
+## 🚀 Quick Start
+
+### Prerequisites
+
+- **Node.js** 22+ ([Download](https://nodejs.org/))
+- **pnpm** 9+ (`corepack enable && corepack prepare pnpm@9 --activate`)
+- **Docker** & Docker Compose ([Download](https://docs.docker.com/get-docker/))
+- **Git** ([Download](https://git-scm.com/))
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/washwise/washwise.git
+cd washwise
+
+# Run setup script (Linux/macOS)
+./scripts/setup.sh
+
+# Or on Windows
+powershell -ExecutionPolicy Bypass -File scripts/setup.ps1
+```
+
+### Manual Setup
+
+```bash
+# Install dependencies
+pnpm install
+
+# Start Docker services (PostgreSQL, Redis)
+docker-compose up -d
+
+# Generate Prisma client
+pnpm db:generate
+
+# Run database migrations
+pnpm db:migrate
+
+# Start development servers
+pnpm dev
+```
+
+### Access Points
+
+| Service        | URL                                       |
+| -------------- | ----------------------------------------- |
+| 🌐 Web Admin   | [http://localhost:3000](http://localhost:3000) |
+| 🚀 API Server  | [http://localhost:3001](http://localhost:3001) |
+| 📚 API Docs    | [http://localhost:3001/docs](http://localhost:3001/docs) |
+| 🗄️ DB Studio   | [http://localhost:5555](http://localhost:5555) |
+| 📊 Adminer     | [http://localhost:8080](http://localhost:8080) (with `--profile tools`) |
+
+---
+
 ## 🏗 Architecture
 
 ### Enterprise Tech Stack
@@ -43,7 +115,7 @@ operations through intelligent automation and AI-powered customer experiences.
 | **Core API**       | Java 21 + Spring Boot 4.x | Main business logic, Virtual Threads |
 | **AI Worker**      | Python 3.12 + FastAPI     | LLM integration, ML pipelines        |
 | **Frontend**       | Next.js 16 + React 19     | Admin dashboard, Customer app        |
-| **Database**       | PostgreSQL 16 + pgvector  | Relational data + vector embeddings  |
+| **Database**       | PostgreSQL 17 + pgvector  | Relational data + vector embeddings  |
 | **Cache**          | Redis 7                   | Caching, Pub/Sub, Rate limiting      |
 | **AI/ML**          | LangChain + CrewAI        | Multi-agent AI orchestration         |
 | **Infrastructure** | AWS ECS Fargate           | Serverless containers                |
@@ -54,14 +126,14 @@ operations through intelligent automation and AI-powered customer experiences.
 | Layer          | Technology                                         |
 | -------------- | -------------------------------------------------- |
 | **Monorepo**   | Turborepo v2 + pnpm v9                             |
-| **Frontend**   | Next.js 15 (App Router), React 19, TypeScript 5.7+ |
+| **Frontend**   | Next.js 16 (App Router), React 19, TypeScript 5.9+ |
 | **State**      | TanStack Query v5 (Server), Zustand v5 (Client)    |
 | **UI**         | Tailwind CSS v4, Shadcn UI, Lucide React           |
 | **Backend**    | Node.js 22 LTS, Fastify v5                         |
-| **Validation** | Zod v3.24                                          |
+| **Validation** | Zod v3.25                                          |
 | **Real-time**  | Socket.io v4 + Redis 7                             |
-| **Database**   | PostgreSQL 17 + Prisma v6                          |
-| **Testing**    | Vitest v3 + Testcontainers                         |
+| **Database**   | PostgreSQL 17 + Prisma v7                          |
+| **Testing**    | Vitest v3 + Playwright + Testcontainers            |
 
 ### Repository Structure
 
@@ -88,10 +160,51 @@ washwise/
 │   ├── database/            # Prisma schema & client
 │   ├── types/               # Shared Zod schemas & types
 │   └── config/              # Shared configuration
+├── services/
+│   ├── core-api/            # Java Spring Boot API
+│   └── ai-worker/           # Python AI/ML service
+├── e2e/                     # Playwright E2E tests
+├── observability/           # Prometheus, Grafana configs
+├── scripts/                 # Development scripts
 ├── docker/                  # Dockerfiles
 ├── docker-compose.yml       # Development services
 └── docker-compose.prod.yml  # Production deployment
 ```
+
+---
+
+## 💻 Development
+
+### Available Scripts
+
+```bash
+# Development
+pnpm dev              # Start all services
+pnpm build            # Build all packages
+pnpm test             # Run tests
+pnpm lint             # Run linter
+pnpm format           # Format code
+
+# Database
+pnpm db:generate      # Generate Prisma client
+pnpm db:migrate       # Run migrations
+pnpm db:studio        # Open Prisma Studio
+pnpm db:seed          # Seed database
+
+# Docker
+docker-compose up -d              # Start services
+docker-compose --profile tools up -d  # Start with dev tools
+docker-compose down               # Stop services
+```
+
+### VS Code Workspace
+
+Open `washwise.code-workspace` for the best development experience with:
+- Pre-configured launch configurations
+- Recommended extensions
+- Custom tasks
+
+---
 
 ## 🔐 Security Features
 
