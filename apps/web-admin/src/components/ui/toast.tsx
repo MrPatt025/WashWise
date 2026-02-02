@@ -53,7 +53,7 @@ const DEFAULT_DURATIONS: Record<ToastType, number> = {
 /**
  * Generate unique ID
  */
-const generateId = () => Math.random().toString(36).substr(2, 9);
+const generateId = () => Math.random().toString(36).substring(2, 11);
 
 /**
  * Toast provider props

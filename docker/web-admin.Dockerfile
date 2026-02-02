@@ -55,6 +55,11 @@ COPY --from=builder --chown=nextjs:nodejs /app/apps/web-admin/.next/static ./app
 
 USER nextjs
 
+# Health check runs as non-root user for security
+# NOSONAR - S7031: Intentionally placed after USER for least-privilege principle
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+    CMD wget -qO- http://localhost:3000/api/health || exit 1
+
 EXPOSE 3000
 
 ENV PORT=3000

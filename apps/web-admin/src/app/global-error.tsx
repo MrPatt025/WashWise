@@ -15,6 +15,10 @@ export default function GlobalError({
 }) {
   useEffect(() => {
     // Log to error tracking service
+    if (typeof reportError === "function") {
+      reportError(error);
+    }
+    // eslint-disable-next-line no-console
     console.error("[Global Error]", error);
   }, [error]);
 
@@ -111,6 +115,7 @@ export default function GlobalError({
             }}
           >
             <button
+              type="button"
               onClick={() => reset()}
               style={{
                 padding: "0.75rem 1.5rem",
@@ -129,6 +134,7 @@ export default function GlobalError({
               Try Again
             </button>
             <button
+              type="button"
               onClick={() => window.location.reload()}
               style={{
                 padding: "0.75rem 1.5rem",
@@ -147,6 +153,7 @@ export default function GlobalError({
               Reload Page
             </button>
             <button
+              type="button"
               onClick={() => (window.location.href = "/")}
               style={{
                 padding: "0.75rem 1.5rem",

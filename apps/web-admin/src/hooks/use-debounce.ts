@@ -158,15 +158,15 @@ export function useThrottle<T>(value: T, delay: number): T {
     if (elapsed >= delay) {
       lastRunRef.current = now;
       setThrottledValue(value);
-      return;
-    } else {
-      const timer = setTimeout(() => {
-        lastRunRef.current = Date.now();
-        setThrottledValue(value);
-      }, delay - elapsed);
-
-      return () => clearTimeout(timer);
+      return undefined;
     }
+    
+    const timer = setTimeout(() => {
+      lastRunRef.current = Date.now();
+      setThrottledValue(value);
+    }, delay - elapsed);
+
+    return () => clearTimeout(timer);
   }, [value, delay]);
 
   return throttledValue;

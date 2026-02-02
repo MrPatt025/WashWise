@@ -55,8 +55,8 @@ RUN chown -R spring:spring /app
 
 USER spring
 
-# Health check using liveness endpoint (doesn't require DB/Redis to be healthy)
-# This prevents container from being marked unhealthy during slow DB startup
+# Health check runs as non-root user for security (curl doesn't need root)
+# NOSONAR - S7031: Intentionally placed after USER for least-privilege principle
 HEALTHCHECK --interval=30s --timeout=10s --start-period=90s --retries=3 \
     CMD curl -sf http://localhost:8080/actuator/health/liveness || exit 1
 

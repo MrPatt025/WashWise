@@ -56,12 +56,12 @@ export interface ProgressEvent {
 // ============================================================================
 
 export class ApiClient {
-  private baseUrl: string;
-  private defaultHeaders: Record<string, string>;
-  private cache: Map<string, CacheEntry<unknown>> = new Map();
-  private requestInterceptors: RequestInterceptor[] = [];
-  private responseInterceptors: ResponseInterceptor[] = [];
-  private pendingRequests: Map<string, Promise<unknown>> = new Map();
+  private readonly baseUrl: string;
+  private readonly defaultHeaders: Record<string, string>;
+  private readonly cache: Map<string, CacheEntry<unknown>> = new Map();
+  private readonly requestInterceptors: RequestInterceptor[] = [];
+  private readonly responseInterceptors: ResponseInterceptor[] = [];
+  private readonly pendingRequests: Map<string, Promise<unknown>> = new Map();
 
   constructor(config: ApiClientConfig = {}) {
     this.baseUrl = config.baseUrl || "";
@@ -644,7 +644,7 @@ export async function downloadFile(
   }
 
   const contentLength = response.headers.get("content-length");
-  const total = contentLength ? parseInt(contentLength, 10) : 0;
+  const total = contentLength ? Number.parseInt(contentLength, 10) : 0;
   let loaded = 0;
 
   const reader = response.body?.getReader();
@@ -686,7 +686,7 @@ export async function downloadFile(
   link.download = filename;
   document.body.appendChild(link);
   link.click();
-  document.body.removeChild(link);
+  link.remove();
 
   URL.revokeObjectURL(objectUrl);
 }

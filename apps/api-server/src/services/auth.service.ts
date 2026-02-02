@@ -1,9 +1,12 @@
-import { prisma, type User, type Tenant } from "@washwise/database";
+import { createHash, randomUUID } from "node:crypto";
+
 import { hash, verify } from "argon2";
-import { randomUUID, createHash } from "crypto";
 import jwt from "jsonwebtoken";
+
+import { prisma, type Tenant, type User } from "@washwise/database";
 import { AUTH_CONSTANTS } from "@washwise/config";
-import type { LoginRequest, RegisterRequest, AuthResponse, TokenPayload } from "@washwise/types";
+import type { AuthResponse, LoginRequest, RegisterRequest, TokenPayload } from "@washwise/types";
+
 import env from "../config/env.js";
 
 // Helper to hash refresh token for storage

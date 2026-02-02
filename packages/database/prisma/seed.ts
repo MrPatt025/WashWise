@@ -57,7 +57,7 @@ async function main() {
       type: "WASHER" as const,
       capacityKg: 12,
       status: "BUSY" as const,
-      pricePerCycle: 5.0,
+      pricePerCycle: 5,
       location: "Row A",
     },
     {
@@ -111,7 +111,7 @@ async function main() {
     },
   });
 
-  const testUser = await prisma.user.upsert({
+  const _testUser = await prisma.user.upsert({
     where: {
       email: "test@other.com",
     },
@@ -141,7 +141,7 @@ async function main() {
       type: "WASHER",
       capacityKg: 8,
       status: "AVAILABLE",
-      pricePerCycle: 3.0,
+      pricePerCycle: 3,
       tenantId: testTenant.id,
     },
   });
@@ -156,6 +156,7 @@ main()
     console.error("❌ Seed failed:", e);
     process.exit(1);
   })
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   .finally(async () => {
     await prisma.$disconnect();
   });

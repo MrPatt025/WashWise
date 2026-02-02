@@ -25,10 +25,12 @@ export default function Error({
 }) {
   useEffect(() => {
     // Log the error to an error reporting service
+    // Using reportError for better stack traces and error tracking integration
+    if (typeof reportError === "function") {
+      reportError(error);
+    }
+    // eslint-disable-next-line no-console
     console.error("[Route Error]", error);
-
-    // In production, you would send to error tracking service
-    // Example: Sentry.captureException(error);
   }, [error]);
 
   return (
