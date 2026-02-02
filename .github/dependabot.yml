@@ -1,0 +1,187 @@
+# Dependabot Configuration
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates
+
+version: 2
+updates:
+  # ===========================================
+  # GitHub Actions
+  # ===========================================
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Bangkok"
+    commit-message:
+      prefix: "ci(deps)"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    open-pull-requests-limit: 5
+
+  # ===========================================
+  # Root npm packages
+  # ===========================================
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Bangkok"
+    commit-message:
+      prefix: "deps"
+    labels:
+      - "dependencies"
+      - "npm"
+    open-pull-requests-limit: 10
+    groups:
+      typescript:
+        patterns:
+          - "typescript*"
+          - "@types/*"
+      eslint:
+        patterns:
+          - "eslint*"
+          - "@eslint/*"
+      build-tools:
+        patterns:
+          - "turbo*"
+          - "prettier*"
+          - "husky*"
+          - "lint-staged*"
+
+  # ===========================================
+  # Web Admin (Next.js)
+  # ===========================================
+  - package-ecosystem: "npm"
+    directory: "/apps/web-admin"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+    commit-message:
+      prefix: "deps(web)"
+    labels:
+      - "dependencies"
+      - "web-admin"
+    open-pull-requests-limit: 10
+    groups:
+      nextjs:
+        patterns:
+          - "next"
+          - "next-*"
+          - "@next/*"
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react*"
+      tanstack:
+        patterns:
+          - "@tanstack/*"
+
+  # ===========================================
+  # API Server (Fastify)
+  # ===========================================
+  - package-ecosystem: "npm"
+    directory: "/apps/api-server"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+    commit-message:
+      prefix: "deps(api)"
+    labels:
+      - "dependencies"
+      - "api-server"
+    open-pull-requests-limit: 10
+    groups:
+      fastify:
+        patterns:
+          - "fastify"
+          - "@fastify/*"
+
+  # ===========================================
+  # Database Package (Prisma)
+  # ===========================================
+  - package-ecosystem: "npm"
+    directory: "/packages/database"
+    schedule:
+      interval: "weekly"
+      day: "thursday"
+    commit-message:
+      prefix: "deps(db)"
+    labels:
+      - "dependencies"
+      - "database"
+    open-pull-requests-limit: 5
+    groups:
+      prisma:
+        patterns:
+          - "prisma"
+          - "@prisma/*"
+
+  # ===========================================
+  # E2E Tests (Playwright)
+  # ===========================================
+  - package-ecosystem: "npm"
+    directory: "/e2e"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+    commit-message:
+      prefix: "deps(e2e)"
+    labels:
+      - "dependencies"
+      - "e2e"
+    open-pull-requests-limit: 3
+
+  # ===========================================
+  # Docker images
+  # ===========================================
+  - package-ecosystem: "docker"
+    directory: "/docker"
+    schedule:
+      interval: "weekly"
+      day: "saturday"
+    commit-message:
+      prefix: "deps(docker)"
+    labels:
+      - "dependencies"
+      - "docker"
+    open-pull-requests-limit: 5
+
+  # ===========================================
+  # Python (AI Worker)
+  # ===========================================
+  - package-ecosystem: "pip"
+    directory: "/services/ai-worker"
+    schedule:
+      interval: "weekly"
+      day: "saturday"
+    commit-message:
+      prefix: "deps(ai)"
+    labels:
+      - "dependencies"
+      - "python"
+    open-pull-requests-limit: 5
+
+  # ===========================================
+  # Java (Core API - Maven)
+  # ===========================================
+  - package-ecosystem: "maven"
+    directory: "/services/core-api"
+    schedule:
+      interval: "weekly"
+      day: "saturday"
+    commit-message:
+      prefix: "deps(java)"
+    labels:
+      - "dependencies"
+      - "java"
+    open-pull-requests-limit: 5
+    groups:
+      spring-boot:
+        patterns:
+          - "org.springframework.boot:*"
+          - "org.springframework:*"
