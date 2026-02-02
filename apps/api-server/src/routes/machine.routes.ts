@@ -1,4 +1,5 @@
 import type { FastifyInstance } from "fastify";
+import { z } from "zod";
 import {
   CreateMachineSchema,
   UpdateMachineSchema,
@@ -115,7 +116,7 @@ export async function machineRoutes(fastify: FastifyInstance) {
    * POST /machines
    * Create a new machine
    */
-  fastify.post<{ Body: CreateMachine }>(
+  fastify.post<{ Body: CreateMachine & { branchId: string } }>(
     "/",
     {
       preHandler: [fastify.requireRole(["ADMIN", "MANAGER"])],
@@ -126,29 +127,36 @@ export async function machineRoutes(fastify: FastifyInstance) {
         body: {
           type: "object",
           required: [
-            "serialNumber",
-            "label",
+            "name",
             "type",
-            "capacityKg",
             "pricePerCycle",
+            "branchId",
           ],
           properties: {
-            serialNumber: { type: "string", minLength: 1, maxLength: 50 },
-            label: { type: "string", minLength: 1, maxLength: 100 },
+            name: { type: "string", minLength: 1, maxLength: 100 },
+            machineNumber: { type: "string", maxLength: 20 },
             type: { type: "string", enum: ["WASHER", "DRYER"] },
             capacityKg: { type: "number", minimum: 0 },
             pricePerCycle: { type: "number", minimum: 0 },
-            location: { type: "string", maxLength: 200 },
+            cycleDurationMinutes: { type: "number", minimum: 1, maximum: 240 },
+            manufacturer: { type: "string", maxLength: 100 },
+            model: { type: "string", maxLength: 100 },
+            serialNumber: { type: "string", maxLength: 100 },
+            iotDeviceId: { type: "string", maxLength: 100 },
+            branchId: { type: "string", format: "uuid" },
           },
         },
       },
     },
     async (request, reply) => {
-      const data = CreateMachineSchema.parse(request.body);
+      const { branchId, ...data } = CreateMachineSchema.extend({
+        branchId: z.string().uuid(),
+      }).parse(request.body);
 
       try {
         const machine = await machineService.create(
           request.user!.tenantId,
+          branchId,
           data,
         );
         return reply.status(201).send(machine);

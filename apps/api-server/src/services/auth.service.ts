@@ -44,9 +44,21 @@ export class AuthService {
 
     // Create tenant and user in transaction
     const result = await prisma.$transaction(async (tx) => {
+      // Generate slug from tenant name
+      const baseSlug = data.tenantSlug || data.tenantName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      let slug = baseSlug;
+      let counter = 0;
+      
+      // Ensure unique slug
+      while (await tx.tenant.findUnique({ where: { slug } })) {
+        counter++;
+        slug = `${baseSlug}-${counter}`;
+      }
+      
       const tenant = await tx.tenant.create({
         data: {
           name: data.tenantName,
+          slug,
           plan: "FREE",
         },
       });
@@ -55,7 +67,7 @@ export class AuthService {
         data: {
           email: data.email,
           password: hashedPassword,
-          name: data.name,
+          name: `${data.firstName} ${data.lastName}`,
           role: "OWNER", // First user is owner
           tenantId: tenant.id,
         },
@@ -224,15 +236,25 @@ export class AuthService {
     user: UserWithTenant,
     accessToken: string,
   ): AuthResponse {
+    // Split the name into firstName and lastName
+    const nameParts = user.name.split(' ');
+    const firstName = nameParts[0] || '';
+    const lastName = nameParts.slice(1).join(' ') || '';
+    
     return {
       accessToken,
       user: {
         id: user.id,
         email: user.email,
-        name: user.name,
+        firstName,
+        lastName,
+        fullName: user.name,
         role: user.role,
-        tenantId: user.tenantId,
-        tenantName: user.tenant.name,
+        tenant: {
+          id: user.tenant.id,
+          name: user.tenant.name,
+          slug: user.tenant.slug,
+        },
       },
     };
   }

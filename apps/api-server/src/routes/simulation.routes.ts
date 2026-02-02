@@ -62,7 +62,7 @@ export async function simulationRoutes(fastify: FastifyInstance) {
       fastify.io?.to(roomName).emit("machine:update", {
         machineId: machine.id,
         status: machine.status,
-        updatedAt: machine.updatedAt.toISOString(),
+        updatedAt: machine.updatedAt,
       });
 
       fastify.log.info({

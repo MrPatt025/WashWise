@@ -7,6 +7,7 @@ import type {
   MachineStatus,
   PaginatedResponse,
 } from "@washwise/types";
+import type { Machine as PrismaMachine, MachineStatus as PrismaMachineStatus } from "@prisma/client";
 
 /**
  * Machine Service - Handles all machine-related operations
@@ -16,14 +17,18 @@ export class MachineService {
   /**
    * Create a new machine
    * @param tenantId - Required for multi-tenant isolation
+   * @param branchId - Required for branch association
    */
-  async create(tenantId: string, data: CreateMachine): Promise<Machine> {
+  async create(tenantId: string, branchId: string, data: CreateMachine): Promise<Machine> {
+    // Generate serial number if not provided
+    const serialNumber = data.serialNumber || `M-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    
     // Check for duplicate serial number within tenant
     const existing = await prisma.machine.findUnique({
       where: {
         tenantId_serialNumber: {
           tenantId,
-          serialNumber: data.serialNumber,
+          serialNumber,
         },
       },
     });
@@ -34,8 +39,16 @@ export class MachineService {
 
     const machine = await prisma.machine.create({
       data: {
-        ...data,
         tenantId,
+        branchId,
+        serialNumber,
+        label: data.name,
+        type: data.type,
+        capacityKg: data.capacityKg || 10,
+        pricePerCycle: data.pricePerCycle,
+        cycleDurationMins: data.cycleDurationMinutes || 45,
+        manufacturer: data.manufacturer,
+        model: data.model,
         status: "AVAILABLE",
       },
     });
@@ -68,10 +81,13 @@ export class MachineService {
     const { page = 1, limit = 20, type, status, search } = query;
     const skip = (page - 1) * limit;
 
+    // Map UI status to Prisma status
+    const prismaStatus = status ? this.mapToPrismaStatus(status) : undefined;
+
     const where = {
       tenantId, // CRITICAL: Always filter by tenant
       ...(type && { type }),
-      ...(status && { status }),
+      ...(prismaStatus && { status: prismaStatus }),
       ...(search && {
         OR: [
           { label: { contains: search, mode: "insensitive" as const } },
@@ -93,7 +109,7 @@ export class MachineService {
     const totalPages = Math.ceil(total / limit);
 
     return {
-      items: items.map(this.mapToMachine),
+      items: items.map((m) => this.mapToMachine(m)),
       total,
       page,
       limit,
@@ -125,7 +141,16 @@ export class MachineService {
 
     const machine = await prisma.machine.update({
       where: { id: machineId },
-      data,
+      data: {
+        ...(data.name && { label: data.name }),
+        ...(data.type && { type: data.type }),
+        ...(data.capacityKg !== undefined && { capacityKg: data.capacityKg }),
+        ...(data.pricePerCycle !== undefined && { pricePerCycle: data.pricePerCycle }),
+        ...(data.cycleDurationMinutes !== undefined && { cycleDurationMins: data.cycleDurationMinutes }),
+        ...(data.manufacturer && { manufacturer: data.manufacturer }),
+        ...(data.model && { model: data.model }),
+        ...(data.serialNumber && { serialNumber: data.serialNumber }),
+      },
     });
 
     return this.mapToMachine(machine);
@@ -139,7 +164,26 @@ export class MachineService {
     machineId: string,
     status: MachineStatus,
   ): Promise<Machine | null> {
-    return this.update(tenantId, machineId, { status });
+    // First verify ownership
+    const existing = await prisma.machine.findFirst({
+      where: {
+        id: machineId,
+        tenantId,
+      },
+    });
+
+    if (!existing) {
+      return null;
+    }
+
+    const prismaStatus = this.mapToPrismaStatus(status);
+    
+    const machine = await prisma.machine.update({
+      where: { id: machineId },
+      data: { status: prismaStatus },
+    });
+
+    return this.mapToMachine(machine);
   }
 
   /**
@@ -171,9 +215,9 @@ export class MachineService {
    */
   async getStats(tenantId: string): Promise<{
     total: number;
-    available: number;
-    busy: number;
-    offline: number;
+    idle: number;
+    inUse: number;
+    error: number;
     maintenance: number;
   }> {
     const stats = await prisma.machine.groupBy({
@@ -184,9 +228,9 @@ export class MachineService {
 
     const result = {
       total: 0,
-      available: 0,
-      busy: 0,
-      offline: 0,
+      idle: 0,
+      inUse: 0,
+      error: 0,
       maintenance: 0,
     };
 
@@ -196,13 +240,14 @@ export class MachineService {
 
       switch (stat.status) {
         case "AVAILABLE":
-          result.available = count;
+          result.idle = count;
           break;
         case "BUSY":
-          result.busy = count;
+          result.inUse = count;
           break;
         case "OFFLINE":
-          result.offline = count;
+        case "ERROR":
+          result.error += count;
           break;
         case "MAINTENANCE":
           result.maintenance = count;
@@ -214,37 +259,72 @@ export class MachineService {
   }
 
   /**
+   * Map Prisma status to UI status
+   */
+  private mapToUIStatus(status: PrismaMachineStatus): MachineStatus {
+    switch (status) {
+      case "AVAILABLE":
+        return "IDLE";
+      case "BUSY":
+        return "RUNNING";
+      case "OFFLINE":
+        return "OFFLINE";
+      case "MAINTENANCE":
+        return "MAINTENANCE";
+      case "ERROR":
+        return "ERROR";
+      default:
+        return "OFFLINE";
+    }
+  }
+
+  /**
+   * Map UI status to Prisma status
+   */
+  private mapToPrismaStatus(status: MachineStatus): PrismaMachineStatus {
+    switch (status) {
+      case "IDLE":
+        return "AVAILABLE";
+      case "RUNNING":
+        return "BUSY";
+      case "RESERVED":
+        return "BUSY";
+      case "OFFLINE":
+        return "OFFLINE";
+      case "MAINTENANCE":
+        return "MAINTENANCE";
+      case "OUT_OF_ORDER":
+        return "MAINTENANCE";
+      case "ERROR":
+        return "ERROR";
+      case "DISABLED":
+        return "OFFLINE";
+      default:
+        return "OFFLINE";
+    }
+  }
+
+  /**
    * Map Prisma model to domain type
    */
-  private mapToMachine(machine: {
-    id: string;
-    tenantId: string;
-    serialNumber: string;
-    label: string;
-    type: string;
-    capacityKg: number;
-    status: string;
-    pricePerCycle: number;
-    location: string | null;
-    createdAt: Date;
-    updatedAt: Date;
-  }): Machine {
+  private mapToMachine(machine: PrismaMachine): Machine {
     return {
       id: machine.id,
       tenantId: machine.tenantId,
-      serialNumber: machine.serialNumber,
+      name: machine.label,
       label: machine.label,
+      machineNumber: machine.serialNumber,
+      serialNumber: machine.serialNumber,
       type: machine.type as "WASHER" | "DRYER",
       capacityKg: machine.capacityKg,
-      status: machine.status as
-        | "AVAILABLE"
-        | "BUSY"
-        | "OFFLINE"
-        | "MAINTENANCE",
+      status: this.mapToUIStatus(machine.status),
       pricePerCycle: machine.pricePerCycle,
-      location: machine.location,
-      createdAt: machine.createdAt,
-      updatedAt: machine.updatedAt,
+      cycleDurationMinutes: machine.cycleDurationMins,
+      manufacturer: machine.manufacturer,
+      model: machine.model,
+      branchId: machine.branchId,
+      createdAt: machine.createdAt.toISOString(),
+      updatedAt: machine.updatedAt.toISOString(),
     };
   }
 }
