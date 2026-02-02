@@ -40,12 +40,12 @@ export function Breadcrumb({
 
   return (
     <nav aria-label={ariaLabel} className={className}>
-      <ol className="flex items-center flex-wrap gap-1">
+      <ol className="flex flex-wrap items-center gap-1">
         {childArray.map((child, index) => (
           <li key={index} className="flex items-center gap-1">
             {index > 0 && (
               <span className="text-gray-400 dark:text-gray-500">
-                {separator || <ChevronRight className="w-4 h-4" />}
+                {separator || <ChevronRight className="h-4 w-4" />}
               </span>
             )}
             {child}
@@ -68,13 +68,7 @@ interface BreadcrumbItemProps {
   className?: string;
 }
 
-export function BreadcrumbItem({
-  href,
-  current,
-  icon,
-  children,
-  className,
-}: BreadcrumbItemProps) {
+export function BreadcrumbItem({ href, current, icon, children, className }: BreadcrumbItemProps) {
   const content = (
     <>
       {icon && <span className="flex-shrink-0">{icon}</span>}
@@ -91,7 +85,7 @@ export function BreadcrumbItem({
           current
             ? "font-medium text-gray-900 dark:text-white"
             : "text-gray-500 dark:text-gray-400",
-          className,
+          className
         )}
       >
         {content}
@@ -103,8 +97,8 @@ export function BreadcrumbItem({
     <Link
       href={href}
       className={cn(
-        "flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors",
-        className,
+        "flex items-center gap-1.5 text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300",
+        className
       )}
     >
       {content}
@@ -121,21 +115,18 @@ interface BreadcrumbEllipsisProps {
   onClick?: () => void;
 }
 
-export function BreadcrumbEllipsis({
-  className,
-  onClick,
-}: BreadcrumbEllipsisProps) {
+export function BreadcrumbEllipsis({ className, onClick }: BreadcrumbEllipsisProps) {
   return (
     <button
       type="button"
       onClick={onClick}
       className={cn(
-        "flex items-center justify-center w-6 h-6 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors",
-        className,
+        "flex h-6 w-6 items-center justify-center rounded transition-colors hover:bg-gray-100 dark:hover:bg-gray-800",
+        className
       )}
       aria-label="Show more breadcrumbs"
     >
-      <MoreHorizontal className="w-4 h-4 text-gray-400" />
+      <MoreHorizontal className="h-4 w-4 text-gray-400" />
     </button>
   );
 }
@@ -161,7 +152,7 @@ export function SimpleBreadcrumb({
   separator,
   showHome = true,
   homeHref = "/",
-  homeIcon = <Home className="w-4 h-4" />,
+  homeIcon = <Home className="h-4 w-4" />,
   maxItems,
   itemsBeforeCollapse = 1,
   itemsAfterCollapse = 2,
@@ -169,9 +160,7 @@ export function SimpleBreadcrumb({
 }: SimpleBreadcrumbProps) {
   const [showAll, setShowAll] = React.useState(false);
 
-  const allItems = showHome
-    ? [{ label: "Home", href: homeHref, icon: homeIcon }, ...items]
-    : items;
+  const allItems = showHome ? [{ label: "Home", href: homeHref, icon: homeIcon }, ...items] : items;
 
   // Determine if we need to collapse
   const shouldCollapse = maxItems && allItems.length > maxItems && !showAll;
@@ -191,7 +180,7 @@ export function SimpleBreadcrumb({
 
   return (
     <nav aria-label="Breadcrumb" className={className}>
-      <ol className="flex items-center flex-wrap gap-1">
+      <ol className="flex flex-wrap items-center gap-1">
         {displayItems.map((item, index) => {
           const isLast = index === displayItems.length - 1;
           const typedItem = item as BreadcrumbItem & { isEllipsis?: boolean };
@@ -199,8 +188,8 @@ export function SimpleBreadcrumb({
           return (
             <li key={index} className="flex items-center gap-1">
               {index > 0 && (
-                <span className="text-gray-400 dark:text-gray-500 mx-1">
-                  {separator || <ChevronRight className="w-4 h-4" />}
+                <span className="mx-1 text-gray-400 dark:text-gray-500">
+                  {separator || <ChevronRight className="h-4 w-4" />}
                 </span>
               )}
 
@@ -233,20 +222,13 @@ interface BreadcrumbDropdownProps {
   className?: string;
 }
 
-export function BreadcrumbDropdown({
-  items,
-  trigger,
-  className,
-}: BreadcrumbDropdownProps) {
+export function BreadcrumbDropdown({ items, trigger, className }: BreadcrumbDropdownProps) {
   const [isOpen, setIsOpen] = React.useState(false);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
@@ -260,7 +242,7 @@ export function BreadcrumbDropdown({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-center w-6 h-6 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+        className="flex h-6 w-6 items-center justify-center rounded transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
         aria-expanded={isOpen}
         aria-haspopup="menu"
       >
@@ -268,13 +250,13 @@ export function BreadcrumbDropdown({
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
+        <div className="absolute left-0 top-full z-50 mt-1 w-48 rounded-lg border border-gray-200 bg-white py-1 shadow-lg dark:border-gray-700 dark:bg-gray-800">
           {items.map((item, index) => (
             <Link
               key={index}
               href={item.href || "#"}
               onClick={() => setIsOpen(false)}
-              className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700"
             >
               {item.icon}
               {item.label}
@@ -299,33 +281,26 @@ export function StyledBreadcrumb({
   variant = "default",
   showHome = true,
   homeHref = "/",
-  homeIcon = <Home className="w-4 h-4" />,
+  homeIcon = <Home className="h-4 w-4" />,
   separator,
   className,
 }: StyledBreadcrumbProps) {
-  const allItems = showHome
-    ? [{ label: "Home", href: homeHref, icon: homeIcon }, ...items]
-    : items;
+  const allItems = showHome ? [{ label: "Home", href: homeHref, icon: homeIcon }, ...items] : items;
 
   if (variant === "contained") {
     return (
       <nav
         aria-label="Breadcrumb"
-        className={cn(
-          "bg-gray-100 dark:bg-gray-800 rounded-lg px-4 py-2",
-          className,
-        )}
+        className={cn("rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-800", className)}
       >
-        <ol className="flex items-center flex-wrap gap-1">
+        <ol className="flex flex-wrap items-center gap-1">
           {allItems.map((item, index) => {
             const isLast = index === allItems.length - 1;
 
             return (
               <li key={index} className="flex items-center gap-1">
                 {index > 0 && (
-                  <span className="text-gray-400 dark:text-gray-500 mx-1">
-                    {separator || "/"}
-                  </span>
+                  <span className="mx-1 text-gray-400 dark:text-gray-500">{separator || "/"}</span>
                 )}
                 <BreadcrumbItem
                   href={isLast ? undefined : item.href}
@@ -345,15 +320,13 @@ export function StyledBreadcrumb({
   if (variant === "pills") {
     return (
       <nav aria-label="Breadcrumb" className={className}>
-        <ol className="flex items-center flex-wrap gap-2">
+        <ol className="flex flex-wrap items-center gap-2">
           {allItems.map((item, index) => {
             const isLast = index === allItems.length - 1;
 
             const content = (
               <>
-                {item.icon && (
-                  <span className="flex-shrink-0">{item.icon}</span>
-                )}
+                {item.icon && <span className="flex-shrink-0">{item.icon}</span>}
                 <span>{item.label}</span>
               </>
             );
@@ -364,10 +337,10 @@ export function StyledBreadcrumb({
                   <span
                     aria-current={isLast ? "page" : undefined}
                     className={cn(
-                      "inline-flex items-center gap-1.5 px-3 py-1 text-sm rounded-full",
+                      "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm",
                       isLast
-                        ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 font-medium"
-                        : "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400",
+                        ? "bg-blue-100 font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                        : "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
                     )}
                   >
                     {content}
@@ -380,7 +353,7 @@ export function StyledBreadcrumb({
               <li key={index}>
                 <Link
                   href={item.href}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 text-sm rounded-full bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-600 transition-colors hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
                 >
                   {content}
                 </Link>
@@ -426,20 +399,12 @@ export function PageHeader({
 }: PageHeaderProps) {
   return (
     <div className={cn("space-y-4", className)}>
-      {breadcrumbs && breadcrumbs.length > 0 && (
-        <SimpleBreadcrumb items={breadcrumbs} />
-      )}
+      {breadcrumbs && breadcrumbs.length > 0 && <SimpleBreadcrumb items={breadcrumbs} />}
 
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-            {title}
-          </h1>
-          {description && (
-            <p className="mt-1 text-gray-500 dark:text-gray-400">
-              {description}
-            </p>
-          )}
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{title}</h1>
+          {description && <p className="mt-1 text-gray-500 dark:text-gray-400">{description}</p>}
         </div>
         {actions && <div className="flex items-center gap-3">{actions}</div>}
       </div>
@@ -473,8 +438,7 @@ export function DynamicBreadcrumb({
   const items: BreadcrumbItem[] = segments.map((segment, index) => {
     const href = "/" + segments.slice(0, index + 1).join("/");
     const label =
-      labels[segment] ||
-      segment.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
+      labels[segment] || segment.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
 
     return {
       label,

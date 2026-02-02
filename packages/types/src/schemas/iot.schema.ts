@@ -5,17 +5,17 @@ import { z } from "zod";
 // ============================================
 
 export const IoTLogSchema = z.object({
-    id: z.string().uuid(),
-    machineId: z.string().uuid(),
-    event: z.string(),
-    payload: z.record(z.unknown()).nullable().optional(),
-    timestamp: z.date(),
+  id: z.string().uuid(),
+  machineId: z.string().uuid(),
+  event: z.string(),
+  payload: z.record(z.unknown()).nullable().optional(),
+  timestamp: z.date(),
 });
 
 export const CreateIoTLogSchema = z.object({
-    machineId: z.string().uuid(),
-    event: z.string(),
-    payload: z.record(z.unknown()).nullable().optional(),
+  machineId: z.string().uuid(),
+  event: z.string(),
+  payload: z.record(z.unknown()).nullable().optional(),
 });
 
 export type IoTLog = z.infer<typeof IoTLogSchema>;

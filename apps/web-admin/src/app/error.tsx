@@ -37,12 +37,11 @@ export default function Error({
         <CardHeader className="text-center">
           {/* Animated error icon */}
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10">
-            <AlertTriangle className="h-8 w-8 text-destructive animate-pulse" />
+            <AlertTriangle className="h-8 w-8 animate-pulse text-destructive" />
           </div>
           <CardTitle className="text-2xl">Something went wrong</CardTitle>
           <CardDescription className="text-base">
-            We encountered an unexpected error. Our team has been notified and
-            is working on a fix.
+            We encountered an unexpected error. Our team has been notified and is working on a fix.
           </CardDescription>
         </CardHeader>
 
@@ -56,28 +55,20 @@ export default function Error({
               </summary>
               <div className="mt-3 space-y-2">
                 <div className="rounded bg-background p-2">
-                  <p className="text-xs font-medium text-muted-foreground">
-                    Error Message
-                  </p>
+                  <p className="text-xs font-medium text-muted-foreground">Error Message</p>
                   <p className="font-mono text-sm text-destructive">
                     {error.message || "Unknown error"}
                   </p>
                 </div>
                 {error.digest && (
                   <div className="rounded bg-background p-2">
-                    <p className="text-xs font-medium text-muted-foreground">
-                      Error Digest
-                    </p>
-                    <p className="font-mono text-xs text-muted-foreground">
-                      {error.digest}
-                    </p>
+                    <p className="text-xs font-medium text-muted-foreground">Error Digest</p>
+                    <p className="font-mono text-xs text-muted-foreground">{error.digest}</p>
                   </div>
                 )}
                 {error.stack && (
                   <div className="rounded bg-background p-2">
-                    <p className="text-xs font-medium text-muted-foreground">
-                      Stack Trace
-                    </p>
+                    <p className="text-xs font-medium text-muted-foreground">Stack Trace</p>
                     <pre className="max-h-40 overflow-auto whitespace-pre-wrap font-mono text-xs text-muted-foreground">
                       {error.stack}
                     </pre>

@@ -52,11 +52,9 @@ export function ProgressBar({
     <div className={cn("w-full", className)}>
       {/* Label and value on top */}
       {(label || (showValue && valuePosition === "top")) && (
-        <div className="flex justify-between items-center mb-1">
+        <div className="mb-1 flex items-center justify-between">
           {label && (
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              {label}
-            </span>
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</span>
           )}
           {showValue && valuePosition === "top" && (
             <span className="text-sm text-gray-600 dark:text-gray-400">
@@ -70,8 +68,8 @@ export function ProgressBar({
       <div className="flex items-center gap-2">
         <div
           className={cn(
-            "flex-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden",
-            sizeClasses[size],
+            "flex-1 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700",
+            sizeClasses[size]
           )}
           role="progressbar"
           aria-valuenow={value}
@@ -87,21 +85,19 @@ export function ProgressBar({
               size === "lg" &&
                 showValue &&
                 valuePosition === "inside" &&
-                "flex items-center justify-center",
+                "flex items-center justify-center"
             )}
             style={{ width: `${percentage}%` }}
           >
             {size === "lg" && showValue && valuePosition === "inside" && (
-              <span className="text-xs font-medium text-white px-2">
-                {Math.round(percentage)}%
-              </span>
+              <span className="px-2 text-xs font-medium text-white">{Math.round(percentage)}%</span>
             )}
           </div>
         </div>
 
         {/* Value outside */}
         {showValue && valuePosition === "outside" && (
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300 min-w-[3rem] text-right">
+          <span className="min-w-[3rem] text-right text-sm font-medium text-gray-700 dark:text-gray-300">
             {Math.round(percentage)}%
           </span>
         )}
@@ -150,8 +146,8 @@ export function MultiProgress({
     <div className={cn("w-full", className)}>
       <div
         className={cn(
-          "flex bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden",
-          sizeClasses[size],
+          "flex overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700",
+          sizeClasses[size]
         )}
       >
         {segments.map((segment, index) => {
@@ -163,27 +159,23 @@ export function MultiProgress({
                 "h-full transition-all duration-500",
                 segment.color || defaultColors[index % defaultColors.length],
                 index === 0 && "rounded-l-full",
-                index === segments.length - 1 && "rounded-r-full",
+                index === segments.length - 1 && "rounded-r-full"
               )}
               style={{ width: `${width}%` }}
-              title={
-                segment.label
-                  ? `${segment.label}: ${segment.value}`
-                  : String(segment.value)
-              }
+              title={segment.label ? `${segment.label}: ${segment.value}` : String(segment.value)}
             />
           );
         })}
       </div>
 
       {showLegend && (
-        <div className="flex flex-wrap gap-4 mt-2">
+        <div className="mt-2 flex flex-wrap gap-4">
           {segments.map((segment, index) => (
             <div key={index} className="flex items-center gap-1.5">
               <div
                 className={cn(
-                  "w-3 h-3 rounded-full",
-                  segment.color || defaultColors[index % defaultColors.length],
+                  "h-3 w-3 rounded-full",
+                  segment.color || defaultColors[index % defaultColors.length]
                 )}
               />
               <span className="text-sm text-gray-600 dark:text-gray-400">
@@ -243,7 +235,7 @@ export function CircularProgress({
       aria-valuemax={max}
     >
       <div className="relative" style={{ width: size, height: size }}>
-        <svg className="transform -rotate-90" width={size} height={size}>
+        <svg className="-rotate-90 transform" width={size} height={size}>
           {/* Background circle */}
           <circle
             className="stroke-gray-200 dark:stroke-gray-700"
@@ -255,10 +247,7 @@ export function CircularProgress({
           />
           {/* Progress circle */}
           <circle
-            className={cn(
-              "transition-all duration-500 ease-out",
-              circularVariantColors[variant],
-            )}
+            className={cn("transition-all duration-500 ease-out", circularVariantColors[variant])}
             fill="none"
             strokeWidth={strokeWidth}
             strokeLinecap="round"
@@ -281,11 +270,7 @@ export function CircularProgress({
         )}
       </div>
 
-      {label && (
-        <span className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-          {label}
-        </span>
-      )}
+      {label && <span className="mt-2 text-sm text-gray-600 dark:text-gray-400">{label}</span>}
     </div>
   );
 }
@@ -319,45 +304,35 @@ export function StepProgress({
         orientation === "horizontal"
           ? "flex items-start justify-between"
           : "flex flex-col space-y-4",
-        className,
+        className
       )}
     >
       {steps.map((step, index) => {
         const status =
           step.status ||
-          (index < currentStep
-            ? "completed"
-            : index === currentStep
-              ? "current"
-              : "upcoming");
+          (index < currentStep ? "completed" : index === currentStep ? "current" : "upcoming");
 
         return (
           <div
             key={index}
             className={cn(
               "flex",
-              orientation === "horizontal"
-                ? "flex-col items-center flex-1"
-                : "items-start gap-3",
+              orientation === "horizontal" ? "flex-1 flex-col items-center" : "items-start gap-3"
             )}
           >
             {/* Step indicator and connector */}
             <div
               className={cn(
                 "flex items-center",
-                orientation === "horizontal" ? "w-full" : "flex-col",
+                orientation === "horizontal" ? "w-full" : "flex-col"
               )}
             >
               {/* Connector before */}
               {index > 0 && (
                 <div
                   className={cn(
-                    orientation === "horizontal"
-                      ? "flex-1 h-0.5"
-                      : "w-0.5 h-6 mb-2",
-                    status === "upcoming"
-                      ? "bg-gray-200 dark:bg-gray-700"
-                      : "bg-blue-600",
+                    orientation === "horizontal" ? "h-0.5 flex-1" : "mb-2 h-6 w-0.5",
+                    status === "upcoming" ? "bg-gray-200 dark:bg-gray-700" : "bg-blue-600"
                   )}
                 />
               )}
@@ -365,21 +340,16 @@ export function StepProgress({
               {/* Step circle */}
               <div
                 className={cn(
-                  "flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors",
+                  "flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-sm font-medium transition-colors",
                   status === "completed"
                     ? "bg-blue-600 text-white"
                     : status === "current"
                       ? "border-2 border-blue-600 text-blue-600"
-                      : "border-2 border-gray-300 dark:border-gray-600 text-gray-400",
+                      : "border-2 border-gray-300 text-gray-400 dark:border-gray-600"
                 )}
               >
                 {status === "completed" ? (
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -396,21 +366,15 @@ export function StepProgress({
               {index < steps.length - 1 && orientation === "horizontal" && (
                 <div
                   className={cn(
-                    "flex-1 h-0.5",
-                    status === "completed"
-                      ? "bg-blue-600"
-                      : "bg-gray-200 dark:bg-gray-700",
+                    "h-0.5 flex-1",
+                    status === "completed" ? "bg-blue-600" : "bg-gray-200 dark:bg-gray-700"
                   )}
                 />
               )}
             </div>
 
             {/* Step label */}
-            <div
-              className={cn(
-                orientation === "horizontal" ? "mt-2 text-center" : "",
-              )}
-            >
+            <div className={cn(orientation === "horizontal" ? "mt-2 text-center" : "")}>
               <p
                 className={cn(
                   "text-sm font-medium",
@@ -418,13 +382,13 @@ export function StepProgress({
                     ? "text-blue-600"
                     : status === "completed"
                       ? "text-gray-900 dark:text-white"
-                      : "text-gray-400",
+                      : "text-gray-400"
                 )}
               >
                 {step.label}
               </p>
               {step.description && (
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
                   {step.description}
                 </p>
               )}
@@ -480,18 +444,16 @@ export function CountdownProgress({
   return (
     <div className={cn("w-full", className)}>
       {showTime && (
-        <div className="flex justify-between items-center mb-1">
-          <span className="text-sm text-gray-600 dark:text-gray-400">
-            Time remaining
-          </span>
+        <div className="mb-1 flex items-center justify-between">
+          <span className="text-sm text-gray-600 dark:text-gray-400">Time remaining</span>
           <span
             className={cn(
-              "text-sm font-mono font-medium",
+              "font-mono text-sm font-medium",
               isCritical
                 ? "text-red-600"
                 : isLow
                   ? "text-yellow-600"
-                  : "text-gray-900 dark:text-white",
+                  : "text-gray-900 dark:text-white"
             )}
           >
             {formatTime(remainingTime)}

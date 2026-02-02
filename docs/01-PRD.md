@@ -2,11 +2,15 @@
 
 ## 1. Executive Summary
 
-**WashWise** is an enterprise-grade, multi-tenant SaaS platform for smart laundromat management. It combines real-time IoT machine monitoring, intelligent booking systems, secure payment processing, and AI-powered analytics to help laundromat owners optimize operations and improve customer experience.
+**WashWise** is an enterprise-grade, multi-tenant SaaS platform for smart laundromat management. It
+combines real-time IoT machine monitoring, intelligent booking systems, secure payment processing,
+and AI-powered analytics to help laundromat owners optimize operations and improve customer
+experience.
 
 ### Vision Statement
 
-> "Empower laundromat businesses with intelligent automation, real-time insights, and AI-driven optimization to maximize revenue and customer satisfaction."
+> "Empower laundromat businesses with intelligent automation, real-time insights, and AI-driven
+> optimization to maximize revenue and customer satisfaction."
 
 ### Product Goals
 

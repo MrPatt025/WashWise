@@ -52,7 +52,7 @@ const FormField = React.forwardRef<HTMLInputElement, FormFieldProps>(
       disabled,
       ...props
     },
-    ref,
+    ref
   ) => {
     const generatedId = React.useId();
     const [showPassword, setShowPassword] = React.useState(false);
@@ -73,7 +73,7 @@ const FormField = React.forwardRef<HTMLInputElement, FormFieldProps>(
             className={cn(
               "text-sm font-medium",
               hasError && "text-destructive",
-              hasSuccess && "text-green-600",
+              hasSuccess && "text-green-600"
             )}
           >
             {label}
@@ -99,45 +99,33 @@ const FormField = React.forwardRef<HTMLInputElement, FormFieldProps>(
             className={cn(
               "transition-all duration-200",
               startIcon && "pl-10",
-              (endIcon || (isPassword && showPasswordToggle) || isLoading) &&
-                "pr-10",
-              hasError &&
-                "border-destructive focus-visible:ring-destructive/30",
+              (endIcon || (isPassword && showPasswordToggle) || isLoading) && "pr-10",
+              hasError && "border-destructive focus-visible:ring-destructive/30",
               hasSuccess && "border-green-500 focus-visible:ring-green-500/30",
-              className,
+              className
             )}
             aria-invalid={hasError}
             aria-describedby={
-              hasError
-                ? `${fieldId}-error`
-                : helperText
-                  ? `${fieldId}-helper`
-                  : undefined
+              hasError ? `${fieldId}-error` : helperText ? `${fieldId}-helper` : undefined
             }
             {...props}
           />
 
           {/* End icons */}
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
+          <div className="absolute right-3 top-1/2 flex -translate-y-1/2 items-center gap-2">
             {/* Loading indicator */}
-            {isLoading && (
-              <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-            )}
+            {isLoading && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />}
 
             {/* Password toggle */}
             {isPassword && showPasswordToggle && !isLoading && (
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-muted-foreground transition-colors hover:text-foreground"
                 tabIndex={-1}
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4" />
-                ) : (
-                  <Eye className="h-4 w-4" />
-                )}
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             )}
 
@@ -147,12 +135,8 @@ const FormField = React.forwardRef<HTMLInputElement, FormFieldProps>(
             {/* Status indicator */}
             {!isLoading && !endIcon && !showPasswordToggle && (
               <>
-                {hasError && (
-                  <AlertCircle className="h-4 w-4 text-destructive" />
-                )}
-                {hasSuccess && (
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                )}
+                {hasError && <AlertCircle className="h-4 w-4 text-destructive" />}
+                {hasSuccess && <CheckCircle className="h-4 w-4 text-green-500" />}
               </>
             )}
           </div>
@@ -184,7 +168,7 @@ const FormField = React.forwardRef<HTMLInputElement, FormFieldProps>(
         )}
       </div>
     );
-  },
+  }
 );
 FormField.displayName = "FormField";
 
@@ -200,19 +184,7 @@ export interface FormTextareaProps extends React.TextareaHTMLAttributes<HTMLText
 }
 
 const FormTextarea = React.forwardRef<HTMLTextAreaElement, FormTextareaProps>(
-  (
-    {
-      label,
-      helperText,
-      error,
-      success,
-      containerClassName,
-      className,
-      id,
-      ...props
-    },
-    ref,
-  ) => {
+  ({ label, helperText, error, success, containerClassName, className, id, ...props }, ref) => {
     const generatedId = React.useId();
     const fieldId = id || generatedId;
     const hasError = !!error;
@@ -223,10 +195,7 @@ const FormTextarea = React.forwardRef<HTMLTextAreaElement, FormTextareaProps>(
         {label && (
           <Label
             htmlFor={fieldId}
-            className={cn(
-              "text-sm font-medium",
-              hasError && "text-destructive",
-            )}
+            className={cn("text-sm font-medium", hasError && "text-destructive")}
           >
             {label}
             {props.required && <span className="ml-1 text-destructive">*</span>}
@@ -237,10 +206,10 @@ const FormTextarea = React.forwardRef<HTMLTextAreaElement, FormTextareaProps>(
           ref={ref}
           id={fieldId}
           className={cn(
-            "flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200",
+            "flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background transition-all duration-200 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
             hasError && "border-destructive focus-visible:ring-destructive/30",
             hasSuccess && "border-green-500 focus-visible:ring-green-500/30",
-            className,
+            className
           )}
           aria-invalid={hasError}
           {...props}
@@ -257,7 +226,7 @@ const FormTextarea = React.forwardRef<HTMLTextAreaElement, FormTextareaProps>(
         )}
       </div>
     );
-  },
+  }
 );
 FormTextarea.displayName = "FormTextarea";
 

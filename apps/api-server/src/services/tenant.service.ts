@@ -19,10 +19,7 @@ export class TenantService {
   /**
    * Update tenant
    */
-  async update(
-    tenantId: string,
-    data: Partial<CreateTenant>,
-  ): Promise<Tenant | null> {
+  async update(tenantId: string, data: Partial<CreateTenant>): Promise<Tenant | null> {
     const tenant = await prisma.tenant.update({
       where: { id: tenantId },
       data,

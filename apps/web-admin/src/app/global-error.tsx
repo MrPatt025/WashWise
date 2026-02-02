@@ -96,8 +96,8 @@ export default function GlobalError({
               maxWidth: "400px",
             }}
           >
-            We encountered a critical error. Our team has been notified and is
-            working to fix the issue.
+            We encountered a critical error. Our team has been notified and is working to fix the
+            issue.
           </p>
 
           {/* Actions */}
@@ -123,12 +123,8 @@ export default function GlobalError({
                 fontSize: "0.875rem",
                 transition: "background-color 0.2s",
               }}
-              onMouseOver={(e) =>
-                (e.currentTarget.style.backgroundColor = "#2563eb")
-              }
-              onMouseOut={(e) =>
-                (e.currentTarget.style.backgroundColor = "#3b82f6")
-              }
+              onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#2563eb")}
+              onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#3b82f6")}
             >
               Try Again
             </button>
@@ -145,12 +141,8 @@ export default function GlobalError({
                 fontSize: "0.875rem",
                 transition: "background-color 0.2s",
               }}
-              onMouseOver={(e) =>
-                (e.currentTarget.style.backgroundColor = "#f3f4f6")
-              }
-              onMouseOut={(e) =>
-                (e.currentTarget.style.backgroundColor = "transparent")
-              }
+              onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#f3f4f6")}
+              onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
             >
               Reload Page
             </button>

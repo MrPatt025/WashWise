@@ -1,14 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  useForm,
-  Controller,
-  UseFormReturn,
-  FieldValues,
-  Path,
-  PathValue,
-} from "react-hook-form";
+import { useForm, Controller, UseFormReturn, FieldValues, Path, PathValue } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
@@ -49,14 +42,9 @@ export function FormField({
         </Label>
       )}
       {children}
-      {description && !error && (
-        <p className="text-sm text-muted-foreground">{description}</p>
-      )}
+      {description && !error && <p className="text-sm text-muted-foreground">{description}</p>}
       {error && (
-        <p
-          className="flex items-center gap-1 text-sm text-destructive"
-          role="alert"
-        >
+        <p className="flex items-center gap-1 text-sm text-destructive" role="alert">
           <AlertCircle className="h-4 w-4" />
           {error}
         </p>
@@ -91,7 +79,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
       id,
       ...props
     },
-    ref,
+    ref
   ) => {
     const generatedId = React.useId();
     const inputId = id || generatedId;
@@ -117,7 +105,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
               leftIcon && "pl-10",
               rightIcon && "pr-10",
               error && "border-destructive focus-visible:ring-destructive",
-              className,
+              className
             )}
             aria-invalid={!!error}
             aria-describedby={error ? `${inputId}-error` : undefined}
@@ -136,7 +124,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
         </div>
       </FormField>
     );
-  },
+  }
 );
 TextInput.displayName = "TextInput";
 
@@ -150,70 +138,63 @@ export interface PasswordInputProps extends Omit<
   showStrengthIndicator?: boolean;
 }
 
-export const PasswordInput = React.forwardRef<
-  HTMLInputElement,
-  PasswordInputProps
->(({ showStrengthIndicator, value, ...props }, ref) => {
-  const [showPassword, setShowPassword] = React.useState(false);
+export const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
+  ({ showStrengthIndicator, value, ...props }, ref) => {
+    const [showPassword, setShowPassword] = React.useState(false);
 
-  // Calculate password strength
-  const strength = React.useMemo(() => {
-    if (!value || typeof value !== "string") return 0;
-    let score = 0;
-    if (value.length >= 8) score++;
-    if (value.length >= 12) score++;
-    if (/[a-z]/.test(value) && /[A-Z]/.test(value)) score++;
-    if (/\d/.test(value)) score++;
-    if (/[^a-zA-Z0-9]/.test(value)) score++;
-    return Math.min(score, 4);
-  }, [value]);
+    // Calculate password strength
+    const strength = React.useMemo(() => {
+      if (!value || typeof value !== "string") return 0;
+      let score = 0;
+      if (value.length >= 8) score++;
+      if (value.length >= 12) score++;
+      if (/[a-z]/.test(value) && /[A-Z]/.test(value)) score++;
+      if (/\d/.test(value)) score++;
+      if (/[^a-zA-Z0-9]/.test(value)) score++;
+      return Math.min(score, 4);
+    }, [value]);
 
-  const strengthLabels = ["Very Weak", "Weak", "Fair", "Strong", "Very Strong"];
-  const strengthColors = [
-    "bg-red-500",
-    "bg-orange-500",
-    "bg-yellow-500",
-    "bg-lime-500",
-    "bg-green-500",
-  ];
+    const strengthLabels = ["Very Weak", "Weak", "Fair", "Strong", "Very Strong"];
+    const strengthColors = [
+      "bg-red-500",
+      "bg-orange-500",
+      "bg-yellow-500",
+      "bg-lime-500",
+      "bg-green-500",
+    ];
 
-  return (
-    <div className="space-y-2">
-      <TextInput
-        ref={ref}
-        type={showPassword ? "text" : "password"}
-        value={value}
-        rightIcon={
-          showPassword ? (
-            <EyeOff className="h-4 w-4" />
-          ) : (
-            <Eye className="h-4 w-4" />
-          )
-        }
-        onRightIconClick={() => setShowPassword(!showPassword)}
-        {...props}
-      />
-      {showStrengthIndicator && value && (
-        <div className="space-y-1">
-          <div className="flex gap-1">
-            {[0, 1, 2, 3].map((index) => (
-              <div
-                key={index}
-                className={cn(
-                  "h-1 flex-1 rounded-full transition-colors",
-                  index < strength ? strengthColors[strength] : "bg-muted",
-                )}
-              />
-            ))}
+    return (
+      <div className="space-y-2">
+        <TextInput
+          ref={ref}
+          type={showPassword ? "text" : "password"}
+          value={value}
+          rightIcon={showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+          onRightIconClick={() => setShowPassword(!showPassword)}
+          {...props}
+        />
+        {showStrengthIndicator && value && (
+          <div className="space-y-1">
+            <div className="flex gap-1">
+              {[0, 1, 2, 3].map((index) => (
+                <div
+                  key={index}
+                  className={cn(
+                    "h-1 flex-1 rounded-full transition-colors",
+                    index < strength ? strengthColors[strength] : "bg-muted"
+                  )}
+                />
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Password strength: {strengthLabels[strength]}
+            </p>
           </div>
-          <p className="text-xs text-muted-foreground">
-            Password strength: {strengthLabels[strength]}
-          </p>
-        </div>
-      )}
-    </div>
-  );
-});
+        )}
+      </div>
+    );
+  }
+);
 PasswordInput.displayName = "PasswordInput";
 
 /**
@@ -226,10 +207,7 @@ export interface TextareaInputProps extends React.TextareaHTMLAttributes<HTMLTex
   showCharCount?: boolean;
 }
 
-export const TextareaInput = React.forwardRef<
-  HTMLTextAreaElement,
-  TextareaInputProps
->(
+export const TextareaInput = React.forwardRef<HTMLTextAreaElement, TextareaInputProps>(
   (
     {
       label,
@@ -243,7 +221,7 @@ export const TextareaInput = React.forwardRef<
       id,
       ...props
     },
-    ref,
+    ref
   ) => {
     const generatedId = React.useId();
     const inputId = id || generatedId;
@@ -267,7 +245,7 @@ export const TextareaInput = React.forwardRef<
               "flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
               error && "border-destructive focus-visible:ring-destructive",
               showCharCount && "pb-6",
-              className,
+              className
             )}
             aria-invalid={!!error}
             {...props}
@@ -280,7 +258,7 @@ export const TextareaInput = React.forwardRef<
         </div>
       </FormField>
     );
-  },
+  }
 );
 TextareaInput.displayName = "TextareaInput";
 
@@ -296,41 +274,38 @@ export interface CheckboxInputProps extends Omit<
   error?: string;
 }
 
-export const CheckboxInput = React.forwardRef<
-  HTMLInputElement,
-  CheckboxInputProps
->(({ label, description, error, className, id, ...props }, ref) => {
-  const generatedId = React.useId();
-  const inputId = id || generatedId;
+export const CheckboxInput = React.forwardRef<HTMLInputElement, CheckboxInputProps>(
+  ({ label, description, error, className, id, ...props }, ref) => {
+    const generatedId = React.useId();
+    const inputId = id || generatedId;
 
-  return (
-    <div className={cn("space-y-1", className)}>
-      <div className="flex items-start gap-3">
-        <input
-          ref={ref}
-          type="checkbox"
-          id={inputId}
-          className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
-          {...props}
-        />
-        <div className="space-y-1">
-          <Label htmlFor={inputId} className="font-normal cursor-pointer">
-            {label}
-          </Label>
-          {description && (
-            <p className="text-sm text-muted-foreground">{description}</p>
-          )}
+    return (
+      <div className={cn("space-y-1", className)}>
+        <div className="flex items-start gap-3">
+          <input
+            ref={ref}
+            type="checkbox"
+            id={inputId}
+            className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+            {...props}
+          />
+          <div className="space-y-1">
+            <Label htmlFor={inputId} className="cursor-pointer font-normal">
+              {label}
+            </Label>
+            {description && <p className="text-sm text-muted-foreground">{description}</p>}
+          </div>
         </div>
+        {error && (
+          <p className="ml-7 flex items-center gap-1 text-sm text-destructive">
+            <AlertCircle className="h-4 w-4" />
+            {error}
+          </p>
+        )}
       </div>
-      {error && (
-        <p className="flex items-center gap-1 text-sm text-destructive ml-7">
-          <AlertCircle className="h-4 w-4" />
-          {error}
-        </p>
-      )}
-    </div>
-  );
-});
+    );
+  }
+);
 CheckboxInput.displayName = "CheckboxInput";
 
 /**
@@ -367,17 +342,9 @@ export function RadioGroup({
   className,
 }: RadioGroupProps) {
   return (
-    <FormField
-      label={label}
-      error={error}
-      required={required}
-      className={className}
-    >
+    <FormField label={label} error={error} required={required} className={className}>
       <div
-        className={cn(
-          "flex gap-4",
-          orientation === "vertical" && "flex-col gap-3",
-        )}
+        className={cn("flex gap-4", orientation === "vertical" && "flex-col gap-3")}
         role="radiogroup"
         aria-label={label}
       >
@@ -385,8 +352,8 @@ export function RadioGroup({
           <label
             key={option.value}
             className={cn(
-              "flex items-start gap-3 cursor-pointer",
-              option.disabled && "cursor-not-allowed opacity-50",
+              "flex cursor-pointer items-start gap-3",
+              option.disabled && "cursor-not-allowed opacity-50"
             )}
           >
             <input
@@ -396,14 +363,12 @@ export function RadioGroup({
               checked={value === option.value}
               onChange={(e) => onChange?.(e.target.value)}
               disabled={option.disabled}
-              className="h-4 w-4 border-gray-300 text-primary focus:ring-primary mt-0.5"
+              className="mt-0.5 h-4 w-4 border-gray-300 text-primary focus:ring-primary"
             />
             <div>
               <span className="text-sm font-medium">{option.label}</span>
               {option.description && (
-                <p className="text-sm text-muted-foreground">
-                  {option.description}
-                </p>
+                <p className="text-sm text-muted-foreground">{option.description}</p>
               )}
             </div>
           </label>
@@ -430,12 +395,7 @@ export function SubmitButton({
   ...props
 }: SubmitButtonProps) {
   return (
-    <Button
-      type="submit"
-      disabled={disabled || isLoading}
-      className={className}
-      {...props}
-    >
+    <Button type="submit" disabled={disabled || isLoading} className={className} {...props}>
       {isLoading ? (
         <>
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -451,18 +411,12 @@ export function SubmitButton({
 /**
  * Validation Status Indicator
  */
-export function ValidationStatus({
-  isValid,
-  message,
-}: {
-  isValid: boolean;
-  message: string;
-}) {
+export function ValidationStatus({ isValid, message }: { isValid: boolean; message: string }) {
   return (
     <div
       className={cn(
         "flex items-center gap-2 text-sm",
-        isValid ? "text-green-600" : "text-muted-foreground",
+        isValid ? "text-green-600" : "text-muted-foreground"
       )}
     >
       {isValid ? <Check className="h-4 w-4" /> : <X className="h-4 w-4" />}
@@ -501,16 +455,11 @@ export function PasswordRequirements({
 }) {
   return (
     <div className={cn("space-y-2", className)}>
-      <p className="text-sm font-medium text-muted-foreground">
-        Password requirements:
-      </p>
+      <p className="text-sm font-medium text-muted-foreground">Password requirements:</p>
       <ul className="space-y-1">
         {requirements.map((req, index) => (
           <li key={index}>
-            <ValidationStatus
-              isValid={req.validator(password)}
-              message={req.label}
-            />
+            <ValidationStatus isValid={req.validator(password)} message={req.label} />
           </li>
         ))}
       </ul>
@@ -533,16 +482,13 @@ export const formSchemas = {
     .string()
     .regex(/^[+]?[\d\s-()]+$/, "Please enter a valid phone number")
     .min(10, "Phone number must be at least 10 digits"),
-  required: (fieldName: string) =>
-    z.string().min(1, `${fieldName} is required`),
+  required: (fieldName: string) => z.string().min(1, `${fieldName} is required`),
   optional: z.string().optional(),
   url: z.string().url("Please enter a valid URL"),
   number: z.coerce.number(),
   positiveNumber: z.coerce.number().positive("Must be a positive number"),
   date: z.coerce.date(),
-  futureDate: z.coerce
-    .date()
-    .refine((date) => date > new Date(), "Date must be in the future"),
+  futureDate: z.coerce.date().refine((date) => date > new Date(), "Date must be in the future"),
 };
 
 /**
@@ -550,7 +496,7 @@ export const formSchemas = {
  */
 export function useZodForm<T extends z.ZodSchema>(
   schema: T,
-  options?: Parameters<typeof useForm<z.infer<T>>>[0],
+  options?: Parameters<typeof useForm<z.infer<T>>>[0]
 ) {
   return useForm<z.infer<T>>({
     resolver: zodResolver(schema),
@@ -617,51 +563,41 @@ export interface ValidatedInputProps extends TextInputProps {
   showValidation?: boolean;
 }
 
-export const ValidatedInput = React.forwardRef<
-  HTMLInputElement,
-  ValidatedInputProps
->(({ validationRules = [], showValidation = true, value, ...props }, ref) => {
-  const stringValue = typeof value === "string" ? value : "";
+export const ValidatedInput = React.forwardRef<HTMLInputElement, ValidatedInputProps>(
+  ({ validationRules = [], showValidation = true, value, ...props }, ref) => {
+    const stringValue = typeof value === "string" ? value : "";
 
-  const validationResults = React.useMemo(() => {
-    if (!stringValue || !showValidation) return [];
-    return validationRules.map((rule) => ({
-      ...rule,
-      isValid: rule.test(stringValue),
-    }));
-  }, [stringValue, validationRules, showValidation]);
+    const validationResults = React.useMemo(() => {
+      if (!stringValue || !showValidation) return [];
+      return validationRules.map((rule) => ({
+        ...rule,
+        isValid: rule.test(stringValue),
+      }));
+    }, [stringValue, validationRules, showValidation]);
 
-  const hasErrors = validationResults.some((r) => !r.isValid);
+    const hasErrors = validationResults.some((r) => !r.isValid);
 
-  return (
-    <div className="space-y-2">
-      <TextInput
-        ref={ref}
-        value={value}
-        error={hasErrors ? " " : undefined}
-        {...props}
-      />
-      {showValidation && stringValue && validationResults.length > 0 && (
-        <ul className="space-y-1 text-sm">
-          {validationResults.map((result, index) => (
-            <li
-              key={index}
-              className={cn(
-                "flex items-center gap-2",
-                result.isValid ? "text-green-600" : "text-muted-foreground",
-              )}
-            >
-              {result.isValid ? (
-                <Check className="h-4 w-4" />
-              ) : (
-                <X className="h-4 w-4" />
-              )}
-              {result.message}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-});
+    return (
+      <div className="space-y-2">
+        <TextInput ref={ref} value={value} error={hasErrors ? " " : undefined} {...props} />
+        {showValidation && stringValue && validationResults.length > 0 && (
+          <ul className="space-y-1 text-sm">
+            {validationResults.map((result, index) => (
+              <li
+                key={index}
+                className={cn(
+                  "flex items-center gap-2",
+                  result.isValid ? "text-green-600" : "text-muted-foreground"
+                )}
+              >
+                {result.isValid ? <Check className="h-4 w-4" /> : <X className="h-4 w-4" />}
+                {result.message}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    );
+  }
+);
 ValidatedInput.displayName = "ValidatedInput";

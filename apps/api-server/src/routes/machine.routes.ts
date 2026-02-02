@@ -52,7 +52,7 @@ export async function machineRoutes(fastify: FastifyInstance) {
       const query = MachineQuerySchema.parse(request.query);
       const result = await machineService.list(request.user!.tenantId, query);
       return reply.send(result);
-    },
+    }
   );
 
   /**
@@ -71,7 +71,7 @@ export async function machineRoutes(fastify: FastifyInstance) {
     async (request, reply) => {
       const stats = await machineService.getStats(request.user!.tenantId);
       return reply.send(stats);
-    },
+    }
   );
 
   /**
@@ -109,7 +109,7 @@ export async function machineRoutes(fastify: FastifyInstance) {
       }
 
       return reply.send(machine);
-    },
+    }
   );
 
   /**
@@ -126,12 +126,7 @@ export async function machineRoutes(fastify: FastifyInstance) {
         security: [{ bearerAuth: [] }],
         body: {
           type: "object",
-          required: [
-            "name",
-            "type",
-            "pricePerCycle",
-            "branchId",
-          ],
+          required: ["name", "type", "pricePerCycle", "branchId"],
           properties: {
             name: { type: "string", minLength: 1, maxLength: 100 },
             machineNumber: { type: "string", maxLength: 20 },
@@ -154,17 +149,10 @@ export async function machineRoutes(fastify: FastifyInstance) {
       }).parse(request.body);
 
       try {
-        const machine = await machineService.create(
-          request.user!.tenantId,
-          branchId,
-          data,
-        );
+        const machine = await machineService.create(request.user!.tenantId, branchId, data);
         return reply.status(201).send(machine);
       } catch (error) {
-        if (
-          error instanceof Error &&
-          error.message.includes("already exists")
-        ) {
+        if (error instanceof Error && error.message.includes("already exists")) {
           return reply.status(409).send({
             statusCode: 409,
             error: "Conflict",
@@ -173,7 +161,7 @@ export async function machineRoutes(fastify: FastifyInstance) {
         }
         throw error;
       }
-    },
+    }
   );
 
   /**
@@ -213,11 +201,7 @@ export async function machineRoutes(fastify: FastifyInstance) {
       const { id } = IdParamSchema.parse(request.params);
       const data = UpdateMachineSchema.parse(request.body);
 
-      const machine = await machineService.update(
-        request.user!.tenantId,
-        id,
-        data,
-      );
+      const machine = await machineService.update(request.user!.tenantId, id, data);
 
       if (!machine) {
         return reply.status(404).send({
@@ -228,7 +212,7 @@ export async function machineRoutes(fastify: FastifyInstance) {
       }
 
       return reply.send(machine);
-    },
+    }
   );
 
   /**
@@ -266,7 +250,7 @@ export async function machineRoutes(fastify: FastifyInstance) {
       }
 
       return reply.status(204).send();
-    },
+    }
   );
 }
 

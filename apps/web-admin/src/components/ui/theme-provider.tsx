@@ -25,9 +25,7 @@ interface ThemeContextValue {
   setTheme: (theme: Theme) => void;
 }
 
-const ThemeContext = React.createContext<ThemeContextValue | undefined>(
-  undefined,
-);
+const ThemeContext = React.createContext<ThemeContextValue | undefined>(undefined);
 
 /**
  * Local storage key
@@ -39,9 +37,7 @@ const THEME_STORAGE_KEY = "washwise-theme";
  */
 function getSystemTheme(): "light" | "dark" {
   if (typeof window === "undefined") return "light";
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
 /**
@@ -77,12 +73,10 @@ export function ThemeProvider({
     return (localStorage.getItem(storageKey) as Theme) || defaultTheme;
   });
 
-  const [resolvedTheme, setResolvedTheme] = React.useState<"light" | "dark">(
-    () => {
-      if (theme === "system") return getSystemTheme();
-      return theme;
-    },
-  );
+  const [resolvedTheme, setResolvedTheme] = React.useState<"light" | "dark">(() => {
+    if (theme === "system") return getSystemTheme();
+    return theme;
+  });
 
   // Update resolved theme when theme or system preference changes
   React.useEffect(() => {
@@ -149,17 +143,15 @@ export function ThemeProvider({
       localStorage.setItem(storageKey, newTheme);
       setThemeState(newTheme);
     },
-    [storageKey],
+    [storageKey]
   );
 
   const value = React.useMemo(
     () => ({ theme, resolvedTheme, setTheme }),
-    [theme, resolvedTheme, setTheme],
+    [theme, resolvedTheme, setTheme]
   );
 
-  return (
-    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
 
 /**
@@ -213,10 +205,7 @@ interface ThemeSelectorProps {
   showLabels?: boolean;
 }
 
-export function ThemeSelector({
-  className,
-  showLabels = true,
-}: ThemeSelectorProps) {
+export function ThemeSelector({ className, showLabels = true }: ThemeSelectorProps) {
   const { theme, setTheme } = useTheme();
 
   const themes: { value: Theme; label: string; icon: React.ReactNode }[] = [
@@ -297,15 +286,13 @@ export function ThemeCardSelector({ className }: ThemeCardSelectorProps) {
             "flex flex-col items-center gap-3 rounded-lg border-2 p-4 text-center transition-colors",
             theme === value
               ? "border-primary bg-primary/5"
-              : "border-transparent bg-muted/50 hover:bg-muted",
+              : "border-transparent bg-muted/50 hover:bg-muted"
           )}
         >
           <div
             className={cn(
               "rounded-full p-3",
-              theme === value
-                ? "bg-primary text-primary-foreground"
-                : "bg-muted",
+              theme === value ? "bg-primary text-primary-foreground" : "bg-muted"
             )}
           >
             {icon}

@@ -47,12 +47,12 @@ function slugify(name: string): string {
  */
 function generateSlugSuggestions(baseSlug: string): string[] {
   const suggestions: string[] = [];
-  
+
   // Numbered suffixes
   for (let i = 1; i <= 3; i++) {
     suggestions.push(`${baseSlug}-${i}`);
   }
-  
+
   // Location-based suffixes
   const locationSuffixes = ["bkk", "main", "central", "new"];
   for (const suffix of locationSuffixes) {
@@ -61,56 +61,58 @@ function generateSlugSuggestions(baseSlug: string): string[] {
       break;
     }
   }
-  
+
   // Random short code
   const randomCode = Math.random().toString(36).substring(2, 5);
   suggestions.push(`${baseSlug}-${randomCode}`);
-  
+
   return suggestions.slice(0, 4);
 }
 
 /**
  * Map API error codes to user-friendly messages and UI actions
  */
-function mapApiError(error: any): { 
-  message: string; 
+function mapApiError(error: any): {
+  message: string;
   code: ApiErrorCode;
   suggestions?: string[];
   focusField?: string;
 } {
-  const code = error?.response?.data?.code as ApiErrorCode || "UNKNOWN";
+  const code = (error?.response?.data?.code as ApiErrorCode) || "UNKNOWN";
   const serverMessage = error?.response?.data?.message;
   const field = error?.response?.data?.field;
-  
+
   switch (code) {
     case "MULTIPLE_TENANTS":
       return {
         code,
-        message: "Please specify a unique tenant slug for your laundromat. The auto-generated slug may already exist.",
+        message:
+          "Please specify a unique tenant slug for your laundromat. The auto-generated slug may already exist.",
         focusField: "tenantSlug",
       };
-    
+
     case "CONFLICT":
       return {
         code,
-        message: "This laundromat name or slug already exists. Please try one of the suggested alternatives or enter a different one.",
+        message:
+          "This laundromat name or slug already exists. Please try one of the suggested alternatives or enter a different one.",
         focusField: "tenantSlug",
       };
-    
+
     case "DUPLICATE_EMAIL":
       return {
         code,
         message: "An account with this email already exists. Please sign in instead.",
         focusField: "email",
       };
-    
+
     case "VALIDATION_ERROR":
       return {
         code,
         message: serverMessage || "Please check your input and try again.",
         focusField: field,
       };
-    
+
     default:
       return {
         code: "UNKNOWN",
@@ -195,10 +197,7 @@ export default function RegisterPage() {
       setError({ message: mappedError.message, code: mappedError.code });
 
       // Generate slug suggestions for conflict errors
-      if (
-        mappedError.code === "CONFLICT" ||
-        mappedError.code === "MULTIPLE_TENANTS"
-      ) {
+      if (mappedError.code === "CONFLICT" || mappedError.code === "MULTIPLE_TENANTS") {
         const baseSlug = payload.tenantSlug || slugify(payload.tenantName);
         setSlugSuggestions(generateSlugSuggestions(baseSlug));
       }
@@ -223,15 +222,13 @@ export default function RegisterPage() {
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1 text-center">
-          <div className="flex justify-center mb-4">
+          <div className="mb-4 flex justify-center">
             <div className="rounded-full bg-primary p-3">
               <WashingMachine className="h-8 w-8 text-white" />
             </div>
           </div>
           <CardTitle className="text-2xl font-bold">Create account</CardTitle>
-          <CardDescription>
-            Start managing your laundromat with WashWise
-          </CardDescription>
+          <CardDescription>Start managing your laundromat with WashWise</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent className="space-y-4">
@@ -241,8 +238,7 @@ export default function RegisterPage() {
                 <AlertTitle>
                   {error.code === "CONFLICT" && "Name/Slug Already Taken"}
                   {error.code === "MULTIPLE_TENANTS" && "Slug Required"}
-                  {error.code === "DUPLICATE_EMAIL" &&
-                    "Email Already Registered"}
+                  {error.code === "DUPLICATE_EMAIL" && "Email Already Registered"}
                   {error.code === "VALIDATION_ERROR" && "Validation Error"}
                   {error.code === "UNKNOWN" && "Registration Failed"}
                 </AlertTitle>
@@ -253,15 +249,9 @@ export default function RegisterPage() {
             {/* Laundromat Name */}
             <div className="space-y-2">
               <Label htmlFor="tenantName">Laundromat Name</Label>
-              <Input
-                id="tenantName"
-                placeholder="My Laundromat"
-                {...register("tenantName")}
-              />
+              <Input id="tenantName" placeholder="My Laundromat" {...register("tenantName")} />
               {errors.tenantName && (
-                <p className="text-sm text-destructive">
-                  {errors.tenantName.message}
-                </p>
+                <p className="text-sm text-destructive">{errors.tenantName.message}</p>
               )}
             </div>
 
@@ -277,8 +267,7 @@ export default function RegisterPage() {
                   (slugInputRef as any).current = e;
                 }}
                 className={
-                  error?.code === "CONFLICT" ||
-                  error?.code === "MULTIPLE_TENANTS"
+                  error?.code === "CONFLICT" || error?.code === "MULTIPLE_TENANTS"
                     ? "border-destructive focus-visible:ring-destructive"
                     : ""
                 }
@@ -287,14 +276,12 @@ export default function RegisterPage() {
                 URL-friendly identifier (auto-generated from name)
               </p>
               {errors.tenantSlug && (
-                <p className="text-sm text-destructive">
-                  {errors.tenantSlug.message}
-                </p>
+                <p className="text-sm text-destructive">{errors.tenantSlug.message}</p>
               )}
 
               {/* Slug Suggestions */}
               {slugSuggestions.length > 0 && (
-                <div className="rounded-md bg-muted p-3 space-y-2">
+                <div className="space-y-2 rounded-md bg-muted p-3">
                   <div className="flex items-center gap-2 text-sm font-medium">
                     <Lightbulb className="h-4 w-4 text-amber-500" />
                     <span>Try one of these available slugs:</span>
@@ -321,28 +308,16 @@ export default function RegisterPage() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="firstName">First Name</Label>
-                <Input
-                  id="firstName"
-                  placeholder="John"
-                  {...register("firstName")}
-                />
+                <Input id="firstName" placeholder="John" {...register("firstName")} />
                 {errors.firstName && (
-                  <p className="text-sm text-destructive">
-                    {errors.firstName.message}
-                  </p>
+                  <p className="text-sm text-destructive">{errors.firstName.message}</p>
                 )}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="lastName">Last Name</Label>
-                <Input
-                  id="lastName"
-                  placeholder="Doe"
-                  {...register("lastName")}
-                />
+                <Input id="lastName" placeholder="Doe" {...register("lastName")} />
                 {errors.lastName && (
-                  <p className="text-sm text-destructive">
-                    {errors.lastName.message}
-                  </p>
+                  <p className="text-sm text-destructive">{errors.lastName.message}</p>
                 )}
               </div>
             </div>
@@ -365,11 +340,7 @@ export default function RegisterPage() {
                     : ""
                 }
               />
-              {errors.email && (
-                <p className="text-sm text-destructive">
-                  {errors.email.message}
-                </p>
-              )}
+              {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
               {error?.code === "DUPLICATE_EMAIL" && (
                 <p className="text-sm text-primary">
                   <Link href="/login" className="underline hover:no-underline">
@@ -389,21 +360,13 @@ export default function RegisterPage() {
                 {...register("password")}
               />
               {errors.password && (
-                <p className="text-sm text-destructive">
-                  {errors.password.message}
-                </p>
+                <p className="text-sm text-destructive">{errors.password.message}</p>
               )}
-              <p className="text-xs text-muted-foreground">
-                Minimum 8 characters
-              </p>
+              <p className="text-xs text-muted-foreground">Minimum 8 characters</p>
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={registerMutation.isPending}
-            >
+            <Button type="submit" className="w-full" disabled={registerMutation.isPending}>
               {registerMutation.isPending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />

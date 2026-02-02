@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+.next/
+.turbo/
+out/
+
+# Generated files
+*.generated.*
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Cache
+.cache/
+*.tsbuildinfo
+
+# Coverage
+coverage/
+
+# IDE
+.idea/
+.vscode/settings.json
+
+# Docker
+docker/
+
+# Prisma
+packages/database/prisma/migrations/
+
+# Test artifacts
+e2e/test-results/
+e2e/reports/
+
+# Environment
+.env*
+!.env.example

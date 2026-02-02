@@ -4,7 +4,8 @@
 
 ### 1.1 Vision Statement
 
-> **"Revolutionize laundromat operations through intelligent automation and AI-powered customer experiences, making every wash effortless for both operators and customers."**
+> **"Revolutionize laundromat operations through intelligent automation and AI-powered customer
+> experiences, making every wash effortless for both operators and customers."**
 
 ### 1.2 Business Model
 

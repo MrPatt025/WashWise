@@ -43,11 +43,7 @@ export async function simulationRoutes(fastify: FastifyInstance) {
       const tenantId = request.user!.tenantId;
 
       // Update machine status (validates tenant ownership)
-      const machine = await machineService.updateStatus(
-        tenantId,
-        data.machineId,
-        data.status,
-      );
+      const machine = await machineService.updateStatus(tenantId, data.machineId, data.status);
 
       if (!machine) {
         return reply.status(404).send({
@@ -80,7 +76,7 @@ export async function simulationRoutes(fastify: FastifyInstance) {
           updatedAt: machine.updatedAt,
         },
       });
-    },
+    }
   );
 
   /**
@@ -142,7 +138,7 @@ export async function simulationRoutes(fastify: FastifyInstance) {
         success: true,
         message: "Telemetry broadcast sent",
       });
-    },
+    }
   );
 }
 

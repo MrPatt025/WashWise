@@ -16,11 +16,7 @@ interface ModalState {
 
 interface ModalContextValue {
   modals: ModalState[];
-  openModal: (
-    id: string,
-    component: React.ReactNode,
-    options?: ModalOptions,
-  ) => void;
+  openModal: (id: string, component: React.ReactNode, options?: ModalOptions) => void;
   closeModal: (id: string) => void;
   closeAllModals: () => void;
   isOpen: (id: string) => boolean;
@@ -41,7 +37,7 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
         return [...prev, { id, component, props: options }];
       });
     },
-    [],
+    []
   );
 
   const closeModal = React.useCallback((id: string) => {
@@ -52,10 +48,7 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
     setModals([]);
   }, []);
 
-  const isOpen = React.useCallback(
-    (id: string) => modals.some((m) => m.id === id),
-    [modals],
-  );
+  const isOpen = React.useCallback((id: string) => modals.some((m) => m.id === id), [modals]);
 
   // Handle escape key
   React.useEffect(() => {
@@ -86,9 +79,7 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
   }, [modals.length]);
 
   return (
-    <ModalContext.Provider
-      value={{ modals, openModal, closeModal, closeAllModals, isOpen }}
-    >
+    <ModalContext.Provider value={{ modals, openModal, closeModal, closeAllModals, isOpen }}>
       {children}
       <ModalContainer />
     </ModalContext.Provider>
@@ -121,23 +112,14 @@ function ModalContainer() {
   );
 }
 
-function ModalWrapper({
-  modal,
-  zIndex,
-}: {
-  modal: ModalState;
-  zIndex: number;
-}) {
+function ModalWrapper({ modal, zIndex }: { modal: ModalState; zIndex: number }) {
   const { closeModal } = useModal();
 
   return (
-    <div
-      className="fixed inset-0 flex items-center justify-center p-4"
-      style={{ zIndex }}
-    >
+    <div className="fixed inset-0 flex items-center justify-center p-4" style={{ zIndex }}>
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200"
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm duration-200 animate-in fade-in"
         onClick={() => {
           if (!modal.props?.preventBackdropClose) {
             closeModal(modal.id);
@@ -146,9 +128,7 @@ function ModalWrapper({
       />
 
       {/* Modal Content */}
-      <div className="relative animate-in zoom-in-95 fade-in duration-200">
-        {modal.component}
-      </div>
+      <div className="relative duration-200 animate-in fade-in zoom-in-95">{modal.component}</div>
     </div>
   );
 }
@@ -177,30 +157,22 @@ const sizeClasses = {
   full: "max-w-[90vw] max-h-[90vh]",
 };
 
-export function Modal({
-  children,
-  className,
-  size = "md",
-  onClose,
-}: ModalProps) {
+export function Modal({ children, className, size = "md", onClose }: ModalProps) {
   return (
     <div
       className={cn(
-        "w-full bg-white dark:bg-gray-900 rounded-xl shadow-2xl overflow-hidden",
+        "w-full overflow-hidden rounded-xl bg-white shadow-2xl dark:bg-gray-900",
         sizeClasses[size],
-        className,
+        className
       )}
       role="dialog"
       aria-modal="true"
     >
       {React.Children.map(children, (child) => {
         if (React.isValidElement(child) && child.type === ModalHeader) {
-          return React.cloneElement(
-            child as React.ReactElement<ModalHeaderProps>,
-            {
-              onClose,
-            },
-          );
+          return React.cloneElement(child as React.ReactElement<ModalHeaderProps>, {
+            onClose,
+          });
         }
         return child;
       })}
@@ -232,20 +204,14 @@ export function ModalHeader({
   return (
     <div
       className={cn(
-        "flex items-start justify-between p-6 border-b border-gray-200 dark:border-gray-800",
-        className,
+        "flex items-start justify-between border-b border-gray-200 p-6 dark:border-gray-800",
+        className
       )}
     >
       <div className="flex-1">
-        {title && (
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-            {title}
-          </h2>
-        )}
+        {title && <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h2>}
         {description && (
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            {description}
-          </p>
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{description}</p>
         )}
         {children}
       </div>
@@ -253,10 +219,10 @@ export function ModalHeader({
       {showCloseButton && onClose && (
         <button
           onClick={onClose}
-          className="ml-4 p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+          className="ml-4 rounded-lg p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300"
           aria-label="Close modal"
         >
-          <X className="w-5 h-5" />
+          <X className="h-5 w-5" />
         </button>
       )}
     </div>
@@ -273,11 +239,7 @@ interface ModalBodyProps {
 }
 
 export function ModalBody({ children, className }: ModalBodyProps) {
-  return (
-    <div className={cn("p-6 overflow-y-auto max-h-[60vh]", className)}>
-      {children}
-    </div>
-  );
+  return <div className={cn("max-h-[60vh] overflow-y-auto p-6", className)}>{children}</div>;
 }
 
 // ============================================================================
@@ -293,8 +255,8 @@ export function ModalFooter({ children, className }: ModalFooterProps) {
   return (
     <div
       className={cn(
-        "flex items-center justify-end gap-3 px-6 py-4 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-800",
-        className,
+        "flex items-center justify-end gap-3 border-t border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-800 dark:bg-gray-800/50",
+        className
       )}
     >
       {children}
@@ -408,17 +370,17 @@ export function Sheet({
     <div className="fixed inset-0 z-50">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200"
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm duration-200 animate-in fade-in"
         onClick={onClose}
       />
 
       {/* Sheet */}
       <div
         className={cn(
-          "absolute bg-white dark:bg-gray-900 shadow-2xl",
+          "absolute bg-white shadow-2xl dark:bg-gray-900",
           sheetSideClasses[side],
           sheetSizeClasses[side][size],
-          className,
+          className
         )}
       >
         {children}
@@ -451,20 +413,14 @@ export function SheetHeader({
   return (
     <div
       className={cn(
-        "flex items-start justify-between p-4 border-b border-gray-200 dark:border-gray-800",
-        className,
+        "flex items-start justify-between border-b border-gray-200 p-4 dark:border-gray-800",
+        className
       )}
     >
       <div className="flex-1">
-        {title && (
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-            {title}
-          </h2>
-        )}
+        {title && <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h2>}
         {description && (
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            {description}
-          </p>
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{description}</p>
         )}
         {children}
       </div>
@@ -472,10 +428,10 @@ export function SheetHeader({
       {showCloseButton && onClose && (
         <button
           onClick={onClose}
-          className="ml-4 p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+          className="ml-4 rounded-lg p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300"
           aria-label="Close"
         >
-          <X className="w-5 h-5" />
+          <X className="h-5 w-5" />
         </button>
       )}
     </div>
@@ -492,11 +448,7 @@ interface SheetBodyProps {
 }
 
 export function SheetBody({ children, className }: SheetBodyProps) {
-  return (
-    <div className={cn("flex-1 overflow-y-auto p-4", className)}>
-      {children}
-    </div>
-  );
+  return <div className={cn("flex-1 overflow-y-auto p-4", className)}>{children}</div>;
 }
 
 // ============================================================================
@@ -512,8 +464,8 @@ export function SheetFooter({ children, className }: SheetFooterProps) {
   return (
     <div
       className={cn(
-        "flex items-center justify-end gap-3 p-4 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-800",
-        className,
+        "flex items-center justify-end gap-3 border-t border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-800/50",
+        className
       )}
     >
       {children}
@@ -553,21 +505,16 @@ export function AlertModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={onClose}
-      />
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
       <Modal size="sm" onClose={onClose}>
         <ModalHeader title={title} onClose={onClose} />
         <ModalBody>
-          <p className={cn("text-sm", alertVariantClasses[variant])}>
-            {message}
-          </p>
+          <p className={cn("text-sm", alertVariantClasses[variant])}>{message}</p>
         </ModalBody>
         <ModalFooter>
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
           >
             {confirmLabel}
           </button>
@@ -588,12 +535,7 @@ interface FullscreenModalProps {
   title?: string;
 }
 
-export function FullscreenModal({
-  open,
-  onClose,
-  children,
-  title,
-}: FullscreenModalProps) {
+export function FullscreenModal({ open, onClose, children, title }: FullscreenModalProps) {
   // Handle escape key
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -609,20 +551,16 @@ export function FullscreenModal({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-white dark:bg-gray-950 animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 bg-white duration-200 animate-in fade-in dark:bg-gray-950">
       {/* Header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-800">
-        {title && (
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-            {title}
-          </h2>
-        )}
+      <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4 dark:border-gray-800">
+        {title && <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h2>}
         <button
           onClick={onClose}
-          className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+          className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300"
           aria-label="Close"
         >
-          <X className="w-5 h-5" />
+          <X className="h-5 w-5" />
         </button>
       </div>
 

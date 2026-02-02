@@ -36,10 +36,7 @@ interface ErrorBoundaryState {
  * Catches JavaScript errors anywhere in child component tree
  * Logs errors and displays a fallback UI
  */
-export class ErrorBoundary extends Component<
-  ErrorBoundaryProps,
-  ErrorBoundaryState
-> {
+export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = {
@@ -107,8 +104,7 @@ export class ErrorBoundary extends Component<
               </div>
 
               {/* Stack trace (development only or if showDetails) */}
-              {(process.env.NODE_ENV === "development" ||
-                this.props.showDetails) &&
+              {(process.env.NODE_ENV === "development" || this.props.showDetails) &&
                 this.state.errorInfo?.componentStack && (
                   <details className="text-sm">
                     <summary className="cursor-pointer text-muted-foreground hover:text-foreground">
@@ -123,26 +119,14 @@ export class ErrorBoundary extends Component<
             </CardContent>
 
             <CardFooter className="flex flex-col gap-2 sm:flex-row">
-              <Button
-                variant="default"
-                className="w-full sm:w-auto"
-                onClick={this.handleReset}
-              >
+              <Button variant="default" className="w-full sm:w-auto" onClick={this.handleReset}>
                 <RefreshCw className="mr-2 h-4 w-4" />
                 Try Again
               </Button>
-              <Button
-                variant="outline"
-                className="w-full sm:w-auto"
-                onClick={this.handleReload}
-              >
+              <Button variant="outline" className="w-full sm:w-auto" onClick={this.handleReload}>
                 Reload Page
               </Button>
-              <Button
-                variant="ghost"
-                className="w-full sm:w-auto"
-                onClick={this.handleGoHome}
-              >
+              <Button variant="ghost" className="w-full sm:w-auto" onClick={this.handleGoHome}>
                 <Home className="mr-2 h-4 w-4" />
                 Go Home
               </Button>
@@ -164,15 +148,15 @@ export function PageErrorBoundary({ children }: { children: ReactNode }) {
     <ErrorBoundary
       fallback={
         <div className="flex min-h-screen items-center justify-center bg-background">
-          <Card className="w-full max-w-lg mx-4">
+          <Card className="mx-4 w-full max-w-lg">
             <CardHeader className="text-center">
               <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10">
                 <AlertTriangle className="h-8 w-8 text-destructive" />
               </div>
               <CardTitle className="text-2xl">Page Error</CardTitle>
               <CardDescription className="text-base">
-                We encountered an error loading this page. Please try refreshing
-                or return to the dashboard.
+                We encountered an error loading this page. Please try refreshing or return to the
+                dashboard.
               </CardDescription>
             </CardHeader>
             <CardFooter className="flex justify-center gap-4">
@@ -180,10 +164,7 @@ export function PageErrorBoundary({ children }: { children: ReactNode }) {
                 <RefreshCw className="mr-2 h-4 w-4" />
                 Reload
               </Button>
-              <Button
-                variant="outline"
-                onClick={() => (window.location.href = "/dashboard")}
-              >
+              <Button variant="outline" onClick={() => (window.location.href = "/dashboard")}>
                 <Home className="mr-2 h-4 w-4" />
                 Dashboard
               </Button>
@@ -213,9 +194,7 @@ export function SectionErrorBoundary({
         <div className="flex items-center justify-center rounded-lg border border-dashed p-8">
           <div className="text-center">
             <AlertTriangle className="mx-auto h-8 w-8 text-muted-foreground" />
-            <p className="mt-2 text-sm text-muted-foreground">
-              {sectionName} failed to load
-            </p>
+            <p className="mt-2 text-sm text-muted-foreground">{sectionName} failed to load</p>
             <Button
               variant="ghost"
               size="sm"

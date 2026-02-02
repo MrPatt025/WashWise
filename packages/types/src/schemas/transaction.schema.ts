@@ -7,22 +7,22 @@ import { z } from "zod";
 export const PaymentStatusSchema = z.enum(["PENDING", "COMPLETED", "FAILED"]);
 
 export const TransactionSchema = z.object({
-    id: z.string().uuid(),
-    amount: z.number().int(), // minor units (satang/cents)
-    status: PaymentStatusSchema,
-    userId: z.string().uuid().nullable().optional(),
-    machineId: z.string().uuid(),
-    createdAt: z.date(),
+  id: z.string().uuid(),
+  amount: z.number().int(), // minor units (satang/cents)
+  status: PaymentStatusSchema,
+  userId: z.string().uuid().nullable().optional(),
+  machineId: z.string().uuid(),
+  createdAt: z.date(),
 });
 
 export const CreateTransactionSchema = z.object({
-    amount: z.number().int().positive(),
-    machineId: z.string().uuid(),
-    userId: z.string().uuid().optional(),
+  amount: z.number().int().positive(),
+  machineId: z.string().uuid(),
+  userId: z.string().uuid().optional(),
 });
 
 export const UpdateTransactionSchema = z.object({
-    status: PaymentStatusSchema,
+  status: PaymentStatusSchema,
 });
 
 export type PaymentStatus = z.infer<typeof PaymentStatusSchema>;

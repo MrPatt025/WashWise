@@ -72,10 +72,7 @@ interface SidebarProviderProps {
   expandedWidth?: number;
 }
 
-export function SidebarProvider({
-  children,
-  defaultCollapsed = false,
-}: SidebarProviderProps) {
+export function SidebarProvider({ children, defaultCollapsed = false }: SidebarProviderProps) {
   const [collapsed, setCollapsed] = React.useState(defaultCollapsed);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [mobile, setMobile] = React.useState(false);
@@ -100,9 +97,7 @@ export function SidebarProvider({
   }, [pathname]);
 
   return (
-    <SidebarContext.Provider
-      value={{ collapsed, setCollapsed, mobile, mobileOpen, setMobileOpen }}
-    >
+    <SidebarContext.Provider value={{ collapsed, setCollapsed, mobile, mobileOpen, setMobileOpen }}>
       {children}
     </SidebarContext.Provider>
   );
@@ -120,24 +115,23 @@ interface SidebarProps {
 }
 
 export function Sidebar({ children, className, header, footer }: SidebarProps) {
-  const { collapsed, setCollapsed, mobile, mobileOpen, setMobileOpen } =
-    useSidebar();
+  const { collapsed, setCollapsed, mobile, mobileOpen, setMobileOpen } = useSidebar();
 
   // Desktop sidebar
   if (!mobile) {
     return (
       <aside
         className={cn(
-          "fixed left-0 top-0 z-40 h-screen bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 transition-all duration-300 flex flex-col",
+          "fixed left-0 top-0 z-40 flex h-screen flex-col border-r border-gray-200 bg-white transition-all duration-300 dark:border-gray-800 dark:bg-gray-900",
           collapsed ? "w-16" : "w-64",
-          className,
+          className
         )}
       >
         {header && (
           <div
             className={cn(
-              "h-16 flex items-center border-b border-gray-200 dark:border-gray-800",
-              collapsed ? "justify-center px-2" : "px-4",
+              "flex h-16 items-center border-b border-gray-200 dark:border-gray-800",
+              collapsed ? "justify-center px-2" : "px-4"
             )}
           >
             {header}
@@ -150,14 +144,10 @@ export function Sidebar({ children, className, header, footer }: SidebarProps) {
           {footer}
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="w-full flex items-center justify-center py-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+            className="flex w-full items-center justify-center py-3 text-gray-400 transition-colors hover:text-gray-600 dark:hover:text-gray-300"
             aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
-            {collapsed ? (
-              <ChevronRight className="w-5 h-5" />
-            ) : (
-              <ChevronLeft className="w-5 h-5" />
-            )}
+            {collapsed ? <ChevronRight className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}
           </button>
         </div>
       </aside>
@@ -189,27 +179,25 @@ export function Sidebar({ children, className, header, footer }: SidebarProps) {
             exit={{ x: "-100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             className={cn(
-              "fixed left-0 top-0 z-50 h-screen w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col lg:hidden",
-              className,
+              "fixed left-0 top-0 z-50 flex h-screen w-64 flex-col border-r border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900 lg:hidden",
+              className
             )}
           >
-            <div className="h-16 flex items-center justify-between px-4 border-b border-gray-200 dark:border-gray-800">
+            <div className="flex h-16 items-center justify-between border-b border-gray-200 px-4 dark:border-gray-800">
               {header}
               <button
                 onClick={() => setMobileOpen(false)}
-                className="p-2 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300"
                 aria-label="Close sidebar"
               >
-                <X className="w-5 h-5" />
+                <X className="h-5 w-5" />
               </button>
             </div>
 
             <div className="flex-1 overflow-y-auto py-4">{children}</div>
 
             {footer && (
-              <div className="border-t border-gray-200 dark:border-gray-800">
-                {footer}
-              </div>
+              <div className="border-t border-gray-200 dark:border-gray-800">{footer}</div>
             )}
           </motion.aside>
         )}
@@ -229,7 +217,7 @@ interface SidebarNavProps {
 
 export function SidebarNav({ items, className }: SidebarNavProps) {
   return (
-    <nav className={cn("px-3 space-y-1", className)}>
+    <nav className={cn("space-y-1 px-3", className)}>
       {items.map((item) => (
         <SidebarNavItem key={item.id} item={item} />
       ))}
@@ -253,9 +241,7 @@ function SidebarNavItem({ item, depth = 0 }: SidebarNavItemProps) {
 
   const hasChildren = item.children && item.children.length > 0;
   const isActive = item.href ? pathname === item.href : false;
-  const isChildActive = item.children?.some(
-    (child) => child.href && pathname === child.href,
-  );
+  const isChildActive = item.children?.some((child) => child.href && pathname === child.href);
 
   // Auto-expand if a child is active
   React.useEffect(() => {
@@ -268,10 +254,8 @@ function SidebarNavItem({ item, depth = 0 }: SidebarNavItemProps) {
 
   const badgeColors = {
     default: "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400",
-    success:
-      "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400",
-    warning:
-      "bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400",
+    success: "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400",
+    warning: "bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400",
     error: "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400",
   };
 
@@ -281,9 +265,7 @@ function SidebarNavItem({ item, depth = 0 }: SidebarNavItemProps) {
         <span
           className={cn(
             "flex-shrink-0",
-            isActive || isChildActive
-              ? "text-blue-600 dark:text-blue-400"
-              : "text-gray-400",
+            isActive || isChildActive ? "text-blue-600 dark:text-blue-400" : "text-gray-400"
           )}
         >
           {item.icon}
@@ -295,8 +277,8 @@ function SidebarNavItem({ item, depth = 0 }: SidebarNavItemProps) {
           {item.badge !== undefined && (
             <span
               className={cn(
-                "px-1.5 py-0.5 text-xs font-medium rounded",
-                badgeColors[item.badgeVariant || "default"],
+                "rounded px-1.5 py-0.5 text-xs font-medium",
+                badgeColors[item.badgeVariant || "default"]
               )}
             >
               {item.badge}
@@ -304,10 +286,7 @@ function SidebarNavItem({ item, depth = 0 }: SidebarNavItemProps) {
           )}
           {hasChildren && (
             <ChevronDown
-              className={cn(
-                "w-4 h-4 text-gray-400 transition-transform",
-                expanded && "rotate-180",
-              )}
+              className={cn("h-4 w-4 text-gray-400 transition-transform", expanded && "rotate-180")}
             />
           )}
         </>
@@ -316,12 +295,12 @@ function SidebarNavItem({ item, depth = 0 }: SidebarNavItemProps) {
   );
 
   const baseClasses = cn(
-    "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+    "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
     isActive || isChildActive
       ? "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400"
-      : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800",
-    item.disabled && "opacity-50 cursor-not-allowed",
-    depth > 0 && "ml-4",
+      : "text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800",
+    item.disabled && "cursor-not-allowed opacity-50",
+    depth > 0 && "ml-4"
   );
 
   if (hasChildren) {
@@ -345,11 +324,7 @@ function SidebarNavItem({ item, depth = 0 }: SidebarNavItemProps) {
             >
               <div className="mt-1 space-y-1">
                 {item.children!.map((child) => (
-                  <SidebarNavItem
-                    key={child.id}
-                    item={child}
-                    depth={depth + 1}
-                  />
+                  <SidebarNavItem key={child.id} item={child} depth={depth + 1} />
                 ))}
               </div>
             </motion.div>
@@ -388,18 +363,14 @@ interface SidebarSectionProps {
   className?: string;
 }
 
-export function SidebarSection({
-  title,
-  children,
-  className,
-}: SidebarSectionProps) {
+export function SidebarSection({ title, children, className }: SidebarSectionProps) {
   const { collapsed, mobile } = useSidebar();
   const showLabel = !collapsed || mobile;
 
   return (
     <div className={cn("mt-6 first:mt-0", className)}>
       {title && showLabel && (
-        <h3 className="px-6 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+        <h3 className="mb-2 px-6 text-xs font-semibold uppercase tracking-wider text-gray-400">
           {title}
         </h3>
       )}
@@ -423,21 +394,11 @@ export function SidebarUser({ user, onSignOut, className }: SidebarUserProps) {
   const showLabel = !collapsed || mobile;
 
   return (
-    <div
-      className={cn(
-        "flex items-center gap-3 p-4",
-        !showLabel && "justify-center",
-        className,
-      )}
-    >
-      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
+    <div className={cn("flex items-center gap-3 p-4", !showLabel && "justify-center", className)}>
+      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
         {user.avatar ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={user.avatar}
-            alt={user.name}
-            className="w-full h-full object-cover"
-          />
+          <img src={user.avatar} alt={user.name} className="h-full w-full object-cover" />
         ) : (
           <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
             {user.name
@@ -451,24 +412,22 @@ export function SidebarUser({ user, onSignOut, className }: SidebarUserProps) {
 
       {showLabel && (
         <>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
               {user.name}
             </p>
             {user.email && (
-              <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                {user.email}
-              </p>
+              <p className="truncate text-xs text-gray-500 dark:text-gray-400">{user.email}</p>
             )}
           </div>
 
           {onSignOut && (
             <button
               onClick={onSignOut}
-              className="p-2 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300"
               title="Sign out"
             >
-              <LogOut className="w-4 h-4" />
+              <LogOut className="h-4 w-4" />
             </button>
           )}
         </>
@@ -517,33 +476,33 @@ export function TopNav({
   return (
     <header
       className={cn(
-        "sticky top-0 z-30 h-16 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800",
-        className,
+        "sticky top-0 z-30 h-16 border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900",
+        className
       )}
     >
-      <div className="h-full px-4 flex items-center gap-4">
+      <div className="flex h-full items-center gap-4 px-4">
         {mobile && (
           <button
             onClick={() => setMobileOpen(true)}
-            className="p-2 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors lg:hidden"
+            className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300 lg:hidden"
             aria-label="Open menu"
           >
-            <Menu className="w-5 h-5" />
+            <Menu className="h-5 w-5" />
           </button>
         )}
 
         {logo && <div className="flex-shrink-0">{logo}</div>}
 
         {search && (
-          <form onSubmit={handleSearch} className="flex-1 max-w-md">
+          <form onSubmit={handleSearch} className="max-w-md flex-1">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
               <input
                 type="search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={searchPlaceholder}
-                className="w-full pl-10 pr-4 py-2 text-sm bg-gray-100 dark:bg-gray-800 border-none rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full rounded-lg border-none bg-gray-100 py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800"
               />
             </div>
           </form>
@@ -555,12 +514,12 @@ export function TopNav({
           {notifications !== undefined && (
             <button
               onClick={onNotificationsClick}
-              className="relative p-2 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="relative rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300"
               aria-label={`${notifications} notifications`}
             >
-              <Bell className="w-5 h-5" />
+              <Bell className="h-5 w-5" />
               {notifications > 0 && (
-                <span className="absolute top-0 right-0 w-5 h-5 flex items-center justify-center text-xs font-medium text-white bg-red-500 rounded-full">
+                <span className="absolute right-0 top-0 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-medium text-white">
                   {notifications > 99 ? "99+" : notifications}
                 </span>
               )}
@@ -568,15 +527,11 @@ export function TopNav({
           )}
 
           {user && (
-            <div className="flex items-center gap-3 pl-2 border-l border-gray-200 dark:border-gray-700">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
+            <div className="flex items-center gap-3 border-l border-gray-200 pl-2 dark:border-gray-700">
+              <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
                 {user.avatar ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={user.avatar}
-                    alt={user.name}
-                    className="w-full h-full object-cover"
-                  />
+                  <img src={user.avatar} alt={user.name} className="h-full w-full object-cover" />
                 ) : (
                   <span className="text-xs font-medium text-gray-600 dark:text-gray-300">
                     {user.name
@@ -589,23 +544,19 @@ export function TopNav({
               </div>
 
               <div className="hidden sm:block">
-                <p className="text-sm font-medium text-gray-900 dark:text-white">
-                  {user.name}
-                </p>
+                <p className="text-sm font-medium text-gray-900 dark:text-white">{user.name}</p>
                 {user.role && (
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    {user.role}
-                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">{user.role}</p>
                 )}
               </div>
 
               {onSignOut && (
                 <button
                   onClick={onSignOut}
-                  className="p-2 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300"
                   title="Sign out"
                 >
-                  <LogOut className="w-4 h-4" />
+                  <LogOut className="h-4 w-4" />
                 </button>
               )}
             </div>
@@ -633,7 +584,7 @@ export function MainLayout({ children, className }: MainLayoutProps) {
       className={cn(
         "min-h-screen transition-all duration-300",
         !mobile && (collapsed ? "ml-16" : "ml-64"),
-        className,
+        className
       )}
     >
       {children}
@@ -664,11 +615,11 @@ export function BottomNav({ items, className }: BottomNavProps) {
   return (
     <nav
       className={cn(
-        "fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 lg:hidden",
-        className,
+        "fixed bottom-0 left-0 right-0 z-50 border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900 lg:hidden",
+        className
       )}
     >
-      <div className="flex items-center justify-around h-16">
+      <div className="flex h-16 items-center justify-around">
         {items.map((item) => {
           const isActive = pathname === item.href;
 
@@ -677,16 +628,14 @@ export function BottomNav({ items, className }: BottomNavProps) {
               key={item.id}
               href={item.href}
               className={cn(
-                "flex flex-col items-center gap-1 px-3 py-2 relative",
-                isActive
-                  ? "text-blue-600 dark:text-blue-400"
-                  : "text-gray-500 dark:text-gray-400",
+                "relative flex flex-col items-center gap-1 px-3 py-2",
+                isActive ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-gray-400"
               )}
             >
               <span className="relative">
                 {item.icon}
                 {item.badge !== undefined && item.badge > 0 && (
-                  <span className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center text-[10px] font-medium text-white bg-red-500 rounded-full">
+                  <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-medium text-white">
                     {item.badge > 9 ? "9+" : item.badge}
                   </span>
                 )}

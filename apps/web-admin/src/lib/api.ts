@@ -24,27 +24,25 @@ export const api = axios.create({
  * Validate API response data against Zod schema
  * Throws detailed error if validation fails
  */
-export function validateResponse<T>(
-  schema: z.ZodType<T>,
-  data: unknown,
-  endpoint: string
-): T {
+export function validateResponse<T>(schema: z.ZodType<T>, data: unknown, endpoint: string): T {
   const result = schema.safeParse(data);
 
   if (!result.success) {
     console.error(
       `[API Contract Violation] Endpoint: ${endpoint}`,
-      `\nExpected schema: ${schema.description || 'unknown'}`,
-      `\nReceived data:`, data,
-      `\nValidation errors:`, result.error.format()
+      `\nExpected schema: ${schema.description || "unknown"}`,
+      `\nReceived data:`,
+      data,
+      `\nValidation errors:`,
+      result.error.format()
     );
 
     // In development, throw to catch issues early
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === "development") {
       throw new Error(
         `API contract violation at ${endpoint}: ${result.error.errors
-          .map(e => `${e.path.join('.')}: ${e.message}`)
-          .join(', ')}`
+          .map((e) => `${e.path.join(".")}: ${e.message}`)
+          .join(", ")}`
       );
     }
 
@@ -64,7 +62,7 @@ export function createValidatedRequest<TRequest, TResponse>(
   responseSchema: z.ZodType<TResponse>
 ) {
   return async (
-    method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
+    method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
     url: string,
     data?: TRequest
   ): Promise<TResponse> => {
@@ -74,8 +72,8 @@ export function createValidatedRequest<TRequest, TResponse>(
       if (!requestResult.success) {
         throw new Error(
           `Invalid request data: ${requestResult.error.errors
-            .map(e => `${e.path.join('.')}: ${e.message}`)
-            .join(', ')}`
+            .map((e) => `${e.path.join(".")}: ${e.message}`)
+            .join(", ")}`
         );
       }
     }
@@ -140,7 +138,7 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error),
+  (error) => Promise.reject(error)
 );
 
 // Response interceptor - Handle 401 and silent refresh
@@ -204,7 +202,7 @@ api.interceptors.response.use(
       const response = await axios.post(
         `${API_URL}/api/v1/auth/refresh`,
         {},
-        { withCredentials: true },
+        { withCredentials: true }
       );
 
       const { accessToken } = response.data;
@@ -235,7 +233,7 @@ api.interceptors.response.use(
     } finally {
       isRefreshing = false;
     }
-  },
+  }
 );
 
 export default api;

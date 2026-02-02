@@ -45,12 +45,7 @@ export function Skeleton({
 
   return (
     <div
-      className={cn(
-        "bg-muted",
-        variantStyles[variant],
-        animationStyles[animation],
-        className,
-      )}
+      className={cn("bg-muted", variantStyles[variant], animationStyles[animation], className)}
       style={{
         width: typeof width === "number" ? `${width}px` : width,
         height: typeof height === "number" ? `${height}px` : height,
@@ -70,19 +65,11 @@ interface TextSkeletonProps {
   lastLineWidth?: string;
 }
 
-export function TextSkeleton({
-  lines = 3,
-  className,
-  lastLineWidth = "60%",
-}: TextSkeletonProps) {
+export function TextSkeleton({ lines = 3, className, lastLineWidth = "60%" }: TextSkeletonProps) {
   return (
     <div className={cn("space-y-2", className)}>
       {Array.from({ length: lines }).map((_, i) => (
-        <Skeleton
-          key={i}
-          height={16}
-          width={i === lines - 1 ? lastLineWidth : "100%"}
-        />
+        <Skeleton key={i} height={16} width={i === lines - 1 ? lastLineWidth : "100%"} />
       ))}
     </div>
   );
@@ -99,21 +86,10 @@ interface CardSkeletonProps {
   className?: string;
 }
 
-export function CardSkeleton({
-  hasImage = false,
-  lines = 3,
-  className,
-}: CardSkeletonProps) {
+export function CardSkeleton({ hasImage = false, lines = 3, className }: CardSkeletonProps) {
   return (
     <div className={cn("rounded-lg border bg-card p-4", className)}>
-      {hasImage && (
-        <Skeleton
-          variant="rounded"
-          height={200}
-          width="100%"
-          className="mb-4"
-        />
-      )}
+      {hasImage && <Skeleton variant="rounded" height={200} width="100%" className="mb-4" />}
       <Skeleton height={20} width="70%" className="mb-2" />
       <TextSkeleton lines={lines} />
       <div className="mt-4 flex gap-2">
@@ -217,11 +193,7 @@ export function ListSkeleton({
           {hasAvatar && <Skeleton variant="circular" height={40} width={40} />}
           <div className="flex-1">
             <Skeleton height={16} width={`${40 + Math.random() * 40}%`} />
-            <Skeleton
-              height={12}
-              width={`${30 + Math.random() * 30}%`}
-              className="mt-1"
-            />
+            <Skeleton height={12} width={`${30 + Math.random() * 30}%`} className="mt-1" />
           </div>
           {hasAction && <Skeleton variant="rounded" height={32} width={32} />}
         </div>
@@ -239,11 +211,7 @@ interface FormSkeletonProps {
   className?: string;
 }
 
-export function FormSkeleton({
-  fields = 4,
-  hasSubmit = true,
-  className,
-}: FormSkeletonProps) {
+export function FormSkeleton({ fields = 4, hasSubmit = true, className }: FormSkeletonProps) {
   return (
     <div className={cn("space-y-4", className)}>
       {Array.from({ length: fields }).map((_, i) => (
@@ -356,11 +324,7 @@ interface SpinnerLoaderProps {
   className?: string;
 }
 
-export function SpinnerLoader({
-  size = "md",
-  text,
-  className,
-}: SpinnerLoaderProps) {
+export function SpinnerLoader({ size = "md", text, className }: SpinnerLoaderProps) {
   const sizeClasses = {
     sm: "h-4 w-4 border-2",
     md: "h-8 w-8 border-3",
@@ -368,16 +332,11 @@ export function SpinnerLoader({
   };
 
   return (
-    <div
-      className={cn(
-        "flex flex-col items-center justify-center gap-3",
-        className,
-      )}
-    >
+    <div className={cn("flex flex-col items-center justify-center gap-3", className)}>
       <div
         className={cn(
           "animate-spin rounded-full border-primary border-t-transparent",
-          sizeClasses[size],
+          sizeClasses[size]
         )}
       />
       {text && <p className="text-sm text-muted-foreground">{text}</p>}
@@ -408,7 +367,7 @@ export function LoadingOverlay({
         <div
           className={cn(
             "absolute inset-0 z-50 flex items-center justify-center bg-background/80",
-            blur && "backdrop-blur-sm",
+            blur && "backdrop-blur-sm"
           )}
         >
           <SpinnerLoader size="lg" text={text} />
@@ -439,16 +398,14 @@ export function ProgressLoader({
       {text && (
         <div className="flex justify-between text-sm">
           <span className="text-muted-foreground">{text}</span>
-          {!indeterminate && (
-            <span className="font-medium">{Math.round(progress)}%</span>
-          )}
+          {!indeterminate && <span className="font-medium">{Math.round(progress)}%</span>}
         </div>
       )}
       <div className="h-2 overflow-hidden rounded-full bg-muted">
         <div
           className={cn(
             "h-full bg-primary transition-all",
-            indeterminate && "animate-indeterminate-progress w-1/3",
+            indeterminate && "animate-indeterminate-progress w-1/3"
           )}
           style={!indeterminate ? { width: `${progress}%` } : undefined}
         />
@@ -466,11 +423,7 @@ interface LoadingButtonProps {
   children: React.ReactNode;
 }
 
-export function LoadingContent({
-  isLoading,
-  loadingText,
-  children,
-}: LoadingButtonProps) {
+export function LoadingContent({ isLoading, loadingText, children }: LoadingButtonProps) {
   if (!isLoading) return <>{children}</>;
 
   return (
@@ -492,27 +445,12 @@ interface EmptyStateProps {
   className?: string;
 }
 
-export function EmptyState({
-  icon,
-  title,
-  description,
-  action,
-  className,
-}: EmptyStateProps) {
+export function EmptyState({ icon, title, description, action, className }: EmptyStateProps) {
   return (
-    <div
-      className={cn(
-        "flex flex-col items-center justify-center py-12 text-center",
-        className,
-      )}
-    >
+    <div className={cn("flex flex-col items-center justify-center py-12 text-center", className)}>
       {icon && <div className="mb-4 text-muted-foreground">{icon}</div>}
       <h3 className="text-lg font-semibold">{title}</h3>
-      {description && (
-        <p className="mt-1 max-w-sm text-sm text-muted-foreground">
-          {description}
-        </p>
-      )}
+      {description && <p className="mt-1 max-w-sm text-sm text-muted-foreground">{description}</p>}
       {action && <div className="mt-4">{action}</div>}
     </div>
   );
@@ -535,12 +473,7 @@ export function ErrorState({
   className,
 }: ErrorStateProps) {
   return (
-    <div
-      className={cn(
-        "flex flex-col items-center justify-center py-12 text-center",
-        className,
-      )}
-    >
+    <div className={cn("flex flex-col items-center justify-center py-12 text-center", className)}>
       <div className="mb-4 rounded-full bg-destructive/10 p-3">
         <svg
           className="h-6 w-6 text-destructive"
@@ -557,9 +490,7 @@ export function ErrorState({
         </svg>
       </div>
       <h3 className="text-lg font-semibold">{title}</h3>
-      <p className="mt-1 max-w-sm text-sm text-muted-foreground">
-        {description}
-      </p>
+      <p className="mt-1 max-w-sm text-sm text-muted-foreground">{description}</p>
       {retry && (
         <button
           onClick={retry}

@@ -7,7 +7,11 @@ import { z } from "zod";
 export const LoginRequestSchema = z.object({
   email: z.string().email(),
   password: z.string().min(1),
-  tenantSlug: z.string().min(1, "Laundromat slug is required").max(50).regex(/^[a-z0-9-]+$/, "Slug must contain only lowercase letters, numbers, and hyphens"),
+  tenantSlug: z
+    .string()
+    .min(1, "Laundromat slug is required")
+    .max(50)
+    .regex(/^[a-z0-9-]+$/, "Slug must contain only lowercase letters, numbers, and hyphens"),
 });
 
 export const RegisterRequestSchema = z.object({
@@ -16,7 +20,12 @@ export const RegisterRequestSchema = z.object({
   firstName: z.string().min(1).max(50),
   lastName: z.string().min(1).max(50),
   tenantName: z.string().min(2).max(100),
-  tenantSlug: z.string().min(2).max(50).regex(/^[a-z0-9-]+$/, "Slug must contain only lowercase letters, numbers, and hyphens").optional(),
+  tenantSlug: z
+    .string()
+    .min(2)
+    .max(50)
+    .regex(/^[a-z0-9-]+$/, "Slug must contain only lowercase letters, numbers, and hyphens")
+    .optional(),
   phone: z.string().max(20).optional(),
 });
 

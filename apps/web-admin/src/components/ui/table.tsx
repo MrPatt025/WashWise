@@ -32,11 +32,7 @@ export interface TableColumn<T> {
   align?: "left" | "center" | "right";
   sticky?: "left" | "right";
   hidden?: boolean;
-  cell?: (
-    value: T[keyof T] | React.ReactNode,
-    row: T,
-    index: number,
-  ) => React.ReactNode;
+  cell?: (value: T[keyof T] | React.ReactNode, row: T, index: number) => React.ReactNode;
 }
 
 export type SortDirection = "asc" | "desc" | null;
@@ -69,9 +65,7 @@ interface TableContextValue<T> {
   setVisibleColumns: (columns: Set<string>) => void;
 }
 
-const TableContext = React.createContext<TableContextValue<unknown> | null>(
-  null,
-);
+const TableContext = React.createContext<TableContextValue<unknown> | null>(null);
 
 function useTableContext<T>() {
   const context = React.useContext(TableContext);
@@ -118,18 +112,12 @@ export function Table<T>({
   hoverable = true,
   compact = false,
 }: TableProps<T>) {
-  const [sortState, setSortStateInternal] =
-    React.useState<SortState>(defaultSort);
-  const [filterState, setFilterStateInternal] =
-    React.useState<FilterState>(defaultFilters);
-  const [selectedRows, setSelectedRowsInternal] = React.useState<Set<number>>(
-    new Set(),
-  );
-  const [expandedRows, setExpandedRows] = React.useState<Set<number>>(
-    new Set(),
-  );
+  const [sortState, setSortStateInternal] = React.useState<SortState>(defaultSort);
+  const [filterState, setFilterStateInternal] = React.useState<FilterState>(defaultFilters);
+  const [selectedRows, setSelectedRowsInternal] = React.useState<Set<number>>(new Set());
+  const [expandedRows, setExpandedRows] = React.useState<Set<number>>(new Set());
   const [visibleColumns, setVisibleColumns] = React.useState<Set<string>>(
-    new Set(columns.filter((c) => !c.hidden).map((c) => c.id)),
+    new Set(columns.filter((c) => !c.hidden).map((c) => c.id))
   );
 
   const setSortState = (state: SortState) => {
@@ -169,8 +157,8 @@ export function Table<T>({
       <div
         className={cn(
           "w-full overflow-auto",
-          bordered && "border border-gray-200 dark:border-gray-700 rounded-lg",
-          className,
+          bordered && "rounded-lg border border-gray-200 dark:border-gray-700",
+          className
         )}
       >
         <table
@@ -179,8 +167,7 @@ export function Table<T>({
             compact ? "text-sm" : "text-sm",
             striped &&
               "[&_tbody_tr:nth-child(even)]:bg-gray-50 dark:[&_tbody_tr:nth-child(even)]:bg-gray-800/50",
-            hoverable &&
-              "[&_tbody_tr]:hover:bg-gray-50 dark:[&_tbody_tr]:hover:bg-gray-800/50",
+            hoverable && "[&_tbody_tr]:hover:bg-gray-50 dark:[&_tbody_tr]:hover:bg-gray-800/50"
           )}
           data-sticky-header={stickyHeader || undefined}
         >
@@ -207,11 +194,7 @@ export function TableHeader({ children, className }: TableHeaderProps) {
   return (
     <thead
       ref={stickyParent}
-      className={cn(
-        "bg-gray-50 dark:bg-gray-800",
-        isSticky && "sticky top-0 z-10",
-        className,
-      )}
+      className={cn("bg-gray-50 dark:bg-gray-800", isSticky && "sticky top-0 z-10", className)}
     >
       {children}
     </thead>
@@ -228,11 +211,7 @@ interface TableHeaderRowProps {
   className?: string;
 }
 
-export function TableHeaderRow({
-  children,
-  selectable,
-  className,
-}: TableHeaderRowProps) {
+export function TableHeaderRow({ children, selectable, className }: TableHeaderRowProps) {
   const { data, selectedRows, setSelectedRows } = useTableContext();
 
   const allSelected = data.length > 0 && selectedRows.size === data.length;
@@ -247,9 +226,7 @@ export function TableHeaderRow({
   };
 
   return (
-    <tr
-      className={cn("border-b border-gray-200 dark:border-gray-700", className)}
-    >
+    <tr className={cn("border-b border-gray-200 dark:border-gray-700", className)}>
       {selectable && (
         <th className="w-12 px-4 py-3">
           <input
@@ -259,7 +236,7 @@ export function TableHeaderRow({
               if (el) el.indeterminate = someSelected;
             }}
             onChange={handleSelectAll}
-            className="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
+            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600"
             aria-label={allSelected ? "Deselect all" : "Select all"}
           />
         </th>
@@ -320,9 +297,8 @@ export function TableHeaderCell({
       className={cn(
         "px-4 py-3 font-semibold text-gray-900 dark:text-gray-100",
         alignClasses[align],
-        sortable &&
-          "cursor-pointer select-none hover:bg-gray-100 dark:hover:bg-gray-700/50",
-        className,
+        sortable && "cursor-pointer select-none hover:bg-gray-100 dark:hover:bg-gray-700/50",
+        className
       )}
       onClick={handleSort}
       aria-sort={
@@ -337,18 +313,18 @@ export function TableHeaderCell({
         className={cn(
           "flex items-center gap-2",
           align === "center" && "justify-center",
-          align === "right" && "justify-end",
+          align === "right" && "justify-end"
         )}
       >
         {children}
         {sortable && (
           <span className="flex-shrink-0">
             {currentDirection === "asc" ? (
-              <ChevronUp className="w-4 h-4" />
+              <ChevronUp className="h-4 w-4" />
             ) : currentDirection === "desc" ? (
-              <ChevronDown className="w-4 h-4" />
+              <ChevronDown className="h-4 w-4" />
             ) : (
-              <ChevronsUpDown className="w-4 h-4 text-gray-400" />
+              <ChevronsUpDown className="h-4 w-4 text-gray-400" />
             )}
           </span>
         )}
@@ -393,8 +369,7 @@ export function TableRow({
   onClick,
   className,
 }: TableRowProps) {
-  const { selectedRows, setSelectedRows, expandedRows, setExpandedRows } =
-    useTableContext();
+  const { selectedRows, setSelectedRows, expandedRows, setExpandedRows } = useTableContext();
 
   const isSelected = index !== undefined && selectedRows.has(index);
   const isExpanded = index !== undefined && expandedRows.has(index);
@@ -427,10 +402,10 @@ export function TableRow({
     <>
       <tr
         className={cn(
-          "border-b border-gray-200 dark:border-gray-700 last:border-b-0 transition-colors",
+          "border-b border-gray-200 transition-colors last:border-b-0 dark:border-gray-700",
           isSelected && "bg-blue-50 dark:bg-blue-900/20",
           onClick && "cursor-pointer",
-          className,
+          className
         )}
         onClick={onClick}
         aria-selected={isSelected || undefined}
@@ -442,7 +417,7 @@ export function TableRow({
               checked={isSelected}
               onChange={handleSelect}
               onClick={(e) => e.stopPropagation()}
-              className="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
+              className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600"
             />
           </td>
         )}
@@ -453,13 +428,13 @@ export function TableRow({
                 e.stopPropagation();
                 handleExpand();
               }}
-              className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              className="rounded p-1 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
               aria-expanded={isExpanded}
             >
               <ChevronDown
                 className={cn(
-                  "w-4 h-4 text-gray-400 transition-transform",
-                  isExpanded && "rotate-180",
+                  "h-4 w-4 text-gray-400 transition-transform",
+                  isExpanded && "rotate-180"
                 )}
               />
             </button>
@@ -474,7 +449,7 @@ export function TableRow({
             <tr>
               <td
                 colSpan={100}
-                className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700"
+                className="border-b border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800/50"
               >
                 <motion.div
                   initial={{ height: 0, opacity: 0 }}
@@ -504,11 +479,7 @@ interface TableCellProps {
   className?: string;
 }
 
-export function TableCell({
-  children,
-  align = "left",
-  className,
-}: TableCellProps) {
+export function TableCell({ children, align = "left", className }: TableCellProps) {
   const alignClasses = {
     left: "text-left",
     center: "text-center",
@@ -517,11 +488,7 @@ export function TableCell({
 
   return (
     <td
-      className={cn(
-        "px-4 py-3 text-gray-700 dark:text-gray-300",
-        alignClasses[align],
-        className,
-      )}
+      className={cn("px-4 py-3 text-gray-700 dark:text-gray-300", alignClasses[align], className)}
     >
       {children}
     </td>
@@ -541,8 +508,8 @@ export function TableFooter({ children, className }: TableFooterProps) {
   return (
     <tfoot
       className={cn(
-        "bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700",
-        className,
+        "border-t border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800",
+        className
       )}
     >
       {children}
@@ -581,27 +548,27 @@ export function TableToolbar({
   return (
     <div
       className={cn(
-        "flex items-center justify-between gap-4 p-4 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700",
-        className,
+        "flex items-center justify-between gap-4 border-b border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900",
+        className
       )}
     >
-      <div className="flex items-center gap-4 flex-1">
+      <div className="flex flex-1 items-center gap-4">
         {searchable && (
           <div className="relative max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
             <input
               type="search"
               value={searchQuery}
               onChange={(e) => handleSearch(e.target.value)}
               placeholder={searchPlaceholder}
-              className="w-full pl-10 pr-4 py-2 text-sm bg-gray-100 dark:bg-gray-800 border-none rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full rounded-lg border-none bg-gray-100 py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800"
             />
             {searchQuery && (
               <button
                 onClick={() => handleSearch("")}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
               >
-                <X className="w-4 h-4" />
+                <X className="h-4 w-4" />
               </button>
             )}
           </div>
@@ -621,19 +588,14 @@ interface ColumnVisibilityToggleProps {
   className?: string;
 }
 
-export function ColumnVisibilityToggle({
-  className,
-}: ColumnVisibilityToggleProps) {
+export function ColumnVisibilityToggle({ className }: ColumnVisibilityToggleProps) {
   const { columns, visibleColumns, setVisibleColumns } = useTableContext();
   const [isOpen, setIsOpen] = React.useState(false);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
@@ -656,29 +618,29 @@ export function ColumnVisibilityToggle({
     <div ref={dropdownRef} className={cn("relative", className)}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+        className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
       >
-        <Settings2 className="w-4 h-4" />
+        <Settings2 className="h-4 w-4" />
         Columns
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full mt-1 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-20">
+        <div className="absolute right-0 top-full z-20 mt-1 w-56 rounded-lg border border-gray-200 bg-white py-2 shadow-lg dark:border-gray-700 dark:bg-gray-800">
           {columns.map((column) => (
             <button
               key={column.id}
               onClick={() => toggleColumn(column.id)}
-              className="w-full flex items-center gap-3 px-4 py-2 text-sm text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              className="flex w-full items-center gap-3 px-4 py-2 text-left text-sm transition-colors hover:bg-gray-50 dark:hover:bg-gray-700"
             >
               <span
                 className={cn(
-                  "w-4 h-4 rounded border flex items-center justify-center",
+                  "flex h-4 w-4 items-center justify-center rounded border",
                   visibleColumns.has(column.id)
-                    ? "bg-blue-600 border-blue-600 text-white"
-                    : "border-gray-300 dark:border-gray-600",
+                    ? "border-blue-600 bg-blue-600 text-white"
+                    : "border-gray-300 dark:border-gray-600"
                 )}
               >
-                {visibleColumns.has(column.id) && <Check className="w-3 h-3" />}
+                {visibleColumns.has(column.id) && <Check className="h-3 w-3" />}
               </span>
               <span className="text-gray-700 dark:text-gray-300">
                 {typeof column.header === "string" ? column.header : column.id}
@@ -711,10 +673,7 @@ export function ExportButton({
 
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
@@ -733,14 +692,14 @@ export function ExportButton({
     <div ref={dropdownRef} className={cn("relative", className)}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+        className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
       >
-        <Download className="w-4 h-4" />
+        <Download className="h-4 w-4" />
         Export
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full mt-1 w-40 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-20">
+        <div className="absolute right-0 top-full z-20 mt-1 w-40 rounded-lg border border-gray-200 bg-white py-1 shadow-lg dark:border-gray-700 dark:bg-gray-800">
           {formats.map((format) => (
             <button
               key={format}
@@ -748,7 +707,7 @@ export function ExportButton({
                 onExport(format);
                 setIsOpen(false);
               }}
-              className="w-full px-4 py-2 text-sm text-left text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              className="w-full px-4 py-2 text-left text-sm text-gray-700 transition-colors hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700"
             >
               {formatLabels[format]}
             </button>
@@ -774,21 +733,14 @@ interface FilterPanelProps {
   className?: string;
 }
 
-export function FilterPanel({
-  filters,
-  onFilter,
-  className,
-}: FilterPanelProps) {
+export function FilterPanel({ filters, onFilter, className }: FilterPanelProps) {
   const [isOpen, setIsOpen] = React.useState(false);
   const [values, setValues] = React.useState<FilterState>({});
   const dropdownRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
@@ -814,32 +766,30 @@ export function FilterPanel({
     <div ref={dropdownRef} className={cn("relative", className)}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+        className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
       >
-        <Filter className="w-4 h-4" />
+        <Filter className="h-4 w-4" />
         Filters
         {activeCount > 0 && (
-          <span className="w-5 h-5 flex items-center justify-center text-xs font-medium text-white bg-blue-600 rounded-full">
+          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-xs font-medium text-white">
             {activeCount}
           </span>
         )}
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full mt-1 w-72 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-20">
-          <div className="p-4 space-y-4">
+        <div className="absolute right-0 top-full z-20 mt-1 w-72 rounded-lg border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
+          <div className="space-y-4 p-4">
             {filters.map((filter) => (
               <div key={filter.id}>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
                   {filter.label}
                 </label>
                 {filter.type === "select" ? (
                   <select
                     value={values[filter.id] || ""}
-                    onChange={(e) =>
-                      setValues({ ...values, [filter.id]: e.target.value })
-                    }
-                    className="w-full px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 border-none rounded-lg focus:ring-2 focus:ring-blue-500"
+                    onChange={(e) => setValues({ ...values, [filter.id]: e.target.value })}
+                    className="w-full rounded-lg border-none bg-gray-100 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 dark:bg-gray-700"
                   >
                     <option value="">All</option>
                     {filter.options?.map((option) => (
@@ -852,25 +802,23 @@ export function FilterPanel({
                   <input
                     type={filter.type}
                     value={values[filter.id] || ""}
-                    onChange={(e) =>
-                      setValues({ ...values, [filter.id]: e.target.value })
-                    }
-                    className="w-full px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 border-none rounded-lg focus:ring-2 focus:ring-blue-500"
+                    onChange={(e) => setValues({ ...values, [filter.id]: e.target.value })}
+                    className="w-full rounded-lg border-none bg-gray-100 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 dark:bg-gray-700"
                   />
                 )}
               </div>
             ))}
           </div>
-          <div className="flex items-center justify-between gap-2 p-3 border-t border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between gap-2 border-t border-gray-200 p-3 dark:border-gray-700">
             <button
               onClick={handleClear}
-              className="px-3 py-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+              className="px-3 py-1.5 text-sm text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
             >
               Clear all
             </button>
             <button
               onClick={handleApply}
-              className="px-4 py-1.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+              className="rounded-lg bg-blue-600 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-blue-700"
             >
               Apply
             </button>
@@ -902,10 +850,7 @@ export function RowActions({ actions, className }: RowActionsProps) {
 
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
@@ -921,14 +866,14 @@ export function RowActions({ actions, className }: RowActionsProps) {
           e.stopPropagation();
           setIsOpen(!isOpen);
         }}
-        className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+        className="rounded p-1 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
         aria-label="Row actions"
       >
-        <MoreVertical className="w-4 h-4 text-gray-400" />
+        <MoreVertical className="h-4 w-4 text-gray-400" />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full mt-1 w-40 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-20">
+        <div className="absolute right-0 top-full z-20 mt-1 w-40 rounded-lg border border-gray-200 bg-white py-1 shadow-lg dark:border-gray-700 dark:bg-gray-800">
           {actions.map((action, index) => (
             <button
               key={index}
@@ -941,11 +886,11 @@ export function RowActions({ actions, className }: RowActionsProps) {
               }}
               disabled={action.disabled}
               className={cn(
-                "w-full flex items-center gap-2 px-4 py-2 text-sm text-left transition-colors",
+                "flex w-full items-center gap-2 px-4 py-2 text-left text-sm transition-colors",
                 action.destructive
-                  ? "text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
-                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700",
-                action.disabled && "opacity-50 cursor-not-allowed",
+                  ? "text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+                  : "text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700",
+                action.disabled && "cursor-not-allowed opacity-50"
               )}
             >
               {action.icon}
@@ -981,22 +926,15 @@ export function EmptyTable({
     <tr>
       <td colSpan={100}>
         <div
-          className={cn(
-            "flex flex-col items-center justify-center py-12 text-center",
-            className,
-          )}
+          className={cn("flex flex-col items-center justify-center py-12 text-center", className)}
         >
           {icon && (
-            <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-4">
+            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800">
               {icon}
             </div>
           )}
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-            {title}
-          </h3>
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 max-w-sm">
-            {description}
-          </p>
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white">{title}</h3>
+          <p className="mt-1 max-w-sm text-sm text-gray-500 dark:text-gray-400">{description}</p>
           {action && <div className="mt-4">{action}</div>}
         </div>
       </td>

@@ -7,11 +7,7 @@ import { useAuthStore } from "@/stores/auth.store";
 import { AuthGuard, type UserRole } from "@/components/auth-guard";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ui/theme-provider";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import {
   WashingMachine,
@@ -61,11 +57,7 @@ function useBreadcrumbs() {
   }, [pathname]);
 }
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const user = useAuthStore((state) => state.user);
   const logoutMutation = useLogout();
@@ -87,14 +79,14 @@ export default function DashboardLayout({
         {/* Sidebar */}
         <aside
           className={cn(
-            "fixed inset-y-0 left-0 z-50 w-64 transform bg-white dark:bg-gray-900 shadow-xl transition-transform duration-300 ease-in-out lg:static lg:translate-x-0",
-            sidebarOpen ? "translate-x-0" : "-translate-x-full",
+            "fixed inset-y-0 left-0 z-50 w-64 transform bg-white shadow-xl transition-transform duration-300 ease-in-out dark:bg-gray-900 lg:static lg:translate-x-0",
+            sidebarOpen ? "translate-x-0" : "-translate-x-full"
           )}
           aria-label="Main navigation"
         >
           <div className="flex h-full flex-col">
             {/* Logo */}
-            <div className="flex h-16 items-center justify-between px-4 border-b">
+            <div className="flex h-16 items-center justify-between border-b px-4">
               <Link href="/dashboard" className="flex items-center space-x-2">
                 <div className="rounded-lg bg-primary p-2">
                   <WashingMachine className="h-5 w-5 text-white" />
@@ -103,10 +95,7 @@ export default function DashboardLayout({
               </Link>
               <div className="flex items-center space-x-2">
                 <ThemeToggle />
-                <button
-                  className="lg:hidden"
-                  onClick={() => setSidebarOpen(false)}
-                >
+                <button className="lg:hidden" onClick={() => setSidebarOpen(false)}>
                   <X className="h-6 w-6" />
                 </button>
               </div>
@@ -125,7 +114,7 @@ export default function DashboardLayout({
                           "flex items-center space-x-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150",
                           isActive
                             ? "bg-primary text-primary-foreground shadow-sm"
-                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white",
+                            : "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
                         )}
                         aria-current={isActive ? "page" : undefined}
                       >
@@ -143,15 +132,15 @@ export default function DashboardLayout({
 
             {/* User info */}
             <div className="border-t p-4">
-              <div className="flex items-center space-x-3 mb-3">
+              <div className="mb-3 flex items-center space-x-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
                   <User className="h-5 w-5 text-primary" />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">{user?.fullName || `${user?.firstName} ${user?.lastName}`}</p>
-                  <p className="text-xs text-muted-foreground truncate">
-                    {user?.tenant?.name}
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium">
+                    {user?.fullName || `${user?.firstName} ${user?.lastName}`}
                   </p>
+                  <p className="truncate text-xs text-muted-foreground">{user?.tenant?.name}</p>
                 </div>
               </div>
               <Button
@@ -170,7 +159,7 @@ export default function DashboardLayout({
         {/* Main content */}
         <div className="flex flex-1 flex-col overflow-hidden">
           {/* Mobile header */}
-          <header className="flex h-16 items-center justify-between border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 px-4 lg:hidden">
+          <header className="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-4 dark:border-gray-800 dark:bg-gray-900 lg:hidden">
             <button
               onClick={() => setSidebarOpen(true)}
               aria-label="Open sidebar"
@@ -186,21 +175,17 @@ export default function DashboardLayout({
           </header>
 
           {/* Desktop breadcrumb header */}
-          <header className="hidden lg:flex h-14 items-center justify-between border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 px-6">
+          <header className="hidden h-14 items-center justify-between border-b border-gray-200 bg-white px-6 dark:border-gray-800 dark:bg-gray-900 lg:flex">
             <nav className="flex items-center space-x-1 text-sm" aria-label="Breadcrumb">
               {breadcrumbs.map((crumb, index) => (
                 <div key={crumb.href} className="flex items-center">
-                  {index > 0 && (
-                    <ChevronRight className="h-4 w-4 mx-1 text-gray-400" />
-                  )}
+                  {index > 0 && <ChevronRight className="mx-1 h-4 w-4 text-gray-400" />}
                   {index === breadcrumbs.length - 1 ? (
-                    <span className="font-medium text-gray-900 dark:text-white">
-                      {crumb.label}
-                    </span>
+                    <span className="font-medium text-gray-900 dark:text-white">{crumb.label}</span>
                   ) : (
                     <Link
                       href={crumb.href}
-                      className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                      className="text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
                     >
                       {crumb.label}
                     </Link>
@@ -219,9 +204,9 @@ export default function DashboardLayout({
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" className="text-gray-500 relative">
+                  <Button variant="ghost" size="icon" className="relative text-gray-500">
                     <Bell className="h-5 w-5" />
-                    <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-red-500" />
+                    <span className="absolute right-1 top-1 h-2 w-2 rounded-full bg-red-500" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>Notifications</TooltipContent>

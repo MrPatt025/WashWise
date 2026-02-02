@@ -34,12 +34,12 @@ export function Kbd({ children, className }: KbdProps) {
   return (
     <kbd
       className={cn(
-        "inline-flex items-center justify-center h-5 min-w-[20px] px-1.5",
-        "text-xs font-medium font-mono",
-        "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300",
-        "border border-gray-300 dark:border-gray-600 rounded",
+        "inline-flex h-5 min-w-[20px] items-center justify-center px-1.5",
+        "font-mono text-xs font-medium",
+        "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300",
+        "rounded border border-gray-300 dark:border-gray-600",
         "shadow-[0_1px_0_0_rgba(0,0,0,0.1)] dark:shadow-[0_1px_0_0_rgba(0,0,0,0.3)]",
-        className,
+        className
       )}
     >
       {children}
@@ -57,11 +57,7 @@ interface ShortcutKeyProps {
   className?: string;
 }
 
-export function ShortcutKey({
-  keys,
-  separator = "+",
-  className,
-}: ShortcutKeyProps) {
+export function ShortcutKey({ keys, separator = "+", className }: ShortcutKeyProps) {
   // Convert key names to symbols
   const formatKey = (key: string): string => {
     const keyMap: Record<string, string> = {
@@ -90,9 +86,7 @@ export function ShortcutKey({
       {keys.map((key, index) => (
         <React.Fragment key={index}>
           {index > 0 && (
-            <span className="text-gray-400 text-xs mx-0.5">
-              {separator === "+" ? "+" : "then"}
-            </span>
+            <span className="mx-0.5 text-xs text-gray-400">{separator === "+" ? "+" : "then"}</span>
           )}
           <Kbd>{formatKey(key)}</Kbd>
         </React.Fragment>
@@ -157,44 +151,39 @@ export function KeyboardShortcutsDialog({
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             className={cn(
-              "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50",
-              "w-full max-w-2xl max-h-[80vh] overflow-hidden",
-              "bg-white dark:bg-gray-900 rounded-xl shadow-2xl",
+              "fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2",
+              "max-h-[80vh] w-full max-w-2xl overflow-hidden",
+              "rounded-xl bg-white shadow-2xl dark:bg-gray-900",
               "border border-gray-200 dark:border-gray-800",
-              className,
+              className
             )}
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+            <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4 dark:border-gray-800">
               <div className="flex items-center gap-3">
-                <Keyboard className="w-5 h-5 text-gray-500" />
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  {title}
-                </h2>
+                <Keyboard className="h-5 w-5 text-gray-500" />
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h2>
               </div>
               <button
                 type="button"
                 onClick={onClose}
-                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="rounded-lg p-2 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
               >
-                <X className="w-5 h-5 text-gray-500" />
+                <X className="h-5 w-5 text-gray-500" />
               </button>
             </div>
 
             {/* Content */}
-            <div className="overflow-y-auto max-h-[calc(80vh-80px)] p-6">
+            <div className="max-h-[calc(80vh-80px)] overflow-y-auto p-6">
               <div className="grid gap-8 md:grid-cols-2">
                 {shortcuts.map((group) => (
                   <div key={group.name}>
-                    <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
+                    <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
                       {group.name}
                     </h3>
                     <div className="space-y-2">
                       {group.shortcuts.map((shortcut, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center justify-between py-2"
-                        >
+                        <div key={index} className="flex items-center justify-between py-2">
                           <span className="text-sm text-gray-700 dark:text-gray-300">
                             {shortcut.description}
                           </span>
@@ -208,7 +197,7 @@ export function KeyboardShortcutsDialog({
             </div>
 
             {/* Footer */}
-            <div className="px-6 py-3 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-800 text-center">
+            <div className="border-t border-gray-200 bg-gray-50 px-6 py-3 text-center dark:border-gray-800 dark:bg-gray-800/50">
               <p className="text-xs text-gray-500 dark:text-gray-400">
                 Press <Kbd>?</Kbd> anytime to show this dialog
               </p>
@@ -233,7 +222,7 @@ interface UseKeyboardShortcutOptions {
 export function useKeyboardShortcut(
   keys: string[],
   callback: (event: KeyboardEvent) => void,
-  options: UseKeyboardShortcutOptions = {},
+  options: UseKeyboardShortcutOptions = {}
 ) {
   const {
     enabled = true,
@@ -257,9 +246,7 @@ export function useKeyboardShortcut(
 
       // Check modifier keys
       if (event.ctrlKey || event.metaKey) {
-        pressedKeys.push(
-          event.metaKey && navigator.platform.includes("Mac") ? "mod" : "ctrl",
-        );
+        pressedKeys.push(event.metaKey && navigator.platform.includes("Mac") ? "mod" : "ctrl");
       }
       if (event.altKey) pressedKeys.push("alt");
       if (event.shiftKey) pressedKeys.push("shift");
@@ -273,9 +260,7 @@ export function useKeyboardShortcut(
       // Check if all required keys are pressed
       const allKeysPressed = requiredKeys.every((key) => {
         if (key === "mod") {
-          return navigator.platform.includes("Mac")
-            ? event.metaKey
-            : event.ctrlKey;
+          return navigator.platform.includes("Mac") ? event.metaKey : event.ctrlKey;
         }
         return pressedKeys.includes(key);
       });
@@ -309,15 +294,12 @@ interface KeyboardShortcutsContextValue {
   isShortcutsVisible: boolean;
 }
 
-const KeyboardShortcutsContext =
-  React.createContext<KeyboardShortcutsContextValue | null>(null);
+const KeyboardShortcutsContext = React.createContext<KeyboardShortcutsContextValue | null>(null);
 
 export function useKeyboardShortcuts() {
   const context = React.useContext(KeyboardShortcutsContext);
   if (!context) {
-    throw new Error(
-      "useKeyboardShortcuts must be used within KeyboardShortcutsProvider",
-    );
+    throw new Error("useKeyboardShortcuts must be used within KeyboardShortcutsProvider");
   }
   return context;
 }
@@ -331,61 +313,54 @@ export function KeyboardShortcutsProvider({
   children,
   defaultShortcuts = [],
 }: KeyboardShortcutsProviderProps) {
-  const [shortcuts, setShortcuts] =
-    React.useState<ShortcutGroup[]>(defaultShortcuts);
+  const [shortcuts, setShortcuts] = React.useState<ShortcutGroup[]>(defaultShortcuts);
   const [isShortcutsVisible, setIsShortcutsVisible] = React.useState(false);
 
-  const registerShortcut = React.useCallback(
-    (groupName: string, shortcut: Shortcut) => {
-      setShortcuts((prev) => {
-        const groupIndex = prev.findIndex((g) => g.name === groupName);
+  const registerShortcut = React.useCallback((groupName: string, shortcut: Shortcut) => {
+    setShortcuts((prev) => {
+      const groupIndex = prev.findIndex((g) => g.name === groupName);
 
-        if (groupIndex === -1) {
-          return [...prev, { name: groupName, shortcuts: [shortcut] }];
-        }
+      if (groupIndex === -1) {
+        return [...prev, { name: groupName, shortcuts: [shortcut] }];
+      }
 
-        const newGroups = [...prev];
-        const existingIndex = newGroups[groupIndex].shortcuts.findIndex(
-          (s) => JSON.stringify(s.keys) === JSON.stringify(shortcut.keys),
-        );
+      const newGroups = [...prev];
+      const existingIndex = newGroups[groupIndex].shortcuts.findIndex(
+        (s) => JSON.stringify(s.keys) === JSON.stringify(shortcut.keys)
+      );
 
-        if (existingIndex === -1) {
-          newGroups[groupIndex] = {
-            ...newGroups[groupIndex],
-            shortcuts: [...newGroups[groupIndex].shortcuts, shortcut],
-          };
-        }
-
-        return newGroups;
-      });
-    },
-    [],
-  );
-
-  const unregisterShortcut = React.useCallback(
-    (groupName: string, keys: string[]) => {
-      setShortcuts((prev) => {
-        const groupIndex = prev.findIndex((g) => g.name === groupName);
-        if (groupIndex === -1) return prev;
-
-        const newGroups = [...prev];
+      if (existingIndex === -1) {
         newGroups[groupIndex] = {
           ...newGroups[groupIndex],
-          shortcuts: newGroups[groupIndex].shortcuts.filter(
-            (s) => JSON.stringify(s.keys) !== JSON.stringify(keys),
-          ),
+          shortcuts: [...newGroups[groupIndex].shortcuts, shortcut],
         };
+      }
 
-        // Remove empty groups
-        if (newGroups[groupIndex].shortcuts.length === 0) {
-          newGroups.splice(groupIndex, 1);
-        }
+      return newGroups;
+    });
+  }, []);
 
-        return newGroups;
-      });
-    },
-    [],
-  );
+  const unregisterShortcut = React.useCallback((groupName: string, keys: string[]) => {
+    setShortcuts((prev) => {
+      const groupIndex = prev.findIndex((g) => g.name === groupName);
+      if (groupIndex === -1) return prev;
+
+      const newGroups = [...prev];
+      newGroups[groupIndex] = {
+        ...newGroups[groupIndex],
+        shortcuts: newGroups[groupIndex].shortcuts.filter(
+          (s) => JSON.stringify(s.keys) !== JSON.stringify(keys)
+        ),
+      };
+
+      // Remove empty groups
+      if (newGroups[groupIndex].shortcuts.length === 0) {
+        newGroups.splice(groupIndex, 1);
+      }
+
+      return newGroups;
+    });
+  }, []);
 
   const showShortcuts = React.useCallback(() => {
     setIsShortcutsVisible(true);
@@ -414,7 +389,7 @@ export function KeyboardShortcutsProvider({
       showShortcuts,
       hideShortcuts,
       isShortcutsVisible,
-    ],
+    ]
   );
 
   return (
@@ -443,9 +418,9 @@ export function ShortcutBadge({ keys, className }: ShortcutBadgeProps) {
     <span
       className={cn(
         "inline-flex items-center gap-0.5 px-1.5 py-0.5 text-xs",
-        "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400",
+        "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400",
         "rounded border border-gray-200 dark:border-gray-700",
-        className,
+        className
       )}
     >
       <ShortcutKey keys={keys} />
@@ -464,20 +439,15 @@ interface ShortcutListItemProps {
   className?: string;
 }
 
-export function ShortcutListItem({
-  keys,
-  description,
-  onClick,
-  className,
-}: ShortcutListItemProps) {
+export function ShortcutListItem({ keys, description, onClick, className }: ShortcutListItemProps) {
   return (
     <button
       type="button"
       onClick={onClick}
       className={cn(
-        "flex items-center justify-between w-full px-3 py-2 text-sm",
-        "hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors",
-        className,
+        "flex w-full items-center justify-between px-3 py-2 text-sm",
+        "rounded-lg transition-colors hover:bg-gray-100 dark:hover:bg-gray-800",
+        className
       )}
     >
       <span className="text-gray-700 dark:text-gray-300">{description}</span>

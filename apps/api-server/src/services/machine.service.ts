@@ -7,7 +7,10 @@ import type {
   MachineStatus,
   PaginatedResponse,
 } from "@washwise/types";
-import type { Machine as PrismaMachine, MachineStatus as PrismaMachineStatus } from "@prisma/client";
+import type {
+  Machine as PrismaMachine,
+  MachineStatus as PrismaMachineStatus,
+} from "@prisma/client";
 
 /**
  * Machine Service - Handles all machine-related operations
@@ -21,8 +24,9 @@ export class MachineService {
    */
   async create(tenantId: string, branchId: string, data: CreateMachine): Promise<Machine> {
     // Generate serial number if not provided
-    const serialNumber = data.serialNumber || `M-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    
+    const serialNumber =
+      data.serialNumber || `M-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
     // Check for duplicate serial number within tenant
     const existing = await prisma.machine.findUnique({
       where: {
@@ -74,10 +78,7 @@ export class MachineService {
   /**
    * List machines with pagination and filtering
    */
-  async list(
-    tenantId: string,
-    query: MachineQuery,
-  ): Promise<PaginatedResponse<Machine>> {
+  async list(tenantId: string, query: MachineQuery): Promise<PaginatedResponse<Machine>> {
     const { page = 1, limit = 20, type, status, search } = query;
     const skip = (page - 1) * limit;
 
@@ -122,11 +123,7 @@ export class MachineService {
    * Update a machine
    * ANTI-IDOR: Fails silently if machine doesn't belong to tenant
    */
-  async update(
-    tenantId: string,
-    machineId: string,
-    data: UpdateMachine,
-  ): Promise<Machine | null> {
+  async update(tenantId: string, machineId: string, data: UpdateMachine): Promise<Machine | null> {
     // First verify ownership
     const existing = await prisma.machine.findFirst({
       where: {
@@ -146,7 +143,9 @@ export class MachineService {
         ...(data.type && { type: data.type }),
         ...(data.capacityKg !== undefined && { capacityKg: data.capacityKg }),
         ...(data.pricePerCycle !== undefined && { pricePerCycle: data.pricePerCycle }),
-        ...(data.cycleDurationMinutes !== undefined && { cycleDurationMins: data.cycleDurationMinutes }),
+        ...(data.cycleDurationMinutes !== undefined && {
+          cycleDurationMins: data.cycleDurationMinutes,
+        }),
         ...(data.manufacturer && { manufacturer: data.manufacturer }),
         ...(data.model && { model: data.model }),
         ...(data.serialNumber && { serialNumber: data.serialNumber }),
@@ -162,7 +161,7 @@ export class MachineService {
   async updateStatus(
     tenantId: string,
     machineId: string,
-    status: MachineStatus,
+    status: MachineStatus
   ): Promise<Machine | null> {
     // First verify ownership
     const existing = await prisma.machine.findFirst({
@@ -177,7 +176,7 @@ export class MachineService {
     }
 
     const prismaStatus = this.mapToPrismaStatus(status);
-    
+
     const machine = await prisma.machine.update({
       where: { id: machineId },
       data: { status: prismaStatus },

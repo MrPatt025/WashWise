@@ -49,15 +49,9 @@ export function Providers({ children }: ProvidersProps) {
             <SkipToMain href="#main-content" />
             {children}
             <Toaster position="top-right" richColors closeButton />
-            <NetworkStatusIndicator
-              showOnlyWhenOffline
-              position="bottom-right"
-            />
+            <NetworkStatusIndicator showOnlyWhenOffline position="bottom-right" />
             {process.env.NODE_ENV === "development" && (
-              <ReactQueryDevtools
-                initialIsOpen={false}
-                buttonPosition="bottom-left"
-              />
+              <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
             )}
           </TooltipProvider>
         </ThemeProvider>

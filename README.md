@@ -18,18 +18,19 @@
 
 ## 🌟 Overview
 
-WashWise is a **production-ready, multi-tenant SaaS platform** designed to revolutionize laundromat operations through intelligent automation and AI-powered customer experiences.
+WashWise is a **production-ready, multi-tenant SaaS platform** designed to revolutionize laundromat
+operations through intelligent automation and AI-powered customer experiences.
 
 ### Key Features
 
-| Feature | Description |
-|---------|-------------|
-| 🏢 **Multi-Tenant** | Full tenant isolation with separate data, billing, and customization |
-| 🤖 **AI-Powered** | Natural language chatbot, demand forecasting, anomaly detection |
-| 📱 **Real-Time** | WebSocket-based live machine status and notifications |
-| 💳 **Payments** | PromptPay, credit card, and wallet integration |
-| 📊 **Analytics** | Revenue insights, usage patterns, and custom reports |
-| 🔒 **Enterprise Security** | OAuth2/OIDC, RBAC/ABAC, OWASP Top 10 compliant |
+| Feature                    | Description                                                          |
+| -------------------------- | -------------------------------------------------------------------- |
+| 🏢 **Multi-Tenant**        | Full tenant isolation with separate data, billing, and customization |
+| 🤖 **AI-Powered**          | Natural language chatbot, demand forecasting, anomaly detection      |
+| 📱 **Real-Time**           | WebSocket-based live machine status and notifications                |
+| 💳 **Payments**            | PromptPay, credit card, and wallet integration                       |
+| 📊 **Analytics**           | Revenue insights, usage patterns, and custom reports                 |
+| 🔒 **Enterprise Security** | OAuth2/OIDC, RBAC/ABAC, OWASP Top 10 compliant                       |
 
 ---
 
@@ -37,16 +38,16 @@ WashWise is a **production-ready, multi-tenant SaaS platform** designed to revol
 
 ### Enterprise Tech Stack
 
-| Layer | Technology | Purpose |
-|-------|------------|---------|
-| **Core API** | Java 21 + Spring Boot 4.x | Main business logic, Virtual Threads |
-| **AI Worker** | Python 3.12 + FastAPI | LLM integration, ML pipelines |
-| **Frontend** | Next.js 16 + React 19 | Admin dashboard, Customer app |
-| **Database** | PostgreSQL 16 + pgvector | Relational data + vector embeddings |
-| **Cache** | Redis 7 | Caching, Pub/Sub, Rate limiting |
-| **AI/ML** | LangChain + CrewAI | Multi-agent AI orchestration |
-| **Infrastructure** | AWS ECS Fargate | Serverless containers |
-| **IaC** | Terraform | Infrastructure as Code |
+| Layer              | Technology                | Purpose                              |
+| ------------------ | ------------------------- | ------------------------------------ |
+| **Core API**       | Java 21 + Spring Boot 4.x | Main business logic, Virtual Threads |
+| **AI Worker**      | Python 3.12 + FastAPI     | LLM integration, ML pipelines        |
+| **Frontend**       | Next.js 16 + React 19     | Admin dashboard, Customer app        |
+| **Database**       | PostgreSQL 16 + pgvector  | Relational data + vector embeddings  |
+| **Cache**          | Redis 7                   | Caching, Pub/Sub, Rate limiting      |
+| **AI/ML**          | LangChain + CrewAI        | Multi-agent AI orchestration         |
+| **Infrastructure** | AWS ECS Fargate           | Serverless containers                |
+| **IaC**            | Terraform                 | Infrastructure as Code               |
 
 ### Current Implementation (MVP)
 
@@ -119,16 +120,16 @@ washwise/
 
 Comprehensive enterprise documentation is available in the [docs/](docs/) folder:
 
-| Document | Description |
-|----------|-------------|
-| [01-PRD.md](docs/01-PRD.md) | Product Requirements - personas, user journeys, features |
-| [02-ARCHITECTURE.md](docs/02-ARCHITECTURE.md) | System architecture - microservices, data flows |
-| [03-DATABASE.md](docs/03-DATABASE.md) | Database design - PostgreSQL, MongoDB, Redis |
-| [04-API.md](docs/04-API.md) | REST API specifications - endpoints, payloads |
-| [05-SECURITY.md](docs/05-SECURITY.md) | Security design - OAuth2, RBAC, OWASP compliance |
-| [06-DEVOPS.md](docs/06-DEVOPS.md) | DevOps & CI/CD - GitHub Actions, Terraform |
-| [07-OBSERVABILITY.md](docs/07-OBSERVABILITY.md) | Monitoring - metrics, logging, tracing |
-| [08-ROADMAP.md](docs/08-ROADMAP.md) | Roadmap & Business Plan - phases, pricing |
+| Document                                        | Description                                              |
+| ----------------------------------------------- | -------------------------------------------------------- |
+| [01-PRD.md](docs/01-PRD.md)                     | Product Requirements - personas, user journeys, features |
+| [02-ARCHITECTURE.md](docs/02-ARCHITECTURE.md)   | System architecture - microservices, data flows          |
+| [03-DATABASE.md](docs/03-DATABASE.md)           | Database design - PostgreSQL, MongoDB, Redis             |
+| [04-API.md](docs/04-API.md)                     | REST API specifications - endpoints, payloads            |
+| [05-SECURITY.md](docs/05-SECURITY.md)           | Security design - OAuth2, RBAC, OWASP compliance         |
+| [06-DEVOPS.md](docs/06-DEVOPS.md)               | DevOps & CI/CD - GitHub Actions, Terraform               |
+| [07-OBSERVABILITY.md](docs/07-OBSERVABILITY.md) | Monitoring - metrics, logging, tracing                   |
+| [08-ROADMAP.md](docs/08-ROADMAP.md)             | Roadmap & Business Plan - phases, pricing                |
 
 ---
 
@@ -183,7 +184,8 @@ pnpm db:studio    # Open Prisma Studio
 
 ## 🛠 Local Development Guide
 
-This guide helps you run services locally without rebuilding Docker containers for every code change.
+This guide helps you run services locally without rebuilding Docker containers for every code
+change.
 
 ### Prerequisites
 
@@ -216,6 +218,7 @@ mvn spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
 **Environment variables** (set in terminal or `.env` file):
+
 ```bash
 export DATABASE_URL=jdbc:postgresql://localhost:5432/washwise
 export REDIS_HOST=localhost
@@ -237,6 +240,7 @@ pnpm dev
 ```
 
 **Environment** (`.env.local`):
+
 ```bash
 NEXT_PUBLIC_API_URL=http://localhost:8080
 ```
@@ -252,15 +256,15 @@ pnpm dev --filter api-server
 
 ### Development Workflow Tips
 
-| Task | Command |
-|------|---------|
-| Start everything via Docker | `docker-compose up -d` |
-| Start infra only | `docker-compose up -d postgres redis` |
-| Run Core API locally | `cd services/core-api && mvn spring-boot:run` |
-| Run frontend locally | `pnpm dev --filter web-admin` |
-| View logs | `docker-compose logs -f [service]` |
-| Reset database | `docker-compose down -v && docker-compose up -d postgres` |
-| Rebuild one container | `docker-compose up -d --build core-api` |
+| Task                        | Command                                                   |
+| --------------------------- | --------------------------------------------------------- |
+| Start everything via Docker | `docker-compose up -d`                                    |
+| Start infra only            | `docker-compose up -d postgres redis`                     |
+| Run Core API locally        | `cd services/core-api && mvn spring-boot:run`             |
+| Run frontend locally        | `pnpm dev --filter web-admin`                             |
+| View logs                   | `docker-compose logs -f [service]`                        |
+| Reset database              | `docker-compose down -v && docker-compose up -d postgres` |
+| Rebuild one container       | `docker-compose up -d --build core-api`                   |
 
 ### Hot Reload
 
@@ -270,12 +274,12 @@ pnpm dev --filter api-server
 
 ### Troubleshooting
 
-| Issue | Solution |
-|-------|----------|
-| Port already in use | Kill process: `lsof -ti:8080 \| xargs kill` (Mac/Linux) or `netstat -ano \| findstr :8080` (Windows) |
-| DB connection failed | Ensure PostgreSQL container is running: `docker ps` |
-| CORS errors | Check `CORS_ORIGIN` in backend matches frontend URL |
-| Actuator health DOWN | Normal if DB/Redis still starting; endpoints still work |
+| Issue                | Solution                                                                                             |
+| -------------------- | ---------------------------------------------------------------------------------------------------- |
+| Port already in use  | Kill process: `lsof -ti:8080 \| xargs kill` (Mac/Linux) or `netstat -ano \| findstr :8080` (Windows) |
+| DB connection failed | Ensure PostgreSQL container is running: `docker ps`                                                  |
+| CORS errors          | Check `CORS_ORIGIN` in backend matches frontend URL                                                  |
+| Actuator health DOWN | Normal if DB/Redis still starting; endpoints still work                                              |
 
 ---
 
@@ -426,24 +430,28 @@ Tenant: CleanWave Laundromat
 ## 🎯 Roadmap
 
 ### Phase 1: MVP Foundation (Q1 2025) ✅
+
 - Multi-tenant architecture
 - User authentication & RBAC
 - Machine management & booking
 - Basic AI chatbot
 
 ### Phase 2: Production Ready (Q2 2025)
+
 - Mobile apps (iOS/Android)
 - Payment integration (PromptPay, Cards)
 - Enhanced IoT dashboard
 - Push notifications
 
 ### Phase 3: Scale & Intelligence (Q3 2025)
+
 - Demand forecasting AI
 - Dynamic pricing engine
 - Multi-region deployment
 - Advanced analytics
 
 ### Phase 4: AI Platform (Q4 2025)
+
 - Autonomous AI agents
 - Voice assistant
 - Predictive maintenance

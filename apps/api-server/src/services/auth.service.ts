@@ -3,12 +3,7 @@ import { hash, verify } from "argon2";
 import { randomUUID, createHash } from "crypto";
 import jwt from "jsonwebtoken";
 import { AUTH_CONSTANTS } from "@washwise/config";
-import type {
-  LoginRequest,
-  RegisterRequest,
-  AuthResponse,
-  TokenPayload,
-} from "@washwise/types";
+import type { LoginRequest, RegisterRequest, AuthResponse, TokenPayload } from "@washwise/types";
 import env from "../config/env.js";
 
 // Helper to hash refresh token for storage
@@ -45,16 +40,21 @@ export class AuthService {
     // Create tenant and user in transaction
     const result = await prisma.$transaction(async (tx) => {
       // Generate slug from tenant name
-      const baseSlug = data.tenantSlug || data.tenantName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      const baseSlug =
+        data.tenantSlug ||
+        data.tenantName
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "");
       let slug = baseSlug;
       let counter = 0;
-      
+
       // Ensure unique slug
       while (await tx.tenant.findUnique({ where: { slug } })) {
         counter++;
         slug = `${baseSlug}-${counter}`;
       }
-      
+
       const tenant = await tx.tenant.create({
         data: {
           name: data.tenantName,
@@ -86,9 +86,7 @@ export class AuthService {
   /**
    * Login with email and password
    */
-  async login(
-    data: LoginRequest,
-  ): Promise<AuthResponse & { refreshToken: string }> {
+  async login(data: LoginRequest): Promise<AuthResponse & { refreshToken: string }> {
     const user = await prisma.user.findFirst({
       where: { email: data.email },
       include: { tenant: true },
@@ -155,10 +153,7 @@ export class AuthService {
     });
 
     // Generate new token pair with SAME family ID (maintains the chain)
-    const tokens = await this.generateTokenPair(
-      storedToken.user,
-      storedToken.familyId,
-    );
+    const tokens = await this.generateTokenPair(storedToken.user, storedToken.familyId);
 
     return tokens;
   }
@@ -191,10 +186,7 @@ export class AuthService {
   /**
    * Generate access and refresh token pair
    */
-  private async generateTokenPair(
-    user: UserWithTenant,
-    familyId?: string,
-  ): Promise<TokenPair> {
+  private async generateTokenPair(user: UserWithTenant, familyId?: string): Promise<TokenPair> {
     // Create new family ID if not provided (new login)
     const tokenFamilyId = familyId ?? randomUUID();
 
@@ -220,9 +212,7 @@ export class AuthService {
         hashedToken: hashedRefreshToken,
         userId: user.id,
         familyId: tokenFamilyId,
-        expiresAt: new Date(
-          Date.now() + AUTH_CONSTANTS.REFRESH_TOKEN_EXPIRES_SECONDS * 1000,
-        ),
+        expiresAt: new Date(Date.now() + AUTH_CONSTANTS.REFRESH_TOKEN_EXPIRES_SECONDS * 1000),
       },
     });
 
@@ -232,15 +222,12 @@ export class AuthService {
   /**
    * Build auth response object
    */
-  private buildAuthResponse(
-    user: UserWithTenant,
-    accessToken: string,
-  ): AuthResponse {
+  private buildAuthResponse(user: UserWithTenant, accessToken: string): AuthResponse {
     // Split the name into firstName and lastName
-    const nameParts = user.name.split(' ');
-    const firstName = nameParts[0] || '';
-    const lastName = nameParts.slice(1).join(' ') || '';
-    
+    const nameParts = user.name.split(" ");
+    const firstName = nameParts[0] || "";
+    const lastName = nameParts.slice(1).join(" ") || "";
+
     return {
       accessToken,
       user: {

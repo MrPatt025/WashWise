@@ -139,8 +139,7 @@ export default function LoginPage() {
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
                 <AlertTitle>
-                  {error.code === "INVALID_CREDENTIALS" &&
-                    "Invalid Credentials"}
+                  {error.code === "INVALID_CREDENTIALS" && "Invalid Credentials"}
                   {error.code === "MULTIPLE_TENANTS" && "Multiple Laundromats"}
                   {error.code === "TENANT_NOT_FOUND" && "Laundromat Not Found"}
                   {error.code === "ACCOUNT_LOCKED" && "Account Locked"}
@@ -159,21 +158,16 @@ export default function LoginPage() {
                 {...register("tenantSlug")}
                 ref={(e) => {
                   register("tenantSlug").ref(e);
-                  (
-                    slugInputRef as React.MutableRefObject<HTMLInputElement | null>
-                  ).current = e;
+                  (slugInputRef as React.MutableRefObject<HTMLInputElement | null>).current = e;
                 }}
                 className={
-                  error?.code === "MULTIPLE_TENANTS" ||
-                  error?.code === "TENANT_NOT_FOUND"
+                  error?.code === "MULTIPLE_TENANTS" || error?.code === "TENANT_NOT_FOUND"
                     ? "border-destructive focus-visible:ring-destructive"
                     : ""
                 }
               />
               {errors.tenantSlug && (
-                <p className="text-sm text-destructive">
-                  {errors.tenantSlug.message}
-                </p>
+                <p className="text-sm text-destructive">{errors.tenantSlug.message}</p>
               )}
               <p className="text-xs text-muted-foreground">
                 The slug you used when registering your laundromat (e.g.{" "}
@@ -191,9 +185,7 @@ export default function LoginPage() {
                 {...register("email")}
                 ref={(e) => {
                   register("email").ref(e);
-                  (
-                    emailInputRef as React.MutableRefObject<HTMLInputElement | null>
-                  ).current = e;
+                  (emailInputRef as React.MutableRefObject<HTMLInputElement | null>).current = e;
                 }}
                 className={
                   error?.code === "INVALID_CREDENTIALS"
@@ -201,11 +193,7 @@ export default function LoginPage() {
                     : ""
                 }
               />
-              {errors.email && (
-                <p className="text-sm text-destructive">
-                  {errors.email.message}
-                </p>
-              )}
+              {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
             </div>
 
             {/* Password */}
@@ -218,18 +206,12 @@ export default function LoginPage() {
                 {...register("password")}
               />
               {errors.password && (
-                <p className="text-sm text-destructive">
-                  {errors.password.message}
-                </p>
+                <p className="text-sm text-destructive">{errors.password.message}</p>
               )}
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={loginMutation.isPending}
-            >
+            <Button type="submit" className="w-full" disabled={loginMutation.isPending}>
               {loginMutation.isPending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />

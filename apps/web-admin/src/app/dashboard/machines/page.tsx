@@ -11,30 +11,17 @@ import {
 } from "@/hooks/use-machines";
 import { useDebouncedState } from "@/hooks/use-debounce";
 import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcuts";
-import {
-  CreateMachineSchema,
-  type CreateMachine,
-  type MachineQuery,
-} from "@washwise/types";
+import { CreateMachineSchema, type CreateMachine, type MachineQuery } from "@washwise/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatusBadge, TypeBadge } from "@/components/ui/badge";
 import { SkeletonMachine } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/ui/empty-state";
 import { SearchInput } from "@/components/ui/search-input";
 import { Pagination, usePagination } from "@/components/ui/pagination";
-import {
-  ConfirmDialog,
-  useDeleteConfirm,
-} from "@/components/ui/confirm-dialog";
+import { ConfirmDialog, useDeleteConfirm } from "@/components/ui/confirm-dialog";
 import {
   Dialog,
   DialogContent,
@@ -51,16 +38,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Plus,
-  WashingMachine,
-  Loader2,
-  Trash2,
-  Zap,
-  Filter,
-  X,
-  RefreshCw,
-} from "lucide-react";
+import { Plus, WashingMachine, Loader2, Trash2, Zap, Filter, X, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -74,11 +52,17 @@ export default function MachinesPage() {
 
   // Filter states
   const [search, debouncedSearch, setSearch] = useDebouncedState("", 300);
-  const [typeFilter, setTypeFilter] = useState<"all" | "WASHER" | "DRYER">(
-    "all",
-  );
+  const [typeFilter, setTypeFilter] = useState<"all" | "WASHER" | "DRYER">("all");
   const [statusFilter, setStatusFilter] = useState<
-    "all" | "IDLE" | "RESERVED" | "RUNNING" | "MAINTENANCE" | "OUT_OF_ORDER" | "ERROR" | "OFFLINE" | "DISABLED"
+    | "all"
+    | "IDLE"
+    | "RESERVED"
+    | "RUNNING"
+    | "MAINTENANCE"
+    | "OUT_OF_ORDER"
+    | "ERROR"
+    | "OFFLINE"
+    | "DISABLED"
   >("all");
   const [showFilters, setShowFilters] = useState(false);
 
@@ -141,7 +125,7 @@ export default function MachinesPage() {
     },
     {
       description: "Focus search",
-    },
+    }
   );
 
   // Handlers
@@ -177,7 +161,7 @@ export default function MachinesPage() {
         await deleteMutation.mutateAsync(id);
       });
     },
-    [deleteConfirm, deleteMutation],
+    [deleteConfirm, deleteMutation]
   );
 
   const clearFilters = () => {
@@ -186,8 +170,7 @@ export default function MachinesPage() {
     setStatusFilter("all");
   };
 
-  const hasActiveFilters =
-    debouncedSearch || typeFilter !== "all" || statusFilter !== "all";
+  const hasActiveFilters = debouncedSearch || typeFilter !== "all" || statusFilter !== "all";
 
   return (
     <div className="space-y-6">
@@ -207,9 +190,7 @@ export default function MachinesPage() {
             disabled={isFetching}
             title="Refresh"
           >
-            <RefreshCw
-              className={cn("h-4 w-4", isFetching && "animate-spin")}
-            />
+            <RefreshCw className={cn("h-4 w-4", isFetching && "animate-spin")} />
           </Button>
           <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
             <DialogTrigger asChild>
@@ -236,9 +217,7 @@ export default function MachinesPage() {
                       autoFocus
                     />
                     {errors.name && (
-                      <p className="text-sm text-destructive">
-                        {errors.name.message}
-                      </p>
+                      <p className="text-sm text-destructive">{errors.name.message}</p>
                     )}
                   </div>
 
@@ -247,9 +226,7 @@ export default function MachinesPage() {
                       <Label>Type *</Label>
                       <Select
                         value={machineType}
-                        onValueChange={(value) =>
-                          setValue("type", value as "WASHER" | "DRYER")
-                        }
+                        onValueChange={(value) => setValue("type", value as "WASHER" | "DRYER")}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Select type" />
@@ -262,9 +239,7 @@ export default function MachinesPage() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="pricePerCycle">
-                        Price per Cycle ($) *
-                      </Label>
+                      <Label htmlFor="pricePerCycle">Price per Cycle ($) *</Label>
                       <Input
                         id="pricePerCycle"
                         type="number"
@@ -274,9 +249,7 @@ export default function MachinesPage() {
                         {...register("pricePerCycle", { valueAsNumber: true })}
                       />
                       {errors.pricePerCycle && (
-                        <p className="text-sm text-destructive">
-                          {errors.pricePerCycle.message}
-                        </p>
+                        <p className="text-sm text-destructive">{errors.pricePerCycle.message}</p>
                       )}
                     </div>
                   </div>
@@ -293,29 +266,19 @@ export default function MachinesPage() {
                         {...register("capacityKg", { valueAsNumber: true })}
                       />
                       {errors.capacityKg && (
-                        <p className="text-sm text-destructive">
-                          {errors.capacityKg.message}
-                        </p>
+                        <p className="text-sm text-destructive">{errors.capacityKg.message}</p>
                       )}
                     </div>
 
                     <div className="space-y-2">
                       <Label htmlFor="serialNumber">Serial Number</Label>
-                      <Input
-                        id="serialNumber"
-                        placeholder="WM-001"
-                        {...register("serialNumber")}
-                      />
+                      <Input id="serialNumber" placeholder="WM-001" {...register("serialNumber")} />
                     </div>
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="model">Model</Label>
-                    <Input
-                      id="model"
-                      placeholder="Samsung WF45"
-                      {...register("model")}
-                    />
+                    <Input id="model" placeholder="Samsung WF45" {...register("model")} />
                   </div>
                 </div>
                 <DialogFooter>
@@ -368,9 +331,7 @@ export default function MachinesPage() {
           >
             <Filter className="mr-2 h-4 w-4" />
             Filters
-            {hasActiveFilters && (
-              <span className="ml-2 rounded-full bg-primary w-2 h-2" />
-            )}
+            {hasActiveFilters && <span className="ml-2 h-2 w-2 rounded-full bg-primary" />}
           </Button>
 
           {hasActiveFilters && (
@@ -396,9 +357,7 @@ export default function MachinesPage() {
                 <Label>Type</Label>
                 <Select
                   value={typeFilter}
-                  onValueChange={(v) =>
-                    setTypeFilter(v as "all" | "WASHER" | "DRYER")
-                  }
+                  onValueChange={(v) => setTypeFilter(v as "all" | "WASHER" | "DRYER")}
                 >
                   <SelectTrigger className="w-[140px]">
                     <SelectValue />
@@ -413,8 +372,8 @@ export default function MachinesPage() {
 
               <div className="space-y-2">
                 <Label>Status</Label>
-                <Select 
-                  value={statusFilter} 
+                <Select
+                  value={statusFilter}
                   onValueChange={(v) => setStatusFilter(v as typeof statusFilter)}
                 >
                   <SelectTrigger className="w-[160px]">
@@ -472,19 +431,19 @@ export default function MachinesPage() {
                 key={machine.id}
                 className={cn(
                   "relative overflow-hidden transition-all duration-200",
-                  "hover:shadow-lg hover:scale-[1.02]",
-                  "focus-within:ring-2 focus-within:ring-primary/50",
+                  "hover:scale-[1.02] hover:shadow-lg",
+                  "focus-within:ring-2 focus-within:ring-primary/50"
                 )}
               >
                 <CardHeader className="pb-2">
                   <div className="flex items-start justify-between gap-2">
-                    <div className="flex items-center gap-3 min-w-0">
+                    <div className="flex min-w-0 items-center gap-3">
                       <div
                         className={cn(
                           "flex-shrink-0 rounded-full p-2",
                           machine.type === "WASHER"
                             ? "bg-blue-100 dark:bg-blue-950"
-                            : "bg-orange-100 dark:bg-orange-950",
+                            : "bg-orange-100 dark:bg-orange-950"
                         )}
                       >
                         <WashingMachine
@@ -492,18 +451,14 @@ export default function MachinesPage() {
                             "h-5 w-5",
                             machine.type === "WASHER"
                               ? "text-blue-600 dark:text-blue-400"
-                              : "text-orange-600 dark:text-orange-400",
+                              : "text-orange-600 dark:text-orange-400"
                           )}
                         />
                       </div>
                       <div className="min-w-0">
-                        <CardTitle className="text-base truncate">
-                          {machine.name}
-                        </CardTitle>
+                        <CardTitle className="truncate text-base">{machine.name}</CardTitle>
                         <CardDescription className="truncate">
-                          {machine.serialNumber ||
-                            machine.machineNumber ||
-                            "No serial"}
+                          {machine.serialNumber || machine.machineNumber || "No serial"}
                         </CardDescription>
                       </div>
                     </div>
@@ -532,9 +487,7 @@ export default function MachinesPage() {
                     {machine.model && (
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Model</span>
-                        <span className="font-medium truncate max-w-[120px]">
-                          {machine.model}
-                        </span>
+                        <span className="max-w-[120px] truncate font-medium">{machine.model}</span>
                       </div>
                     )}
                   </div>

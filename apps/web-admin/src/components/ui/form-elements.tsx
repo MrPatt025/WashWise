@@ -1,17 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  Eye,
-  EyeOff,
-  Search,
-  X,
-  Calendar,
-  Clock,
-  Upload,
-  AlertCircle,
-  Check,
-} from "lucide-react";
+import { Eye, EyeOff, Search, X, Calendar, Clock, Upload, AlertCircle, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // ============================================================================
@@ -29,18 +19,8 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (
-    {
-      label,
-      error,
-      hint,
-      leftIcon,
-      rightIcon,
-      containerClassName,
-      className,
-      id,
-      ...props
-    },
-    ref,
+    { label, error, hint, leftIcon, rightIcon, containerClassName, className, id, ...props },
+    ref
   ) => {
     const generatedId = React.useId();
     const inputId = id || generatedId;
@@ -53,34 +33,30 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             className="block text-sm font-medium text-gray-700 dark:text-gray-300"
           >
             {label}
-            {props.required && <span className="text-red-500 ml-0.5">*</span>}
+            {props.required && <span className="ml-0.5 text-red-500">*</span>}
           </label>
         )}
 
         <div className="relative">
           {leftIcon && (
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-              {leftIcon}
-            </div>
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">{leftIcon}</div>
           )}
 
           <input
             ref={ref}
             id={inputId}
             className={cn(
-              "w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500",
-              "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
-              "disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-gray-100 dark:disabled:bg-gray-800",
+              "w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:placeholder:text-gray-500",
+              "focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500",
+              "disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-50 dark:disabled:bg-gray-800",
               "transition-colors duration-200",
               leftIcon && "pl-10",
               rightIcon && "pr-10",
               error && "border-red-500 focus:ring-red-500 dark:border-red-500",
-              className,
+              className
             )}
             aria-invalid={!!error}
-            aria-describedby={
-              error ? `${inputId}-error` : hint ? `${inputId}-hint` : undefined
-            }
+            aria-describedby={error ? `${inputId}-error` : hint ? `${inputId}-hint` : undefined}
             {...props}
           />
 
@@ -96,22 +72,19 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             id={`${inputId}-error`}
             className="flex items-center gap-1 text-sm text-red-600 dark:text-red-400"
           >
-            <AlertCircle className="w-4 h-4" />
+            <AlertCircle className="h-4 w-4" />
             {error}
           </p>
         )}
 
         {hint && !error && (
-          <p
-            id={`${inputId}-hint`}
-            className="text-sm text-gray-500 dark:text-gray-400"
-          >
+          <p id={`${inputId}-hint`} className="text-sm text-gray-500 dark:text-gray-400">
             {hint}
           </p>
         )}
       </div>
     );
-  },
+  }
 );
 Input.displayName = "Input";
 
@@ -123,87 +96,79 @@ interface PasswordInputProps extends Omit<InputProps, "type"> {
   showStrengthIndicator?: boolean;
 }
 
-export const PasswordInput = React.forwardRef<
-  HTMLInputElement,
-  PasswordInputProps
->(({ showStrengthIndicator, ...props }, ref) => {
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [strength, setStrength] = React.useState(0);
+export const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
+  ({ showStrengthIndicator, ...props }, ref) => {
+    const [showPassword, setShowPassword] = React.useState(false);
+    const [strength, setStrength] = React.useState(0);
 
-  const calculateStrength = (password: string): number => {
-    let score = 0;
-    if (password.length >= 8) score += 25;
-    if (/[a-z]/.test(password)) score += 15;
-    if (/[A-Z]/.test(password)) score += 20;
-    if (/\d/.test(password)) score += 20;
-    if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) score += 20;
-    return Math.min(100, score);
-  };
+    const calculateStrength = (password: string): number => {
+      let score = 0;
+      if (password.length >= 8) score += 25;
+      if (/[a-z]/.test(password)) score += 15;
+      if (/[A-Z]/.test(password)) score += 20;
+      if (/\d/.test(password)) score += 20;
+      if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) score += 20;
+      return Math.min(100, score);
+    };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (showStrengthIndicator) {
-      setStrength(calculateStrength(e.target.value));
-    }
-    props.onChange?.(e);
-  };
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (showStrengthIndicator) {
+        setStrength(calculateStrength(e.target.value));
+      }
+      props.onChange?.(e);
+    };
 
-  const getStrengthColor = () => {
-    if (strength < 30) return "bg-red-500";
-    if (strength < 60) return "bg-yellow-500";
-    if (strength < 80) return "bg-blue-500";
-    return "bg-green-500";
-  };
+    const getStrengthColor = () => {
+      if (strength < 30) return "bg-red-500";
+      if (strength < 60) return "bg-yellow-500";
+      if (strength < 80) return "bg-blue-500";
+      return "bg-green-500";
+    };
 
-  const getStrengthLabel = () => {
-    if (strength < 30) return "Weak";
-    if (strength < 60) return "Fair";
-    if (strength < 80) return "Good";
-    return "Strong";
-  };
+    const getStrengthLabel = () => {
+      if (strength < 30) return "Weak";
+      if (strength < 60) return "Fair";
+      if (strength < 80) return "Good";
+      return "Strong";
+    };
 
-  return (
-    <div className="space-y-2">
-      <Input
-        ref={ref}
-        type={showPassword ? "text" : "password"}
-        rightIcon={
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="focus:outline-none"
-            tabIndex={-1}
-            aria-label={showPassword ? "Hide password" : "Show password"}
-          >
-            {showPassword ? (
-              <EyeOff className="w-4 h-4" />
-            ) : (
-              <Eye className="w-4 h-4" />
-            )}
-          </button>
-        }
-        {...props}
-        onChange={handleChange}
-      />
+    return (
+      <div className="space-y-2">
+        <Input
+          ref={ref}
+          type={showPassword ? "text" : "password"}
+          rightIcon={
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="focus:outline-none"
+              tabIndex={-1}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          }
+          {...props}
+          onChange={handleChange}
+        />
 
-      {showStrengthIndicator && props.value && (
-        <div className="space-y-1">
-          <div className="h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-            <div
-              className={cn(
-                "h-full transition-all duration-300",
-                getStrengthColor(),
-              )}
-              style={{ width: `${strength}%` }}
-            />
+        {showStrengthIndicator && props.value && (
+          <div className="space-y-1">
+            <div className="h-1.5 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
+              <div
+                className={cn("h-full transition-all duration-300", getStrengthColor())}
+                style={{ width: `${strength}%` }}
+              />
+            </div>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Password strength: {getStrengthLabel()}
+            </p>
           </div>
-          <p className="text-xs text-gray-500 dark:text-gray-400">
-            Password strength: {getStrengthLabel()}
-          </p>
-        </div>
-      )}
-    </div>
-  );
-});
+        )}
+      </div>
+    );
+  }
+);
 PasswordInput.displayName = "PasswordInput";
 
 // ============================================================================
@@ -224,9 +189,9 @@ export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
         value={value}
         leftIcon={
           loading ? (
-            <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin" />
+            <div className="h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-blue-500" />
           ) : (
-            <Search className="w-4 h-4" />
+            <Search className="h-4 w-4" />
           )
         }
         rightIcon={
@@ -234,17 +199,17 @@ export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
             <button
               type="button"
               onClick={onClear}
-              className="focus:outline-none hover:text-gray-600 dark:hover:text-gray-300"
+              className="hover:text-gray-600 focus:outline-none dark:hover:text-gray-300"
               aria-label="Clear search"
             >
-              <X className="w-4 h-4" />
+              <X className="h-4 w-4" />
             </button>
           ) : undefined
         }
         {...props}
       />
     );
-  },
+  }
 );
 SearchInput.displayName = "SearchInput";
 
@@ -274,7 +239,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       value,
       ...props
     },
-    ref,
+    ref
   ) => {
     const generatedId = React.useId();
     const textareaId = id || generatedId;
@@ -288,7 +253,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             className="block text-sm font-medium text-gray-700 dark:text-gray-300"
           >
             {label}
-            {props.required && <span className="text-red-500 ml-0.5">*</span>}
+            {props.required && <span className="ml-0.5 text-red-500">*</span>}
           </label>
         )}
 
@@ -298,21 +263,15 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           value={value}
           maxLength={maxLength}
           className={cn(
-            "w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500",
-            "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
-            "disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-gray-100 dark:disabled:bg-gray-800",
-            "transition-colors duration-200 resize-y min-h-[80px]",
+            "w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:placeholder:text-gray-500",
+            "focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500",
+            "disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-50 dark:disabled:bg-gray-800",
+            "min-h-[80px] resize-y transition-colors duration-200",
             error && "border-red-500 focus:ring-red-500 dark:border-red-500",
-            className,
+            className
           )}
           aria-invalid={!!error}
-          aria-describedby={
-            error
-              ? `${textareaId}-error`
-              : hint
-                ? `${textareaId}-hint`
-                : undefined
-          }
+          aria-describedby={error ? `${textareaId}-error` : hint ? `${textareaId}-hint` : undefined}
           {...props}
         />
 
@@ -323,16 +282,13 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
                 id={`${textareaId}-error`}
                 className="flex items-center gap-1 text-sm text-red-600 dark:text-red-400"
               >
-                <AlertCircle className="w-4 h-4" />
+                <AlertCircle className="h-4 w-4" />
                 {error}
               </p>
             )}
 
             {hint && !error && (
-              <p
-                id={`${textareaId}-hint`}
-                className="text-sm text-gray-500 dark:text-gray-400"
-              >
+              <p id={`${textareaId}-hint`} className="text-sm text-gray-500 dark:text-gray-400">
                 {hint}
               </p>
             )}
@@ -342,9 +298,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             <p
               className={cn(
                 "text-xs",
-                charCount >= maxLength
-                  ? "text-red-500"
-                  : "text-gray-400 dark:text-gray-500",
+                charCount >= maxLength ? "text-red-500" : "text-gray-400 dark:text-gray-500"
               )}
             >
               {charCount}/{maxLength}
@@ -353,7 +307,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         </div>
       </div>
     );
-  },
+  }
 );
 Textarea.displayName = "Textarea";
 
@@ -367,10 +321,7 @@ interface SelectOption {
   disabled?: boolean;
 }
 
-interface SelectProps extends Omit<
-  React.SelectHTMLAttributes<HTMLSelectElement>,
-  "children"
-> {
+interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "children"> {
   label?: string;
   error?: string;
   hint?: string;
@@ -381,18 +332,8 @@ interface SelectProps extends Omit<
 
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
   (
-    {
-      label,
-      error,
-      hint,
-      options,
-      placeholder,
-      containerClassName,
-      className,
-      id,
-      ...props
-    },
-    ref,
+    { label, error, hint, options, placeholder, containerClassName, className, id, ...props },
+    ref
   ) => {
     const generatedId = React.useId();
     const selectId = id || generatedId;
@@ -405,7 +346,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
             className="block text-sm font-medium text-gray-700 dark:text-gray-300"
           >
             {label}
-            {props.required && <span className="text-red-500 ml-0.5">*</span>}
+            {props.required && <span className="ml-0.5 text-red-500">*</span>}
           </label>
         )}
 
@@ -413,12 +354,12 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           ref={ref}
           id={selectId}
           className={cn(
-            "w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-sm text-gray-900 dark:text-white",
-            "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
-            "disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-gray-100 dark:disabled:bg-gray-800",
+            "w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 dark:border-gray-700 dark:bg-gray-900 dark:text-white",
+            "focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500",
+            "disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-50 dark:disabled:bg-gray-800",
             "transition-colors duration-200",
             error && "border-red-500 focus:ring-red-500 dark:border-red-500",
-            className,
+            className
           )}
           aria-invalid={!!error}
           {...props}
@@ -429,11 +370,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
             </option>
           )}
           {options.map((option) => (
-            <option
-              key={option.value}
-              value={option.value}
-              disabled={option.disabled}
-            >
+            <option key={option.value} value={option.value} disabled={option.disabled}>
               {option.label}
             </option>
           ))}
@@ -441,17 +378,15 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
 
         {error && (
           <p className="flex items-center gap-1 text-sm text-red-600 dark:text-red-400">
-            <AlertCircle className="w-4 h-4" />
+            <AlertCircle className="h-4 w-4" />
             {error}
           </p>
         )}
 
-        {hint && !error && (
-          <p className="text-sm text-gray-500 dark:text-gray-400">{hint}</p>
-        )}
+        {hint && !error && <p className="text-sm text-gray-500 dark:text-gray-400">{hint}</p>}
       </div>
     );
-  },
+  }
 );
 Select.displayName = "Select";
 
@@ -464,18 +399,9 @@ interface DateInputProps extends Omit<InputProps, "type"> {
   max?: string;
 }
 
-export const DateInput = React.forwardRef<HTMLInputElement, DateInputProps>(
-  (props, ref) => {
-    return (
-      <Input
-        ref={ref}
-        type="date"
-        leftIcon={<Calendar className="w-4 h-4" />}
-        {...props}
-      />
-    );
-  },
-);
+export const DateInput = React.forwardRef<HTMLInputElement, DateInputProps>((props, ref) => {
+  return <Input ref={ref} type="date" leftIcon={<Calendar className="h-4 w-4" />} {...props} />;
+});
 DateInput.displayName = "DateInput";
 
 // ============================================================================
@@ -487,18 +413,9 @@ interface TimeInputProps extends Omit<InputProps, "type"> {
   max?: string;
 }
 
-export const TimeInput = React.forwardRef<HTMLInputElement, TimeInputProps>(
-  (props, ref) => {
-    return (
-      <Input
-        ref={ref}
-        type="time"
-        leftIcon={<Clock className="w-4 h-4" />}
-        {...props}
-      />
-    );
-  },
-);
+export const TimeInput = React.forwardRef<HTMLInputElement, TimeInputProps>((props, ref) => {
+  return <Input ref={ref} type="time" leftIcon={<Clock className="h-4 w-4" />} {...props} />;
+});
 TimeInput.displayName = "TimeInput";
 
 // ============================================================================
@@ -545,14 +462,14 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           {props.label && (
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               {props.label}
-              {props.required && <span className="text-red-500 ml-0.5">*</span>}
+              {props.required && <span className="ml-0.5 text-red-500">*</span>}
             </label>
           )}
           <div className="flex">
             <button
               type="button"
               onClick={handleDecrement}
-              className="px-3 py-2 border border-r-0 border-gray-300 dark:border-gray-700 rounded-l-lg bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              className="rounded-l-lg border border-r-0 border-gray-300 bg-gray-50 px-3 py-2 text-gray-600 transition-colors hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
               aria-label="Decrease"
             >
               -
@@ -566,16 +483,16 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
               value={value}
               onChange={onChange}
               className={cn(
-                "flex-1 border-y border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-sm text-center text-gray-900 dark:text-white",
-                "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:z-10",
-                props.error && "border-red-500",
+                "flex-1 border-y border-gray-300 bg-white px-3 py-2 text-center text-sm text-gray-900 dark:border-gray-700 dark:bg-gray-900 dark:text-white",
+                "focus:z-10 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500",
+                props.error && "border-red-500"
               )}
               {...props}
             />
             <button
               type="button"
               onClick={handleIncrement}
-              className="px-3 py-2 border border-l-0 border-gray-300 dark:border-gray-700 rounded-r-lg bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              className="rounded-r-lg border border-l-0 border-gray-300 bg-gray-50 px-3 py-2 text-gray-600 transition-colors hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
               aria-label="Increase"
             >
               +
@@ -583,7 +500,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           </div>
           {props.error && (
             <p className="flex items-center gap-1 text-sm text-red-600 dark:text-red-400">
-              <AlertCircle className="w-4 h-4" />
+              <AlertCircle className="h-4 w-4" />
               {props.error}
             </p>
           )}
@@ -603,7 +520,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         {...props}
       />
     );
-  },
+  }
 );
 NumberInput.displayName = "NumberInput";
 
@@ -611,10 +528,7 @@ NumberInput.displayName = "NumberInput";
 // File Input
 // ============================================================================
 
-interface FileInputProps extends Omit<
-  InputProps,
-  "type" | "value" | "onChange"
-> {
+interface FileInputProps extends Omit<InputProps, "type" | "value" | "onChange"> {
   accept?: string;
   multiple?: boolean;
   maxSize?: number; // in bytes
@@ -637,7 +551,7 @@ export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
       className,
       ...props
     },
-    ref,
+    ref
   ) => {
     const inputRef = React.useRef<HTMLInputElement>(null);
     const [dragOver, setDragOver] = React.useState(false);
@@ -654,9 +568,7 @@ export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
       if (maxSize) {
         const oversizedFiles = fileArray.filter((file) => file.size > maxSize);
         if (oversizedFiles.length > 0) {
-          setLocalError(
-            `Some files exceed the maximum size of ${formatFileSize(maxSize)}`,
-          );
+          setLocalError(`Some files exceed the maximum size of ${formatFileSize(maxSize)}`);
           return;
         }
       }
@@ -695,7 +607,7 @@ export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
         {label && (
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             {label}
-            {props.required && <span className="text-red-500 ml-0.5">*</span>}
+            {props.required && <span className="ml-0.5 text-red-500">*</span>}
           </label>
         )}
 
@@ -705,12 +617,12 @@ export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           className={cn(
-            "relative border-2 border-dashed rounded-lg p-6 cursor-pointer transition-colors",
+            "relative cursor-pointer rounded-lg border-2 border-dashed p-6 transition-colors",
             dragOver
               ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
-              : "border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600",
+              : "border-gray-300 hover:border-gray-400 dark:border-gray-700 dark:hover:border-gray-600",
             displayError && "border-red-500",
-            className,
+            className
           )}
         >
           <input
@@ -724,18 +636,12 @@ export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
           />
 
           <div className="flex flex-col items-center text-center">
-            <Upload className="w-10 h-10 text-gray-400 mb-2" />
+            <Upload className="mb-2 h-10 w-10 text-gray-400" />
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              <span className="text-blue-600 dark:text-blue-400 font-medium">
-                Click to upload
-              </span>{" "}
+              <span className="font-medium text-blue-600 dark:text-blue-400">Click to upload</span>{" "}
               or drag and drop
             </p>
-            {accept && (
-              <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
-                {accept}
-              </p>
-            )}
+            {accept && <p className="mt-1 text-xs text-gray-500 dark:text-gray-500">{accept}</p>}
             {maxSize && (
               <p className="text-xs text-gray-500 dark:text-gray-500">
                 Max size: {formatFileSize(maxSize)}
@@ -750,16 +656,14 @@ export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
             {value.map((file, index) => (
               <li
                 key={`${file.name}-${index}`}
-                className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded-lg"
+                className="flex items-center justify-between rounded-lg bg-gray-50 p-2 dark:bg-gray-800"
               >
-                <div className="flex items-center gap-2 min-w-0">
-                  <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
-                  <span className="text-sm text-gray-700 dark:text-gray-300 truncate">
+                <div className="flex min-w-0 items-center gap-2">
+                  <Check className="h-4 w-4 flex-shrink-0 text-green-500" />
+                  <span className="truncate text-sm text-gray-700 dark:text-gray-300">
                     {file.name}
                   </span>
-                  <span className="text-xs text-gray-500">
-                    ({formatFileSize(file.size)})
-                  </span>
+                  <span className="text-xs text-gray-500">({formatFileSize(file.size)})</span>
                 </div>
                 <button
                   type="button"
@@ -767,10 +671,10 @@ export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
                     e.stopPropagation();
                     removeFile(index);
                   }}
-                  className="p-1 text-gray-400 hover:text-red-500 transition-colors"
+                  className="p-1 text-gray-400 transition-colors hover:text-red-500"
                   aria-label="Remove file"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="h-4 w-4" />
                 </button>
               </li>
             ))}
@@ -779,7 +683,7 @@ export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
 
         {displayError && (
           <p className="flex items-center gap-1 text-sm text-red-600 dark:text-red-400">
-            <AlertCircle className="w-4 h-4" />
+            <AlertCircle className="h-4 w-4" />
             {displayError}
           </p>
         )}
@@ -789,7 +693,7 @@ export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
         )}
       </div>
     );
-  },
+  }
 );
 FileInput.displayName = "FileInput";
 
@@ -838,15 +742,15 @@ export function Switch({
           "relative inline-flex flex-shrink-0 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900",
           sizeClasses.track,
           checked ? "bg-blue-600" : "bg-gray-200 dark:bg-gray-700",
-          disabled && "cursor-not-allowed opacity-50",
+          disabled && "cursor-not-allowed opacity-50"
         )}
       >
         <span
           className={cn(
-            "pointer-events-none inline-block rounded-full bg-white shadow transform ring-0 transition duration-200 ease-in-out",
+            "pointer-events-none inline-block transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out",
             sizeClasses.thumb,
             checked ? sizeClasses.translate : "translate-x-0.5",
-            "mt-0.5",
+            "mt-0.5"
           )}
         />
       </button>
@@ -857,18 +761,14 @@ export function Switch({
             <label
               htmlFor={id}
               className={cn(
-                "text-sm font-medium text-gray-900 dark:text-white cursor-pointer",
-                disabled && "cursor-not-allowed opacity-50",
+                "cursor-pointer text-sm font-medium text-gray-900 dark:text-white",
+                disabled && "cursor-not-allowed opacity-50"
               )}
             >
               {label}
             </label>
           )}
-          {description && (
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              {description}
-            </p>
-          )}
+          {description && <p className="text-sm text-gray-500 dark:text-gray-400">{description}</p>}
         </div>
       )}
     </div>
@@ -910,15 +810,13 @@ export function RadioGroup({
   return (
     <fieldset className={cn("space-y-2", className)}>
       {label && (
-        <legend className="text-sm font-medium text-gray-700 dark:text-gray-300">
-          {label}
-        </legend>
+        <legend className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</legend>
       )}
 
       <div
         className={cn(
           "space-y-2",
-          orientation === "horizontal" && "flex flex-wrap gap-4 space-y-0",
+          orientation === "horizontal" && "flex flex-wrap gap-4 space-y-0"
         )}
         role="radiogroup"
       >
@@ -926,8 +824,8 @@ export function RadioGroup({
           <label
             key={option.value}
             className={cn(
-              "flex items-start gap-3 cursor-pointer",
-              option.disabled && "cursor-not-allowed opacity-50",
+              "flex cursor-pointer items-start gap-3",
+              option.disabled && "cursor-not-allowed opacity-50"
             )}
           >
             <input
@@ -937,16 +835,14 @@ export function RadioGroup({
               checked={value === option.value}
               onChange={() => onChange?.(option.value)}
               disabled={option.disabled}
-              className="mt-0.5 w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+              className="mt-0.5 h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500"
             />
             <div className="flex-1">
               <span className="text-sm font-medium text-gray-900 dark:text-white">
                 {option.label}
               </span>
               {option.description && (
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {option.description}
-                </p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{option.description}</p>
               )}
             </div>
           </label>
@@ -955,7 +851,7 @@ export function RadioGroup({
 
       {error && (
         <p className="flex items-center gap-1 text-sm text-red-600 dark:text-red-400">
-          <AlertCircle className="w-4 h-4" />
+          <AlertCircle className="h-4 w-4" />
           {error}
         </p>
       )}
@@ -974,26 +870,15 @@ interface FormGroupProps {
   className?: string;
 }
 
-export function FormGroup({
-  children,
-  label,
-  description,
-  className,
-}: FormGroupProps) {
+export function FormGroup({ children, label, description, className }: FormGroupProps) {
   return (
     <div className={cn("space-y-4", className)}>
       {(label || description) && (
         <div>
           {label && (
-            <h3 className="text-base font-medium text-gray-900 dark:text-white">
-              {label}
-            </h3>
+            <h3 className="text-base font-medium text-gray-900 dark:text-white">{label}</h3>
           )}
-          {description && (
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              {description}
-            </p>
-          )}
+          {description && <p className="text-sm text-gray-500 dark:text-gray-400">{description}</p>}
         </div>
       )}
       <div className="space-y-4">{children}</div>

@@ -9,9 +9,7 @@ export const PaginationSchema = z.object({
   limit: z.coerce.number().int().positive().max(100).default(20),
 });
 
-export const PaginatedResponseSchema = <T extends z.ZodTypeAny>(
-  itemSchema: T,
-) =>
+export const PaginatedResponseSchema = <T extends z.ZodTypeAny>(itemSchema: T) =>
   z.object({
     items: z.array(itemSchema),
     total: z.number().int().nonnegative(),

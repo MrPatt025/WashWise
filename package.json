@@ -11,19 +11,37 @@
     "build": "turbo build",
     "test": "turbo test",
     "test:integration": "turbo test:integration",
+    "test:e2e": "pnpm --filter @washwise/e2e test",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "lint:fix": "eslint --fix .",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\"",
+    "typecheck": "turbo build",
     "db:generate": "pnpm --filter @washwise/database generate",
     "db:migrate": "pnpm --filter @washwise/database migrate:dev",
     "db:push": "pnpm --filter @washwise/database push",
     "db:seed": "pnpm --filter @washwise/database seed",
     "db:studio": "pnpm --filter @washwise/database studio",
-    "clean": "turbo clean && rm -rf node_modules"
+    "clean": "turbo clean",
+    "clean:cache": "turbo daemon stop",
+    "prepare": "husky"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@eslint/js": "^9.28.0",
     "@types/node": "^25.2.0",
+    "conventional-changelog-conventionalcommits": "^9.0.0",
+    "eslint": "^9.28.0",
+    "eslint-plugin-prettier": "^5.4.0",
+    "globals": "^16.2.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.0",
     "prettier": "^3.8.1",
+    "prettier-plugin-tailwindcss": "^0.6.12",
+    "sort-package-json": "^3.0.0",
     "turbo": "^2.8.1",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.33.1"
   }
 }

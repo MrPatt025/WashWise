@@ -27,9 +27,7 @@ const spinnerVariants = cva("animate-spin", {
 });
 
 export interface SpinnerProps
-  extends
-    React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof spinnerVariants> {
+  extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof spinnerVariants> {
   /** Use washing machine icon instead of default spinner */
   branded?: boolean;
 }
@@ -47,7 +45,7 @@ const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
         <span className="sr-only">Loading...</span>
       </div>
     );
-  },
+  }
 );
 Spinner.displayName = "Spinner";
 
@@ -63,22 +61,14 @@ interface LoadingOverlayProps {
   branded?: boolean;
 }
 
-const LoadingOverlay: React.FC<LoadingOverlayProps> = ({
-  isLoading = true,
-  message,
-  branded,
-}) => {
+const LoadingOverlay: React.FC<LoadingOverlayProps> = ({ isLoading = true, message, branded }) => {
   if (!isLoading) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
       <div className="flex flex-col items-center gap-4">
         <Spinner size="xl" branded={branded} />
-        {message && (
-          <p className="text-sm text-muted-foreground animate-pulse">
-            {message}
-          </p>
-        )}
+        {message && <p className="animate-pulse text-sm text-muted-foreground">{message}</p>}
       </div>
     </div>
   );
@@ -116,11 +106,7 @@ interface ButtonLoaderProps {
   loadingText?: string;
 }
 
-const ButtonLoader: React.FC<ButtonLoaderProps> = ({
-  isLoading,
-  children,
-  loadingText,
-}) => {
+const ButtonLoader: React.FC<ButtonLoaderProps> = ({ isLoading, children, loadingText }) => {
   if (isLoading) {
     return (
       <>

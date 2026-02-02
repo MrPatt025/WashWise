@@ -65,9 +65,7 @@ export function Tabs({
   fullWidth = false,
   className,
 }: TabsProps) {
-  const [uncontrolledActiveTab, setUncontrolledActiveTab] = React.useState(
-    defaultTab || "",
-  );
+  const [uncontrolledActiveTab, setUncontrolledActiveTab] = React.useState(defaultTab || "");
 
   const isControlled = controlledActiveTab !== undefined;
   const activeTab = isControlled ? controlledActiveTab : uncontrolledActiveTab;
@@ -79,19 +77,13 @@ export function Tabs({
       }
       onTabChange?.(id);
     },
-    [isControlled, onTabChange],
+    [isControlled, onTabChange]
   );
 
   return (
-    <TabContext.Provider
-      value={{ activeTab, setActiveTab, variant, orientation }}
-    >
+    <TabContext.Provider value={{ activeTab, setActiveTab, variant, orientation }}>
       <div
-        className={cn(
-          orientation === "vertical" && "flex gap-4",
-          fullWidth && "w-full",
-          className,
-        )}
+        className={cn(orientation === "vertical" && "flex gap-4", fullWidth && "w-full", className)}
       >
         {children}
       </div>
@@ -117,24 +109,18 @@ const variantListClasses: Record<TabVariant, string> = {
   underline: "",
 };
 
-export function TabList({
-  children,
-  className,
-  "aria-label": ariaLabel,
-}: TabListProps) {
+export function TabList({ children, className, "aria-label": ariaLabel }: TabListProps) {
   const { variant, orientation } = useTabContext();
   const listRef = React.useRef<HTMLDivElement>(null);
 
   // Keyboard navigation
   const handleKeyDown = (e: React.KeyboardEvent) => {
     const tabs = listRef.current?.querySelectorAll<HTMLButtonElement>(
-      '[role="tab"]:not([disabled])',
+      '[role="tab"]:not([disabled])'
     );
     if (!tabs?.length) return;
 
-    const currentIndex = Array.from(tabs).findIndex(
-      (tab) => tab === document.activeElement,
-    );
+    const currentIndex = Array.from(tabs).findIndex((tab) => tab === document.activeElement);
 
     let nextIndex = currentIndex;
     const isHorizontal = orientation === "horizontal";
@@ -174,7 +160,7 @@ export function TabList({
         "flex",
         orientation === "vertical" ? "flex-col" : "flex-row",
         variantListClasses[variant],
-        className,
+        className
       )}
     >
       {children}
@@ -209,37 +195,26 @@ const variantTriggerClasses: Record<
     base: "px-4 py-2.5 text-sm font-medium border border-transparent rounded-t-lg -mb-px transition-colors",
     active:
       "border-gray-200 dark:border-gray-700 border-b-white dark:border-b-gray-900 bg-white dark:bg-gray-900 text-gray-900 dark:text-white",
-    inactive:
-      "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300",
+    inactive: "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300",
   },
   soft: {
     base: "px-4 py-2 text-sm font-medium rounded-md transition-colors",
     active: "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm",
-    inactive:
-      "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300",
+    inactive: "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300",
   },
   pills: {
     base: "px-4 py-2 text-sm font-medium rounded-full transition-colors",
     active: "bg-blue-600 text-white",
-    inactive:
-      "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800",
+    inactive: "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800",
   },
   underline: {
     base: "px-4 py-2 text-sm font-medium relative transition-colors",
     active: "text-blue-600 dark:text-blue-400",
-    inactive:
-      "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300",
+    inactive: "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300",
   },
 };
 
-export function TabTrigger({
-  id,
-  children,
-  disabled,
-  icon,
-  badge,
-  className,
-}: TabTriggerProps) {
+export function TabTrigger({ id, children, disabled, icon, badge, className }: TabTriggerProps) {
   const { activeTab, setActiveTab, variant } = useTabContext();
   const isActive = activeTab === id;
   const classes = variantTriggerClasses[variant];
@@ -256,9 +231,9 @@ export function TabTrigger({
       className={cn(
         classes.base,
         isActive ? classes.active : classes.inactive,
-        disabled && "opacity-50 cursor-not-allowed",
+        disabled && "cursor-not-allowed opacity-50",
         "flex items-center gap-2",
-        className,
+        className
       )}
     >
       {icon}
@@ -266,10 +241,10 @@ export function TabTrigger({
       {badge !== undefined && (
         <span
           className={cn(
-            "ml-1.5 px-1.5 py-0.5 text-xs font-medium rounded-full",
+            "ml-1.5 rounded-full px-1.5 py-0.5 text-xs font-medium",
             isActive
               ? "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"
-              : "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400",
+              : "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400"
           )}
         >
           {badge}
@@ -298,12 +273,7 @@ interface TabPanelProps {
   keepMounted?: boolean;
 }
 
-export function TabPanel({
-  id,
-  children,
-  className,
-  keepMounted = false,
-}: TabPanelProps) {
+export function TabPanel({ id, children, className, keepMounted = false }: TabPanelProps) {
   const { activeTab } = useTabContext();
   const isActive = activeTab === id;
 
@@ -467,11 +437,11 @@ export function ScrollableTabs({
       {showLeftArrow && (
         <button
           onClick={() => scroll("left")}
-          className="absolute left-0 top-0 bottom-0 z-10 w-8 flex items-center justify-center bg-gradient-to-r from-white dark:from-gray-900 to-transparent"
+          className="absolute bottom-0 left-0 top-0 z-10 flex w-8 items-center justify-center bg-gradient-to-r from-white to-transparent dark:from-gray-900"
           aria-label="Scroll left"
         >
           <svg
-            className="w-5 h-5 text-gray-500"
+            className="h-5 w-5 text-gray-500"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -486,11 +456,7 @@ export function ScrollableTabs({
         </button>
       )}
 
-      <div
-        ref={scrollRef}
-        onScroll={checkScroll}
-        className="overflow-x-auto scrollbar-hide"
-      >
+      <div ref={scrollRef} onScroll={checkScroll} className="scrollbar-hide overflow-x-auto">
         <SimpleTabs
           tabs={tabs}
           defaultTab={defaultTab}
@@ -503,21 +469,16 @@ export function ScrollableTabs({
       {showRightArrow && (
         <button
           onClick={() => scroll("right")}
-          className="absolute right-0 top-0 bottom-0 z-10 w-8 flex items-center justify-center bg-gradient-to-l from-white dark:from-gray-900 to-transparent"
+          className="absolute bottom-0 right-0 top-0 z-10 flex w-8 items-center justify-center bg-gradient-to-l from-white to-transparent dark:from-gray-900"
           aria-label="Scroll right"
         >
           <svg
-            className="w-5 h-5 text-gray-500"
+            className="h-5 w-5 text-gray-500"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </button>
       )}
@@ -552,9 +513,7 @@ export function IconTabs({
   className,
 }: IconTabsProps) {
   const firstTab = tabs[0]?.id;
-  const [currentTab, setCurrentTab] = React.useState(
-    defaultTab || activeTab || firstTab,
-  );
+  const [currentTab, setCurrentTab] = React.useState(defaultTab || activeTab || firstTab);
 
   const handleTabChange = (tabId: string) => {
     setCurrentTab(tabId);
@@ -565,7 +524,7 @@ export function IconTabs({
 
   return (
     <div className={className}>
-      <div className="flex items-center justify-center gap-1 p-1 bg-gray-100 dark:bg-gray-800 rounded-lg">
+      <div className="flex items-center justify-center gap-1 rounded-lg bg-gray-100 p-1 dark:bg-gray-800">
         {tabs.map((tab) => {
           const isActive = active === tab.id;
           return (
@@ -573,18 +532,16 @@ export function IconTabs({
               key={tab.id}
               onClick={() => handleTabChange(tab.id)}
               className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-md transition-all",
+                "flex items-center gap-2 rounded-md px-4 py-2 transition-all",
                 isActive
-                  ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm"
-                  : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300",
+                  ? "bg-white text-gray-900 shadow-sm dark:bg-gray-700 dark:text-white"
+                  : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
               )}
               title={tab.label}
               aria-label={tab.label}
             >
-              <span className="w-5 h-5">{tab.icon}</span>
-              {showLabels && (
-                <span className="text-sm font-medium">{tab.label}</span>
-              )}
+              <span className="h-5 w-5">{tab.icon}</span>
+              {showLabels && <span className="text-sm font-medium">{tab.label}</span>}
             </button>
           );
         })}
@@ -605,7 +562,7 @@ export function IconTabs({
               >
                 {tab.content}
               </motion.div>
-            ),
+            )
         )}
       </AnimatePresence>
     </div>

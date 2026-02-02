@@ -3,11 +3,7 @@
 import { useState, useEffect, useSyncExternalStore } from "react";
 import { WifiOff, Loader2, AlertTriangle, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import {
-  isSocketConnected,
-  getSocketState,
-  configureSocketCallbacks,
-} from "@/lib/socket";
+import { isSocketConnected, getSocketState, configureSocketCallbacks } from "@/lib/socket";
 
 /**
  * Network status
@@ -40,7 +36,7 @@ export function useOnlineStatus(): boolean {
   return useSyncExternalStore(
     subscribeOnline,
     getOnlineStatus,
-    () => true, // Server-side default
+    () => true // Server-side default
   );
 }
 
@@ -195,23 +191,17 @@ export function NetworkStatusIndicator({
     return (
       <div
         className={cn(
-          "z-50 rounded-full p-2 shadow-lg border",
+          "z-50 rounded-full border p-2 shadow-lg",
           config.bgColor,
           config.borderColor,
           positionClasses[position],
-          className,
+          className
         )}
         role="status"
         aria-live="polite"
         aria-label={config.label}
       >
-        <Icon
-          className={cn(
-            "h-4 w-4",
-            config.color,
-            status === "connecting" && "animate-spin",
-          )}
-        />
+        <Icon className={cn("h-4 w-4", config.color, status === "connecting" && "animate-spin")} />
       </div>
     );
   }
@@ -223,25 +213,15 @@ export function NetworkStatusIndicator({
         config.bgColor,
         config.borderColor,
         positionClasses[position],
-        className,
+        className
       )}
       role="status"
       aria-live="polite"
     >
-      <Icon
-        className={cn(
-          "h-4 w-4",
-          config.color,
-          status === "connecting" && "animate-spin",
-        )}
-      />
-      <span className={cn("text-sm font-medium", config.color)}>
-        {config.label}
-      </span>
+      <Icon className={cn("h-4 w-4", config.color, status === "connecting" && "animate-spin")} />
+      <span className={cn("text-sm font-medium", config.color)}>{config.label}</span>
       {!isSocketConnected && isOnline && (
-        <span className="text-xs text-muted-foreground">
-          (Real-time updates unavailable)
-        </span>
+        <span className="text-xs text-muted-foreground">(Real-time updates unavailable)</span>
       )}
     </div>
   );
@@ -257,7 +237,7 @@ export function OfflineBanner() {
 
   return (
     <div
-      className="fixed top-0 left-0 right-0 z-50 bg-red-500 text-white text-center py-2 px-4"
+      className="fixed left-0 right-0 top-0 z-50 bg-red-500 px-4 py-2 text-center text-white"
       role="alert"
     >
       <div className="flex items-center justify-center gap-2">
@@ -292,10 +272,7 @@ export function useSlowNetwork(): boolean {
 
     const checkConnection = () => {
       // 2g or slow-2g are considered slow
-      setIsSlow(
-        connection.effectiveType === "2g" ||
-          connection.effectiveType === "slow-2g",
-      );
+      setIsSlow(connection.effectiveType === "2g" || connection.effectiveType === "slow-2g");
     };
 
     checkConnection();

@@ -59,12 +59,7 @@ interface MenuProps {
   onOpenChange?: (open: boolean) => void;
 }
 
-export function Menu({
-  children,
-  placement = "bottom-start",
-  open,
-  onOpenChange,
-}: MenuProps) {
+export function Menu({ children, placement = "bottom-start", open, onOpenChange }: MenuProps) {
   const [isOpen, setIsOpenState] = React.useState(false);
   const [activeIndex, setActiveIndex] = React.useState(-1);
   const triggerRef = React.useRef<HTMLElement>(null);
@@ -80,7 +75,7 @@ export function Menu({
         setActiveIndex(-1);
       }
     },
-    [open, onOpenChange],
+    [open, onOpenChange]
   );
 
   const actualIsOpen = open !== undefined ? open : isOpen;
@@ -140,7 +135,7 @@ export function Menu({
       setActiveIndex,
       closeMenu,
     }),
-    [actualIsOpen, setIsOpen, placement, activeIndex, closeMenu],
+    [actualIsOpen, setIsOpen, placement, activeIndex, closeMenu]
   );
 
   return (
@@ -160,11 +155,7 @@ interface MenuTriggerProps {
   className?: string;
 }
 
-export function MenuTrigger({
-  children,
-  asChild = false,
-  className,
-}: MenuTriggerProps) {
+export function MenuTrigger({ children, asChild = false, className }: MenuTriggerProps) {
   const { triggerRef, isOpen, setIsOpen } = useMenuContext();
 
   const handleClick = () => {
@@ -172,11 +163,7 @@ export function MenuTrigger({
   };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (
-      event.key === "Enter" ||
-      event.key === " " ||
-      event.key === "ArrowDown"
-    ) {
+    if (event.key === "Enter" || event.key === " " || event.key === "ArrowDown") {
       event.preventDefault();
       setIsOpen(true);
     }
@@ -197,7 +184,7 @@ export function MenuTrigger({
         onKeyDown: handleKeyDown,
         "aria-expanded": isOpen,
         "aria-haspopup": true,
-      },
+      }
     );
   }
 
@@ -233,11 +220,7 @@ interface MenuContentProps {
   minWidth?: number;
 }
 
-export function MenuContent({
-  children,
-  className,
-  minWidth = 180,
-}: MenuContentProps) {
+export function MenuContent({ children, className, minWidth = 180 }: MenuContentProps) {
   const { isOpen, menuRef, placement } = useMenuContext();
 
   return (
@@ -250,10 +233,10 @@ export function MenuContent({
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.15 }}
           className={cn(
-            "absolute z-50 py-1 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700",
+            "absolute z-50 rounded-lg border border-gray-200 bg-white py-1 shadow-xl dark:border-gray-700 dark:bg-gray-800",
             "focus:outline-none",
             placementStyles[placement],
-            className,
+            className
           )}
           style={{ minWidth }}
           role="menu"
@@ -301,36 +284,27 @@ export function MenuItem({
 
   const content = (
     <>
-      {Icon && <Icon className="w-4 h-4 flex-shrink-0" />}
+      {Icon && <Icon className="h-4 w-4 flex-shrink-0" />}
       <span className="flex-1">{children}</span>
       {shortcut && (
-        <span className="text-xs text-gray-400 dark:text-gray-500 ml-auto pl-4">
-          {shortcut}
-        </span>
+        <span className="ml-auto pl-4 text-xs text-gray-400 dark:text-gray-500">{shortcut}</span>
       )}
     </>
   );
 
   const itemClassName = cn(
-    "flex items-center gap-2 w-full px-3 py-2 text-sm text-left transition-colors",
-    "focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-700",
+    "flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors",
+    "focus:bg-gray-100 focus:outline-none dark:focus:bg-gray-700",
     disabled
-      ? "opacity-50 cursor-not-allowed"
-      : "hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer",
-    danger
-      ? "text-red-600 dark:text-red-400"
-      : "text-gray-700 dark:text-gray-200",
-    className,
+      ? "cursor-not-allowed opacity-50"
+      : "cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700",
+    danger ? "text-red-600 dark:text-red-400" : "text-gray-700 dark:text-gray-200",
+    className
   );
 
   if (href && !disabled) {
     return (
-      <a
-        href={href}
-        className={itemClassName}
-        role="menuitem"
-        onClick={closeMenu}
-      >
+      <a href={href} className={itemClassName} role="menuitem" onClick={closeMenu}>
         {content}
       </a>
     );
@@ -359,10 +333,7 @@ interface MenuSeparatorProps {
 
 export function MenuSeparator({ className }: MenuSeparatorProps) {
   return (
-    <div
-      className={cn("h-px my-1 bg-gray-200 dark:bg-gray-700", className)}
-      role="separator"
-    />
+    <div className={cn("my-1 h-px bg-gray-200 dark:bg-gray-700", className)} role="separator" />
   );
 }
 
@@ -379,8 +350,8 @@ export function MenuLabel({ children, className }: MenuLabelProps) {
   return (
     <div
       className={cn(
-        "px-3 py-1.5 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide",
-        className,
+        "px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400",
+        className
       )}
     >
       {children}
@@ -435,13 +406,13 @@ export function MenuCheckboxItem({
     <button
       type="button"
       className={cn(
-        "flex items-center gap-2 w-full px-3 py-2 text-sm text-left transition-colors",
-        "focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-700",
+        "flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors",
+        "focus:bg-gray-100 focus:outline-none dark:focus:bg-gray-700",
         disabled
-          ? "opacity-50 cursor-not-allowed"
-          : "hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer",
+          ? "cursor-not-allowed opacity-50"
+          : "cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700",
         "text-gray-700 dark:text-gray-200",
-        className,
+        className
       )}
       onClick={handleClick}
       disabled={disabled}
@@ -450,13 +421,13 @@ export function MenuCheckboxItem({
     >
       <span
         className={cn(
-          "w-4 h-4 flex items-center justify-center rounded border",
+          "flex h-4 w-4 items-center justify-center rounded border",
           checked
-            ? "bg-blue-600 border-blue-600 text-white"
-            : "border-gray-300 dark:border-gray-600",
+            ? "border-blue-600 bg-blue-600 text-white"
+            : "border-gray-300 dark:border-gray-600"
         )}
       >
-        {checked && <Check className="w-3 h-3" />}
+        {checked && <Check className="h-3 w-3" />}
       </span>
       <span className="flex-1">{children}</span>
     </button>
@@ -479,12 +450,7 @@ const RadioGroupContext = React.createContext<{
   onValueChange?: (value: string) => void;
 } | null>(null);
 
-export function MenuRadioGroup({
-  value,
-  onValueChange,
-  children,
-  className,
-}: MenuRadioGroupProps) {
+export function MenuRadioGroup({ value, onValueChange, children, className }: MenuRadioGroupProps) {
   return (
     <RadioGroupContext.Provider value={{ value, onValueChange }}>
       <div className={className} role="group">
@@ -523,13 +489,13 @@ export function MenuRadioItem({
     <button
       type="button"
       className={cn(
-        "flex items-center gap-2 w-full px-3 py-2 text-sm text-left transition-colors",
-        "focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-700",
+        "flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors",
+        "focus:bg-gray-100 focus:outline-none dark:focus:bg-gray-700",
         disabled
-          ? "opacity-50 cursor-not-allowed"
-          : "hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer",
+          ? "cursor-not-allowed opacity-50"
+          : "cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700",
         "text-gray-700 dark:text-gray-200",
-        className,
+        className
       )}
       onClick={handleClick}
       disabled={disabled}
@@ -538,15 +504,11 @@ export function MenuRadioItem({
     >
       <span
         className={cn(
-          "w-4 h-4 flex items-center justify-center rounded-full border",
-          isSelected
-            ? "border-blue-600"
-            : "border-gray-300 dark:border-gray-600",
+          "flex h-4 w-4 items-center justify-center rounded-full border",
+          isSelected ? "border-blue-600" : "border-gray-300 dark:border-gray-600"
         )}
       >
-        {isSelected && (
-          <Circle className="w-2.5 h-2.5 fill-blue-600 text-blue-600" />
-        )}
+        {isSelected && <Circle className="h-2.5 w-2.5 fill-blue-600 text-blue-600" />}
       </span>
       <span className="flex-1">{children}</span>
     </button>
@@ -584,21 +546,21 @@ export function Submenu({
       <button
         type="button"
         className={cn(
-          "flex items-center gap-2 w-full px-3 py-2 text-sm text-left transition-colors",
-          "focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-700",
+          "flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors",
+          "focus:bg-gray-100 focus:outline-none dark:focus:bg-gray-700",
           disabled
-            ? "opacity-50 cursor-not-allowed"
-            : "hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer",
+            ? "cursor-not-allowed opacity-50"
+            : "cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700",
           "text-gray-700 dark:text-gray-200",
-          className,
+          className
         )}
         disabled={disabled}
         aria-expanded={isOpen}
         aria-haspopup="menu"
       >
-        {Icon && <Icon className="w-4 h-4 flex-shrink-0" />}
+        {Icon && <Icon className="h-4 w-4 flex-shrink-0" />}
         <span className="flex-1">{label}</span>
-        <ChevronRight className="w-4 h-4 text-gray-400" />
+        <ChevronRight className="h-4 w-4 text-gray-400" />
       </button>
 
       <AnimatePresence>
@@ -609,7 +571,7 @@ export function Submenu({
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -8 }}
             transition={{ duration: 0.15 }}
-            className="absolute left-full top-0 ml-1 py-1 min-w-[160px] bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700"
+            className="absolute left-full top-0 ml-1 min-w-[160px] rounded-lg border border-gray-200 bg-white py-1 shadow-xl dark:border-gray-700 dark:bg-gray-800"
             role="menu"
           >
             {children}
@@ -690,7 +652,7 @@ export function ContextMenu({ children, menu }: ContextMenuProps) {
       setActiveIndex: () => {},
       closeMenu,
     }),
-    [isOpen, closeMenu],
+    [isOpen, closeMenu]
   );
 
   return (
@@ -704,7 +666,7 @@ export function ContextMenu({ children, menu }: ContextMenuProps) {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.1 }}
-            className="fixed z-50 py-1 min-w-[160px] bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700"
+            className="fixed z-50 min-w-[160px] rounded-lg border border-gray-200 bg-white py-1 shadow-xl dark:border-gray-700 dark:bg-gray-800"
             style={{ left: position.x, top: position.y }}
             role="menu"
           >
@@ -737,12 +699,7 @@ export function SimpleDropdown({
     return menuItems.map((item) => {
       if (item.children) {
         return (
-          <Submenu
-            key={item.id}
-            label={item.label}
-            icon={item.icon}
-            disabled={item.disabled}
-          >
+          <Submenu key={item.id} label={item.label} icon={item.icon} disabled={item.disabled}>
             {renderItems(item.children)}
           </Submenu>
         );

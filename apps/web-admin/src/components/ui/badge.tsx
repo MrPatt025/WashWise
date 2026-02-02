@@ -23,19 +23,14 @@ const sizeStyles = {
   lg: "px-3 py-1 text-sm",
 };
 
-export function Badge({
-  variant = "default",
-  size = "default",
-  className,
-  children,
-}: BadgeProps) {
+export function Badge({ variant = "default", size = "default", className, children }: BadgeProps) {
   return (
     <span
       className={cn(
         "inline-flex items-center rounded-full font-medium transition-colors",
         variantStyles[variant],
         sizeStyles[size],
-        className,
+        className
       )}
     >
       {children}
@@ -54,7 +49,7 @@ interface StatusBadgeProps {
 
 export function StatusBadge({ status, size = "default", className }: StatusBadgeProps) {
   const display = STATUS_DISPLAY_MAP[status] || { label: status, variant: "default" as const };
-  
+
   return (
     <Badge variant={display.variant} size={size} className={className}>
       {display.label}
@@ -73,11 +68,7 @@ interface TypeBadgeProps {
 
 export function TypeBadge({ type, size = "default", className }: TypeBadgeProps) {
   return (
-    <Badge 
-      variant={type === "WASHER" ? "default" : "secondary"} 
-      size={size} 
-      className={className}
-    >
+    <Badge variant={type === "WASHER" ? "default" : "secondary"} size={size} className={className}>
       {type === "WASHER" ? "Washer" : "Dryer"}
     </Badge>
   );

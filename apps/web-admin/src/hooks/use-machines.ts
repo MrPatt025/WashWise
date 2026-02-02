@@ -72,24 +72,21 @@ export function useMachines(query?: MachineQuery) {
                     status: event.status as Machine["status"],
                     updatedAt: event.updatedAt,
                   }
-                : machine,
+                : machine
             ),
           };
-        },
+        }
       );
 
       // Also update single machine query if it exists
-      queryClient.setQueryData<Machine>(
-        ["machines", event.machineId],
-        (oldData) => {
-          if (!oldData) return oldData;
-          return {
-            ...oldData,
-            status: event.status as Machine["status"],
-            updatedAt: event.updatedAt,
-          };
-        },
-      );
+      queryClient.setQueryData<Machine>(["machines", event.machineId], (oldData) => {
+        if (!oldData) return oldData;
+        return {
+          ...oldData,
+          status: event.status as Machine["status"],
+          updatedAt: event.updatedAt,
+        };
+      });
     };
 
     socket.on("machine:update", handleMachineUpdate);
@@ -185,9 +182,7 @@ export function useUpdateMachine() {
       await queryClient.cancelQueries({ queryKey: queryKeys.machines.detail(id) });
 
       // Snapshot previous value
-      const previousMachine = queryClient.getQueryData<Machine>(
-        queryKeys.machines.detail(id)
-      );
+      const previousMachine = queryClient.getQueryData<Machine>(queryKeys.machines.detail(id));
 
       // Optimistically update
       if (previousMachine) {
@@ -273,13 +268,7 @@ export function useSimulateStatus() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({
-      machineId,
-      status,
-    }: {
-      machineId: string;
-      status: string;
-    }) => {
+    mutationFn: async ({ machineId, status }: { machineId: string; status: string }) => {
       const response = await api.post("/simulation/event", {
         machineId,
         status,

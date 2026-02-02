@@ -62,10 +62,7 @@ export function useRegister() {
       setAuth(data);
       queryClient.clear();
       reconnectSocket();
-      showSuccessToast(
-        "Account created!",
-        `Welcome to WashWise, ${data.user.firstName}!`
-      );
+      showSuccessToast("Account created!", `Welcome to WashWise, ${data.user.firstName}!`);
       router.push("/dashboard");
     },
     onError: (error) => {
@@ -123,9 +120,7 @@ export function useCheckAuth() {
 
       try {
         // Try to refresh token (cookie is sent automatically)
-        const refreshResponse = await api.post<{ accessToken: string }>(
-          "/auth/refresh",
-        );
+        const refreshResponse = await api.post<{ accessToken: string }>("/auth/refresh");
         const refreshData = validateResponse(
           RefreshResponseSchema,
           refreshResponse.data,

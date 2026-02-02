@@ -137,10 +137,7 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
       redis:
         image: redis:7-alpine
         ports:
@@ -254,9 +251,7 @@ jobs:
         uses: semgrep/semgrep-action@v1
         with:
           config: >-
-            p/security-audit
-            p/secrets
-            p/owasp-top-ten
+            p/security-audit p/secrets p/owasp-top-ten
 
       # Dependency scan
       - name: OWASP Dependency Check (Java)
@@ -291,7 +286,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: [test-core-api, test-ai-worker, test-frontend, security-scan]
-    if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
+    if:
+      github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main' ||
+      startsWith(github.ref, 'refs/tags/v')
 
     permissions:
       id-token: write

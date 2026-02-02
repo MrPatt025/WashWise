@@ -12,7 +12,7 @@ export default function Loading() {
       <div className="relative">
         <div className="absolute -inset-4 animate-ping rounded-full bg-primary/20" />
         <div className="relative flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-          <WashingMachine className="h-8 w-8 text-primary animate-[spin_2s_linear_infinite]" />
+          <WashingMachine className="h-8 w-8 animate-[spin_2s_linear_infinite] text-primary" />
         </div>
       </div>
 
@@ -22,7 +22,7 @@ export default function Loading() {
 
       {/* Loading bar */}
       <div className="mt-6 h-1 w-48 overflow-hidden rounded-full bg-muted">
-        <div className="h-full w-1/3 rounded-full bg-primary animate-[shimmer_1.5s_ease-in-out_infinite]" />
+        <div className="h-full w-1/3 animate-[shimmer_1.5s_ease-in-out_infinite] rounded-full bg-primary" />
       </div>
     </div>
   );

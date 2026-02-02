@@ -58,49 +58,40 @@ export function Stat({
 }: StatProps) {
   // Determine trend from change if not provided
   const actualTrend =
-    trend ||
-    (change && change > 0 ? "up" : change && change < 0 ? "down" : "neutral");
+    trend || (change && change > 0 ? "up" : change && change < 0 ? "down" : "neutral");
 
   // Determine if trend is good or bad
-  const isPositiveTrend =
-    trendType === "positive" ? actualTrend === "up" : actualTrend === "down";
-  const isNegativeTrend =
-    trendType === "positive" ? actualTrend === "down" : actualTrend === "up";
+  const isPositiveTrend = trendType === "positive" ? actualTrend === "up" : actualTrend === "down";
+  const isNegativeTrend = trendType === "positive" ? actualTrend === "down" : actualTrend === "up";
 
   const TrendIcon =
-    actualTrend === "up"
-      ? TrendingUp
-      : actualTrend === "down"
-        ? TrendingDown
-        : Minus;
+    actualTrend === "up" ? TrendingUp : actualTrend === "down" ? TrendingDown : Minus;
 
   return (
     <div
       className={cn(
-        "bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6",
-        className,
+        "rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900",
+        className
       )}
     >
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-              {label}
-            </span>
+            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">{label}</span>
             {info && (
               <button
                 type="button"
                 className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                 title={info}
               >
-                <Info className="w-3.5 h-3.5" />
+                <Info className="h-3.5 w-3.5" />
               </button>
             )}
           </div>
 
           <div className="mt-2 flex items-baseline gap-2">
             {loading ? (
-              <div className="h-8 w-24 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
+              <div className="h-8 w-24 animate-pulse rounded bg-gray-200 dark:bg-gray-700" />
             ) : (
               <span className="text-3xl font-bold text-gray-900 dark:text-white">
                 {prefix}
@@ -117,33 +108,22 @@ export function Stat({
                   "flex items-center gap-0.5 text-sm font-medium",
                   isPositiveTrend && "text-green-600 dark:text-green-400",
                   isNegativeTrend && "text-red-600 dark:text-red-400",
-                  !isPositiveTrend &&
-                    !isNegativeTrend &&
-                    "text-gray-500 dark:text-gray-400",
+                  !isPositiveTrend && !isNegativeTrend && "text-gray-500 dark:text-gray-400"
                 )}
               >
-                <TrendIcon className="w-4 h-4" />
-                {change !== undefined && (
-                  <span>{Math.abs(change).toFixed(1)}%</span>
-                )}
+                <TrendIcon className="h-4 w-4" />
+                {change !== undefined && <span>{Math.abs(change).toFixed(1)}%</span>}
               </span>
               {changeLabel && (
-                <span className="text-sm text-gray-500 dark:text-gray-400">
-                  {changeLabel}
-                </span>
+                <span className="text-sm text-gray-500 dark:text-gray-400">{changeLabel}</span>
               )}
             </div>
           )}
         </div>
 
         {Icon && (
-          <div
-            className={cn(
-              "p-3 rounded-xl bg-gray-100 dark:bg-gray-800",
-              iconColor,
-            )}
-          >
-            <Icon className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+          <div className={cn("rounded-xl bg-gray-100 p-3 dark:bg-gray-800", iconColor)}>
+            <Icon className="h-6 w-6 text-gray-600 dark:text-gray-400" />
           </div>
         )}
       </div>
@@ -176,37 +156,31 @@ export function StatWithSparkline({
   className,
 }: StatWithSparklineProps) {
   const actualTrend =
-    trend ||
-    (change && change > 0 ? "up" : change && change < 0 ? "down" : "neutral");
+    trend || (change && change > 0 ? "up" : change && change < 0 ? "down" : "neutral");
 
-  const isPositiveTrend =
-    trendType === "positive" ? actualTrend === "up" : actualTrend === "down";
-  const isNegativeTrend =
-    trendType === "positive" ? actualTrend === "down" : actualTrend === "up";
+  const isPositiveTrend = trendType === "positive" ? actualTrend === "up" : actualTrend === "down";
+  const isNegativeTrend = trendType === "positive" ? actualTrend === "down" : actualTrend === "up";
 
   const color =
-    sparklineColor ||
-    (isPositiveTrend ? "#10B981" : isNegativeTrend ? "#EF4444" : "#6B7280");
+    sparklineColor || (isPositiveTrend ? "#10B981" : isNegativeTrend ? "#EF4444" : "#6B7280");
 
   return (
     <div
       className={cn(
-        "bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6",
-        className,
+        "rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900",
+        className
       )}
     >
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            {Icon && <Icon className="w-4 h-4 text-gray-400" />}
-            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-              {label}
-            </span>
+            {Icon && <Icon className="h-4 w-4 text-gray-400" />}
+            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">{label}</span>
           </div>
 
           <div className="mt-2">
             {loading ? (
-              <div className="h-8 w-24 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
+              <div className="h-8 w-24 animate-pulse rounded bg-gray-200 dark:bg-gray-700" />
             ) : (
               <span className="text-2xl font-bold text-gray-900 dark:text-white">
                 {prefix}
@@ -223,25 +197,15 @@ export function StatWithSparkline({
                   "flex items-center text-sm font-medium",
                   isPositiveTrend && "text-green-600 dark:text-green-400",
                   isNegativeTrend && "text-red-600 dark:text-red-400",
-                  !isPositiveTrend &&
-                    !isNegativeTrend &&
-                    "text-gray-500 dark:text-gray-400",
+                  !isPositiveTrend && !isNegativeTrend && "text-gray-500 dark:text-gray-400"
                 )}
               >
-                {actualTrend === "up" && (
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                )}
-                {actualTrend === "down" && (
-                  <ArrowDownRight className="w-3.5 h-3.5" />
-                )}
-                {change !== undefined && (
-                  <span>{Math.abs(change).toFixed(1)}%</span>
-                )}
+                {actualTrend === "up" && <ArrowUpRight className="h-3.5 w-3.5" />}
+                {actualTrend === "down" && <ArrowDownRight className="h-3.5 w-3.5" />}
+                {change !== undefined && <span>{Math.abs(change).toFixed(1)}%</span>}
               </span>
               {changeLabel && (
-                <span className="text-xs text-gray-500 dark:text-gray-400">
-                  {changeLabel}
-                </span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">{changeLabel}</span>
               )}
             </div>
           )}
@@ -249,13 +213,7 @@ export function StatWithSparkline({
 
         {sparklineData && sparklineData.length > 0 && (
           <div className="flex-shrink-0">
-            <Sparkline
-              data={sparklineData}
-              width={80}
-              height={40}
-              color={color}
-              showArea
-            />
+            <Sparkline data={sparklineData} width={80} height={40} color={color} showArea />
           </div>
         )}
       </div>
@@ -282,7 +240,7 @@ export function StatGrid({ children, columns = 4, className }: StatGridProps) {
         columns === 2 && "grid-cols-1 sm:grid-cols-2",
         columns === 3 && "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
         columns === 4 && "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4",
-        className,
+        className
       )}
     >
       {children}
@@ -325,52 +283,42 @@ export function ComparisonStat({
   return (
     <div
       className={cn(
-        "bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6",
-        className,
+        "rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900",
+        className
       )}
     >
-      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
-        {label}
-      </h3>
+      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">{label}</h3>
 
       <div className="mt-4 flex items-end justify-between">
         <div>
           <span className="text-3xl font-bold text-gray-900 dark:text-white">
             {format(current)}
           </span>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-            {currentLabel}
-          </p>
+          <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">{currentLabel}</p>
         </div>
 
         <div className="text-right">
           <span className="text-lg font-medium text-gray-500 dark:text-gray-400">
             {format(previous)}
           </span>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-            {previousLabel}
-          </p>
+          <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">{previousLabel}</p>
         </div>
       </div>
 
-      <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+      <div className="mt-4 border-t border-gray-100 pt-4 dark:border-gray-800">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-500 dark:text-gray-400">
-            Change
-          </span>
+          <span className="text-sm text-gray-500 dark:text-gray-400">Change</span>
           <span
             className={cn(
               "flex items-center gap-1 text-sm font-medium",
               isPositiveTrend && "text-green-600 dark:text-green-400",
               isNegativeTrend && "text-red-600 dark:text-red-400",
-              !isPositiveTrend &&
-                !isNegativeTrend &&
-                "text-gray-500 dark:text-gray-400",
+              !isPositiveTrend && !isNegativeTrend && "text-gray-500 dark:text-gray-400"
             )}
           >
-            {isUp && <TrendingUp className="w-4 h-4" />}
-            {isDown && <TrendingDown className="w-4 h-4" />}
-            {!isUp && !isDown && <Minus className="w-4 h-4" />}
+            {isUp && <TrendingUp className="h-4 w-4" />}
+            {isDown && <TrendingDown className="h-4 w-4" />}
+            {!isUp && !isDown && <Minus className="h-4 w-4" />}
             {Math.abs(change).toFixed(1)}%
           </span>
         </div>
@@ -401,13 +349,10 @@ export function MiniStat({
   className,
 }: MiniStatProps) {
   const actualTrend =
-    trend ||
-    (change && change > 0 ? "up" : change && change < 0 ? "down" : "neutral");
+    trend || (change && change > 0 ? "up" : change && change < 0 ? "down" : "neutral");
 
-  const isPositiveTrend =
-    trendType === "positive" ? actualTrend === "up" : actualTrend === "down";
-  const isNegativeTrend =
-    trendType === "positive" ? actualTrend === "down" : actualTrend === "up";
+  const isPositiveTrend = trendType === "positive" ? actualTrend === "up" : actualTrend === "down";
+  const isNegativeTrend = trendType === "positive" ? actualTrend === "down" : actualTrend === "up";
 
   return (
     <div className={cn("flex items-center justify-between py-2", className)}>
@@ -422,9 +367,7 @@ export function MiniStat({
               "text-xs font-medium",
               isPositiveTrend && "text-green-600 dark:text-green-400",
               isNegativeTrend && "text-red-600 dark:text-red-400",
-              !isPositiveTrend &&
-                !isNegativeTrend &&
-                "text-gray-500 dark:text-gray-400",
+              !isPositiveTrend && !isNegativeTrend && "text-gray-500 dark:text-gray-400"
             )}
           >
             {change > 0 ? "+" : ""}
@@ -521,15 +464,13 @@ export function GoalStat({
   return (
     <div
       className={cn(
-        "bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6",
-        className,
+        "rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900",
+        className
       )}
     >
       <div className="flex items-start justify-between">
         <div>
-          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
-            {label}
-          </h3>
+          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">{label}</h3>
           <p className="mt-1 text-2xl font-bold text-gray-900 dark:text-white">
             {format(current)}
             <span className="text-base font-normal text-gray-500 dark:text-gray-400">
@@ -540,10 +481,10 @@ export function GoalStat({
         </div>
         <span
           className={cn(
-            "px-2.5 py-1 text-xs font-medium rounded-full",
+            "rounded-full px-2.5 py-1 text-xs font-medium",
             isComplete
               ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-              : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300",
+              : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"
           )}
         >
           {percentage.toFixed(0)}%
@@ -551,7 +492,7 @@ export function GoalStat({
       </div>
 
       <div className="mt-4">
-        <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+        <div className="h-2 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${percentage}%` }}
@@ -586,31 +527,27 @@ export function StatList({ title, items, className }: StatListProps) {
   return (
     <div
       className={cn(
-        "bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6",
-        className,
+        "rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900",
+        className
       )}
     >
       <h3 className="font-semibold text-gray-900 dark:text-white">{title}</h3>
 
       <div className="mt-4 divide-y divide-gray-100 dark:divide-gray-800">
         {items.map((item, index) => (
-          <div key={index} className="py-3 flex items-center justify-between">
+          <div key={index} className="flex items-center justify-between py-3">
             <div className="flex items-center gap-3">
               {item.color && (
                 <span
-                  className="w-2.5 h-2.5 rounded-full"
+                  className="h-2.5 w-2.5 rounded-full"
                   style={{ backgroundColor: item.color }}
                 />
               )}
-              <span className="text-sm text-gray-600 dark:text-gray-400">
-                {item.label}
-              </span>
+              <span className="text-sm text-gray-600 dark:text-gray-400">{item.label}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="font-medium text-gray-900 dark:text-white">
-                {typeof item.value === "number"
-                  ? item.value.toLocaleString()
-                  : item.value}
+                {typeof item.value === "number" ? item.value.toLocaleString() : item.value}
               </span>
               {item.change !== undefined && (
                 <span
@@ -618,7 +555,7 @@ export function StatList({ title, items, className }: StatListProps) {
                     "text-xs font-medium",
                     item.change > 0 && "text-green-600 dark:text-green-400",
                     item.change < 0 && "text-red-600 dark:text-red-400",
-                    item.change === 0 && "text-gray-500 dark:text-gray-400",
+                    item.change === 0 && "text-gray-500 dark:text-gray-400"
                   )}
                 >
                   {item.change > 0 ? "+" : ""}

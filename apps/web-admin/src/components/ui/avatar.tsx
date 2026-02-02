@@ -70,7 +70,7 @@ export function Avatar({
         <img
           src={src}
           alt={alt || name || "Avatar"}
-          className="w-full h-full object-cover"
+          className="h-full w-full object-cover"
           onError={handleError}
         />
       );
@@ -81,11 +81,7 @@ export function Avatar({
     }
 
     if (initials) {
-      return (
-        <span className="font-medium text-gray-700 dark:text-gray-300">
-          {initials}
-        </span>
-      );
+      return <span className="font-medium text-gray-700 dark:text-gray-300">{initials}</span>;
     }
 
     return <User className={cn("text-gray-400", iconSizes[size])} />;
@@ -97,8 +93,8 @@ export function Avatar({
         "relative flex items-center justify-center overflow-hidden bg-gray-100 dark:bg-gray-800",
         sizeClasses[size],
         shapeClass,
-        onClick && "cursor-pointer hover:opacity-80 transition-opacity",
-        className,
+        onClick && "cursor-pointer transition-opacity hover:opacity-80",
+        className
       )}
       onClick={onClick}
       role={onClick ? "button" : undefined}
@@ -152,9 +148,9 @@ export function AvatarWithBadge({
       {showOnlineIndicator && (
         <span
           className={cn(
-            "absolute w-3 h-3 rounded-full border-2 border-white dark:border-gray-900",
+            "absolute h-3 w-3 rounded-full border-2 border-white dark:border-gray-900",
             badgePositionClasses[badgePosition],
-            isOnline ? badgeColorClasses.green : badgeColorClasses.gray,
+            isOnline ? badgeColorClasses.green : badgeColorClasses.gray
           )}
         />
       )}
@@ -162,9 +158,9 @@ export function AvatarWithBadge({
       {badgeContent && !showOnlineIndicator && (
         <span
           className={cn(
-            "absolute flex items-center justify-center min-w-[1.25rem] h-5 px-1 text-xs font-bold text-white rounded-full",
+            "absolute flex h-5 min-w-[1.25rem] items-center justify-center rounded-full px-1 text-xs font-bold text-white",
             badgePositionClasses[badgePosition],
-            badgeColorClasses[badgeColor],
+            badgeColorClasses[badgeColor]
           )}
         >
           {badgeContent}
@@ -189,12 +185,7 @@ interface AvatarGroupProps {
   className?: string;
 }
 
-export function AvatarGroup({
-  avatars,
-  max = 5,
-  size = "md",
-  className,
-}: AvatarGroupProps) {
+export function AvatarGroup({ avatars, max = 5, size = "md", className }: AvatarGroupProps) {
   const displayAvatars = avatars.slice(0, max);
   const remainingCount = avatars.length - max;
 
@@ -213,36 +204,29 @@ export function AvatarGroup({
         <div
           key={index}
           className={cn(
-            "relative ring-2 ring-white dark:ring-gray-900 rounded-full",
-            index > 0 && overlapClasses[size],
+            "relative rounded-full ring-2 ring-white dark:ring-gray-900",
+            index > 0 && overlapClasses[size]
           )}
           style={{ zIndex: displayAvatars.length - index }}
         >
-          <Avatar
-            src={avatar.src}
-            name={avatar.name}
-            alt={avatar.alt}
-            size={size}
-          />
+          <Avatar src={avatar.src} name={avatar.name} alt={avatar.alt} size={size} />
         </div>
       ))}
 
       {remainingCount > 0 && (
         <div
           className={cn(
-            "relative ring-2 ring-white dark:ring-gray-900 rounded-full",
-            overlapClasses[size],
+            "relative rounded-full ring-2 ring-white dark:ring-gray-900",
+            overlapClasses[size]
           )}
         >
           <div
             className={cn(
-              "flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-full",
-              sizeClasses[size],
+              "flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700",
+              sizeClasses[size]
             )}
           >
-            <span className="font-medium text-gray-600 dark:text-gray-300">
-              +{remainingCount}
-            </span>
+            <span className="font-medium text-gray-600 dark:text-gray-300">+{remainingCount}</span>
           </div>
         </div>
       )}
@@ -266,30 +250,21 @@ interface UserAvatarProps {
   className?: string;
 }
 
-export function UserAvatar({
-  user,
-  size = "md",
-  showDetails = true,
-  className,
-}: UserAvatarProps) {
+export function UserAvatar({ user, size = "md", showDetails = true, className }: UserAvatarProps) {
   return (
     <div className={cn("flex items-center gap-3", className)}>
       <Avatar src={user.image} name={user.name} alt={user.name} size={size} />
 
       {showDetails && (
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
             {user.name || "Unknown User"}
           </p>
           {user.email && (
-            <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-              {user.email}
-            </p>
+            <p className="truncate text-xs text-gray-500 dark:text-gray-400">{user.email}</p>
           )}
           {user.role && !user.email && (
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              {user.role}
-            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">{user.role}</p>
           )}
         </div>
       )}
@@ -336,9 +311,7 @@ const avatarColors = [
 ];
 
 export function getAvatarColor(name: string): string {
-  const hash = name
-    .split("")
-    .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const hash = name.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
   return avatarColors[hash % avatarColors.length];
 }
 
@@ -351,14 +324,8 @@ interface ColoredAvatarProps extends Omit<AvatarProps, "className"> {
   className?: string;
 }
 
-export function ColoredAvatar({
-  colorSource,
-  name,
-  ...props
-}: ColoredAvatarProps) {
+export function ColoredAvatar({ colorSource, name, ...props }: ColoredAvatarProps) {
   const colorClass = getAvatarColor(colorSource || name || "");
 
-  return (
-    <Avatar {...props} name={name} className={cn(colorClass, "text-white")} />
-  );
+  return <Avatar {...props} name={name} className={cn(colorClass, "text-white")} />;
 }

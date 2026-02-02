@@ -307,12 +307,9 @@ GET /api/v1/machines
 Authorization: Bearer <access_token>
 ```
 
-**Query Parameters:**
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `branchId` | uuid | Filter by branch |
-| `status` | enum | AVAILABLE, BUSY, OFFLINE, MAINTENANCE |
-| `type` | enum | WASHER, DRYER |
+**Query Parameters:** | Parameter | Type | Description | |-----------|------|-------------| |
+`branchId` | uuid | Filter by branch | | `status` | enum | AVAILABLE, BUSY, OFFLINE, MAINTENANCE | |
+`type` | enum | WASHER, DRYER |
 
 **Response (200 OK):**
 
@@ -508,14 +505,10 @@ GET /api/v1/bookings
 Authorization: Bearer <access_token>
 ```
 
-**Query Parameters:**
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `machineId` | uuid | Filter by machine |
-| `branchId` | uuid | Filter by branch |
-| `status` | enum | PENDING, CONFIRMED, IN_PROGRESS, COMPLETED, CANCELLED |
-| `startDate` | date | Filter by date range start |
-| `endDate` | date | Filter by date range end |
+**Query Parameters:** | Parameter | Type | Description | |-----------|------|-------------| |
+`machineId` | uuid | Filter by machine | | `branchId` | uuid | Filter by branch | | `status` | enum
+| PENDING, CONFIRMED, IN_PROGRESS, COMPLETED, CANCELLED | | `startDate` | date | Filter by date
+range start | | `endDate` | date | Filter by date range end |
 
 **Response (200 OK):**
 
@@ -553,11 +546,9 @@ GET /api/v1/bookings/availability
 Authorization: Bearer <access_token>
 ```
 
-**Query Parameters:**
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `machineId` | uuid | Yes | Machine to check |
-| `date` | date | Yes | Date to check |
+**Query Parameters:** | Parameter | Type | Required | Description |
+|-----------|------|----------|-------------| | `machineId` | uuid | Yes | Machine to check | |
+`date` | date | Yes | Date to check |
 
 **Response (200 OK):**
 
@@ -941,12 +932,9 @@ GET /api/v1/ai/insights
 Authorization: Bearer <access_token>
 ```
 
-**Query Parameters:**
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `branchId` | uuid | Filter by branch |
-| `type` | enum | anomaly, forecast, recommendation |
-| `severity` | enum | info, warning, critical |
+**Query Parameters:** | Parameter | Type | Description | |-----------|------|-------------| |
+`branchId` | uuid | Filter by branch | | `type` | enum | anomaly, forecast, recommendation | |
+`severity` | enum | info, warning, critical |
 
 **Response (200 OK):**
 
@@ -982,11 +970,8 @@ GET /api/v1/ai/summary
 Authorization: Bearer <access_token>
 ```
 
-**Query Parameters:**
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `branchId` | uuid | Branch to summarize |
-| `date` | date | Date for summary (default: yesterday) |
+**Query Parameters:** | Parameter | Type | Description | |-----------|------|-------------| |
+`branchId` | uuid | Branch to summarize | | `date` | date | Date for summary (default: yesterday) |
 
 **Response (200 OK):**
 

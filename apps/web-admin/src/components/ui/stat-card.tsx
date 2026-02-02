@@ -2,19 +2,8 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import {
-  TrendingUp,
-  TrendingDown,
-  Minus,
-  ArrowUpRight,
-  ArrowDownRight,
-  Info,
-} from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { TrendingUp, TrendingDown, Minus, ArrowUpRight, ArrowDownRight, Info } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 /**
  * Stat Card Props
@@ -94,10 +83,7 @@ const variantStyles = {
 /**
  * Format a number for display
  */
-function formatValue(
-  value: string | number,
-  format: StatCardProps["format"] = "number",
-): string {
+function formatValue(value: string | number, format: StatCardProps["format"] = "number"): string {
   if (typeof value === "string") return value;
 
   switch (format) {
@@ -152,8 +138,7 @@ export function StatCard({
   // Calculate trend if not provided but previousValue is
   const calculatedTrend = React.useMemo(() => {
     if (trend) return trend;
-    if (previousValue === undefined || typeof value !== "number")
-      return undefined;
+    if (previousValue === undefined || typeof value !== "number") return undefined;
 
     if (value > previousValue) return "up";
     if (value < previousValue) return "down";
@@ -162,29 +147,21 @@ export function StatCard({
 
   const calculatedTrendValue = React.useMemo(() => {
     if (trendValue !== undefined) return trendValue;
-    if (
-      previousValue === undefined ||
-      typeof value !== "number" ||
-      previousValue === 0
-    )
+    if (previousValue === undefined || typeof value !== "number" || previousValue === 0)
       return undefined;
 
     return ((value - previousValue) / previousValue) * 100;
   }, [trendValue, value, previousValue]);
 
   const TrendIcon =
-    calculatedTrend === "up"
-      ? TrendingUp
-      : calculatedTrend === "down"
-        ? TrendingDown
-        : Minus;
+    calculatedTrend === "up" ? TrendingUp : calculatedTrend === "down" ? TrendingDown : Minus;
 
   return (
     <div
       className={cn(
         "relative rounded-xl border bg-card p-6 transition-all duration-200",
         onClick && "cursor-pointer hover:border-primary/50 hover:shadow-md",
-        className,
+        className
       )}
       onClick={onClick}
       role={onClick ? "button" : undefined}
@@ -194,9 +171,7 @@ export function StatCard({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-muted-foreground">
-            {title}
-          </span>
+          <span className="text-sm font-medium text-muted-foreground">{title}</span>
           {helpText && (
             <Tooltip>
               <TooltipTrigger asChild>
@@ -210,9 +185,7 @@ export function StatCard({
             </Tooltip>
           )}
         </div>
-        {icon && (
-          <div className={cn("rounded-lg p-2.5", styles.icon)}>{icon}</div>
-        )}
+        {icon && <div className={cn("rounded-lg p-2.5", styles.icon)}>{icon}</div>}
       </div>
 
       {/* Value */}
@@ -220,9 +193,7 @@ export function StatCard({
         {isLoading ? (
           <div className="h-9 w-24 animate-pulse rounded bg-muted" />
         ) : (
-          <span className="text-3xl font-bold tracking-tight">
-            {formatValue(value, format)}
-          </span>
+          <span className="text-3xl font-bold tracking-tight">{formatValue(value, format)}</span>
         )}
       </div>
 
@@ -232,15 +203,13 @@ export function StatCard({
           <span
             className={cn(
               "inline-flex items-center gap-0.5 text-sm font-medium",
-              styles.trend[calculatedTrend],
+              styles.trend[calculatedTrend]
             )}
           >
             <TrendIcon className="h-4 w-4" />
             {Math.abs(calculatedTrendValue).toFixed(1)}%
           </span>
-          {trendLabel && (
-            <span className="text-sm text-muted-foreground">{trendLabel}</span>
-          )}
+          {trendLabel && <span className="text-sm text-muted-foreground">{trendLabel}</span>}
         </div>
       )}
 
@@ -265,13 +234,7 @@ export interface MiniStatProps {
   className?: string;
 }
 
-export function MiniStat({
-  label,
-  value,
-  trend,
-  trendValue,
-  className,
-}: MiniStatProps) {
+export function MiniStat({ label, value, trend, trendValue, className }: MiniStatProps) {
   return (
     <div className={cn("flex items-center justify-between", className)}>
       <span className="text-sm text-muted-foreground">{label}</span>
@@ -281,7 +244,7 @@ export function MiniStat({
           <span
             className={cn(
               "inline-flex items-center text-xs font-medium",
-              trend === "up" ? "text-green-600" : "text-red-600",
+              trend === "up" ? "text-green-600" : "text-red-600"
             )}
           >
             {trend === "up" ? (
@@ -346,16 +309,11 @@ export function ProgressBar({
           )}
         </div>
       )}
-      <div
-        className={cn(
-          "w-full overflow-hidden rounded-full bg-muted",
-          progressSizes[size],
-        )}
-      >
+      <div className={cn("w-full overflow-hidden rounded-full bg-muted", progressSizes[size])}>
         <div
           className={cn(
             "h-full rounded-full transition-all duration-500 ease-out",
-            progressVariants[variant],
+            progressVariants[variant]
           )}
           style={{ width: `${percentage}%` }}
           role="progressbar"
@@ -406,12 +364,7 @@ export function CircularProgress({
   const offset = circumference - (percentage / 100) * circumference;
 
   return (
-    <div
-      className={cn(
-        "relative inline-flex items-center justify-center",
-        className,
-      )}
-    >
+    <div className={cn("relative inline-flex items-center justify-center", className)}>
       <svg width={size} height={size} className="-rotate-90">
         {/* Background circle */}
         <circle
@@ -432,19 +385,12 @@ export function CircularProgress({
           strokeLinecap="round"
           strokeDasharray={circumference}
           strokeDashoffset={offset}
-          className={cn(
-            "transition-all duration-500 ease-out",
-            circularVariants[variant],
-          )}
+          className={cn("transition-all duration-500 ease-out", circularVariants[variant])}
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        {showValue && (
-          <span className="text-2xl font-bold">{Math.round(percentage)}%</span>
-        )}
-        {label && (
-          <span className="text-xs text-muted-foreground">{label}</span>
-        )}
+        {showValue && <span className="text-2xl font-bold">{Math.round(percentage)}%</span>}
+        {label && <span className="text-xs text-muted-foreground">{label}</span>}
       </div>
     </div>
   );
@@ -466,16 +412,8 @@ const gridColumns = {
   5: "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5",
 };
 
-export function StatsGrid({
-  children,
-  columns = 4,
-  className,
-}: StatsGridProps) {
-  return (
-    <div className={cn("grid gap-4", gridColumns[columns], className)}>
-      {children}
-    </div>
-  );
+export function StatsGrid({ children, columns = 4, className }: StatsGridProps) {
+  return <div className={cn("grid gap-4", gridColumns[columns], className)}>{children}</div>;
 }
 
 /**
@@ -508,13 +446,8 @@ export function SimpleBarChart({
         {data.map((item, index) => {
           const barHeight = maxValue > 0 ? (item.value / maxValue) * 100 : 0;
           return (
-            <div
-              key={index}
-              className="flex flex-1 flex-col items-center gap-1"
-            >
-              {showValues && (
-                <span className="text-xs font-medium">{item.value}</span>
-              )}
+            <div key={index} className="flex flex-1 flex-col items-center gap-1">
+              {showValues && <span className="text-xs font-medium">{item.value}</span>}
               <div
                 className="w-full rounded-t transition-all duration-500 ease-out"
                 style={{
@@ -530,10 +463,7 @@ export function SimpleBarChart({
       {showLabels && (
         <div className="flex gap-2">
           {data.map((item, index) => (
-            <span
-              key={index}
-              className="flex-1 truncate text-center text-xs text-muted-foreground"
-            >
+            <span key={index} className="flex-1 truncate text-center text-xs text-muted-foreground">
               {item.label}
             </span>
           ))}
@@ -556,29 +486,14 @@ export interface LegendProps {
   className?: string;
 }
 
-export function Legend({
-  items,
-  direction = "horizontal",
-  className,
-}: LegendProps) {
+export function Legend({ items, direction = "horizontal", className }: LegendProps) {
   return (
-    <div
-      className={cn(
-        "flex gap-4",
-        direction === "vertical" && "flex-col gap-2",
-        className,
-      )}
-    >
+    <div className={cn("flex gap-4", direction === "vertical" && "flex-col gap-2", className)}>
       {items.map((item, index) => (
         <div key={index} className="flex items-center gap-2">
-          <div
-            className="h-3 w-3 rounded-full"
-            style={{ backgroundColor: item.color }}
-          />
+          <div className="h-3 w-3 rounded-full" style={{ backgroundColor: item.color }} />
           <span className="text-sm text-muted-foreground">{item.label}</span>
-          {item.value !== undefined && (
-            <span className="text-sm font-medium">{item.value}</span>
-          )}
+          {item.value !== undefined && <span className="text-sm font-medium">{item.value}</span>}
         </div>
       ))}
     </div>

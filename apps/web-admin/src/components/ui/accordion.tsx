@@ -31,16 +31,12 @@ interface AccordionContextValue {
   allowMultiple: boolean;
 }
 
-const AccordionContext = React.createContext<AccordionContextValue | null>(
-  null,
-);
+const AccordionContext = React.createContext<AccordionContextValue | null>(null);
 
 function useAccordionContext() {
   const context = React.useContext(AccordionContext);
   if (!context) {
-    throw new Error(
-      "Accordion components must be used within an Accordion component",
-    );
+    throw new Error("Accordion components must be used within an Accordion component");
   }
   return context;
 }
@@ -72,14 +68,14 @@ export function Accordion({
   iconPosition = "right",
   className,
 }: AccordionProps) {
-  const [uncontrolledExpanded, setUncontrolledExpanded] = React.useState<
-    Set<string>
-  >(new Set(defaultExpanded));
+  const [uncontrolledExpanded, setUncontrolledExpanded] = React.useState<Set<string>>(
+    new Set(defaultExpanded)
+  );
 
   const isControlled = controlledExpanded !== undefined;
   const expandedItems = React.useMemo(
     () => (isControlled ? new Set(controlledExpanded) : uncontrolledExpanded),
-    [isControlled, controlledExpanded, uncontrolledExpanded],
+    [isControlled, controlledExpanded, uncontrolledExpanded]
   );
 
   const toggleItem = React.useCallback(
@@ -100,14 +96,13 @@ export function Accordion({
       }
       onExpandedChange?.(Array.from(newExpanded));
     },
-    [expandedItems, type, isControlled, onExpandedChange],
+    [expandedItems, type, isControlled, onExpandedChange]
   );
 
   const variantClasses = {
     default:
       "border border-gray-200 dark:border-gray-700 rounded-lg divide-y divide-gray-200 dark:divide-gray-700",
-    bordered:
-      "border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden",
+    bordered: "border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden",
     separated: "space-y-3",
     ghost: "",
   };
@@ -138,19 +133,13 @@ interface AccordionItemProps {
   className?: string;
 }
 
-export function AccordionItemComponent({
-  id,
-  children,
-  disabled,
-  className,
-}: AccordionItemProps) {
+export function AccordionItemComponent({ id, children, disabled, className }: AccordionItemProps) {
   const { variant } = useAccordionContext();
 
   const variantClasses = {
     default: "",
     bordered: "border-b border-gray-200 dark:border-gray-700 last:border-b-0",
-    separated:
-      "border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden",
+    separated: "border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden",
     ghost: "",
   };
 
@@ -158,11 +147,7 @@ export function AccordionItemComponent({
     <div
       data-accordion-item={id}
       data-disabled={disabled || undefined}
-      className={cn(
-        variantClasses[variant],
-        disabled && "opacity-50",
-        className,
-      )}
+      className={cn(variantClasses[variant], disabled && "opacity-50", className)}
     >
       {children}
     </div>
@@ -188,16 +173,12 @@ export function AccordionTrigger({
   icon,
   className,
 }: AccordionTriggerProps) {
-  const { expandedItems, toggleItem, variant, iconPosition } =
-    useAccordionContext();
+  const { expandedItems, toggleItem, variant, iconPosition } = useAccordionContext();
   const isExpanded = expandedItems.has(id);
 
   const Icon = icon || (
     <ChevronDown
-      className={cn(
-        "w-5 h-5 transition-transform duration-200",
-        isExpanded && "rotate-180",
-      )}
+      className={cn("h-5 w-5 transition-transform duration-200", isExpanded && "rotate-180")}
     />
   );
 
@@ -217,24 +198,18 @@ export function AccordionTrigger({
       disabled={disabled}
       onClick={() => !disabled && toggleItem(id)}
       className={cn(
-        "w-full flex items-center gap-3 px-4 py-3 text-left transition-colors",
+        "flex w-full items-center gap-3 px-4 py-3 text-left transition-colors",
         variantClasses[variant],
         disabled && "cursor-not-allowed",
-        className,
+        className
       )}
     >
       {iconPosition === "left" && (
-        <span className="flex-shrink-0 text-gray-400 dark:text-gray-500">
-          {Icon}
-        </span>
+        <span className="flex-shrink-0 text-gray-400 dark:text-gray-500">{Icon}</span>
       )}
-      <span className="flex-1 font-medium text-gray-900 dark:text-white">
-        {children}
-      </span>
+      <span className="flex-1 font-medium text-gray-900 dark:text-white">{children}</span>
       {iconPosition === "right" && (
-        <span className="flex-shrink-0 text-gray-400 dark:text-gray-500">
-          {Icon}
-        </span>
+        <span className="flex-shrink-0 text-gray-400 dark:text-gray-500">{Icon}</span>
       )}
     </button>
   );
@@ -250,11 +225,7 @@ interface AccordionContentProps {
   className?: string;
 }
 
-export function AccordionContent({
-  id,
-  children,
-  className,
-}: AccordionContentProps) {
+export function AccordionContent({ id, children, className }: AccordionContentProps) {
   const { expandedItems } = useAccordionContext();
   const isExpanded = expandedItems.has(id);
 
@@ -271,12 +242,7 @@ export function AccordionContent({
           transition={{ duration: 0.2, ease: "easeInOut" }}
           className="overflow-hidden"
         >
-          <div
-            className={cn(
-              "px-4 pb-4 text-gray-600 dark:text-gray-300",
-              className,
-            )}
-          >
+          <div className={cn("px-4 pb-4 text-gray-600 dark:text-gray-300", className)}>
             {children}
           </div>
         </motion.div>
@@ -312,9 +278,7 @@ export function SimpleAccordion({
   iconType = "chevron",
   className,
 }: SimpleAccordionProps) {
-  const [expandedItems, setExpandedItems] = React.useState<Set<string>>(
-    new Set(defaultExpanded),
-  );
+  const [expandedItems, setExpandedItems] = React.useState<Set<string>>(new Set(defaultExpanded));
 
   const isControlled = expanded !== undefined;
   const currentExpanded = isControlled ? new Set(expanded) : expandedItems;
@@ -340,8 +304,7 @@ export function SimpleAccordion({
   const variantClasses = {
     default:
       "border border-gray-200 dark:border-gray-700 rounded-lg divide-y divide-gray-200 dark:divide-gray-700",
-    bordered:
-      "border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden",
+    bordered: "border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden",
     separated: "space-y-3",
     ghost: "",
   };
@@ -349,8 +312,7 @@ export function SimpleAccordion({
   const itemVariantClasses = {
     default: "",
     bordered: "border-b border-gray-200 dark:border-gray-700 last:border-b-0",
-    separated:
-      "border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden",
+    separated: "border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden",
     ghost: "",
   };
 
@@ -369,15 +331,15 @@ export function SimpleAccordion({
         const icon =
           iconType === "plus-minus" ? (
             isExpanded ? (
-              <Minus className="w-5 h-5" />
+              <Minus className="h-5 w-5" />
             ) : (
-              <Plus className="w-5 h-5" />
+              <Plus className="h-5 w-5" />
             )
           ) : (
             <ChevronDown
               className={cn(
-                "w-5 h-5 transition-transform duration-200",
-                isExpanded && "rotate-180",
+                "h-5 w-5 transition-transform duration-200",
+                isExpanded && "rotate-180"
               )}
             />
           );
@@ -385,10 +347,7 @@ export function SimpleAccordion({
         return (
           <div
             key={item.id}
-            className={cn(
-              itemVariantClasses[variant],
-              item.disabled && "opacity-50",
-            )}
+            className={cn(itemVariantClasses[variant], item.disabled && "opacity-50")}
           >
             <button
               type="button"
@@ -398,42 +357,32 @@ export function SimpleAccordion({
               disabled={item.disabled}
               onClick={() => !item.disabled && handleToggle(item.id)}
               className={cn(
-                "w-full flex items-center gap-3 px-4 py-3 text-left transition-colors",
+                "flex w-full items-center gap-3 px-4 py-3 text-left transition-colors",
                 triggerVariantClasses[variant],
-                item.disabled && "cursor-not-allowed",
+                item.disabled && "cursor-not-allowed"
               )}
             >
               {iconPosition === "left" && (
-                <span className="flex-shrink-0 text-gray-400 dark:text-gray-500">
-                  {icon}
-                </span>
+                <span className="flex-shrink-0 text-gray-400 dark:text-gray-500">{icon}</span>
               )}
               {item.icon && (
-                <span className="flex-shrink-0 text-gray-500 dark:text-gray-400">
-                  {item.icon}
-                </span>
+                <span className="flex-shrink-0 text-gray-500 dark:text-gray-400">{item.icon}</span>
               )}
-              <div className="flex-1 min-w-0">
+              <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <span className="font-medium text-gray-900 dark:text-white">
-                    {item.title}
-                  </span>
+                  <span className="font-medium text-gray-900 dark:text-white">{item.title}</span>
                   {item.badge && (
-                    <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400">
+                    <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-400">
                       {item.badge}
                     </span>
                   )}
                 </div>
                 {item.subtitle && (
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-                    {item.subtitle}
-                  </p>
+                  <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">{item.subtitle}</p>
                 )}
               </div>
               {iconPosition === "right" && (
-                <span className="flex-shrink-0 text-gray-400 dark:text-gray-500">
-                  {icon}
-                </span>
+                <span className="flex-shrink-0 text-gray-400 dark:text-gray-500">{icon}</span>
               )}
             </button>
 
@@ -449,9 +398,7 @@ export function SimpleAccordion({
                   transition={{ duration: 0.2, ease: "easeInOut" }}
                   className="overflow-hidden"
                 >
-                  <div className="px-4 pb-4 text-gray-600 dark:text-gray-300">
-                    {item.content}
-                  </div>
+                  <div className="px-4 pb-4 text-gray-600 dark:text-gray-300">{item.content}</div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -548,16 +495,16 @@ export function Collapsible({
         disabled={disabled}
         aria-expanded={isOpen}
         className={cn(
-          "w-full flex items-center justify-between gap-2",
-          disabled && "opacity-50 cursor-not-allowed",
-          triggerClassName,
+          "flex w-full items-center justify-between gap-2",
+          disabled && "cursor-not-allowed opacity-50",
+          triggerClassName
         )}
       >
         {trigger}
         <ChevronDown
           className={cn(
-            "w-5 h-5 text-gray-400 transition-transform duration-200",
-            isOpen && "rotate-180",
+            "h-5 w-5 text-gray-400 transition-transform duration-200",
+            isOpen && "rotate-180"
           )}
         />
       </button>
@@ -601,17 +548,13 @@ export function DetailsAccordion({ items, className }: DetailsAccordionProps) {
         <details
           key={index}
           open={item.open}
-          className="group border border-gray-200 dark:border-gray-700 rounded-lg"
+          className="group rounded-lg border border-gray-200 dark:border-gray-700"
         >
-          <summary className="px-4 py-3 cursor-pointer list-none flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-lg transition-colors">
-            <span className="font-medium text-gray-900 dark:text-white">
-              {item.summary}
-            </span>
-            <ChevronDown className="w-5 h-5 text-gray-400 transition-transform duration-200 group-open:rotate-180" />
+          <summary className="flex cursor-pointer list-none items-center justify-between rounded-lg px-4 py-3 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+            <span className="font-medium text-gray-900 dark:text-white">{item.summary}</span>
+            <ChevronDown className="h-5 w-5 text-gray-400 transition-transform duration-200 group-open:rotate-180" />
           </summary>
-          <div className="px-4 pb-4 text-gray-600 dark:text-gray-300">
-            {item.details}
-          </div>
+          <div className="px-4 pb-4 text-gray-600 dark:text-gray-300">{item.details}</div>
         </details>
       ))}
     </div>

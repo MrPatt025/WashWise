@@ -25,11 +25,7 @@ const spinnerSizes = {
 export function LoadingSpinner({ size = "md", className }: SpinnerProps) {
   return (
     <Loader2
-      className={cn(
-        "animate-spin text-blue-600 dark:text-blue-400",
-        spinnerSizes[size],
-        className,
-      )}
+      className={cn("animate-spin text-blue-600 dark:text-blue-400", spinnerSizes[size], className)}
     />
   );
 }
@@ -44,11 +40,7 @@ interface LoadingDotsProps {
   className?: string;
 }
 
-export function LoadingDots({
-  size = "md",
-  color,
-  className,
-}: LoadingDotsProps) {
+export function LoadingDots({ size = "md", color, className }: LoadingDotsProps) {
   const dotSizes = {
     sm: "w-1.5 h-1.5",
     md: "w-2 h-2",
@@ -62,11 +54,7 @@ export function LoadingDots({
       {[0, 1, 2].map((i) => (
         <motion.span
           key={i}
-          className={cn(
-            "rounded-full",
-            color || "bg-blue-600 dark:bg-blue-400",
-            dotSize,
-          )}
+          className={cn("rounded-full", color || "bg-blue-600 dark:bg-blue-400", dotSize)}
           animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1, 0.8] }}
           transition={{
             duration: 0.8,
@@ -108,7 +96,7 @@ export function LoadingPulse({ size = "md", className }: LoadingPulseProps) {
         transition={{ duration: 1.5, repeat: Infinity, delay: 0.2 }}
       />
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-1/2 h-1/2 rounded-full bg-blue-600 dark:bg-blue-400" />
+        <div className="h-1/2 w-1/2 rounded-full bg-blue-600 dark:bg-blue-400" />
       </div>
     </div>
   );
@@ -126,12 +114,12 @@ export function LoadingBar({ className }: LoadingBarProps) {
   return (
     <div
       className={cn(
-        "w-full h-1 bg-gray-100 dark:bg-gray-800 overflow-hidden rounded-full",
-        className,
+        "h-1 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800",
+        className
       )}
     >
       <motion.div
-        className="h-full bg-blue-600 dark:bg-blue-400 rounded-full"
+        className="h-full rounded-full bg-blue-600 dark:bg-blue-400"
         initial={{ x: "-100%" }}
         animate={{ x: "100%" }}
         transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
@@ -150,17 +138,9 @@ interface PageLoadingProps {
   className?: string;
 }
 
-export function PageLoading({
-  message = "Loading...",
-  className,
-}: PageLoadingProps) {
+export function PageLoading({ message = "Loading...", className }: PageLoadingProps) {
   return (
-    <div
-      className={cn(
-        "flex flex-col items-center justify-center min-h-[400px] gap-4",
-        className,
-      )}
-    >
+    <div className={cn("flex min-h-[400px] flex-col items-center justify-center gap-4", className)}>
       <LoadingPulse size="lg" />
       <p className="text-sm text-gray-500 dark:text-gray-400">{message}</p>
     </div>
@@ -177,23 +157,19 @@ interface FullScreenLoadingProps {
   className?: string;
 }
 
-export function FullScreenLoading({
-  message,
-  logo,
-  className,
-}: FullScreenLoadingProps) {
+export function FullScreenLoading({ message, logo, className }: FullScreenLoadingProps) {
   return (
     <div
       className={cn(
         "fixed inset-0 z-50 flex flex-col items-center justify-center",
         "bg-white dark:bg-gray-900",
-        className,
+        className
       )}
     >
       {logo || (
         <div className="mb-8">
           <motion.div
-            className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-2xl font-bold shadow-lg"
+            className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 text-2xl font-bold text-white shadow-lg"
             animate={{ rotate: [0, 10, -10, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
@@ -202,11 +178,7 @@ export function FullScreenLoading({
         </div>
       )}
       <LoadingDots size="lg" />
-      {message && (
-        <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-          {message}
-        </p>
-      )}
+      {message && <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">{message}</p>}
     </div>
   );
 }
@@ -224,9 +196,7 @@ export function InlineLoading({ text, className }: InlineLoadingProps) {
   return (
     <span className={cn("inline-flex items-center gap-2", className)}>
       <LoadingSpinner size="xs" />
-      {text && (
-        <span className="text-sm text-gray-500 dark:text-gray-400">{text}</span>
-      )}
+      {text && <span className="text-sm text-gray-500 dark:text-gray-400">{text}</span>}
     </span>
   );
 }
@@ -282,20 +252,18 @@ export function CardSkeleton({
   return (
     <div
       className={cn(
-        "bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden",
-        className,
+        "overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900",
+        className
       )}
     >
-      {showImage && (
-        <div className="h-48 bg-gray-200 dark:bg-gray-800 animate-pulse" />
-      )}
-      <div className="p-6 space-y-4">
+      {showImage && <div className="h-48 animate-pulse bg-gray-200 dark:bg-gray-800" />}
+      <div className="space-y-4 p-6">
         {showAvatar && (
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-800 animate-pulse" />
+            <div className="h-10 w-10 animate-pulse rounded-full bg-gray-200 dark:bg-gray-800" />
             <div className="space-y-2">
-              <div className="h-4 w-24 bg-gray-200 dark:bg-gray-800 rounded animate-pulse" />
-              <div className="h-3 w-16 bg-gray-200 dark:bg-gray-800 rounded animate-pulse" />
+              <div className="h-4 w-24 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
+              <div className="h-3 w-16 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
             </div>
           </div>
         )}
@@ -303,8 +271,8 @@ export function CardSkeleton({
           <div
             key={i}
             className={cn(
-              "h-4 bg-gray-200 dark:bg-gray-800 rounded animate-pulse",
-              i === rows - 1 ? "w-2/3" : "w-full",
+              "h-4 animate-pulse rounded bg-gray-200 dark:bg-gray-800",
+              i === rows - 1 ? "w-2/3" : "w-full"
             )}
           />
         ))}
@@ -323,26 +291,22 @@ interface TableSkeletonProps {
   className?: string;
 }
 
-export function TableSkeleton({
-  columns = 4,
-  rows = 5,
-  className,
-}: TableSkeletonProps) {
+export function TableSkeleton({ columns = 4, rows = 5, className }: TableSkeletonProps) {
   return (
     <div
       className={cn(
-        "bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden",
-        className,
+        "overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900",
+        className
       )}
     >
       {/* Header */}
-      <div className="flex items-center gap-4 px-6 py-4 border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50">
+      <div className="flex items-center gap-4 border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-gray-800 dark:bg-gray-800/50">
         {Array.from({ length: columns }).map((_, i) => (
           <div
             key={i}
             className={cn(
-              "h-4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse",
-              i === 0 ? "w-1/4" : "flex-1",
+              "h-4 animate-pulse rounded bg-gray-200 dark:bg-gray-700",
+              i === 0 ? "w-1/4" : "flex-1"
             )}
           />
         ))}
@@ -352,14 +316,14 @@ export function TableSkeleton({
       {Array.from({ length: rows }).map((_, rowIndex) => (
         <div
           key={rowIndex}
-          className="flex items-center gap-4 px-6 py-4 border-b border-gray-100 dark:border-gray-800 last:border-b-0"
+          className="flex items-center gap-4 border-b border-gray-100 px-6 py-4 last:border-b-0 dark:border-gray-800"
         >
           {Array.from({ length: columns }).map((_, colIndex) => (
             <div
               key={colIndex}
               className={cn(
-                "h-4 bg-gray-100 dark:bg-gray-800 rounded animate-pulse",
-                colIndex === 0 ? "w-1/4" : "flex-1",
+                "h-4 animate-pulse rounded bg-gray-100 dark:bg-gray-800",
+                colIndex === 0 ? "w-1/4" : "flex-1"
               )}
               style={{
                 animationDelay: `${(rowIndex * columns + colIndex) * 50}ms`,
@@ -382,26 +346,22 @@ interface ListSkeletonProps {
   className?: string;
 }
 
-export function ListSkeleton({
-  items = 5,
-  showAvatar = true,
-  className,
-}: ListSkeletonProps) {
+export function ListSkeleton({ items = 5, showAvatar = true, className }: ListSkeletonProps) {
   return (
     <div className={cn("space-y-3", className)}>
       {Array.from({ length: items }).map((_, i) => (
         <div
           key={i}
-          className="flex items-center gap-4 p-4 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800"
+          className="flex items-center gap-4 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900"
         >
           {showAvatar && (
-            <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-800 animate-pulse" />
+            <div className="h-10 w-10 animate-pulse rounded-full bg-gray-200 dark:bg-gray-800" />
           )}
           <div className="flex-1 space-y-2">
-            <div className="h-4 w-1/3 bg-gray-200 dark:bg-gray-800 rounded animate-pulse" />
-            <div className="h-3 w-1/2 bg-gray-100 dark:bg-gray-700 rounded animate-pulse" />
+            <div className="h-4 w-1/3 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
+            <div className="h-3 w-1/2 animate-pulse rounded bg-gray-100 dark:bg-gray-700" />
           </div>
-          <div className="h-8 w-16 bg-gray-200 dark:bg-gray-800 rounded animate-pulse" />
+          <div className="h-8 w-16 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
         </div>
       ))}
     </div>
@@ -419,24 +379,19 @@ interface StatsSkeletonProps {
 
 export function StatsSkeleton({ count = 4, className }: StatsSkeletonProps) {
   return (
-    <div
-      className={cn(
-        "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4",
-        className,
-      )}
-    >
+    <div className={cn("grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4", className)}>
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
-          className="p-6 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800"
+          className="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900"
         >
           <div className="flex items-start justify-between">
             <div className="space-y-2">
-              <div className="h-4 w-20 bg-gray-200 dark:bg-gray-800 rounded animate-pulse" />
-              <div className="h-8 w-24 bg-gray-200 dark:bg-gray-800 rounded animate-pulse" />
-              <div className="h-3 w-16 bg-gray-100 dark:bg-gray-700 rounded animate-pulse" />
+              <div className="h-4 w-20 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
+              <div className="h-8 w-24 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
+              <div className="h-3 w-16 animate-pulse rounded bg-gray-100 dark:bg-gray-700" />
             </div>
-            <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" />
+            <div className="h-12 w-12 animate-pulse rounded-xl bg-gray-100 dark:bg-gray-800" />
           </div>
         </div>
       ))}
@@ -457,18 +412,18 @@ export function ChartSkeleton({ type = "bar", className }: ChartSkeletonProps) {
   if (type === "pie") {
     return (
       <div className={cn("flex items-center justify-center p-8", className)}>
-        <div className="w-48 h-48 rounded-full bg-gray-200 dark:bg-gray-800 animate-pulse" />
+        <div className="h-48 w-48 animate-pulse rounded-full bg-gray-200 dark:bg-gray-800" />
       </div>
     );
   }
 
   return (
     <div className={cn("p-6", className)}>
-      <div className="h-64 flex items-end justify-around gap-2">
+      <div className="flex h-64 items-end justify-around gap-2">
         {Array.from({ length: type === "bar" ? 7 : 12 }).map((_, i) => (
           <div
             key={i}
-            className="flex-1 bg-gray-200 dark:bg-gray-800 rounded-t animate-pulse"
+            className="flex-1 animate-pulse rounded-t bg-gray-200 dark:bg-gray-800"
             style={{
               height: `${Math.random() * 60 + 20}%`,
               animationDelay: `${i * 100}ms`,
@@ -478,10 +433,7 @@ export function ChartSkeleton({ type = "bar", className }: ChartSkeletonProps) {
       </div>
       <div className="mt-4 flex justify-around">
         {Array.from({ length: type === "bar" ? 7 : 12 }).map((_, i) => (
-          <div
-            key={i}
-            className="h-3 w-6 bg-gray-200 dark:bg-gray-800 rounded animate-pulse"
-          />
+          <div key={i} className="h-3 w-6 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
         ))}
       </div>
     </div>
@@ -515,15 +467,11 @@ export function LoadingOverlay({
           className={cn(
             "absolute inset-0 z-10 flex flex-col items-center justify-center",
             "bg-white/80 dark:bg-gray-900/80",
-            blur && "backdrop-blur-sm",
+            blur && "backdrop-blur-sm"
           )}
         >
           <LoadingSpinner size="lg" />
-          {message && (
-            <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
-              {message}
-            </p>
-          )}
+          {message && <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">{message}</p>}
         </div>
       )}
     </div>

@@ -39,7 +39,7 @@ export interface PaginationProps {
 function generatePagination(
   currentPage: number,
   totalPages: number,
-  siblingCount: number,
+  siblingCount: number
 ): (number | "ellipsis")[] {
   const totalPageNumbers = siblingCount * 2 + 5; // siblings + current + first + last + 2 ellipsis
 
@@ -66,7 +66,7 @@ function generatePagination(
     const rightItemCount = 3 + 2 * siblingCount;
     const rightRange = Array.from(
       { length: rightItemCount },
-      (_, i) => totalPages - rightItemCount + i + 1,
+      (_, i) => totalPages - rightItemCount + i + 1
     );
     return [1, "ellipsis", ...rightRange];
   }
@@ -74,7 +74,7 @@ function generatePagination(
   // Show first + ellipsis + middle + ellipsis + last
   const middleRange = Array.from(
     { length: rightSiblingIndex - leftSiblingIndex + 1 },
-    (_, i) => leftSiblingIndex + i,
+    (_, i) => leftSiblingIndex + i
   );
   return [1, "ellipsis", ...middleRange, "ellipsis", totalPages];
 }
@@ -108,7 +108,7 @@ export function Pagination({
     <div
       className={cn(
         "flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between",
-        className,
+        className
       )}
       role="navigation"
       aria-label="Pagination"
@@ -155,7 +155,7 @@ export function Pagination({
             aria-label="Go to first page"
           >
             <ChevronLeft className="h-4 w-4" />
-            <ChevronLeft className="h-4 w-4 -ml-2" />
+            <ChevronLeft className="-ml-2 h-4 w-4" />
           </Button>
         )}
 
@@ -194,7 +194,7 @@ export function Pagination({
               >
                 {pageNum}
               </Button>
-            ),
+            )
           )}
         </div>
 
@@ -225,7 +225,7 @@ export function Pagination({
             aria-label="Go to last page"
           >
             <ChevronRight className="h-4 w-4" />
-            <ChevronRight className="h-4 w-4 -ml-2" />
+            <ChevronRight className="-ml-2 h-4 w-4" />
           </Button>
         )}
       </div>
@@ -300,7 +300,7 @@ export function usePagination(options: {
     (newPage: number) => {
       setPage(Math.max(1, Math.min(newPage, totalPages)));
     },
-    [totalPages],
+    [totalPages]
   );
 
   const nextPage = React.useCallback(() => {

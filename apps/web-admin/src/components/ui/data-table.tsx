@@ -33,10 +33,7 @@ export interface DataTableColumn<T> {
   /** Unique identifier for the column */
   id: string;
   /** Header label */
-  header:
-    | string
-    | React.ReactNode
-    | ((props: { column: DataTableColumn<T> }) => React.ReactNode);
+  header: string | React.ReactNode | ((props: { column: DataTableColumn<T> }) => React.ReactNode);
   /** Cell renderer */
   cell: (row: T, index: number) => React.ReactNode;
   /** Accessor key for sorting/filtering */
@@ -187,22 +184,20 @@ export function DataTable<T>({
   showFooter = false,
 }: DataTableProps<T>) {
   // Column visibility state
-  const [visibleColumns, setVisibleColumns] = React.useState<Set<string>>(
-    () => {
-      const visible = new Set<string>();
-      columns.forEach((col) => {
-        if (col.defaultVisible !== false) {
-          visible.add(col.id);
-        }
-      });
-      return visible;
-    },
-  );
+  const [visibleColumns, setVisibleColumns] = React.useState<Set<string>>(() => {
+    const visible = new Set<string>();
+    columns.forEach((col) => {
+      if (col.defaultVisible !== false) {
+        visible.add(col.id);
+      }
+    });
+    return visible;
+  });
 
   // Filter visible columns
   const displayColumns = React.useMemo(
     () => columns.filter((col) => visibleColumns.has(col.id)),
-    [columns, visibleColumns],
+    [columns, visibleColumns]
   );
 
   // Handle sort
@@ -290,9 +285,7 @@ export function DataTable<T>({
   return (
     <div className={cn("space-y-4", className)}>
       {/* Toolbar */}
-      {(searchable ||
-        columnToggle ||
-        (selectable && selectedKeys.size > 0)) && (
+      {(searchable || columnToggle || (selectable && selectedKeys.size > 0)) && (
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             {/* Search */}
@@ -319,15 +312,9 @@ export function DataTable<T>({
             {/* Bulk actions when rows selected */}
             {selectable && selectedKeys.size > 0 && (
               <div className="flex items-center gap-2 rounded-md border bg-muted/50 px-3 py-1.5">
-                <span className="text-sm font-medium">
-                  {selectedKeys.size} selected
-                </span>
+                <span className="text-sm font-medium">{selectedKeys.size} selected</span>
                 {bulkActions}
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => onSelectionChange?.(new Set())}
-                >
+                <Button variant="ghost" size="sm" onClick={() => onSelectionChange?.(new Set())}>
                   Clear
                 </Button>
               </div>
@@ -354,9 +341,7 @@ export function DataTable<T>({
                       checked={visibleColumns.has(column.id)}
                       onCheckedChange={() => toggleColumn(column.id)}
                     >
-                      {typeof column.header === "string"
-                        ? column.header
-                        : column.id}
+                      {typeof column.header === "string" ? column.header : column.id}
                     </DropdownMenuCheckboxItem>
                   ))}
               </DropdownMenuContent>
@@ -367,25 +352,18 @@ export function DataTable<T>({
 
       {/* Table container */}
       <div
-        className={cn(
-          "relative overflow-auto rounded-lg border",
-          bordered && "border-2",
-        )}
+        className={cn("relative overflow-auto rounded-lg border", bordered && "border-2")}
         style={{ maxHeight }}
       >
         <table className={cn("w-full caption-bottom text-sm", tableClassName)}>
-          {caption && (
-            <caption className="mt-4 text-sm text-muted-foreground">
-              {caption}
-            </caption>
-          )}
+          {caption && <caption className="mt-4 text-sm text-muted-foreground">{caption}</caption>}
 
           {/* Header */}
           <thead
             className={cn(
               "border-b bg-muted/50",
               stickyHeader && "sticky top-0 z-10",
-              headerClassName,
+              headerClassName
             )}
           >
             <tr>
@@ -414,16 +392,14 @@ export function DataTable<T>({
                     column.sticky === "right" && "sticky right-0 bg-muted/50",
                     sortable &&
                       column.sortable &&
-                      "cursor-pointer select-none hover:text-foreground",
+                      "cursor-pointer select-none hover:text-foreground"
                   )}
                   style={{
                     width: column.width,
                     minWidth: column.minWidth,
                     maxWidth: column.maxWidth,
                   }}
-                  onClick={() =>
-                    sortable && column.sortable && handleSort(column.id)
-                  }
+                  onClick={() => sortable && column.sortable && handleSort(column.id)}
                 >
                   <div className="flex items-center">
                     {typeof column.header === "function"
@@ -470,11 +446,7 @@ export function DataTable<T>({
               // Empty state
               <tr>
                 <td
-                  colSpan={
-                    displayColumns.length +
-                    (selectable ? 1 : 0) +
-                    (rowActions ? 1 : 0)
-                  }
+                  colSpan={displayColumns.length + (selectable ? 1 : 0) + (rowActions ? 1 : 0)}
                   className="h-32 text-center"
                 >
                   {emptyState || (
@@ -500,18 +472,13 @@ export function DataTable<T>({
                       hoverable && "hover:bg-muted/50",
                       isSelected && "bg-primary/5",
                       onRowClick && "cursor-pointer",
-                      typeof rowClassName === "function"
-                        ? rowClassName(row, index)
-                        : rowClassName,
+                      typeof rowClassName === "function" ? rowClassName(row, index) : rowClassName
                     )}
                     onClick={() => onRowClick?.(row, index)}
                   >
                     {/* Selection checkbox */}
                     {selectable && (
-                      <td
-                        className={cellPadding}
-                        onClick={(e) => e.stopPropagation()}
-                      >
+                      <td className={cellPadding} onClick={(e) => e.stopPropagation()}>
                         <input
                           type="checkbox"
                           checked={isSelected}
@@ -531,10 +498,8 @@ export function DataTable<T>({
                           cellClassName,
                           column.align === "center" && "text-center",
                           column.align === "right" && "text-right",
-                          column.sticky === "left" &&
-                            "sticky left-0 bg-background",
-                          column.sticky === "right" &&
-                            "sticky right-0 bg-background",
+                          column.sticky === "left" && "sticky left-0 bg-background",
+                          column.sticky === "right" && "sticky right-0 bg-background"
                         )}
                         style={{
                           width: column.width,
@@ -548,10 +513,7 @@ export function DataTable<T>({
 
                     {/* Row actions */}
                     {rowActions && (
-                      <td
-                        className={cellPadding}
-                        onClick={(e) => e.stopPropagation()}
-                      >
+                      <td className={cellPadding} onClick={(e) => e.stopPropagation()}>
                         {rowActions(row, index)}
                       </td>
                     )}
@@ -573,12 +535,10 @@ export function DataTable<T>({
                       cellPadding,
                       "font-medium",
                       column.align === "center" && "text-center",
-                      column.align === "right" && "text-right",
+                      column.align === "right" && "text-right"
                     )}
                   >
-                    {typeof column.footer === "function"
-                      ? column.footer(data)
-                      : column.footer}
+                    {typeof column.footer === "function" ? column.footer(data) : column.footer}
                   </td>
                 ))}
                 {rowActions && <td className={cellPadding} />}
@@ -645,10 +605,8 @@ export const TableCell = {
   }) => {
     const variantClasses = {
       default: "bg-secondary text-secondary-foreground",
-      success:
-        "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
-      warning:
-        "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200",
+      success: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+      warning: "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200",
       danger: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
       info: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
     };
@@ -657,7 +615,7 @@ export const TableCell = {
       <span
         className={cn(
           "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
-          variantClasses[variant],
+          variantClasses[variant]
         )}
       >
         {children}
@@ -676,8 +634,7 @@ export const TableCell = {
     if (!value) return <span className="text-muted-foreground">—</span>;
 
     const date = new Date(value);
-    if (isNaN(date.getTime()))
-      return <span className="text-muted-foreground">—</span>;
+    if (isNaN(date.getTime())) return <span className="text-muted-foreground">—</span>;
 
     let formatted: string;
     if (format === "relative") {
@@ -780,17 +737,13 @@ export const TableCell = {
       <div className="flex items-center gap-3">
         <div
           className={cn(
-            "flex items-center justify-center rounded-full bg-primary/10 font-medium text-primary overflow-hidden",
-            sizeClasses[size],
+            "flex items-center justify-center overflow-hidden rounded-full bg-primary/10 font-medium text-primary",
+            sizeClasses[size]
           )}
         >
           {src ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={src}
-              alt={name}
-              className="h-full w-full rounded-full object-cover"
-            />
+            <img src={src} alt={name} className="h-full w-full rounded-full object-cover" />
           ) : (
             initials
           )}

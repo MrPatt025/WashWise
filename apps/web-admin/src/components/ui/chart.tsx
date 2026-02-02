@@ -66,16 +66,13 @@ export function BarChart({
       <div className={cn("space-y-3", className)}>
         {data.map((item, index) => {
           const percentage = (item.value / maxValue) * 100;
-          const color =
-            item.color || defaultColors[index % defaultColors.length];
+          const color = item.color || defaultColors[index % defaultColors.length];
 
           return (
             <div key={index}>
               {showLabels && (
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
-                    {item.label}
-                  </span>
+                <div className="mb-1 flex items-center justify-between">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">{item.label}</span>
                   {showValues && (
                     <span className="text-sm font-medium text-gray-900 dark:text-white">
                       {item.value.toLocaleString()}
@@ -83,7 +80,7 @@ export function BarChart({
                   )}
                 </div>
               )}
-              <div className="h-3 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+              <div className="h-3 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
                 <motion.div
                   initial={animate ? { width: 0 } : undefined}
                   animate={{ width: `${percentage}%` }}
@@ -104,20 +101,16 @@ export function BarChart({
       <div className="flex items-end justify-around gap-2" style={{ height }}>
         {data.map((item, index) => {
           const percentage = (item.value / maxValue) * 100;
-          const color =
-            item.color || defaultColors[index % defaultColors.length];
+          const color = item.color || defaultColors[index % defaultColors.length];
 
           return (
-            <div
-              key={index}
-              className="flex flex-col items-center flex-1 h-full"
-            >
-              <div className="flex-1 w-full flex items-end">
+            <div key={index} className="flex h-full flex-1 flex-col items-center">
+              <div className="flex w-full flex-1 items-end">
                 <motion.div
                   initial={animate ? { height: 0 } : undefined}
                   animate={{ height: `${percentage}%` }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="w-full rounded-t-md min-h-[4px]"
+                  className="min-h-[4px] w-full rounded-t-md"
                   style={{ backgroundColor: color }}
                 />
               </div>
@@ -131,11 +124,11 @@ export function BarChart({
         })}
       </div>
       {showLabels && (
-        <div className="flex justify-around gap-2 mt-2">
+        <div className="mt-2 flex justify-around gap-2">
           {data.map((item, index) => (
             <span
               key={index}
-              className="flex-1 text-center text-xs text-gray-500 dark:text-gray-400 truncate"
+              className="flex-1 truncate text-center text-xs text-gray-500 dark:text-gray-400"
             >
               {item.label}
             </span>
@@ -208,7 +201,7 @@ export function DonutChart({
       <div className="relative" style={{ width: size, height: size }}>
         <svg
           viewBox={`0 0 ${size} ${size}`}
-          className="transform -rotate-90"
+          className="-rotate-90 transform"
           style={{ width: size, height: size }}
         >
           {/* Background circle */}
@@ -235,9 +228,7 @@ export function DonutChart({
               strokeDasharray={`${segment.length} ${circumference}`}
               strokeDashoffset={segment.offset}
               strokeLinecap="round"
-              initial={
-                animate ? { strokeDasharray: `0 ${circumference}` } : undefined
-              }
+              initial={animate ? { strokeDasharray: `0 ${circumference}` } : undefined}
               animate={{
                 strokeDasharray: `${segment.length} ${circumference}`,
               }}
@@ -267,10 +258,7 @@ export function DonutChart({
         <div className="flex flex-wrap justify-center gap-4">
           {segments.map((segment, index) => (
             <div key={index} className="flex items-center gap-2">
-              <span
-                className="w-3 h-3 rounded-full"
-                style={{ backgroundColor: segment.color }}
-              />
+              <span className="h-3 w-3 rounded-full" style={{ backgroundColor: segment.color }} />
               <span className="text-sm text-gray-600 dark:text-gray-400">
                 {segment.label}
                 {showPercentage && (
@@ -313,14 +301,7 @@ export function PieChart({
   const centerY = size / 2;
   const radius = size / 2 - 10;
 
-  const defaultColors = [
-    "#3B82F6",
-    "#10B981",
-    "#F59E0B",
-    "#EF4444",
-    "#8B5CF6",
-    "#EC4899",
-  ];
+  const defaultColors = ["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6", "#EC4899"];
 
   let cumulativeAngle = 0;
 
@@ -360,10 +341,7 @@ export function PieChart({
 
   return (
     <div className={cn("flex flex-col items-center gap-4", className)}>
-      <svg
-        viewBox={`0 0 ${size} ${size}`}
-        style={{ width: size, height: size }}
-      >
+      <svg viewBox={`0 0 ${size} ${size}`} style={{ width: size, height: size }}>
         {slices.map((slice, index) => (
           <motion.path
             key={index}
@@ -381,10 +359,7 @@ export function PieChart({
         <div className="flex flex-wrap justify-center gap-4">
           {slices.map((slice, index) => (
             <div key={index} className="flex items-center gap-2">
-              <span
-                className="w-3 h-3 rounded-full"
-                style={{ backgroundColor: slice.color }}
-              />
+              <span className="h-3 w-3 rounded-full" style={{ backgroundColor: slice.color }} />
               <span className="text-sm text-gray-600 dark:text-gray-400">
                 {slice.label}
                 {showPercentage && (
@@ -448,19 +423,14 @@ export function SimpleLineChart({
     };
   });
 
-  const linePath = points
-    .map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`)
-    .join(" ");
+  const linePath = points.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ");
 
   const areaPath =
     linePath +
     ` L ${points[points.length - 1].x} ${padding + chartHeight} L ${points[0].x} ${padding + chartHeight} Z`;
 
   return (
-    <svg
-      viewBox={`0 0 ${width} ${height}`}
-      className={cn("w-full h-auto", className)}
-    >
+    <svg viewBox={`0 0 ${width} ${height}`} className={cn("h-auto w-full", className)}>
       {/* Grid */}
       {showGrid && (
         <g className="text-gray-200 dark:text-gray-700">
@@ -517,7 +487,7 @@ export function SimpleLineChart({
             initial={animate ? { scale: 0 } : undefined}
             animate={{ scale: 1 }}
             transition={{ duration: 0.3, delay: i * 0.05 }}
-            className="cursor-pointer hover:r-6"
+            className="hover:r-6 cursor-pointer"
           />
         ))}
 
@@ -526,7 +496,7 @@ export function SimpleLineChart({
         x={padding - 5}
         y={padding}
         textAnchor="end"
-        className="text-xs fill-gray-500 dark:fill-gray-400"
+        className="fill-gray-500 text-xs dark:fill-gray-400"
       >
         {maxY.toLocaleString()}
       </text>
@@ -534,7 +504,7 @@ export function SimpleLineChart({
         x={padding - 5}
         y={padding + chartHeight}
         textAnchor="end"
-        className="text-xs fill-gray-500 dark:fill-gray-400"
+        className="fill-gray-500 text-xs dark:fill-gray-400"
       >
         {minY.toLocaleString()}
       </text>
@@ -547,7 +517,7 @@ export function SimpleLineChart({
             x={p.x}
             y={padding + chartHeight + 15}
             textAnchor="middle"
-            className="text-xs fill-gray-500 dark:fill-gray-400"
+            className="fill-gray-500 text-xs dark:fill-gray-400"
           >
             {String(data[i].x)}
           </text>
@@ -590,20 +560,14 @@ export function Sparkline({
     y: padding + chartHeight - ((value - minY) / yRange) * chartHeight,
   }));
 
-  const linePath = points
-    .map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`)
-    .join(" ");
+  const linePath = points.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ");
 
   const areaPath =
     linePath +
     ` L ${points[points.length - 1].x} ${padding + chartHeight} L ${points[0].x} ${padding + chartHeight} Z`;
 
   return (
-    <svg
-      viewBox={`0 0 ${width} ${height}`}
-      className={className}
-      style={{ width, height }}
-    >
+    <svg viewBox={`0 0 ${width} ${height}`} className={className} style={{ width, height }}>
       {showArea && <path d={areaPath} fill={color} fillOpacity={0.1} />}
       <path
         d={linePath}
@@ -653,15 +617,12 @@ export function ProgressRing({
 
   return (
     <div
-      className={cn(
-        "relative inline-flex items-center justify-center",
-        className,
-      )}
+      className={cn("relative inline-flex items-center justify-center", className)}
       style={{ width: size, height: size }}
     >
       <svg
         viewBox={`0 0 ${size} ${size}`}
-        className="transform -rotate-90"
+        className="-rotate-90 transform"
         style={{ width: size, height: size }}
       >
         {/* Track */}
@@ -696,11 +657,7 @@ export function ProgressRing({
           <span className="text-lg font-bold text-gray-900 dark:text-white">
             {Math.round(percentage)}%
           </span>
-          {label && (
-            <span className="text-xs text-gray-500 dark:text-gray-400">
-              {label}
-            </span>
-          )}
+          {label && <span className="text-xs text-gray-500 dark:text-gray-400">{label}</span>}
         </div>
       )}
     </div>
@@ -719,29 +676,19 @@ interface ChartCardProps {
   className?: string;
 }
 
-export function ChartCard({
-  title,
-  description,
-  children,
-  actions,
-  className,
-}: ChartCardProps) {
+export function ChartCard({ title, description, children, actions, className }: ChartCardProps) {
   return (
     <div
       className={cn(
-        "bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6",
-        className,
+        "rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900",
+        className
       )}
     >
-      <div className="flex items-start justify-between mb-4">
+      <div className="mb-4 flex items-start justify-between">
         <div>
-          <h3 className="font-semibold text-gray-900 dark:text-white">
-            {title}
-          </h3>
+          <h3 className="font-semibold text-gray-900 dark:text-white">{title}</h3>
           {description && (
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-              {description}
-            </p>
+            <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">{description}</p>
           )}
         </div>
         {actions}

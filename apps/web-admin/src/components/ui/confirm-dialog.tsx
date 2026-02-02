@@ -62,26 +62,24 @@ const variantIcons: Record<ConfirmVariant, React.ElementType> = {
 /**
  * Color mapping for variants
  */
-const variantStyles: Record<ConfirmVariant, { icon: string; button: string }> =
-  {
-    default: {
-      icon: "bg-primary/10 text-primary",
-      button: "bg-primary hover:bg-primary/90",
-    },
-    destructive: {
-      icon: "bg-destructive/10 text-destructive",
-      button:
-        "bg-destructive hover:bg-destructive/90 text-destructive-foreground",
-    },
-    warning: {
-      icon: "bg-yellow-100 text-yellow-600",
-      button: "bg-yellow-600 hover:bg-yellow-700 text-white",
-    },
-    success: {
-      icon: "bg-green-100 text-green-600",
-      button: "bg-green-600 hover:bg-green-700 text-white",
-    },
-  };
+const variantStyles: Record<ConfirmVariant, { icon: string; button: string }> = {
+  default: {
+    icon: "bg-primary/10 text-primary",
+    button: "bg-primary hover:bg-primary/90",
+  },
+  destructive: {
+    icon: "bg-destructive/10 text-destructive",
+    button: "bg-destructive hover:bg-destructive/90 text-destructive-foreground",
+  },
+  warning: {
+    icon: "bg-yellow-100 text-yellow-600",
+    button: "bg-yellow-600 hover:bg-yellow-700 text-white",
+  },
+  success: {
+    icon: "bg-green-100 text-green-600",
+    button: "bg-green-600 hover:bg-green-700 text-white",
+  },
+};
 
 /**
  * World-class confirmation dialog
@@ -135,16 +133,14 @@ export function ConfirmDialog({
             <div
               className={cn(
                 "flex h-10 w-10 shrink-0 items-center justify-center rounded-full",
-                styles.icon,
+                styles.icon
               )}
             >
               <Icon className="h-5 w-5" />
             </div>
             <div className="flex-1">
               <AlertDialogTitle className="text-lg">{title}</AlertDialogTitle>
-              <AlertDialogDescription className="mt-2">
-                {description}
-              </AlertDialogDescription>
+              <AlertDialogDescription className="mt-2">{description}</AlertDialogDescription>
             </div>
           </div>
         </AlertDialogHeader>
@@ -156,14 +152,8 @@ export function ConfirmDialog({
             </Button>
           </AlertDialogCancel>
           <AlertDialogAction asChild>
-            <Button
-              className={cn(styles.button)}
-              onClick={handleConfirm}
-              disabled={loading}
-            >
-              {loading && (
-                <Spinner size="sm" variant="white" className="mr-2" />
-              )}
+            <Button className={cn(styles.button)} onClick={handleConfirm} disabled={loading}>
+              {loading && <Spinner size="sm" variant="white" className="mr-2" />}
               {confirmText}
             </Button>
           </AlertDialogAction>
@@ -203,7 +193,7 @@ export function useConfirmDialog() {
         ...options,
       });
     },
-    [],
+    []
   );
 
   const close = React.useCallback(() => {
@@ -229,10 +219,7 @@ export function useConfirmDialog() {
 export function useDeleteConfirm() {
   const { confirm, dialogProps, close } = useConfirmDialog();
 
-  const confirmDelete = (
-    itemName: string,
-    onConfirm: () => void | Promise<void>,
-  ) => {
+  const confirmDelete = (itemName: string, onConfirm: () => void | Promise<void>) => {
     confirm({
       title: `Delete ${itemName}?`,
       description: `Are you sure you want to delete this ${itemName.toLowerCase()}? This action cannot be undone.`,
@@ -293,17 +280,14 @@ export function DangerousActionDialog({
             </div>
             <div className="flex-1">
               <AlertDialogTitle className="text-lg">{title}</AlertDialogTitle>
-              <AlertDialogDescription className="mt-2">
-                {description}
-              </AlertDialogDescription>
+              <AlertDialogDescription className="mt-2">{description}</AlertDialogDescription>
             </div>
           </div>
         </AlertDialogHeader>
 
         <div className="mt-4 space-y-3">
           <p className="text-sm text-muted-foreground">
-            Type <strong className="text-foreground">{confirmationText}</strong>{" "}
-            to confirm:
+            Type <strong className="text-foreground">{confirmationText}</strong> to confirm:
           </p>
           <input
             type="text"
@@ -322,9 +306,7 @@ export function DangerousActionDialog({
             onClick={handleConfirm}
             disabled={!isConfirmEnabled || isLoading}
           >
-            {isLoading && (
-              <Spinner size="sm" variant="white" className="mr-2" />
-            )}
+            {isLoading && <Spinner size="sm" variant="white" className="mr-2" />}
             {confirmText}
           </Button>
         </AlertDialogFooter>
@@ -392,9 +374,7 @@ export function PromptDialog({
       <AlertDialogContent className="max-w-md">
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
-          {description && (
-            <AlertDialogDescription>{description}</AlertDialogDescription>
-          )}
+          {description && <AlertDialogDescription>{description}</AlertDialogDescription>}
         </AlertDialogHeader>
 
         <div className="mt-4 space-y-2">
@@ -408,7 +388,7 @@ export function PromptDialog({
             }}
             className={cn(
               "w-full rounded-md border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary",
-              error && "border-destructive focus:ring-destructive",
+              error && "border-destructive focus:ring-destructive"
             )}
             placeholder={placeholder}
             autoFocus
@@ -417,9 +397,7 @@ export function PromptDialog({
         </div>
 
         <AlertDialogFooter className="mt-4">
-          <AlertDialogCancel disabled={isLoading}>
-            {cancelText}
-          </AlertDialogCancel>
+          <AlertDialogCancel disabled={isLoading}>{cancelText}</AlertDialogCancel>
           <Button onClick={handleConfirm} disabled={isLoading}>
             {isLoading && <Spinner size="sm" className="mr-2" />}
             {confirmText}

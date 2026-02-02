@@ -4,13 +4,7 @@ import { useAuthStore } from "@/stores/auth.store";
 
 export const dynamic = "force-dynamic";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { User, Building, Shield } from "lucide-react";
 
@@ -21,9 +15,7 @@ export default function SettingsPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-bold">Settings</h1>
-        <p className="text-muted-foreground">
-          Manage your account and tenant settings
-        </p>
+        <p className="text-muted-foreground">Manage your account and tenant settings</p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
@@ -38,7 +30,9 @@ export default function SettingsPage() {
           <CardContent className="space-y-4">
             <div className="flex justify-between">
               <span className="text-muted-foreground">Name</span>
-              <span className="font-medium">{user?.fullName || `${user?.firstName} ${user?.lastName}`}</span>
+              <span className="font-medium">
+                {user?.fullName || `${user?.firstName} ${user?.lastName}`}
+              </span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Email</span>
@@ -77,17 +71,13 @@ export default function SettingsPage() {
               <Shield className="h-5 w-5" />
               Security
             </CardTitle>
-            <CardDescription>
-              Security information about your session
-            </CardDescription>
+            <CardDescription>Security information about your session</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="rounded-lg bg-muted p-4">
-              <h4 className="font-medium mb-2">Authentication Details</h4>
-              <ul className="text-sm text-muted-foreground space-y-1">
-                <li>
-                  • Access token stored securely in memory (not localStorage)
-                </li>
+              <h4 className="mb-2 font-medium">Authentication Details</h4>
+              <ul className="space-y-1 text-sm text-muted-foreground">
+                <li>• Access token stored securely in memory (not localStorage)</li>
                 <li>• Refresh token stored as HttpOnly cookie</li>
                 <li>• Token rotation enabled for enhanced security</li>
                 <li>• Multi-tenant isolation with tenantId verification</li>

@@ -64,10 +64,7 @@ export async function authRoutes(fastify: FastifyInstance) {
         const result = await authService.register(data);
         return reply.status(201).send(result);
       } catch (error) {
-        if (
-          error instanceof Error &&
-          error.message === "Email already registered"
-        ) {
+        if (error instanceof Error && error.message === "Email already registered") {
           return reply.status(409).send({
             statusCode: 409,
             error: "Conflict",
@@ -76,7 +73,7 @@ export async function authRoutes(fastify: FastifyInstance) {
         }
         throw error;
       }
-    },
+    }
   );
 
   /**
@@ -126,7 +123,7 @@ export async function authRoutes(fastify: FastifyInstance) {
         }
         throw error;
       }
-    },
+    }
   );
 
   /**
@@ -173,18 +170,14 @@ export async function authRoutes(fastify: FastifyInstance) {
         const tokens = await authService.refresh(refreshToken);
 
         // Set new refresh token cookie (rotation)
-        reply.setCookie(
-          AUTH_CONSTANTS.REFRESH_COOKIE_NAME,
-          tokens.refreshToken,
-          {
-            httpOnly: true,
-            secure: env.COOKIE_SECURE,
-            sameSite: "strict",
-            path: "/api/v1/auth",
-            maxAge: AUTH_CONSTANTS.REFRESH_TOKEN_EXPIRES_SECONDS,
-            ...(env.COOKIE_DOMAIN && { domain: env.COOKIE_DOMAIN }),
-          },
-        );
+        reply.setCookie(AUTH_CONSTANTS.REFRESH_COOKIE_NAME, tokens.refreshToken, {
+          httpOnly: true,
+          secure: env.COOKIE_SECURE,
+          sameSite: "strict",
+          path: "/api/v1/auth",
+          maxAge: AUTH_CONSTANTS.REFRESH_TOKEN_EXPIRES_SECONDS,
+          ...(env.COOKIE_DOMAIN && { domain: env.COOKIE_DOMAIN }),
+        });
 
         return reply.send({ accessToken: tokens.accessToken });
       } catch (error) {
@@ -211,7 +204,7 @@ export async function authRoutes(fastify: FastifyInstance) {
         }
         throw error;
       }
-    },
+    }
   );
 
   /**
@@ -239,7 +232,7 @@ export async function authRoutes(fastify: FastifyInstance) {
       });
 
       return reply.send({ success: true, message: "Logged out successfully" });
-    },
+    }
   );
 
   /**
@@ -260,7 +253,7 @@ export async function authRoutes(fastify: FastifyInstance) {
       return reply.send({
         user: request.user,
       });
-    },
+    }
   );
 }
 

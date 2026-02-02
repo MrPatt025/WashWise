@@ -43,10 +43,8 @@ export function Timeline({
   return (
     <div
       className={cn(
-        orientation === "horizontal"
-          ? "flex items-start overflow-x-auto"
-          : "space-y-0",
-        className,
+        orientation === "horizontal" ? "flex items-start overflow-x-auto" : "space-y-0",
+        className
       )}
       data-orientation={orientation}
       data-line-position={linePosition}
@@ -87,10 +85,10 @@ export function TimelineItemComponent({
   className,
 }: TimelineItemComponentProps) {
   const statusIcons = {
-    completed: <Check className="w-4 h-4" />,
-    current: <Circle className="w-3 h-3 fill-current" />,
-    upcoming: <Circle className="w-3 h-3" />,
-    error: <AlertCircle className="w-4 h-4" />,
+    completed: <Check className="h-4 w-4" />,
+    current: <Circle className="h-3 w-3 fill-current" />,
+    upcoming: <Circle className="h-3 w-3" />,
+    error: <AlertCircle className="h-4 w-4" />,
   };
 
   const variantColors = {
@@ -123,14 +121,9 @@ export function TimelineItemComponent({
     error: variantColors.error,
   };
 
-  const colors =
-    variant !== "default" ? variantColors[variant] : statusColors[status];
+  const colors = variant !== "default" ? variantColors[variant] : statusColors[status];
 
-  const formattedDate = date
-    ? typeof date === "string"
-      ? date
-      : date.toLocaleDateString()
-    : null;
+  const formattedDate = date ? (typeof date === "string" ? date : date.toLocaleDateString()) : null;
 
   return (
     <motion.div
@@ -142,33 +135,27 @@ export function TimelineItemComponent({
       <div className="flex flex-col items-center">
         <div
           className={cn(
-            "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 z-10",
-            colors.dot,
+            "z-10 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full",
+            colors.dot
           )}
         >
           {icon || statusIcons[status]}
         </div>
-        {!isLast && <div className={cn("w-0.5 flex-1 mt-2", colors.line)} />}
+        {!isLast && <div className={cn("mt-2 w-0.5 flex-1", colors.line)} />}
       </div>
 
       {/* Content */}
       <div className={cn("flex-1 pb-8", isLast && "pb-0")}>
         <div className="flex items-start justify-between gap-4">
           <div>
-            {title && (
-              <h4 className="font-medium text-gray-900 dark:text-white">
-                {title}
-              </h4>
-            )}
+            {title && <h4 className="font-medium text-gray-900 dark:text-white">{title}</h4>}
             {description && (
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                {description}
-              </p>
+              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{description}</p>
             )}
           </div>
           {(formattedDate || time) && (
-            <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 flex-shrink-0">
-              <Clock className="w-4 h-4" />
+            <div className="flex flex-shrink-0 items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+              <Clock className="h-4 w-4" />
               {formattedDate && <span>{formattedDate}</span>}
               {time && <span>{time}</span>}
             </div>
@@ -190,11 +177,7 @@ interface SimpleTimelineProps {
   className?: string;
 }
 
-export function SimpleTimeline({
-  items,
-  animated = true,
-  className,
-}: SimpleTimelineProps) {
+export function SimpleTimeline({ items, animated = true, className }: SimpleTimelineProps) {
   return (
     <Timeline animated={animated} className={className}>
       {items.map((item, index) => (
@@ -242,20 +225,18 @@ export function ActivityTimeline({ items, className }: ActivityTimelineProps) {
     <div className={cn("space-y-4", className)}>
       {items.map((item) => {
         const formattedTime =
-          typeof item.timestamp === "string"
-            ? item.timestamp
-            : formatRelativeTime(item.timestamp);
+          typeof item.timestamp === "string" ? item.timestamp : formatRelativeTime(item.timestamp);
 
         return (
           <div key={item.id} className="flex gap-3">
             <div className="flex-shrink-0">
-              <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
+              <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
                 {item.user.avatar ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={item.user.avatar}
                     alt={item.user.name}
-                    className="w-full h-full object-cover"
+                    className="h-full w-full object-cover"
                   />
                 ) : (
                   <span className="text-xs font-medium text-gray-600 dark:text-gray-300">
@@ -269,24 +250,18 @@ export function ActivityTimeline({ items, className }: ActivityTimelineProps) {
               </div>
             </div>
 
-            <div className="flex-1 min-w-0">
+            <div className="min-w-0 flex-1">
               <p className="text-sm text-gray-700 dark:text-gray-300">
-                <span className="font-medium text-gray-900 dark:text-white">
-                  {item.user.name}
-                </span>{" "}
+                <span className="font-medium text-gray-900 dark:text-white">{item.user.name}</span>{" "}
                 {item.action}
                 {item.target && (
                   <>
                     {" "}
-                    <span className="font-medium text-gray-900 dark:text-white">
-                      {item.target}
-                    </span>
+                    <span className="font-medium text-gray-900 dark:text-white">{item.target}</span>
                   </>
                 )}
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                {formattedTime}
-              </p>
+              <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">{formattedTime}</p>
               {item.content && <div className="mt-2">{item.content}</div>}
             </div>
           </div>
@@ -305,13 +280,10 @@ interface HorizontalTimelineProps {
   className?: string;
 }
 
-export function HorizontalTimeline({
-  items,
-  className,
-}: HorizontalTimelineProps) {
+export function HorizontalTimeline({ items, className }: HorizontalTimelineProps) {
   return (
     <div className={cn("overflow-x-auto pb-4", className)}>
-      <div className="flex items-start min-w-max">
+      <div className="flex min-w-max items-start">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
 
@@ -327,19 +299,17 @@ export function HorizontalTimeline({
               <div className="flex flex-col items-center">
                 <div
                   className={cn(
-                    "w-4 h-4 rounded-full flex-shrink-0",
-                    statusColors[item.status || "upcoming"],
+                    "h-4 w-4 flex-shrink-0 rounded-full",
+                    statusColors[item.status || "upcoming"]
                   )}
                 />
                 <div className="mt-2 w-32 text-center">
-                  <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                  <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
                     {item.title}
                   </p>
                   {item.date && (
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                      {typeof item.date === "string"
-                        ? item.date
-                        : item.date.toLocaleDateString()}
+                    <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
+                      {typeof item.date === "string" ? item.date : item.date.toLocaleDateString()}
                     </p>
                   )}
                 </div>
@@ -347,10 +317,8 @@ export function HorizontalTimeline({
               {!isLast && (
                 <div
                   className={cn(
-                    "h-0.5 w-16 mt-2",
-                    item.status === "completed"
-                      ? "bg-green-500"
-                      : "bg-gray-300 dark:bg-gray-600",
+                    "mt-2 h-0.5 w-16",
+                    item.status === "completed" ? "bg-green-500" : "bg-gray-300 dark:bg-gray-600"
                   )}
                 />
               )}
@@ -379,10 +347,7 @@ interface OrderTrackingTimelineProps {
   className?: string;
 }
 
-export function OrderTrackingTimeline({
-  steps,
-  className,
-}: OrderTrackingTimelineProps) {
+export function OrderTrackingTimeline({ steps, className }: OrderTrackingTimelineProps) {
   return (
     <div className={cn("space-y-0", className)}>
       {steps.map((step, index) => {
@@ -413,30 +378,30 @@ export function OrderTrackingTimeline({
             <div className="flex flex-col items-center">
               <div
                 className={cn(
-                  "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 z-10 transition-all",
-                  config.dot,
+                  "z-10 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full transition-all",
+                  config.dot
                 )}
               >
                 {step.status === "completed" ? (
-                  <Check className="w-4 h-4" />
+                  <Check className="h-4 w-4" />
                 ) : step.status === "current" ? (
-                  <Circle className="w-3 h-3 fill-current animate-pulse" />
+                  <Circle className="h-3 w-3 animate-pulse fill-current" />
                 ) : (
-                  <span className="w-2 h-2 rounded-full bg-current" />
+                  <span className="h-2 w-2 rounded-full bg-current" />
                 )}
               </div>
-              {!isLast && <div className={cn("w-0.5 h-12", config.line)} />}
+              {!isLast && <div className={cn("h-12 w-0.5", config.line)} />}
             </div>
 
             <div className="flex-1 pb-8">
               <p className={cn("text-sm", config.text)}>{step.label}</p>
               {step.description && (
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
                   {step.description}
                 </p>
               )}
               {step.timestamp && step.status !== "upcoming" && (
-                <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">
                   {typeof step.timestamp === "string"
                     ? step.timestamp
                     : step.timestamp.toLocaleString()}
@@ -468,15 +433,11 @@ interface ChangeLogTimelineProps {
   className?: string;
 }
 
-export function ChangeLogTimeline({
-  entries,
-  className,
-}: ChangeLogTimelineProps) {
+export function ChangeLogTimeline({ entries, className }: ChangeLogTimelineProps) {
   const typeConfig = {
     added: {
       label: "Added",
-      color:
-        "text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30",
+      color: "text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30",
     },
     changed: {
       label: "Changed",
@@ -484,8 +445,7 @@ export function ChangeLogTimeline({
     },
     fixed: {
       label: "Fixed",
-      color:
-        "text-yellow-600 dark:text-yellow-400 bg-yellow-100 dark:bg-yellow-900/30",
+      color: "text-yellow-600 dark:text-yellow-400 bg-yellow-100 dark:bg-yellow-900/30",
     },
     removed: {
       label: "Removed",
@@ -493,8 +453,7 @@ export function ChangeLogTimeline({
     },
     security: {
       label: "Security",
-      color:
-        "text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/30",
+      color: "text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/30",
     },
   };
 
@@ -502,14 +461,10 @@ export function ChangeLogTimeline({
     <div className={cn("space-y-8", className)}>
       {entries.map((entry, index) => (
         <div key={index}>
-          <div className="flex items-center gap-3 mb-4">
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-              {entry.version}
-            </h3>
+          <div className="mb-4 flex items-center gap-3">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white">{entry.version}</h3>
             <span className="text-sm text-gray-500 dark:text-gray-400">
-              {typeof entry.date === "string"
-                ? entry.date
-                : entry.date.toLocaleDateString()}
+              {typeof entry.date === "string" ? entry.date : entry.date.toLocaleDateString()}
             </span>
           </div>
 
@@ -518,8 +473,8 @@ export function ChangeLogTimeline({
               <li key={changeIndex} className="flex items-start gap-3">
                 <span
                   className={cn(
-                    "px-2 py-0.5 text-xs font-medium rounded",
-                    typeConfig[change.type].color,
+                    "rounded px-2 py-0.5 text-xs font-medium",
+                    typeConfig[change.type].color
                   )}
                 >
                   {typeConfig[change.type].label}

@@ -4,21 +4,10 @@ import { useMachineStats, useMachines } from "@/hooks/use-machines";
 import { useAuthStore } from "@/stores/auth.store";
 
 export const dynamic = "force-dynamic";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
 import { SkeletonStat } from "@/components/ui/skeleton";
-import {
-  StatCard,
-  StatsGrid,
-  CircularProgress,
-  ProgressBar,
-} from "@/components/ui/stat-card";
+import { StatCard, StatsGrid, CircularProgress, ProgressBar } from "@/components/ui/stat-card";
 import {
   WashingMachine,
   CheckCircle,
@@ -39,10 +28,8 @@ export default function DashboardPage() {
 
   // Calculate percentages for visualizations
   const totalMachines = stats?.total ?? 0;
-  const availablePercent =
-    totalMachines > 0 ? ((stats?.idle ?? 0) / totalMachines) * 100 : 0;
-  const utilizationPercent =
-    totalMachines > 0 ? ((stats?.inUse ?? 0) / totalMachines) * 100 : 0;
+  const availablePercent = totalMachines > 0 ? ((stats?.idle ?? 0) / totalMachines) * 100 : 0;
+  const utilizationPercent = totalMachines > 0 ? ((stats?.inUse ?? 0) / totalMachines) * 100 : 0;
 
   return (
     <div className="space-y-8">
@@ -51,11 +38,11 @@ export default function DashboardPage() {
         <div>
           <h1 className="text-3xl font-bold">Dashboard</h1>
           <p className="text-muted-foreground">
-            Welcome back, {user?.firstName ?? user?.fullName ?? "User"}!
-            Here&apos;s your laundromat overview.
+            Welcome back, {user?.firstName ?? user?.fullName ?? "User"}! Here&apos;s your laundromat
+            overview.
           </p>
         </div>
-        <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300">
+        <div className="hidden items-center gap-2 rounded-lg bg-green-50 px-4 py-2 text-green-700 dark:bg-green-950 dark:text-green-300 md:flex">
           <TrendingUp className="h-4 w-4" />
           <span className="text-sm font-medium">All systems operational</span>
         </div>
@@ -119,11 +106,7 @@ export default function DashboardPage() {
             <CardDescription>Machines ready for use</CardDescription>
           </CardHeader>
           <CardContent className="flex justify-center pt-4">
-            <CircularProgress
-              value={availablePercent}
-              variant="success"
-              label="Available"
-            />
+            <CircularProgress value={availablePercent} variant="success" label="Available" />
           </CardContent>
         </Card>
 
@@ -133,11 +116,7 @@ export default function DashboardPage() {
             <CardDescription>Current machine usage</CardDescription>
           </CardHeader>
           <CardContent className="flex justify-center pt-4">
-            <CircularProgress
-              value={utilizationPercent}
-              variant="warning"
-              label="In Use"
-            />
+            <CircularProgress value={utilizationPercent} variant="warning" label="In Use" />
           </CardContent>
         </Card>
 
@@ -180,22 +159,17 @@ export default function DashboardPage() {
               <Activity className="h-5 w-5" />
               Recent Machines
             </CardTitle>
-            <CardDescription>
-              Latest machine status from your laundromat
-            </CardDescription>
+            <CardDescription>Latest machine status from your laundromat</CardDescription>
           </CardHeader>
           <CardContent>
             {machinesLoading ? (
               <div className="space-y-4">
                 {Array.from({ length: 3 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-16 animate-pulse rounded-lg bg-muted"
-                  />
+                  <div key={i} className="h-16 animate-pulse rounded-lg bg-muted" />
                 ))}
               </div>
             ) : !machines?.items || machines.items.length === 0 ? (
-              <p className="text-center text-muted-foreground py-8">
+              <p className="py-8 text-center text-muted-foreground">
                 No machines found. Add your first machine to get started.
               </p>
             ) : (
@@ -210,14 +184,10 @@ export default function DashboardPage() {
                         <WashingMachine className="h-5 w-5 text-primary" />
                       </div>
                       <div>
-                        <p className="font-medium">
-                          {machine.name ?? machine.label}
-                        </p>
+                        <p className="font-medium">{machine.name ?? machine.label}</p>
                         <p className="text-sm text-muted-foreground">
-                          {machine.serialNumber ??
-                            machine.machineNumber ??
-                            "No serial"}{" "}
-                          • {machine.type}
+                          {machine.serialNumber ?? machine.machineNumber ?? "No serial"} •{" "}
+                          {machine.type}
                         </p>
                       </div>
                     </div>
@@ -232,9 +202,7 @@ export default function DashboardPage() {
         <Card>
           <CardHeader>
             <CardTitle>Quick Actions</CardTitle>
-            <CardDescription>
-              Common tasks for managing your laundromat
-            </CardDescription>
+            <CardDescription>Common tasks for managing your laundromat</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <a
@@ -246,9 +214,7 @@ export default function DashboardPage() {
               </div>
               <div>
                 <p className="font-medium">Manage Machines</p>
-                <p className="text-sm text-muted-foreground">
-                  Add, edit, or remove machines
-                </p>
+                <p className="text-sm text-muted-foreground">Add, edit, or remove machines</p>
               </div>
             </a>
             <a
@@ -260,9 +226,7 @@ export default function DashboardPage() {
               </div>
               <div>
                 <p className="font-medium">Monitor Status</p>
-                <p className="text-sm text-muted-foreground">
-                  Real-time machine monitoring
-                </p>
+                <p className="text-sm text-muted-foreground">Real-time machine monitoring</p>
               </div>
             </a>
           </CardContent>

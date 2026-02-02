@@ -1,14 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  CheckCircle,
-  XCircle,
-  AlertTriangle,
-  Info,
-  X,
-  Loader2,
-} from "lucide-react";
+import { CheckCircle, XCircle, AlertTriangle, Info, X, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -44,9 +37,7 @@ interface ToastContextValue {
   clearToasts: () => void;
 }
 
-const ToastContext = React.createContext<ToastContextValue | undefined>(
-  undefined,
-);
+const ToastContext = React.createContext<ToastContextValue | undefined>(undefined);
 
 /**
  * Default durations for toast types (in milliseconds)
@@ -117,10 +108,7 @@ export function ToastProvider({
       setToasts((prev) => {
         // Remove oldest if at max
         const newToasts = prev.length >= maxToasts ? prev.slice(1) : prev;
-        return [
-          ...newToasts,
-          { ...toast, id, dismissible: toast.dismissible ?? true },
-        ];
+        return [...newToasts, { ...toast, id, dismissible: toast.dismissible ?? true }];
       });
 
       // Auto-dismiss after duration
@@ -133,14 +121,12 @@ export function ToastProvider({
 
       return id;
     },
-    [maxToasts, removeToast],
+    [maxToasts, removeToast]
   );
 
   const updateToast = React.useCallback(
     (id: string, updates: Partial<ToastItem>) => {
-      setToasts((prev) =>
-        prev.map((t) => (t.id === id ? { ...t, ...updates } : t)),
-      );
+      setToasts((prev) => prev.map((t) => (t.id === id ? { ...t, ...updates } : t)));
 
       // If type changed and has new duration, reset timer
       if (updates.type) {
@@ -159,7 +145,7 @@ export function ToastProvider({
         }
       }
     },
-    [removeToast],
+    [removeToast]
   );
 
   const clearToasts = React.useCallback(() => {
@@ -169,9 +155,7 @@ export function ToastProvider({
   }, []);
 
   return (
-    <ToastContext.Provider
-      value={{ toasts, addToast, removeToast, updateToast, clearToasts }}
-    >
+    <ToastContext.Provider value={{ toasts, addToast, removeToast, updateToast, clearToasts }}>
       {children}
       <ToastContainer position={position} />
     </ToastContext.Provider>
@@ -211,17 +195,13 @@ function ToastContainer({
   return (
     <div
       className={cn(
-        "fixed z-50 flex flex-col gap-2 pointer-events-none",
-        positionClasses[position],
+        "pointer-events-none fixed z-50 flex flex-col gap-2",
+        positionClasses[position]
       )}
       style={{ maxHeight: "calc(100vh - 2rem)" }}
     >
       {(isTop ? toasts : [...toasts].reverse()).map((toast) => (
-        <Toast
-          key={toast.id}
-          toast={toast}
-          onDismiss={() => removeToast(toast.id)}
-        />
+        <Toast key={toast.id} toast={toast} onDismiss={() => removeToast(toast.id)} />
       ))}
     </div>
   );
@@ -230,13 +210,7 @@ function ToastContainer({
 /**
  * Individual toast component
  */
-function Toast({
-  toast,
-  onDismiss,
-}: {
-  toast: ToastItem;
-  onDismiss: () => void;
-}) {
+function Toast({ toast, onDismiss }: { toast: ToastItem; onDismiss: () => void }) {
   const [isExiting, setIsExiting] = React.useState(false);
 
   const handleDismiss = () => {
@@ -252,7 +226,7 @@ function Toast({
     error: <XCircle className="h-5 w-5 text-red-500" />,
     warning: <AlertTriangle className="h-5 w-5 text-amber-500" />,
     info: <Info className="h-5 w-5 text-blue-500" />,
-    loading: <Loader2 className="h-5 w-5 text-primary animate-spin" />,
+    loading: <Loader2 className="h-5 w-5 animate-spin text-primary" />,
   };
 
   const borderColors: Record<ToastType, string> = {
@@ -270,19 +244,17 @@ function Toast({
         borderColors[toast.type],
         isExiting
           ? "translate-x-full opacity-0"
-          : "translate-x-0 opacity-100 animate-in slide-in-from-right-full",
+          : "translate-x-0 opacity-100 animate-in slide-in-from-right-full"
       )}
       role="alert"
       aria-live="polite"
     >
       <div className="flex items-start gap-3">
         <div className="flex-shrink-0">{icons[toast.type]}</div>
-        <div className="flex-1 min-w-0">
-          <p className="font-medium text-sm">{toast.title}</p>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-medium">{toast.title}</p>
           {toast.description && (
-            <p className="mt-1 text-sm text-muted-foreground">
-              {toast.description}
-            </p>
+            <p className="mt-1 text-sm text-muted-foreground">{toast.description}</p>
           )}
           {toast.action && (
             <button
@@ -299,7 +271,7 @@ function Toast({
         {toast.dismissible && (
           <button
             onClick={handleDismiss}
-            className="flex-shrink-0 text-muted-foreground hover:text-foreground transition-colors"
+            className="flex-shrink-0 text-muted-foreground transition-colors hover:text-foreground"
             aria-label="Dismiss"
           >
             <X className="h-4 w-4" />
@@ -329,30 +301,20 @@ export function useToast() {
     clear: clearToasts,
 
     // Convenience methods
-    success: (
-      title: string,
-      options?: Partial<Omit<ToastItem, "id" | "type" | "title">>,
-    ) => addToast({ type: "success", title, ...options }),
+    success: (title: string, options?: Partial<Omit<ToastItem, "id" | "type" | "title">>) =>
+      addToast({ type: "success", title, ...options }),
 
-    error: (
-      title: string,
-      options?: Partial<Omit<ToastItem, "id" | "type" | "title">>,
-    ) => addToast({ type: "error", title, ...options }),
+    error: (title: string, options?: Partial<Omit<ToastItem, "id" | "type" | "title">>) =>
+      addToast({ type: "error", title, ...options }),
 
-    warning: (
-      title: string,
-      options?: Partial<Omit<ToastItem, "id" | "type" | "title">>,
-    ) => addToast({ type: "warning", title, ...options }),
+    warning: (title: string, options?: Partial<Omit<ToastItem, "id" | "type" | "title">>) =>
+      addToast({ type: "warning", title, ...options }),
 
-    info: (
-      title: string,
-      options?: Partial<Omit<ToastItem, "id" | "type" | "title">>,
-    ) => addToast({ type: "info", title, ...options }),
+    info: (title: string, options?: Partial<Omit<ToastItem, "id" | "type" | "title">>) =>
+      addToast({ type: "info", title, ...options }),
 
-    loading: (
-      title: string,
-      options?: Partial<Omit<ToastItem, "id" | "type" | "title">>,
-    ) => addToast({ type: "loading", title, dismissible: false, ...options }),
+    loading: (title: string, options?: Partial<Omit<ToastItem, "id" | "type" | "title">>) =>
+      addToast({ type: "loading", title, dismissible: false, ...options }),
 
     promise: async <T,>(
       promise: Promise<T>,
@@ -360,7 +322,7 @@ export function useToast() {
         loading: string;
         success: string | ((data: T) => string);
         error: string | ((err: unknown) => string);
-      },
+      }
     ): Promise<T> => {
       const id = addToast({
         type: "loading",
@@ -372,20 +334,14 @@ export function useToast() {
         const result = await promise;
         updateToast(id, {
           type: "success",
-          title:
-            typeof options.success === "function"
-              ? options.success(result)
-              : options.success,
+          title: typeof options.success === "function" ? options.success(result) : options.success,
           dismissible: true,
         });
         return result;
       } catch (error) {
         updateToast(id, {
           type: "error",
-          title:
-            typeof options.error === "function"
-              ? options.error(error)
-              : options.error,
+          title: typeof options.error === "function" ? options.error(error) : options.error,
           dismissible: true,
         });
         throw error;

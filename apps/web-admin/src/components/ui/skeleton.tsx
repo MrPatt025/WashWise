@@ -20,7 +20,7 @@ function Skeleton({ className, variant = "pulse", ...props }: SkeletonProps) {
         variant === "pulse" && "animate-pulse",
         variant === "shimmer" &&
           "relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent",
-        className,
+        className
       )}
       {...props}
     />
@@ -80,7 +80,7 @@ function SkeletonMachine({ className }: { className?: string }) {
           <Skeleton className="h-6 w-16 rounded-full" />
         </div>
       </div>
-      <div className="px-6 pb-6 space-y-3">
+      <div className="space-y-3 px-6 pb-6">
         <div className="flex justify-between">
           <Skeleton className="h-3 w-12" />
           <Skeleton className="h-3 w-16" />
@@ -105,13 +105,7 @@ function SkeletonMachine({ className }: { className?: string }) {
 /**
  * Skeleton for table rows
  */
-function SkeletonTable({
-  rows = 5,
-  cols = 4,
-}: {
-  rows?: number;
-  cols?: number;
-}) {
+function SkeletonTable({ rows = 5, cols = 4 }: { rows?: number; cols?: number }) {
   return (
     <div className="rounded-lg border">
       {/* Header */}
@@ -124,7 +118,7 @@ function SkeletonTable({
       </div>
       {/* Rows */}
       {Array.from({ length: rows }).map((_, rowIndex) => (
-        <div key={rowIndex} className="border-b last:border-0 p-4">
+        <div key={rowIndex} className="border-b p-4 last:border-0">
           <div className="flex gap-4">
             {Array.from({ length: cols }).map((_, colIndex) => (
               <Skeleton key={colIndex} className="h-4 flex-1" />

@@ -12,15 +12,12 @@ interface DropdownMenuContextValue {
   setOpen: (open: boolean) => void;
 }
 
-const DropdownMenuContext =
-  React.createContext<DropdownMenuContextValue | null>(null);
+const DropdownMenuContext = React.createContext<DropdownMenuContextValue | null>(null);
 
 function useDropdownMenu() {
   const context = React.useContext(DropdownMenuContext);
   if (!context) {
-    throw new Error(
-      "Dropdown menu components must be used within DropdownMenu",
-    );
+    throw new Error("Dropdown menu components must be used within DropdownMenu");
   }
   return context;
 }
@@ -34,11 +31,7 @@ interface DropdownMenuProps {
   onOpenChange?: (open: boolean) => void;
 }
 
-export function DropdownMenu({
-  children,
-  open: controlledOpen,
-  onOpenChange,
-}: DropdownMenuProps) {
+export function DropdownMenu({ children, open: controlledOpen, onOpenChange }: DropdownMenuProps) {
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(false);
   const open = controlledOpen ?? uncontrolledOpen;
   const setOpen = onOpenChange ?? setUncontrolledOpen;
@@ -58,10 +51,7 @@ interface DropdownMenuTriggerProps {
   asChild?: boolean;
 }
 
-export function DropdownMenuTrigger({
-  children,
-  asChild,
-}: DropdownMenuTriggerProps) {
+export function DropdownMenuTrigger({ children, asChild }: DropdownMenuTriggerProps) {
   const { open, setOpen } = useDropdownMenu();
 
   const handleClick = (e: React.MouseEvent) => {
@@ -76,7 +66,7 @@ export function DropdownMenuTrigger({
       }>,
       {
         onClick: handleClick,
-      },
+      }
     );
   }
 
@@ -142,7 +132,7 @@ export function DropdownMenuContent({
       className={cn(
         "absolute z-50 mt-2 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-lg animate-in fade-in-0 zoom-in-95",
         alignmentClasses[align],
-        className,
+        className
       )}
       {...props}
     >
@@ -183,7 +173,7 @@ export function DropdownMenuItem({
         "hover:bg-accent hover:text-accent-foreground",
         disabled && "pointer-events-none opacity-50",
         inset && "pl-8",
-        className,
+        className
       )}
       onClick={handleClick}
       role="menuitem"
@@ -261,14 +251,7 @@ export function DropdownMenuLabel({
   ...props
 }: DropdownMenuLabelProps) {
   return (
-    <div
-      className={cn(
-        "px-2 py-1.5 text-sm font-semibold",
-        inset && "pl-8",
-        className,
-      )}
-      {...props}
-    >
+    <div className={cn("px-2 py-1.5 text-sm font-semibold", inset && "pl-8", className)} {...props}>
       {children}
     </div>
   );
@@ -281,9 +264,7 @@ export function DropdownMenuSeparator({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-  return (
-    <div className={cn("-mx-1 my-1 h-px bg-muted", className)} {...props} />
-  );
+  return <div className={cn("-mx-1 my-1 h-px bg-muted", className)} {...props} />;
 }
 
 /**
@@ -295,10 +276,7 @@ export function DropdownMenuShortcut({
 }: React.HTMLAttributes<HTMLSpanElement>) {
   return (
     <span
-      className={cn(
-        "ml-auto text-xs tracking-widest text-muted-foreground",
-        className,
-      )}
+      className={cn("ml-auto text-xs tracking-widest text-muted-foreground", className)}
       {...props}
     />
   );
@@ -319,11 +297,7 @@ export function DropdownMenuSubTrigger({
 }: DropdownMenuSubTriggerProps) {
   return (
     <DropdownMenuItem
-      className={cn(
-        "flex cursor-default items-center",
-        inset && "pl-8",
-        className,
-      )}
+      className={cn("flex cursor-default items-center", inset && "pl-8", className)}
       {...props}
     >
       {children}
@@ -350,11 +324,7 @@ export function DropdownMenuGroup({
 /**
  * Dropdown menu portal (just renders children for now)
  */
-export function DropdownMenuPortal({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function DropdownMenuPortal({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
@@ -370,7 +340,7 @@ export function DropdownMenuSubContent({
     <div
       className={cn(
         "z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-lg",
-        className,
+        className
       )}
       {...props}
     >

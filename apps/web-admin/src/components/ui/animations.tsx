@@ -67,10 +67,7 @@ export function Fade({
 
   return (
     <div
-      className={cn(
-        show ? "animate-in fade-in" : "animate-out fade-out",
-        className,
-      )}
+      className={cn(show ? "animate-in fade-in" : "animate-out fade-out", className)}
       style={{
         animationDuration: `${duration}ms`,
         animationDelay: `${delay}ms`,
@@ -132,10 +129,8 @@ export function Slide({
   return (
     <div
       className={cn(
-        show
-          ? `animate-in fade-in ${slideClass.in}`
-          : `animate-out fade-out ${slideClass.out}`,
-        className,
+        show ? `animate-in fade-in ${slideClass.in}` : `animate-out fade-out ${slideClass.out}`,
+        className
       )}
       style={{
         animationDuration: `${duration}ms`,
@@ -188,10 +183,8 @@ export function Scale({
   return (
     <div
       className={cn(
-        show
-          ? "animate-in fade-in zoom-in-95"
-          : "animate-out fade-out zoom-out-95",
-        className,
+        show ? "animate-in fade-in zoom-in-95" : "animate-out fade-out zoom-out-95",
+        className
       )}
       style={{
         animationDuration: `${duration}ms`,
@@ -251,16 +244,9 @@ export interface CollapseProps {
   className?: string;
 }
 
-export function Collapse({
-  show,
-  children,
-  duration = TIMING.normal,
-  className,
-}: CollapseProps) {
+export function Collapse({ show, children, duration = TIMING.normal, className }: CollapseProps) {
   const contentRef = React.useRef<HTMLDivElement>(null);
-  const [height, setHeight] = React.useState<number | "auto">(
-    show ? "auto" : 0,
-  );
+  const [height, setHeight] = React.useState<number | "auto">(show ? "auto" : 0);
   const [isAnimating, setIsAnimating] = React.useState(false);
 
   React.useEffect(() => {
@@ -295,11 +281,7 @@ export function Collapse({
   return (
     <div
       ref={contentRef}
-      className={cn(
-        "overflow-hidden",
-        isAnimating && "transition-[height] ease-out",
-        className,
-      )}
+      className={cn("overflow-hidden", isAnimating && "transition-[height] ease-out", className)}
       style={{
         height: typeof height === "number" ? `${height}px` : height,
         transitionDuration: `${duration}ms`,
@@ -379,7 +361,7 @@ export function AnimatePresence({
     <div
       className={cn(
         !skipAnimation && (show ? currentAnimation.in : currentAnimation.out),
-        className,
+        className
       )}
       style={{
         animationDuration: skipAnimation ? "0ms" : `${duration}ms`,
@@ -395,39 +377,21 @@ export function AnimatePresence({
 /**
  * Skeleton Pulse Animation Wrapper
  */
-export function Pulse({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
+export function Pulse({ children, className }: { children: React.ReactNode; className?: string }) {
   return <div className={cn("animate-pulse", className)}>{children}</div>;
 }
 
 /**
  * Spin Animation Wrapper
  */
-export function Spin({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
+export function Spin({ children, className }: { children: React.ReactNode; className?: string }) {
   return <div className={cn("animate-spin", className)}>{children}</div>;
 }
 
 /**
  * Bounce Animation Wrapper
  */
-export function Bounce({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
+export function Bounce({ children, className }: { children: React.ReactNode; className?: string }) {
   return <div className={cn("animate-bounce", className)}>{children}</div>;
 }
 
@@ -454,7 +418,7 @@ export function Shimmer({ className }: { className?: string }) {
         "before:absolute before:inset-0",
         "before:-translate-x-full before:animate-[shimmer_2s_infinite]",
         "before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent",
-        className,
+        className
       )}
     />
   );
@@ -470,7 +434,7 @@ export function useCountUp(
     duration?: number;
     delay?: number;
     enabled?: boolean;
-  } = {},
+  } = {}
 ) {
   const { start = 0, duration = 1000, delay = 0, enabled = true } = options;
   const [count, setCount] = React.useState(start);

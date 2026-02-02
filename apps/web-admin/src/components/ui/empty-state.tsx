@@ -46,18 +46,13 @@ export function EmptyState({
 }: EmptyStateProps) {
   return (
     <div
-      className={cn(
-        "flex flex-col items-center justify-center py-16 px-6 text-center",
-        className,
-      )}
+      className={cn("flex flex-col items-center justify-center px-6 py-16 text-center", className)}
     >
-      <div className="rounded-full bg-muted p-4 mb-4">
+      <div className="mb-4 rounded-full bg-muted p-4">
         <Icon className="h-8 w-8 text-muted-foreground" />
       </div>
-      <h3 className="text-lg font-semibold mb-2">{title}</h3>
-      {description && (
-        <p className="text-muted-foreground mb-6 max-w-sm">{description}</p>
-      )}
+      <h3 className="mb-2 text-lg font-semibold">{title}</h3>
+      {description && <p className="mb-6 max-w-sm text-muted-foreground">{description}</p>}
       {(action || secondaryAction) && (
         <div className="flex gap-3">
           {action && <Button onClick={action.onClick}>{action.label}</Button>}

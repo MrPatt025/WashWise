@@ -918,23 +918,16 @@ public class SecretsConfig {
 
 ```yaml
 # Terraform: Secrets Manager with rotation
-resource "aws_secretsmanager_secret" "db_credentials" {
-name = "washwise/${var.environment}/database"
+resource "aws_secretsmanager_secret" "db_credentials" { name =
+"washwise/${var.environment}/database"
 
-tags = {
-Environment = var.environment
-Application = "washwise"
-}
-}
+tags = { Environment = var.environment Application = "washwise" } }
 
-resource "aws_secretsmanager_secret_rotation" "db_credentials" {
-secret_id           = aws_secretsmanager_secret.db_credentials.id
-rotation_lambda_arn = aws_lambda_function.rotate_secret.arn
+resource "aws_secretsmanager_secret_rotation" "db_credentials" { secret_id           =
+aws_secretsmanager_secret.db_credentials.id rotation_lambda_arn =
+aws_lambda_function.rotate_secret.arn
 
-rotation_rules {
-automatically_after_days = 30
-}
-}
+rotation_rules { automatically_after_days = 30 } }
 ```
 
 ---

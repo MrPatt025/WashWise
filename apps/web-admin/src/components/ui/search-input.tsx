@@ -116,10 +116,8 @@ export function SearchInput({
         aria-label={placeholder}
         {...props}
       />
-      <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
-        {isLoading && (
-          <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-        )}
+      <div className="absolute right-2 top-1/2 flex -translate-y-1/2 items-center gap-1">
+        {isLoading && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />}
         {showClear && localValue && !isLoading && (
           <Button
             type="button"
@@ -174,18 +172,13 @@ export function SearchWithSuggestions({
     if (!value) return recentSearches.slice(0, maxSuggestions);
 
     const lowerValue = value.toLowerCase();
-    return suggestions
-      .filter((s) => s.toLowerCase().includes(lowerValue))
-      .slice(0, maxSuggestions);
+    return suggestions.filter((s) => s.toLowerCase().includes(lowerValue)).slice(0, maxSuggestions);
   }, [value, suggestions, recentSearches, maxSuggestions]);
 
   // Close on click outside
   React.useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(e.target as Node)
-      ) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         setIsOpen(false);
       }
     };
@@ -216,7 +209,7 @@ export function SearchWithSuggestions({
       />
 
       {isOpen && filteredSuggestions.length > 0 && (
-        <div className="absolute top-full left-0 right-0 z-50 mt-1 rounded-md border bg-popover shadow-lg">
+        <div className="absolute left-0 right-0 top-full z-50 mt-1 rounded-md border bg-popover shadow-lg">
           {!value && recentSearches.length > 0 && (
             <div className="px-3 py-2 text-xs font-medium text-muted-foreground">
               Recent searches
@@ -251,10 +244,7 @@ export function SearchWithSuggestions({
 /**
  * Compact search button that expands on click (for mobile/navbar)
  */
-export interface ExpandableSearchProps extends Omit<
-  SearchInputProps,
-  "containerClassName"
-> {
+export interface ExpandableSearchProps extends Omit<SearchInputProps, "containerClassName"> {
   /** Whether search is expanded */
   expanded?: boolean;
   /** Callback when expansion state changes */

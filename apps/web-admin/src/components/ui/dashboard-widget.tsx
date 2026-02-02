@@ -80,7 +80,7 @@ export function DashboardWidget({
       ? [
           {
             label: "Refresh",
-            icon: <RefreshCw className="w-4 h-4" />,
+            icon: <RefreshCw className="h-4 w-4" />,
             onClick: handleRefresh,
           },
         ]
@@ -89,7 +89,7 @@ export function DashboardWidget({
       ? [
           {
             label: "Expand",
-            icon: <Maximize2 className="w-4 h-4" />,
+            icon: <Maximize2 className="h-4 w-4" />,
             onClick: onExpand,
           },
         ]
@@ -98,7 +98,7 @@ export function DashboardWidget({
       ? [
           {
             label: "Open",
-            icon: <ExternalLink className="w-4 h-4" />,
+            icon: <ExternalLink className="h-4 w-4" />,
             onClick: () => window.open(href, "_blank"),
           },
         ]
@@ -109,59 +109,51 @@ export function DashboardWidget({
   return (
     <div
       className={cn(
-        "bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800",
-        "shadow-sm hover:shadow-md transition-shadow",
-        className,
+        "rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900",
+        "shadow-sm transition-shadow hover:shadow-md",
+        className
       )}
     >
       {/* Header */}
       <div
         className={cn(
-          "flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-800",
-          headerClassName,
+          "flex items-center justify-between border-b border-gray-100 px-4 py-3 dark:border-gray-800",
+          headerClassName
         )}
       >
         <div className="flex items-center gap-3">
           {draggable && (
             <button
               type="button"
-              className="cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+              className="cursor-grab text-gray-400 hover:text-gray-600 active:cursor-grabbing dark:hover:text-gray-300"
             >
-              <GripVertical className="w-4 h-4" />
+              <GripVertical className="h-4 w-4" />
             </button>
           )}
 
-          {icon && (
-            <span className="text-gray-500 dark:text-gray-400">{icon}</span>
-          )}
+          {icon && <span className="text-gray-500 dark:text-gray-400">{icon}</span>}
 
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white">
-              {title}
-            </h3>
-            {subtitle && (
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                {subtitle}
-              </p>
-            )}
+            <h3 className="font-medium text-gray-900 dark:text-white">{title}</h3>
+            {subtitle && <p className="text-xs text-gray-500 dark:text-gray-400">{subtitle}</p>}
           </div>
         </div>
 
         <div className="flex items-center gap-1">
           {(isLoading || isRefreshing) && (
-            <RefreshCw className="w-4 h-4 text-gray-400 animate-spin" />
+            <RefreshCw className="h-4 w-4 animate-spin text-gray-400" />
           )}
 
           {collapsible && (
             <button
               type="button"
               onClick={() => setIsCollapsed(!isCollapsed)}
-              className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="rounded-md p-1.5 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
             >
               <ChevronDown
                 className={cn(
-                  "w-4 h-4 text-gray-500 transition-transform",
-                  isCollapsed && "-rotate-90",
+                  "h-4 w-4 text-gray-500 transition-transform",
+                  isCollapsed && "-rotate-90"
                 )}
               />
             </button>
@@ -172,18 +164,14 @@ export function DashboardWidget({
               <MenuTrigger asChild>
                 <button
                   type="button"
-                  className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  className="rounded-md p-1.5 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
-                  <MoreVertical className="w-4 h-4 text-gray-500" />
+                  <MoreVertical className="h-4 w-4 text-gray-500" />
                 </button>
               </MenuTrigger>
               <MenuContent>
                 {allActions.map((action, index) => (
-                  <MenuItem
-                    key={index}
-                    onClick={action.onClick}
-                    danger={action.danger}
-                  >
+                  <MenuItem key={index} onClick={action.onClick} danger={action.danger}>
                     <span className="flex items-center gap-2">
                       {action.icon}
                       {action.label}
@@ -205,8 +193,8 @@ export function DashboardWidget({
           className={cn("p-4", bodyClassName)}
         >
           {error ? (
-            <div className="text-center py-8">
-              <p className="text-red-600 dark:text-red-400 mb-2">{error}</p>
+            <div className="py-8 text-center">
+              <p className="mb-2 text-red-600 dark:text-red-400">{error}</p>
               {onRefresh && (
                 <button
                   type="button"
@@ -236,11 +224,7 @@ interface WidgetGridProps {
   className?: string;
 }
 
-export function WidgetGrid({
-  children,
-  columns = 2,
-  className,
-}: WidgetGridProps) {
+export function WidgetGrid({ children, columns = 2, className }: WidgetGridProps) {
   return (
     <div
       className={cn(
@@ -249,7 +233,7 @@ export function WidgetGrid({
         columns === 2 && "grid-cols-1 lg:grid-cols-2",
         columns === 3 && "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
         columns === 4 && "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4",
-        className,
+        className
       )}
     >
       {children}
@@ -289,7 +273,7 @@ export function QuickActionsWidget({
           "grid gap-3",
           columns === 2 && "grid-cols-2",
           columns === 3 && "grid-cols-3",
-          columns === 4 && "grid-cols-2 sm:grid-cols-4",
+          columns === 4 && "grid-cols-2 sm:grid-cols-4"
         )}
       >
         {actions.map((action, index) => (
@@ -298,16 +282,15 @@ export function QuickActionsWidget({
             type="button"
             onClick={action.onClick}
             className={cn(
-              "flex flex-col items-center justify-center gap-2 p-4 rounded-lg",
-              "bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700",
-              "transition-colors group",
+              "flex flex-col items-center justify-center gap-2 rounded-lg p-4",
+              "bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700",
+              "group transition-colors"
             )}
           >
             <span
               className={cn(
-                "p-2 rounded-lg group-hover:scale-110 transition-transform",
-                action.color ||
-                  "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400",
+                "rounded-lg p-2 transition-transform group-hover:scale-110",
+                action.color || "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"
               )}
             >
               {action.icon}
@@ -316,9 +299,7 @@ export function QuickActionsWidget({
               {action.label}
             </span>
             {action.description && (
-              <span className="text-xs text-gray-500 dark:text-gray-400">
-                {action.description}
-              </span>
+              <span className="text-xs text-gray-500 dark:text-gray-400">{action.description}</span>
             )}
           </button>
         ))}
@@ -363,10 +344,8 @@ export function ActivityFeedWidget({
 
   const typeStyles = {
     info: "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400",
-    success:
-      "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400",
-    warning:
-      "bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400",
+    success: "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400",
+    warning: "bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400",
     error: "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400",
   };
 
@@ -393,32 +372,28 @@ export function ActivityFeedWidget({
     >
       <div className="space-y-4">
         {displayedActivities.length === 0 ? (
-          <p className="text-center text-gray-500 dark:text-gray-400 py-4">
-            No recent activity
-          </p>
+          <p className="py-4 text-center text-gray-500 dark:text-gray-400">No recent activity</p>
         ) : (
           displayedActivities.map((activity) => (
             <div key={activity.id} className="flex items-start gap-3">
               <span
                 className={cn(
-                  "flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center",
-                  typeStyles[activity.type],
+                  "flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full",
+                  typeStyles[activity.type]
                 )}
               >
-                {activity.icon || (
-                  <span className="w-2 h-2 rounded-full bg-current" />
-                )}
+                {activity.icon || <span className="h-2 w-2 rounded-full bg-current" />}
               </span>
-              <div className="flex-1 min-w-0">
+              <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium text-gray-900 dark:text-white">
                   {activity.title}
                 </p>
                 {activity.description && (
-                  <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                  <p className="truncate text-xs text-gray-500 dark:text-gray-400">
                     {activity.description}
                   </p>
                 )}
-                <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
+                <p className="mt-0.5 text-xs text-gray-400 dark:text-gray-500">
                   {formatTime(activity.timestamp)}
                 </p>
               </div>
@@ -456,20 +431,17 @@ export function StatusOverviewWidget({
     <DashboardWidget title={title} className={className}>
       <div className="space-y-4">
         {items.map((item, index) => {
-          const percentage =
-            item.total > 0 ? (item.value / item.total) * 100 : 0;
+          const percentage = item.total > 0 ? (item.value / item.total) * 100 : 0;
 
           return (
             <div key={index}>
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-sm text-gray-600 dark:text-gray-400">
-                  {item.label}
-                </span>
+              <div className="mb-1 flex items-center justify-between">
+                <span className="text-sm text-gray-600 dark:text-gray-400">{item.label}</span>
                 <span className="text-sm font-medium text-gray-900 dark:text-white">
                   {item.value} / {item.total}
                 </span>
               </div>
-              <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+              <div className="h-2 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${percentage}%` }}
@@ -515,8 +487,7 @@ export function NotificationWidget({
 }: NotificationWidgetProps) {
   const typeStyles = {
     info: "border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-900/20",
-    warning:
-      "border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-900/20",
+    warning: "border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-900/20",
     error: "border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/20",
   };
 
@@ -537,20 +508,15 @@ export function NotificationWidget({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           className={cn(
-            "flex items-start gap-3 p-4 rounded-lg border",
-            typeStyles[notification.type],
+            "flex items-start gap-3 rounded-lg border p-4",
+            typeStyles[notification.type]
           )}
         >
           <div className="flex-1">
-            <p
-              className={cn(
-                "font-medium text-sm",
-                typeTextStyles[notification.type],
-              )}
-            >
+            <p className={cn("text-sm font-medium", typeTextStyles[notification.type])}>
               {notification.title}
             </p>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-0.5">
+            <p className="mt-0.5 text-sm text-gray-600 dark:text-gray-400">
               {notification.message}
             </p>
             {notification.action && (
@@ -558,13 +524,10 @@ export function NotificationWidget({
                 type="button"
                 onClick={notification.action.onClick}
                 className={cn(
-                  "text-sm font-medium mt-2",
-                  notification.type === "info" &&
-                    "text-blue-600 dark:text-blue-400",
-                  notification.type === "warning" &&
-                    "text-amber-600 dark:text-amber-400",
-                  notification.type === "error" &&
-                    "text-red-600 dark:text-red-400",
+                  "mt-2 text-sm font-medium",
+                  notification.type === "info" && "text-blue-600 dark:text-blue-400",
+                  notification.type === "warning" && "text-amber-600 dark:text-amber-400",
+                  notification.type === "error" && "text-red-600 dark:text-red-400"
                 )}
               >
                 {notification.action.label}
@@ -575,10 +538,10 @@ export function NotificationWidget({
             <button
               type="button"
               onClick={() => onDismiss(notification.id)}
-              className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded"
+              className="rounded p-1 hover:bg-black/5 dark:hover:bg-white/5"
             >
               <span className="sr-only">Dismiss</span>
-              <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+              <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                 <path
                   fillRule="evenodd"
                   d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"

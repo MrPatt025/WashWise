@@ -1492,9 +1492,7 @@ test.describe("Booking Flow", () => {
     await page.waitForURL("/dashboard");
   });
 
-  test("complete booking from machine selection to confirmation", async ({
-    page,
-  }) => {
+  test("complete booking from machine selection to confirmation", async ({ page }) => {
     // Step 1: Navigate to machines
     await page.click("text=Book Machine");
     await page.waitForSelector('[data-testid="machine-list"]');
@@ -1506,15 +1504,11 @@ test.describe("Booking Flow", () => {
 
     // Step 3: View machine details
     await expect(page.locator('[data-testid="machine-details"]')).toBeVisible();
-    await expect(page.locator('[data-testid="machine-status"]')).toHaveText(
-      "Available",
-    );
+    await expect(page.locator('[data-testid="machine-status"]')).toHaveText("Available");
 
     // Step 4: Select time slot
     await page.click('[data-testid="time-slot-10:00"]');
-    await expect(page.locator('[data-testid="selected-time"]')).toHaveText(
-      "10:00",
-    );
+    await expect(page.locator('[data-testid="selected-time"]')).toHaveText("10:00");
 
     // Step 5: Confirm booking
     await page.click('button:has-text("Confirm Booking")');
@@ -1529,9 +1523,7 @@ test.describe("Booking Flow", () => {
 
     // Step 8: Verify in my bookings
     await page.click("text=My Bookings");
-    await expect(page.locator('[data-testid="booking-list"]')).toContainText(
-      "10:00",
-    );
+    await expect(page.locator('[data-testid="booking-list"]')).toContainText("10:00");
   });
 
   test("cannot book unavailable machine", async ({ page }) => {
@@ -1559,16 +1551,13 @@ test.describe("AI Chat Interaction", () => {
     await expect(page.locator('[data-testid="chat-window"]')).toBeVisible();
 
     // Send message
-    await page.fill(
-      '[data-testid="chat-input"]',
-      "I want to book a washing machine",
-    );
+    await page.fill('[data-testid="chat-input"]', "I want to book a washing machine");
     await page.click('[data-testid="chat-send"]');
 
     // Wait for response
-    await expect(
-      page.locator('[data-testid="chat-message-assistant"]').last(),
-    ).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('[data-testid="chat-message-assistant"]').last()).toBeVisible({
+      timeout: 10000,
+    });
 
     // Verify response contains booking-related content
     const response = await page
@@ -1578,9 +1567,7 @@ test.describe("AI Chat Interaction", () => {
     expect(response?.toLowerCase()).toContain("book");
 
     // Check for suggested actions
-    await expect(
-      page.locator('[data-testid="chat-suggestions"]'),
-    ).toBeVisible();
+    await expect(page.locator('[data-testid="chat-suggestions"]')).toBeVisible();
   });
 });
 ```
@@ -1625,7 +1612,7 @@ export function setup() {
     }),
     {
       headers: { "Content-Type": "application/json" },
-    },
+    }
   );
 
   check(res, { "registration successful": (r) => r.status === 201 });
@@ -1985,7 +1972,7 @@ export default function () {
     }),
     {
       headers: { "Content-Type": "application/json" },
-    },
+    }
   );
   loginDuration.add(Date.now() - loginStart);
 
@@ -2321,10 +2308,7 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
       redis:
         image: redis:7-alpine

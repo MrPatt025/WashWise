@@ -8,18 +8,21 @@ export const MachineTypeSchema = z.enum(["WASHER", "DRYER"]);
 
 // Backend MachineStatus enum - MUST match Java MachineStatus.java
 export const MachineStatusSchema = z.enum([
-  "IDLE",        // Available for booking
-  "RESERVED",    // Reserved but not in use
-  "RUNNING",     // Currently running
+  "IDLE", // Available for booking
+  "RESERVED", // Reserved but not in use
+  "RUNNING", // Currently running
   "MAINTENANCE", // Under maintenance
-  "OUT_OF_ORDER",// Out of order
-  "ERROR",       // Has an error
-  "OFFLINE",     // Not communicating
-  "DISABLED",    // Inactive
+  "OUT_OF_ORDER", // Out of order
+  "ERROR", // Has an error
+  "OFFLINE", // Not communicating
+  "DISABLED", // Inactive
 ]);
 
 // UI-friendly status mapping for display
-export const STATUS_DISPLAY_MAP: Record<string, { label: string; variant: "success" | "warning" | "destructive" | "outline" | "default" }> = {
+export const STATUS_DISPLAY_MAP: Record<
+  string,
+  { label: string; variant: "success" | "warning" | "destructive" | "outline" | "default" }
+> = {
   IDLE: { label: "Available", variant: "success" },
   RESERVED: { label: "Reserved", variant: "warning" },
   RUNNING: { label: "In Use", variant: "warning" },
@@ -93,9 +96,9 @@ export const MachineQuerySchema = z.object({
 // Backend stats response - matches MachineService.MachineStats
 export const MachineStatsSchema = z.object({
   total: z.number(),
-  idle: z.number(),      // Backend: IDLE status
-  inUse: z.number(),     // Backend: RUNNING status
-  error: z.number(),     // Backend: ERROR status
+  idle: z.number(), // Backend: IDLE status
+  inUse: z.number(), // Backend: RUNNING status
+  error: z.number(), // Backend: ERROR status
   maintenance: z.number(),
 });
 

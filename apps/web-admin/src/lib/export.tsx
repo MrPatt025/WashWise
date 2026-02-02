@@ -53,8 +53,8 @@ export interface ExportOptions<T> {
  * Get nested value from object using dot notation
  */
 function getNestedValue<T>(obj: T, path: string): unknown {
-  return path.split('.').reduce<unknown>((acc, part) => {
-    if (acc && typeof acc === 'object' && part in acc) {
+  return path.split(".").reduce<unknown>((acc, part) => {
+    if (acc && typeof acc === "object" && part in acc) {
       return (acc as Record<string, unknown>)[part];
     }
     return undefined;
@@ -66,14 +66,14 @@ function getNestedValue<T>(obj: T, path: string): unknown {
  */
 function formatCSVValue(value: unknown): string {
   if (value === null || value === undefined) return "";
-  
+
   const stringValue = String(value);
-  
+
   // Escape quotes and wrap in quotes if contains comma, quote, or newline
   if (stringValue.includes(",") || stringValue.includes('"') || stringValue.includes("\n")) {
     return `"${stringValue.replace(/"/g, '""')}"`;
   }
-  
+
   return stringValue;
 }
 
@@ -177,14 +177,14 @@ export async function exportToXLSX<T>(options: Omit<ExportOptions<T>, "format">)
 function downloadFile(content: string, filename: string, mimeType: string): void {
   const blob = new Blob([content], { type: mimeType });
   const url = URL.createObjectURL(blob);
-  
+
   const link = document.createElement("a");
   link.href = url;
   link.download = filename;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
-  
+
   URL.revokeObjectURL(url);
 }
 
@@ -355,23 +355,20 @@ export function useExport<T>() {
   const [isExporting, setIsExporting] = React.useState(false);
   const [error, setError] = React.useState<Error | null>(null);
 
-  const exportDataAsync = React.useCallback(
-    async (options: ExportOptions<T>) => {
-      setIsExporting(true);
-      setError(null);
+  const exportDataAsync = React.useCallback(async (options: ExportOptions<T>) => {
+    setIsExporting(true);
+    setError(null);
 
-      try {
-        await exportData(options);
-      } catch (err) {
-        const exportError = err instanceof Error ? err : new Error(String(err));
-        setError(exportError);
-        throw exportError;
-      } finally {
-        setIsExporting(false);
-      }
-    },
-    []
-  );
+    try {
+      await exportData(options);
+    } catch (err) {
+      const exportError = err instanceof Error ? err : new Error(String(err));
+      setError(exportError);
+      throw exportError;
+    } finally {
+      setIsExporting(false);
+    }
+  }, []);
 
   return {
     exportData: exportDataAsync,
@@ -432,9 +429,7 @@ export const columnFormatters = {
       if (value === null || value === undefined) return "";
       const num = Number(value);
       if (isNaN(num)) return "";
-      return decimals !== undefined
-        ? num.toFixed(decimals)
-        : num.toLocaleString();
+      return decimals !== undefined ? num.toFixed(decimals) : num.toLocaleString();
     };
   },
 

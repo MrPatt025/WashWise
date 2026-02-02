@@ -1,0 +1,74 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "*.md"
+      - "docs/**"
+
+permissions:
+  contents: write
+  pull-requests: write
+  packages: write
+
+env:
+  NODE_VERSION: "22"
+  PNPM_VERSION: "9.15.0"
+
+jobs:
+  release:
+    name: 🚀 Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - name: 📥 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🏗️ Build
+        run: pnpm run build
+
+      - name: 📝 Generate changelog
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          version-file: "./package.json"
+          version-path: "version"
+          preset: "conventionalcommits"
+          output-file: "CHANGELOG.md"
+          skip-version-file: false
+          skip-commit: false
+          skip-tag: false
+          git-message: "chore(release): {version}"
+          tag-prefix: "v"
+
+      - name: 🚀 Create GitHub Release
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.changelog.outputs.tag }}
+          name: Release ${{ steps.changelog.outputs.tag }}
+          body: ${{ steps.changelog.outputs.clean_changelog }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

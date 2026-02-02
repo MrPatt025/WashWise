@@ -5,7 +5,7 @@
 spring:
   application:
     name: washwise-core-api
-  
+
   # Database Configuration
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/washwise}
@@ -20,7 +20,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update  # Changed from validate to update for development - allows auto-creation of missing tables
+      ddl-auto: update # Changed from validate to update for development - allows auto-creation of missing tables
     open-in-view: false
     properties:
       hibernate:
@@ -78,10 +78,10 @@ security:
   jwt:
     access-token:
       secret: ${JWT_ACCESS_SECRET:your-256-bit-secret-key-for-access-tokens-min-32-chars}
-      expiration: 900000  # 15 minutes
+      expiration: 900000 # 15 minutes
     refresh-token:
       secret: ${JWT_REFRESH_SECRET:your-256-bit-secret-key-for-refresh-tokens-min-32-chars}
-      expiration: 604800000  # 7 days
+      expiration: 604800000 # 7 days
   cors:
     allowed-origins: ${CORS_ORIGINS:http://localhost:3000}
     allowed-methods: GET,POST,PUT,PATCH,DELETE,OPTIONS
@@ -153,7 +153,7 @@ washwise:
   ai-worker:
     url: ${AI_WORKER_URL:http://localhost:8081}
     timeout: 30000
-  
+
   rate-limit:
     enabled: true
     requests-per-minute: 100

@@ -25,10 +25,7 @@ const ROLE_HIERARCHY: Record<UserRole, number> = {
 /**
  * Check if a user role has sufficient permissions
  */
-export function hasPermission(
-  userRole: string | undefined,
-  requiredRole: UserRole
-): boolean {
+export function hasPermission(userRole: string | undefined, requiredRole: UserRole): boolean {
   if (!userRole) return false;
   const userLevel = ROLE_HIERARCHY[userRole as UserRole] ?? 0;
   const requiredLevel = ROLE_HIERARCHY[requiredRole];
@@ -55,7 +52,7 @@ function LoadingScreen() {
         <div className="relative">
           <div className="absolute inset-0 animate-ping rounded-full bg-primary/30" />
           <div className="relative rounded-xl bg-primary p-4">
-            <WashingMachine className="h-8 w-8 text-white animate-pulse" />
+            <WashingMachine className="h-8 w-8 animate-pulse text-white" />
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -81,7 +78,7 @@ function AccessDeniedScreen({
 
   return (
     <div className="flex h-screen flex-col items-center justify-center bg-background">
-      <div className="flex flex-col items-center gap-6 max-w-md text-center px-4">
+      <div className="flex max-w-md flex-col items-center gap-6 px-4 text-center">
         <div className="rounded-full bg-destructive/10 p-4">
           <ShieldAlert className="h-12 w-12 text-destructive" />
         </div>
@@ -90,10 +87,12 @@ function AccessDeniedScreen({
           <p className="mt-2 text-muted-foreground">
             You don&apos;t have permission to access this page.
             {requiredRole && (
-              <span className="block mt-1">
+              <span className="mt-1 block">
                 Required role: <strong>{requiredRole}</strong>
                 {userRole && (
-                  <>, your role: <strong>{userRole}</strong></>
+                  <>
+                    , your role: <strong>{userRole}</strong>
+                  </>
                 )}
               </span>
             )}
@@ -103,9 +102,7 @@ function AccessDeniedScreen({
           <Button variant="outline" onClick={() => router.back()}>
             Go Back
           </Button>
-          <Button onClick={() => router.push("/dashboard")}>
-            Go to Dashboard
-          </Button>
+          <Button onClick={() => router.push("/dashboard")}>Go to Dashboard</Button>
         </div>
       </div>
     </div>

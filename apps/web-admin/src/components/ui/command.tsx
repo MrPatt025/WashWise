@@ -108,7 +108,7 @@ export function CommandProvider({
         setSelectedIndex(0);
       }
     },
-    [onOpenChange],
+    [onOpenChange]
   );
 
   // Global keyboard shortcut
@@ -141,12 +141,8 @@ export function CommandProvider({
         ...group,
         items: group.items.filter((item) => {
           const matchLabel = item.label.toLowerCase().includes(lowerQuery);
-          const matchDescription = item.description
-            ?.toLowerCase()
-            .includes(lowerQuery);
-          const matchKeywords = item.keywords?.some((k) =>
-            k.toLowerCase().includes(lowerQuery),
-          );
+          const matchDescription = item.description?.toLowerCase().includes(lowerQuery);
+          const matchKeywords = item.keywords?.some((k) => k.toLowerCase().includes(lowerQuery));
           return matchLabel || matchDescription || matchKeywords;
         }),
       }))
@@ -154,10 +150,7 @@ export function CommandProvider({
   }, [groups, query]);
 
   // Get flat list of items for keyboard navigation
-  const flatItems = React.useMemo(
-    () => filteredGroups.flatMap((g) => g.items),
-    [filteredGroups],
-  );
+  const flatItems = React.useMemo(() => filteredGroups.flatMap((g) => g.items), [filteredGroups]);
 
   // Reset selected index when filtered items change
   React.useEffect(() => {
@@ -190,7 +183,7 @@ export function CommandProvider({
 
       setOpen(false);
     },
-    [addToRecent, setOpen],
+    [addToRecent, setOpen]
   );
 
   // Keyboard navigation
@@ -201,15 +194,11 @@ export function CommandProvider({
       switch (e.key) {
         case "ArrowDown":
           e.preventDefault();
-          setSelectedIndex((prev) =>
-            prev < flatItems.length - 1 ? prev + 1 : 0,
-          );
+          setSelectedIndex((prev) => (prev < flatItems.length - 1 ? prev + 1 : 0));
           break;
         case "ArrowUp":
           e.preventDefault();
-          setSelectedIndex((prev) =>
-            prev > 0 ? prev - 1 : flatItems.length - 1,
-          );
+          setSelectedIndex((prev) => (prev > 0 ? prev - 1 : flatItems.length - 1));
           break;
         case "Enter":
           e.preventDefault();
@@ -254,8 +243,7 @@ interface CommandDialogProps {
 }
 
 export function CommandDialog({ className }: CommandDialogProps) {
-  const { open, setOpen, query, setQuery, filteredGroups, recentItems } =
-    useCommandContext();
+  const { open, setOpen, query, setQuery, filteredGroups, recentItems } = useCommandContext();
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [mounted, setMounted] = React.useState(false);
 
@@ -291,28 +279,28 @@ export function CommandDialog({ className }: CommandDialogProps) {
             exit={{ opacity: 0, scale: 0.95, y: -20 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             className={cn(
-              "fixed left-1/2 top-[20%] z-50 -translate-x-1/2 w-full max-w-xl",
-              className,
+              "fixed left-1/2 top-[20%] z-50 w-full max-w-xl -translate-x-1/2",
+              className
             )}
           >
-            <div className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-2xl dark:border-gray-700 dark:bg-gray-900">
               {/* Search Input */}
-              <div className="flex items-center gap-3 px-4 border-b border-gray-200 dark:border-gray-700">
-                <Search className="w-5 h-5 text-gray-400" />
+              <div className="flex items-center gap-3 border-b border-gray-200 px-4 dark:border-gray-700">
+                <Search className="h-5 w-5 text-gray-400" />
                 <input
                   ref={inputRef}
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Type a command or search..."
-                  className="flex-1 py-4 bg-transparent border-none outline-none text-gray-900 dark:text-white placeholder:text-gray-400"
+                  className="flex-1 border-none bg-transparent py-4 text-gray-900 outline-none placeholder:text-gray-400 dark:text-white"
                 />
                 {query && (
                   <button
                     onClick={() => setQuery("")}
-                    className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+                    className="rounded p-1 hover:bg-gray-100 dark:hover:bg-gray-800"
                   >
-                    <X className="w-4 h-4 text-gray-400" />
+                    <X className="h-4 w-4 text-gray-400" />
                   </button>
                 )}
               </div>
@@ -323,7 +311,7 @@ export function CommandDialog({ className }: CommandDialogProps) {
                 {!query && recentItems.length > 0 && (
                   <CommandGroupComponent
                     label="Recent"
-                    icon={<Clock className="w-4 h-4" />}
+                    icon={<Clock className="h-4 w-4" />}
                     items={recentItems}
                   />
                 )}
@@ -331,34 +319,30 @@ export function CommandDialog({ className }: CommandDialogProps) {
                 {/* Filtered groups */}
                 {filteredGroups.length > 0 ? (
                   filteredGroups.map((group) => (
-                    <CommandGroupComponent
-                      key={group.id}
-                      label={group.label}
-                      items={group.items}
-                    />
+                    <CommandGroupComponent key={group.id} label={group.label} items={group.items} />
                   ))
                 ) : (
                   <div className="py-8 text-center text-gray-500 dark:text-gray-400">
                     <p>No results found.</p>
-                    <p className="text-sm mt-1">Try a different search term.</p>
+                    <p className="mt-1 text-sm">Try a different search term.</p>
                   </div>
                 )}
               </div>
 
               {/* Footer */}
-              <div className="flex items-center justify-between px-4 py-2 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+              <div className="flex items-center justify-between border-t border-gray-200 bg-gray-50 px-4 py-2 dark:border-gray-700 dark:bg-gray-800/50">
                 <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
                   <span className="flex items-center gap-1">
-                    <ArrowUp className="w-3 h-3" />
-                    <ArrowDown className="w-3 h-3" />
+                    <ArrowUp className="h-3 w-3" />
+                    <ArrowDown className="h-3 w-3" />
                     Navigate
                   </span>
                   <span className="flex items-center gap-1">
-                    <CornerDownLeft className="w-3 h-3" />
+                    <CornerDownLeft className="h-3 w-3" />
                     Select
                   </span>
                   <span className="flex items-center gap-1">
-                    <span className="px-1 py-0.5 text-[10px] bg-gray-200 dark:bg-gray-700 rounded">
+                    <span className="rounded bg-gray-200 px-1 py-0.5 text-[10px] dark:bg-gray-700">
                       ESC
                     </span>
                     Close
@@ -370,7 +354,7 @@ export function CommandDialog({ className }: CommandDialogProps) {
         </>
       )}
     </AnimatePresence>,
-    document.body,
+    document.body
   );
 }
 
@@ -384,13 +368,8 @@ interface CommandGroupComponentProps {
   icon?: React.ReactNode;
 }
 
-function CommandGroupComponent({
-  label,
-  items,
-  icon,
-}: CommandGroupComponentProps) {
-  const { selectedIndex, filteredGroups, setSelectedIndex, executeItem } =
-    useCommandContext();
+function CommandGroupComponent({ label, items, icon }: CommandGroupComponentProps) {
+  const { selectedIndex, filteredGroups, setSelectedIndex, executeItem } = useCommandContext();
 
   // Calculate the starting index for this group
   const flatItems = filteredGroups.flatMap((g) => g.items);
@@ -398,7 +377,7 @@ function CommandGroupComponent({
 
   return (
     <div className="py-2">
-      <div className="px-4 py-1 flex items-center gap-2 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+      <div className="flex items-center gap-2 px-4 py-1 text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
         {icon}
         {label}
       </div>
@@ -443,18 +422,18 @@ function CommandItemComponent({
       onMouseEnter={onMouseEnter}
       disabled={item.disabled}
       className={cn(
-        "w-full px-4 py-2 flex items-center gap-3 text-left transition-colors",
+        "flex w-full items-center gap-3 px-4 py-2 text-left transition-colors",
         selected
-          ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
+          ? "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400"
           : "text-gray-700 dark:text-gray-300",
-        item.disabled && "opacity-50 cursor-not-allowed",
+        item.disabled && "cursor-not-allowed opacity-50"
       )}
     >
-      {item.icon && <span className="flex-shrink-0 w-5 h-5">{item.icon}</span>}
-      <div className="flex-1 min-w-0">
-        <div className="font-medium truncate">{item.label}</div>
+      {item.icon && <span className="h-5 w-5 flex-shrink-0">{item.icon}</span>}
+      <div className="min-w-0 flex-1">
+        <div className="truncate font-medium">{item.label}</div>
         {item.description && (
-          <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+          <div className="truncate text-xs text-gray-500 dark:text-gray-400">
             {item.description}
           </div>
         )}
@@ -464,14 +443,14 @@ function CommandItemComponent({
           {item.shortcut.map((key, i) => (
             <kbd
               key={i}
-              className="px-1.5 py-0.5 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 rounded border border-gray-200 dark:border-gray-600"
+              className="rounded border border-gray-200 bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400"
             >
               {key}
             </kbd>
           ))}
         </div>
       )}
-      <ChevronRight className="w-4 h-4 text-gray-400 flex-shrink-0" />
+      <ChevronRight className="h-4 w-4 flex-shrink-0 text-gray-400" />
     </button>
   );
 }
@@ -491,14 +470,14 @@ export function CommandTrigger({ className }: CommandTriggerProps) {
     <button
       onClick={() => setOpen(true)}
       className={cn(
-        "flex items-center gap-2 px-3 py-1.5 text-sm text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors",
-        className,
+        "flex items-center gap-2 rounded-lg bg-gray-100 px-3 py-1.5 text-sm text-gray-500 transition-colors hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700",
+        className
       )}
     >
-      <Search className="w-4 h-4" />
+      <Search className="h-4 w-4" />
       <span className="hidden sm:inline">Search...</span>
-      <kbd className="hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-xs font-medium bg-white dark:bg-gray-700 text-gray-500 dark:text-gray-400 rounded border border-gray-200 dark:border-gray-600">
-        <Command className="w-3 h-3" />K
+      <kbd className="hidden items-center gap-0.5 rounded border border-gray-200 bg-white px-1.5 py-0.5 text-xs font-medium text-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 sm:inline-flex">
+        <Command className="h-3 w-3" />K
       </kbd>
     </button>
   );
@@ -578,12 +557,8 @@ export function SpotlightSearch({
     const lowerQuery = query.toLowerCase();
     return items.filter((item) => {
       const matchLabel = item.label.toLowerCase().includes(lowerQuery);
-      const matchDescription = item.description
-        ?.toLowerCase()
-        .includes(lowerQuery);
-      const matchKeywords = item.keywords?.some((k) =>
-        k.toLowerCase().includes(lowerQuery),
-      );
+      const matchDescription = item.description?.toLowerCase().includes(lowerQuery);
+      const matchKeywords = item.keywords?.some((k) => k.toLowerCase().includes(lowerQuery));
       return matchLabel || matchDescription || matchKeywords;
     });
   }, [items, query]);
@@ -601,15 +576,11 @@ export function SpotlightSearch({
       switch (e.key) {
         case "ArrowDown":
           e.preventDefault();
-          setSelectedIndex((prev) =>
-            prev < filteredItems.length - 1 ? prev + 1 : 0,
-          );
+          setSelectedIndex((prev) => (prev < filteredItems.length - 1 ? prev + 1 : 0));
           break;
         case "ArrowUp":
           e.preventDefault();
-          setSelectedIndex((prev) =>
-            prev > 0 ? prev - 1 : filteredItems.length - 1,
-          );
+          setSelectedIndex((prev) => (prev > 0 ? prev - 1 : filteredItems.length - 1));
           break;
         case "Enter":
           e.preventDefault();
@@ -653,20 +624,20 @@ export function SpotlightSearch({
             exit={{ opacity: 0, scale: 0.95, y: -20 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             className={cn(
-              "fixed left-1/2 top-[20%] z-50 -translate-x-1/2 w-full max-w-lg",
-              className,
+              "fixed left-1/2 top-[20%] z-50 w-full max-w-lg -translate-x-1/2",
+              className
             )}
           >
-            <div className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-              <div className="flex items-center gap-3 px-4 border-b border-gray-200 dark:border-gray-700">
-                <Search className="w-5 h-5 text-gray-400" />
+            <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-2xl dark:border-gray-700 dark:bg-gray-900">
+              <div className="flex items-center gap-3 border-b border-gray-200 px-4 dark:border-gray-700">
+                <Search className="h-5 w-5 text-gray-400" />
                 <input
                   ref={inputRef}
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder={placeholder}
-                  className="flex-1 py-4 bg-transparent border-none outline-none text-gray-900 dark:text-white placeholder:text-gray-400"
+                  className="flex-1 border-none bg-transparent py-4 text-gray-900 outline-none placeholder:text-gray-400 dark:text-white"
                 />
               </div>
 
@@ -685,22 +656,18 @@ export function SpotlightSearch({
                       onMouseEnter={() => setSelectedIndex(index)}
                       disabled={item.disabled}
                       className={cn(
-                        "w-full px-4 py-2 flex items-center gap-3 text-left transition-colors",
-                        selectedIndex === index
-                          ? "bg-blue-50 dark:bg-blue-900/20"
-                          : "",
-                        item.disabled && "opacity-50 cursor-not-allowed",
+                        "flex w-full items-center gap-3 px-4 py-2 text-left transition-colors",
+                        selectedIndex === index ? "bg-blue-50 dark:bg-blue-900/20" : "",
+                        item.disabled && "cursor-not-allowed opacity-50"
                       )}
                     >
-                      {item.icon && (
-                        <span className="w-5 h-5">{item.icon}</span>
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <div className="font-medium text-gray-900 dark:text-white truncate">
+                      {item.icon && <span className="h-5 w-5">{item.icon}</span>}
+                      <div className="min-w-0 flex-1">
+                        <div className="truncate font-medium text-gray-900 dark:text-white">
                           {item.label}
                         </div>
                         {item.description && (
-                          <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                          <div className="truncate text-xs text-gray-500 dark:text-gray-400">
                             {item.description}
                           </div>
                         )}
@@ -718,6 +685,6 @@ export function SpotlightSearch({
         </>
       )}
     </AnimatePresence>,
-    document.body,
+    document.body
   );
 }

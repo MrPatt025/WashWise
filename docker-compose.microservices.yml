@@ -35,14 +35,7 @@ services:
     volumes:
       - redis_data:/data
     healthcheck:
-      test:
-        [
-          "CMD",
-          "redis-cli",
-          "--pass",
-          "${REDIS_PASSWORD:-washwise_redis_dev}",
-          "ping",
-        ]
+      test: ["CMD", "redis-cli", "--pass", "${REDIS_PASSWORD:-washwise_redis_dev}", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5

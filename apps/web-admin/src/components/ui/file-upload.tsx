@@ -104,9 +104,7 @@ export function FileDropzone({
       const processedFiles: FileWithPreview[] = filesArray
         .filter((file) => {
           if (maxSize && file.size > maxSize) {
-            console.warn(
-              `File ${file.name} exceeds max size of ${formatFileSize(maxSize)}`,
-            );
+            console.warn(`File ${file.name} exceeds max size of ${formatFileSize(maxSize)}`);
             return false;
           }
           return true;
@@ -114,9 +112,7 @@ export function FileDropzone({
         .map((file) => {
           const fileWithPreview = Object.assign(file, {
             id: generateId(),
-            preview: file.type.startsWith("image/")
-              ? URL.createObjectURL(file)
-              : undefined,
+            preview: file.type.startsWith("image/") ? URL.createObjectURL(file) : undefined,
             status: "pending" as const,
             progress: 0,
           });
@@ -125,7 +121,7 @@ export function FileDropzone({
 
       onFilesSelected(processedFiles);
     },
-    [maxFiles, maxSize, onFilesSelected],
+    [maxFiles, maxSize, onFilesSelected]
   );
 
   const handleDragEnter = React.useCallback((e: React.DragEvent) => {
@@ -154,7 +150,7 @@ export function FileDropzone({
       if (disabled) return;
       processFiles(e.dataTransfer.files);
     },
-    [disabled, processFiles],
+    [disabled, processFiles]
   );
 
   const handleChange = React.useCallback(
@@ -163,7 +159,7 @@ export function FileDropzone({
       // Reset input value to allow selecting the same file again
       e.target.value = "";
     },
-    [processFiles],
+    [processFiles]
   );
 
   const openFilePicker = () => {
@@ -179,12 +175,12 @@ export function FileDropzone({
       onDrop={handleDrop}
       onClick={openFilePicker}
       className={cn(
-        "relative flex flex-col items-center justify-center p-8 border-2 border-dashed rounded-xl transition-colors cursor-pointer",
+        "relative flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 transition-colors",
         isDragActive
           ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
-          : "border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500",
-        disabled && "opacity-50 cursor-not-allowed",
-        className,
+          : "border-gray-300 hover:border-gray-400 dark:border-gray-600 dark:hover:border-gray-500",
+        disabled && "cursor-not-allowed opacity-50",
+        className
       )}
     >
       <input
@@ -202,31 +198,25 @@ export function FileDropzone({
           <motion.div
             animate={{ scale: isDragActive ? 1.1 : 1 }}
             className={cn(
-              "p-4 rounded-full mb-4",
-              isDragActive
-                ? "bg-blue-100 dark:bg-blue-900/30"
-                : "bg-gray-100 dark:bg-gray-800",
+              "mb-4 rounded-full p-4",
+              isDragActive ? "bg-blue-100 dark:bg-blue-900/30" : "bg-gray-100 dark:bg-gray-800"
             )}
           >
             <Upload
               className={cn(
-                "w-8 h-8",
-                isDragActive
-                  ? "text-blue-600 dark:text-blue-400"
-                  : "text-gray-400",
+                "h-8 w-8",
+                isDragActive ? "text-blue-600 dark:text-blue-400" : "text-gray-400"
               )}
             />
           </motion.div>
 
-          <p className="text-base font-medium text-gray-700 dark:text-gray-200 mb-1">
+          <p className="mb-1 text-base font-medium text-gray-700 dark:text-gray-200">
             {isDragActive ? "Drop files here" : "Drag & drop files here"}
           </p>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            or click to browse
-          </p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">or click to browse</p>
 
           {(accept || maxSize) && (
-            <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+            <p className="mt-2 text-xs text-gray-400 dark:text-gray-500">
               {accept && `Accepted: ${accept.join(", ")}`}
               {accept && maxSize && " • "}
               {maxSize && `Max size: ${formatFileSize(maxSize)}`}
@@ -266,75 +256,59 @@ export function FilePreview({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
       className={cn(
-        "flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg",
-        className,
+        "flex items-center gap-3 rounded-lg bg-gray-50 p-3 dark:bg-gray-800",
+        className
       )}
     >
       {/* Preview/Icon */}
       <div className="flex-shrink-0">
         {isImage && file.preview ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={file.preview}
-            alt={file.name}
-            className="w-12 h-12 object-cover rounded-md"
-          />
+          <img src={file.preview} alt={file.name} className="h-12 w-12 rounded-md object-cover" />
         ) : (
-          <div className="w-12 h-12 flex items-center justify-center bg-gray-200 dark:bg-gray-700 rounded-md">
-            <FileIcon className="w-6 h-6 text-gray-500 dark:text-gray-400" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-md bg-gray-200 dark:bg-gray-700">
+            <FileIcon className="h-6 w-6 text-gray-500 dark:text-gray-400" />
           </div>
         )}
       </div>
 
       {/* File Info */}
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-gray-700 dark:text-gray-200 truncate">
-          {file.name}
-        </p>
-        <p className="text-xs text-gray-500 dark:text-gray-400">
-          {formatFileSize(file.size)}
-        </p>
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-sm font-medium text-gray-700 dark:text-gray-200">{file.name}</p>
+        <p className="text-xs text-gray-500 dark:text-gray-400">{formatFileSize(file.size)}</p>
 
         {/* Progress Bar */}
         {showProgress && file.status === "uploading" && (
-          <div className="mt-1 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+          <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${file.progress}%` }}
-              className="h-full bg-blue-600 rounded-full"
+              className="h-full rounded-full bg-blue-600"
             />
           </div>
         )}
 
         {/* Error Message */}
         {file.status === "error" && file.error && (
-          <p className="text-xs text-red-600 dark:text-red-400 mt-1">
-            {file.error}
-          </p>
+          <p className="mt-1 text-xs text-red-600 dark:text-red-400">{file.error}</p>
         )}
       </div>
 
       {/* Status/Actions */}
-      <div className="flex-shrink-0 flex items-center gap-1">
-        {file.status === "uploading" && (
-          <Loader2 className="w-5 h-5 text-blue-600 animate-spin" />
-        )}
+      <div className="flex flex-shrink-0 items-center gap-1">
+        {file.status === "uploading" && <Loader2 className="h-5 w-5 animate-spin text-blue-600" />}
 
-        {file.status === "success" && (
-          <CheckCircle className="w-5 h-5 text-green-600" />
-        )}
+        {file.status === "success" && <CheckCircle className="h-5 w-5 text-green-600" />}
 
-        {file.status === "error" && (
-          <AlertCircle className="w-5 h-5 text-red-600" />
-        )}
+        {file.status === "error" && <AlertCircle className="h-5 w-5 text-red-600" />}
 
         {onPreview && isImage && (
           <button
             type="button"
             onClick={() => onPreview(file)}
-            className="p-1.5 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+            className="rounded-md p-1.5 transition-colors hover:bg-gray-200 dark:hover:bg-gray-700"
           >
-            <Eye className="w-4 h-4 text-gray-500" />
+            <Eye className="h-4 w-4 text-gray-500" />
           </button>
         )}
 
@@ -342,9 +316,9 @@ export function FilePreview({
           <button
             type="button"
             onClick={() => onRemove(file.id)}
-            className="p-1.5 rounded-md hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
+            className="rounded-md p-1.5 transition-colors hover:bg-red-100 dark:hover:bg-red-900/30"
           >
-            <X className="w-4 h-4 text-red-500" />
+            <X className="h-4 w-4 text-red-500" />
           </button>
         )}
       </div>
@@ -378,7 +352,7 @@ export function FileList({
   return (
     <div className={cn("space-y-2", className)}>
       {files.length > 1 && onClearAll && (
-        <div className="flex items-center justify-between mb-2">
+        <div className="mb-2 flex items-center justify-between">
           <span className="text-sm text-gray-500 dark:text-gray-400">
             {files.length} file{files.length !== 1 ? "s" : ""} selected
           </span>
@@ -486,30 +460,25 @@ export function AvatarUpload({
       <div
         style={{ width: size, height: size }}
         className={cn(
-          "relative rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600",
-          !disabled &&
-            "cursor-pointer hover:border-gray-400 dark:hover:border-gray-500",
-          disabled && "opacity-50 cursor-not-allowed",
+          "relative overflow-hidden rounded-full border-2 border-dashed border-gray-300 bg-gray-100 dark:border-gray-600 dark:bg-gray-800",
+          !disabled && "cursor-pointer hover:border-gray-400 dark:hover:border-gray-500",
+          disabled && "cursor-not-allowed opacity-50"
         )}
         onClick={() => !disabled && inputRef.current?.click()}
       >
         {preview ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={preview}
-            alt={name || "Avatar"}
-            className="w-full h-full object-cover"
-          />
+          <img src={preview} alt={name || "Avatar"} className="h-full w-full object-cover" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <Upload className="w-1/3 h-1/3 text-gray-400" />
+          <div className="flex h-full w-full items-center justify-center">
+            <Upload className="h-1/3 w-1/3 text-gray-400" />
           </div>
         )}
 
         {/* Overlay on hover */}
         {!disabled && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 hover:opacity-100 transition-opacity">
-            <Upload className="w-6 h-6 text-white" />
+          <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity hover:opacity-100">
+            <Upload className="h-6 w-6 text-white" />
           </div>
         )}
       </div>
@@ -522,16 +491,14 @@ export function AvatarUpload({
             e.stopPropagation();
             handleRemove();
           }}
-          className="absolute -top-1 -right-1 p-1 bg-red-500 text-white rounded-full shadow-md hover:bg-red-600 transition-colors"
+          className="absolute -right-1 -top-1 rounded-full bg-red-500 p-1 text-white shadow-md transition-colors hover:bg-red-600"
         >
-          <X className="w-3 h-3" />
+          <X className="h-3 w-3" />
         </button>
       )}
 
       {/* Error */}
-      {error && (
-        <p className="mt-1 text-xs text-red-600 dark:text-red-400">{error}</p>
-      )}
+      {error && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{error}</p>}
     </div>
   );
 }
@@ -602,7 +569,7 @@ export function ImageGalleryUpload({
 
       {/* Gallery Grid */}
       {files.length > 0 && (
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
+        <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5">
           <AnimatePresence mode="popLayout">
             {files.map((file) => (
               <motion.div
@@ -610,23 +577,19 @@ export function ImageGalleryUpload({
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
-                className="relative aspect-square rounded-lg overflow-hidden group"
+                className="group relative aspect-square overflow-hidden rounded-lg"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={file.preview}
-                  alt={file.name}
-                  className="w-full h-full object-cover"
-                />
+                <img src={file.preview} alt={file.name} className="h-full w-full object-cover" />
 
                 {/* Overlay */}
-                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
                   <button
                     type="button"
                     onClick={() => handleRemove(file.id)}
-                    className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600"
+                    className="rounded-full bg-red-500 p-2 text-white hover:bg-red-600"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="h-4 w-4" />
                   </button>
                 </div>
 

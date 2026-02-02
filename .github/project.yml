@@ -1,0 +1,30 @@
+name: WashWise
+description: Enterprise-grade, AI-powered SaaS platform for smart laundromat management
+
+branding:
+  icon: droplet
+  color: blue
+
+author:
+  name: WashWise Team
+  email: team@washwise.io
+  url: https://washwise.io
+
+repository:
+  type: git
+  url: https://github.com/washwise/washwise
+
+bugs:
+  url: https://github.com/washwise/washwise/issues
+
+documentation:
+  - name: Getting Started
+    url: docs/README.md
+  - name: Architecture
+    url: docs/02-ARCHITECTURE.md
+  - name: API Reference
+    url: docs/04-API.md
+  - name: Security
+    url: docs/05-SECURITY.md
+
+license: MIT

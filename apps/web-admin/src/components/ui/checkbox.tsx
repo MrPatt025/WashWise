@@ -39,11 +39,10 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
       id,
       ...props
     },
-    ref,
+    ref
   ) => {
     const internalRef = React.useRef<HTMLInputElement>(null);
-    const resolvedRef =
-      (ref as React.RefObject<HTMLInputElement>) || internalRef;
+    const resolvedRef = (ref as React.RefObject<HTMLInputElement>) || internalRef;
     const generatedId = React.useId();
     const checkboxId = id || generatedId;
 
@@ -67,7 +66,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           checked={checked}
           onChange={handleChange}
           disabled={disabled}
-          className="sr-only peer"
+          className="peer sr-only"
           {...props}
         />
         <div
@@ -75,18 +74,14 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
             "h-4 w-4 shrink-0 rounded border border-primary ring-offset-background",
             "peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-focus-visible:ring-offset-2",
             "peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
-            checked || indeterminate
-              ? "bg-primary text-primary-foreground"
-              : "bg-background",
-            className,
+            checked || indeterminate ? "bg-primary text-primary-foreground" : "bg-background",
+            className
           )}
         >
           {checked && !indeterminate && (
-            <Check className="h-3 w-3 text-current absolute top-0.5 left-0.5" />
+            <Check className="absolute left-0.5 top-0.5 h-3 w-3 text-current" />
           )}
-          {indeterminate && (
-            <Minus className="h-3 w-3 text-current absolute top-0.5 left-0.5" />
-          )}
+          {indeterminate && <Minus className="absolute left-0.5 top-0.5 h-3 w-3 text-current" />}
         </div>
       </div>
     );
@@ -105,19 +100,17 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
               className={cn(
                 "text-sm font-medium leading-none",
                 "peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
-                disabled && "cursor-not-allowed opacity-70",
+                disabled && "cursor-not-allowed opacity-70"
               )}
             >
               {label}
             </label>
           )}
-          {description && (
-            <p className="text-xs text-muted-foreground">{description}</p>
-          )}
+          {description && <p className="text-xs text-muted-foreground">{description}</p>}
         </div>
       </div>
     );
-  },
+  }
 );
 
 Checkbox.displayName = "Checkbox";
@@ -167,10 +160,8 @@ export function CheckboxGroup({
     <div
       className={cn(
         "flex",
-        orientation === "vertical"
-          ? "flex-col space-y-3"
-          : "flex-row space-x-6",
-        className,
+        orientation === "vertical" ? "flex-col space-y-3" : "flex-row space-x-6",
+        className
       )}
       role="group"
     >

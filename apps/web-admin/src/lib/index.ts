@@ -20,6 +20,6 @@ export * from "./validation-utils";
 export * from "./storage";
 export * from "./export";
 
-// Note: string-utils, number-utils, date-utils, and accessibility have 
+// Note: string-utils, number-utils, date-utils, and accessibility have
 // overlapping exports with utils.ts. Import them directly when needed:
 // import { specific } from "@/lib/string-utils"
