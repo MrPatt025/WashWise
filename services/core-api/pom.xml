@@ -24,7 +24,7 @@
         <jjwt.version>0.13.0</jjwt.version>
         <springdoc.version>2.8.15</springdoc.version>
         <testcontainers.version>1.21.4</testcontainers.version>
-        <archunit.version>1.4.0</archunit.version>
+        <archunit.version>1.4.1</archunit.version>
         <lombok.version>1.18.42</lombok.version>
         <mapstruct.version>1.6.3</mapstruct.version>
     </properties>
