@@ -65,7 +65,7 @@ export async function buildApp() {
       // Parse allowed origins from environment
       const allowedOrigins = Array.isArray(env.CORS_ORIGIN)
         ? env.CORS_ORIGIN
-        : env.CORS_ORIGIN.split(",").map((o) => o.trim());
+        : env.CORS_ORIGIN.split(",").map((o: string) => o.trim());
 
       // Check if origin is in allowed list
       if (allowedOrigins.includes(origin) || allowedOrigins.includes("*")) {

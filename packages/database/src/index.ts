@@ -2,6 +2,20 @@ import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import pg from "pg";
 
+// Re-export Prisma types explicitly
+export type {
+  User,
+  Tenant,
+  Machine,
+  Branch,
+  RefreshToken,
+  MachineStatus,
+  MachineType,
+  UserRole,
+  TenantPlan,
+  Prisma,
+} from "@prisma/client";
+
 // Create connection pool
 const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
@@ -26,5 +40,5 @@ if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = prisma;
 }
 
-export * from "@prisma/client";
+export { PrismaClient };
 export default prisma;
