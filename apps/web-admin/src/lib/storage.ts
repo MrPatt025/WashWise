@@ -42,14 +42,18 @@ function isBrowser(): boolean {
  * Get the storage object
  */
 function getStorage(type: StorageType): Storage | null {
-  if (!isBrowser()) return null;
+  if (!isBrowser()) {
+    return null;
+  }
   return type === "local" ? localStorage : sessionStorage;
 }
 
 /**
  * Default JSON deserializer
  */
-const defaultDeserializer = <T>(value: string): T => JSON.parse(value);
+function defaultDeserializer<T>(value: string): T {
+  return JSON.parse(value) as T;
+}
 
 /**
  * Get an item from storage
@@ -58,11 +62,15 @@ export function getItem<T>(key: string, options: StorageOptions<T> = {}): T | nu
   const { storage = "local", deserializer = defaultDeserializer } = options;
 
   const storageObj = getStorage(storage);
-  if (!storageObj) return null;
+  if (!storageObj) {
+    return null;
+  }
 
   try {
     const raw = storageObj.getItem(key);
-    if (!raw) return null;
+    if (!raw) {
+      return null;
+    }
 
     const item: StorageItem<T> = JSON.parse(raw);
 
@@ -91,7 +99,9 @@ export function setItem<T>(key: string, value: T, options: StorageOptions<T> = {
   const { storage = "local", ttl } = options;
 
   const storageObj = getStorage(storage);
-  if (!storageObj) return false;
+  if (!storageObj) {
+    return false;
+  }
 
   try {
     const item: StorageItem<T> = {
@@ -113,7 +123,9 @@ export function setItem<T>(key: string, value: T, options: StorageOptions<T> = {
  */
 export function removeItem(key: string, storage: StorageType = "local"): boolean {
   const storageObj = getStorage(storage);
-  if (!storageObj) return false;
+  if (!storageObj) {
+    return false;
+  }
 
   try {
     storageObj.removeItem(key);
@@ -128,7 +140,9 @@ export function removeItem(key: string, storage: StorageType = "local"): boolean
  */
 export function clearStorage(storage: StorageType = "local"): boolean {
   const storageObj = getStorage(storage);
-  if (!storageObj) return false;
+  if (!storageObj) {
+    return false;
+  }
 
   try {
     storageObj.clear();
@@ -143,7 +157,9 @@ export function clearStorage(storage: StorageType = "local"): boolean {
  */
 export function hasItem(key: string, storage: StorageType = "local"): boolean {
   const storageObj = getStorage(storage);
-  if (!storageObj) return false;
+  if (!storageObj) {
+    return false;
+  }
 
   return storageObj.getItem(key) !== null;
 }
@@ -153,12 +169,16 @@ export function hasItem(key: string, storage: StorageType = "local"): boolean {
  */
 export function getKeys(storage: StorageType = "local"): string[] {
   const storageObj = getStorage(storage);
-  if (!storageObj) return [];
+  if (!storageObj) {
+    return [];
+  }
 
   const keys: string[] = [];
   for (let i = 0; i < storageObj.length; i++) {
     const key = storageObj.key(i);
-    if (key) keys.push(key);
+    if (key) {
+      keys.push(key);
+    }
   }
   return keys;
 }

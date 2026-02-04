@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { AlertTriangle, RefreshCw, Home, Bug, ChevronDown, Copy, Check } from "lucide-react";
+import { AlertTriangle, Bug, Check, ChevronDown, Copy, Home, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // ============================================================================
@@ -321,7 +321,9 @@ interface InlineErrorProps {
 }
 
 export function InlineError({ error, onRetry, className }: InlineErrorProps) {
-  if (!error) return null;
+  if (!error) {
+    return null;
+  }
 
   const errorMessage = error instanceof Error ? error.message : error;
 

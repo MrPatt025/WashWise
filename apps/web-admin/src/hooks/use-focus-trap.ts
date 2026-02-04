@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 /**
  * Focus trap options
@@ -41,10 +41,14 @@ function getFocusableElements(container: HTMLElement): HTMLElement[] {
   return elements.filter((el) => {
     // Filter out elements with tabindex="-1"
     const tabindex = el.getAttribute("tabindex");
-    if (tabindex === "-1") return false;
+    if (tabindex === "-1") {
+      return false;
+    }
 
     // Filter out hidden elements
-    if (el.offsetParent === null && el.tagName !== "BODY") return false;
+    if (el.offsetParent === null && el.tagName !== "BODY") {
+      return false;
+    }
 
     return true;
   });
@@ -96,7 +100,9 @@ export function useFocusTrap<T extends HTMLElement = HTMLElement>(
 
   // Handle initial focus
   useEffect(() => {
-    if (!enabled || !containerRef.current) return;
+    if (!enabled || !containerRef.current) {
+      return;
+    }
 
     const container = containerRef.current;
     let elementToFocus: HTMLElement | null = null;
@@ -124,7 +130,9 @@ export function useFocusTrap<T extends HTMLElement = HTMLElement>(
 
   // Handle keyboard navigation (Tab trapping)
   useEffect(() => {
-    if (!enabled || !containerRef.current) return;
+    if (!enabled || !containerRef.current) {
+      return;
+    }
 
     const container = containerRef.current;
 
@@ -137,10 +145,14 @@ export function useFocusTrap<T extends HTMLElement = HTMLElement>(
       }
 
       // Handle Tab key
-      if (event.key !== "Tab") return;
+      if (event.key !== "Tab") {
+        return;
+      }
 
       const focusableElements = getFocusableElements(container);
-      if (focusableElements.length === 0) return;
+      if (focusableElements.length === 0) {
+        return;
+      }
 
       const firstElement = focusableElements[0];
       const lastElement = focusableElements[focusableElements.length - 1];
@@ -170,7 +182,9 @@ export function useFocusTrap<T extends HTMLElement = HTMLElement>(
 
   // Handle clicks outside the container
   useEffect(() => {
-    if (!enabled || allowOutsideClick || !containerRef.current) return;
+    if (!enabled || allowOutsideClick || !containerRef.current) {
+      return;
+    }
 
     const container = containerRef.current;
 

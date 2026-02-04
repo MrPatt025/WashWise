@@ -1,6 +1,14 @@
-import type { FastifyInstance } from "fastify";
-import { SimulationEventSchema, type SimulationEvent } from "@washwise/types";
+import type { FastifyInstance, FastifyRequest } from "fastify";
+import { type SimulationEvent, SimulationEventSchema } from "@washwise/types";
 import { MachineService } from "../services/machine.service.js";
+
+// Helper to safely get tenantId from authenticated request
+function getTenantId(request: FastifyRequest): string {
+  if (!request.user?.tenantId) {
+    throw new Error("Unauthorized: No tenant context");
+  }
+  return request.user.tenantId;
+}
 
 /**
  * IoT Simulation routes
@@ -32,7 +40,16 @@ export async function simulationRoutes(fastify: FastifyInstance) {
             machineId: { type: "string", format: "uuid" },
             status: {
               type: "string",
-              enum: ["AVAILABLE", "BUSY", "OFFLINE", "MAINTENANCE"],
+              enum: [
+                "IDLE",
+                "RESERVED",
+                "RUNNING",
+                "MAINTENANCE",
+                "OUT_OF_ORDER",
+                "ERROR",
+                "OFFLINE",
+                "DISABLED",
+              ],
             },
           },
         },
@@ -40,7 +57,7 @@ export async function simulationRoutes(fastify: FastifyInstance) {
     },
     async (request, reply) => {
       const data = SimulationEventSchema.parse(request.body);
-      const tenantId = request.user!.tenantId;
+      const tenantId = getTenantId(request);
 
       // Update machine status (validates tenant ownership)
       const machine = await machineService.updateStatus(tenantId, data.machineId, data.status);
@@ -113,7 +130,7 @@ export async function simulationRoutes(fastify: FastifyInstance) {
     },
     async (request, reply) => {
       const { machineId, ...telemetry } = request.body;
-      const tenantId = request.user!.tenantId;
+      const tenantId = getTenantId(request);
 
       // Verify machine ownership
       const machine = await machineService.getById(tenantId, machineId);

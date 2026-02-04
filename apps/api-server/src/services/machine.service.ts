@@ -1,11 +1,11 @@
 import { prisma } from "@washwise/database";
 import type {
   CreateMachine,
-  UpdateMachine,
-  MachineQuery,
   Machine,
+  MachineQuery,
   MachineStatus,
   PaginatedResponse,
+  UpdateMachine,
 } from "@washwise/types";
 import type {
   Machine as PrismaMachine,
@@ -20,12 +20,13 @@ export class MachineService {
   /**
    * Create a new machine
    * @param tenantId - Required for multi-tenant isolation
-   * @param branchId - Required for branch association
+   * @param data - Machine creation data including branchId
    */
-  async create(tenantId: string, branchId: string, data: CreateMachine): Promise<Machine> {
+  async create(tenantId: string, data: CreateMachine): Promise<Machine> {
+    const { branchId, ...machineData } = data;
     // Generate serial number if not provided
     const serialNumber =
-      data.serialNumber || `M-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      machineData.serialNumber || `M-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
 
     // Check for duplicate serial number within tenant
     const existing = await prisma.machine.findUnique({
@@ -46,14 +47,14 @@ export class MachineService {
         tenantId,
         branchId,
         serialNumber,
-        label: data.name,
-        type: data.type,
-        capacityKg: data.capacityKg || 10,
-        pricePerCycle: data.pricePerCycle,
-        cycleDurationMins: data.cycleDurationMinutes || 45,
-        manufacturer: data.manufacturer,
-        model: data.model,
-        status: "AVAILABLE",
+        label: machineData.name,
+        type: machineData.type,
+        capacityKg: machineData.capacityKg || 10,
+        pricePerCycle: machineData.pricePerCycle,
+        cycleDurationMins: machineData.cycleDurationMinutes || 45,
+        manufacturer: machineData.manufacturer,
+        model: machineData.model,
+        status: "IDLE",
       },
     });
 
@@ -79,16 +80,13 @@ export class MachineService {
    * List machines with pagination and filtering
    */
   async list(tenantId: string, query: MachineQuery): Promise<PaginatedResponse<Machine>> {
-    const { page = 1, limit = 20, type, status, search } = query;
+    const { page, limit, type, status, search } = query;
     const skip = (page - 1) * limit;
-
-    // Map UI status to Prisma status
-    const prismaStatus = status ? this.mapToPrismaStatus(status) : undefined;
 
     const where = {
       tenantId, // CRITICAL: Always filter by tenant
       ...(type && { type }),
-      ...(prismaStatus && { status: prismaStatus }),
+      ...(status && { status: status as PrismaMachineStatus }),
       ...(search && {
         OR: [
           { label: { contains: search, mode: "insensitive" as const } },
@@ -175,11 +173,9 @@ export class MachineService {
       return null;
     }
 
-    const prismaStatus = this.mapToPrismaStatus(status);
-
     const machine = await prisma.machine.update({
       where: { id: machineId },
-      data: { status: prismaStatus },
+      data: { status: status as PrismaMachineStatus },
     });
 
     return this.mapToMachine(machine);
@@ -238,14 +234,17 @@ export class MachineService {
       result.total += count;
 
       switch (stat.status) {
-        case "AVAILABLE":
+        case "IDLE":
           result.idle = count;
           break;
-        case "BUSY":
-          result.inUse = count;
+        case "RUNNING":
+        case "RESERVED":
+          result.inUse += count;
           break;
         case "OFFLINE":
         case "ERROR":
+        case "OUT_OF_ORDER":
+        case "DISABLED":
           result.error += count;
           break;
         case "MAINTENANCE":
@@ -255,52 +254,6 @@ export class MachineService {
     }
 
     return result;
-  }
-
-  /**
-   * Map Prisma status to UI status
-   */
-  private mapToUIStatus(status: PrismaMachineStatus): MachineStatus {
-    switch (status) {
-      case "AVAILABLE":
-        return "IDLE";
-      case "BUSY":
-        return "RUNNING";
-      case "OFFLINE":
-        return "OFFLINE";
-      case "MAINTENANCE":
-        return "MAINTENANCE";
-      case "ERROR":
-        return "ERROR";
-      default:
-        return "OFFLINE";
-    }
-  }
-
-  /**
-   * Map UI status to Prisma status
-   */
-  private mapToPrismaStatus(status: MachineStatus): PrismaMachineStatus {
-    switch (status) {
-      case "IDLE":
-        return "AVAILABLE";
-      case "RUNNING":
-        return "BUSY";
-      case "RESERVED":
-        return "BUSY";
-      case "OFFLINE":
-        return "OFFLINE";
-      case "MAINTENANCE":
-        return "MAINTENANCE";
-      case "OUT_OF_ORDER":
-        return "MAINTENANCE";
-      case "ERROR":
-        return "ERROR";
-      case "DISABLED":
-        return "OFFLINE";
-      default:
-        return "OFFLINE";
-    }
   }
 
   /**
@@ -316,7 +269,7 @@ export class MachineService {
       serialNumber: machine.serialNumber,
       type: machine.type as "WASHER" | "DRYER",
       capacityKg: machine.capacityKg,
-      status: this.mapToUIStatus(machine.status),
+      status: machine.status as MachineStatus,
       pricePerCycle: machine.pricePerCycle,
       cycleDurationMinutes: machine.cycleDurationMins,
       manufacturer: machine.manufacturer,

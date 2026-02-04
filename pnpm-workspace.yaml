@@ -1,3 +1,14 @@
 packages:
-  - "apps/*"
-  - "packages/*"
+  - apps/*
+  - packages/*
+
+ignoredBuiltDependencies:
+  - "@prisma/engines"
+  - argon2
+  - cpu-features
+  - esbuild
+  - prisma
+  - protobufjs
+  - sharp
+  - ssh2
+  - unrs-resolver

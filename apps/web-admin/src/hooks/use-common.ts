@@ -8,12 +8,14 @@ import * as React from "react";
  */
 export function useClickOutside<T extends HTMLElement>(
   handler: (event: MouseEvent | TouchEvent) => void,
-  enabled: boolean = true
+  enabled = true
 ): React.RefObject<T | null> {
   const ref = React.useRef<T>(null);
 
   React.useEffect(() => {
-    if (!enabled) return;
+    if (!enabled) {
+      return;
+    }
 
     const listener = (event: MouseEvent | TouchEvent) => {
       const el = ref.current;
@@ -71,7 +73,7 @@ export function useScrollPosition() {
 /**
  * Hook to track if scroll has passed a threshold
  */
-export function useScrollPast(threshold: number = 100) {
+export function useScrollPast(threshold = 100) {
   const [isPast, setIsPast] = React.useState(false);
 
   React.useEffect(() => {
@@ -103,7 +105,9 @@ export function useInView<T extends HTMLElement>(
 
   React.useEffect(() => {
     const element = ref.current;
-    if (!element) return;
+    if (!element) {
+      return;
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -213,7 +217,7 @@ export function useOnlineStatus() {
 /**
  * Hook to toggle boolean state
  */
-export function useToggle(initialValue: boolean = false) {
+export function useToggle(initialValue = false) {
   const [value, setValue] = React.useState(initialValue);
 
   const toggle = React.useCallback(() => {
@@ -240,7 +244,7 @@ interface AsyncState<T> {
   error: Error | null;
 }
 
-export function useAsync<T>(asyncFunction: () => Promise<T>, immediate: boolean = true) {
+export function useAsync<T>(asyncFunction: () => Promise<T>, immediate = true) {
   const [state, setState] = React.useState<AsyncState<T>>({
     data: null,
     loading: immediate,
@@ -263,7 +267,7 @@ export function useAsync<T>(asyncFunction: () => Promise<T>, immediate: boolean 
 
   React.useEffect(() => {
     if (immediate) {
-      execute();
+      void execute();
     }
   }, [execute, immediate]);
 
@@ -273,10 +277,7 @@ export function useAsync<T>(asyncFunction: () => Promise<T>, immediate: boolean 
 /**
  * Hook for managing counters
  */
-export function useCounter(
-  initialValue: number = 0,
-  { min, max }: { min?: number; max?: number } = {}
-) {
+export function useCounter(initialValue = 0, { min, max }: { min?: number; max?: number } = {}) {
   const [count, setCount] = React.useState(initialValue);
 
   const increment = React.useCallback(() => {
@@ -303,7 +304,7 @@ export function useCounter(
 /**
  * Hook for document title
  */
-export function useDocumentTitle(title: string, restoreOnUnmount: boolean = true) {
+export function useDocumentTitle(title: string, restoreOnUnmount = true) {
   React.useEffect(() => {
     const previousTitle = document.title;
     document.title = title;
@@ -325,7 +326,9 @@ export function useHover<T extends HTMLElement>(): [React.RefObject<T | null>, b
 
   React.useEffect(() => {
     const element = ref.current;
-    if (!element) return;
+    if (!element) {
+      return;
+    }
 
     const handleMouseEnter = () => setIsHovered(true);
     const handleMouseLeave = () => setIsHovered(false);
@@ -353,7 +356,9 @@ export function useInterval(callback: () => void, delay: number | null) {
   }, [callback]);
 
   React.useEffect(() => {
-    if (delay === null) return;
+    if (delay === null) {
+      return;
+    }
 
     const id = setInterval(() => savedCallback.current(), delay);
 
@@ -372,7 +377,9 @@ export function useTimeout(callback: () => void, delay: number | null) {
   }, [callback]);
 
   React.useEffect(() => {
-    if (delay === null) return;
+    if (delay === null) {
+      return;
+    }
 
     const id = setTimeout(() => savedCallback.current(), delay);
 

@@ -1,14 +1,21 @@
 "use client";
 
 import * as React from "react";
-import { useForm, Controller, UseFormReturn, FieldValues, Path, PathValue } from "react-hook-form";
+import {
+  Controller,
+  type FieldValues,
+  type Path,
+  type PathValue,
+  useForm,
+  type UseFormReturn,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { AlertCircle, Eye, EyeOff, Check, X, Loader2 } from "lucide-react";
+import { AlertCircle, Check, Eye, EyeOff, Loader2, X } from "lucide-react";
 
 /**
  * Form Field Wrapper
@@ -144,13 +151,25 @@ export const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputPro
 
     // Calculate password strength
     const strength = React.useMemo(() => {
-      if (!value || typeof value !== "string") return 0;
+      if (!value || typeof value !== "string") {
+        return 0;
+      }
       let score = 0;
-      if (value.length >= 8) score++;
-      if (value.length >= 12) score++;
-      if (/[a-z]/.test(value) && /[A-Z]/.test(value)) score++;
-      if (/\d/.test(value)) score++;
-      if (/[^a-zA-Z0-9]/.test(value)) score++;
+      if (value.length >= 8) {
+        score++;
+      }
+      if (value.length >= 12) {
+        score++;
+      }
+      if (/[a-z]/.test(value) && /[A-Z]/.test(value)) {
+        score++;
+      }
+      if (/\d/.test(value)) {
+        score++;
+      }
+      if (/[^a-zA-Z0-9]/.test(value)) {
+        score++;
+      }
       return Math.min(score, 4);
     }, [value]);
 
@@ -494,12 +513,13 @@ export const formSchemas = {
 /**
  * Hook for form with Zod validation
  */
-export function useZodForm<T extends z.ZodSchema>(
-  schema: T,
-  options?: Parameters<typeof useForm<z.infer<T>>>[0]
+export function useZodForm<TOutput extends FieldValues, TDef extends z.ZodTypeDef, TInput>(
+  schema: z.ZodType<TOutput, TDef, TInput>,
+  options?: Omit<Parameters<typeof useForm<TOutput>>[0], "resolver">
 ) {
-  return useForm<z.infer<T>>({
-    resolver: zodResolver(schema),
+  return useForm<TOutput>({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(schema as any),
     ...options,
   });
 }
@@ -556,10 +576,10 @@ export function ControlledField<TFieldValues extends FieldValues>({
  * Input with inline validation
  */
 export interface ValidatedInputProps extends TextInputProps {
-  validationRules?: Array<{
+  validationRules?: {
     test: (value: string) => boolean;
     message: string;
-  }>;
+  }[];
   showValidation?: boolean;
 }
 
@@ -568,7 +588,9 @@ export const ValidatedInput = React.forwardRef<HTMLInputElement, ValidatedInputP
     const stringValue = typeof value === "string" ? value : "";
 
     const validationResults = React.useMemo(() => {
-      if (!stringValue || !showValidation) return [];
+      if (!stringValue || !showValidation) {
+        return [];
+      }
       return validationRules.map((rule) => ({
         ...rule,
         isValid: rule.test(stringValue),

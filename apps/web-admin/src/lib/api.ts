@@ -1,8 +1,8 @@
 import { getAuthState, setAuthState } from "@/stores/auth.store";
-import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
+import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { z } from "zod";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 /**
  * Axios instance with interceptors for authentication
@@ -103,20 +103,20 @@ export function createPaginatedSchema<T extends z.ZodTypeAny>(itemSchema: T) {
 }
 
 // Type helper for paginated responses
-export type PaginatedResponse<T> = {
+export interface PaginatedResponse<T> {
   items: T[];
   total: number;
   page: number;
   limit: number;
   totalPages: number;
-};
+}
 
 // Flag to prevent multiple refresh attempts
 let isRefreshing = false;
-let failedQueue: Array<{
+let failedQueue: {
   resolve: (token: string) => void;
   reject: (error: Error) => void;
-}> = [];
+}[] = [];
 
 const processQueue = (error: Error | null, token: string | null = null) => {
   failedQueue.forEach((promise) => {

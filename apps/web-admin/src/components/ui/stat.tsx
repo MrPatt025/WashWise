@@ -4,13 +4,13 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import {
-  TrendingUp,
-  TrendingDown,
-  Minus,
-  ArrowUpRight,
   ArrowDownRight,
+  ArrowUpRight,
   Info,
   type LucideIcon,
+  Minus,
+  TrendingDown,
+  TrendingUp,
 } from "lucide-react";
 import { Sparkline } from "./chart";
 

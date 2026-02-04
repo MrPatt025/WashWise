@@ -1,4 +1,4 @@
-import { Server as SocketIOServer, Socket } from "socket.io";
+import { type Socket, Server as SocketIOServer } from "socket.io";
 import type { Server as HTTPServer } from "http";
 import { createAdapter } from "@socket.io/redis-adapter";
 import jwt from "jsonwebtoken";
@@ -32,15 +32,16 @@ export function setupSocketIO(httpServer: HTTPServer): SocketIOServer {
 
   // Setup Redis adapter for horizontal scaling
   if (env.NODE_ENV !== "test") {
-    setupRedisAdapter(io);
+    void setupRedisAdapter(io);
   }
 
   // Authentication middleware
   io.use((socket: AuthenticatedSocket, next) => {
-    const token = socket.handshake.auth.token;
+    const token = socket.handshake.auth.token as string | undefined;
 
     if (!token) {
-      return next(new Error("Authentication required"));
+      next(new Error("Authentication required"));
+      return;
     }
 
     try {
@@ -54,7 +55,7 @@ export function setupSocketIO(httpServer: HTTPServer): SocketIOServer {
       };
 
       next();
-    } catch (error) {
+    } catch (_error) {
       next(new Error("Invalid token"));
     }
   });
@@ -68,29 +69,29 @@ export function setupSocketIO(httpServer: HTTPServer): SocketIOServer {
       return;
     }
 
-    console.log(`Socket connected: ${socket.id} (User: ${user.email})`);
+    console.info(`Socket connected: ${socket.id} (User: ${user.email})`);
 
     // Auto-join tenant room
     const tenantRoom = `tenant:${user.tenantId}`;
-    socket.join(tenantRoom);
-    console.log(`User ${user.email} joined room ${tenantRoom}`);
+    void socket.join(tenantRoom);
+    console.info(`User ${user.email} joined room ${tenantRoom}`);
 
     // Handle explicit room join (for additional rooms if needed)
     socket.on(SOCKET_EVENTS.JOIN_TENANT_ROOM, (data: { tenantId: string }) => {
       // Verify user belongs to this tenant (security check)
       if (data.tenantId === user.tenantId) {
-        socket.join(`tenant:${data.tenantId}`);
+        void socket.join(`tenant:${data.tenantId}`);
       }
     });
 
     // Handle room leave
     socket.on(SOCKET_EVENTS.LEAVE_TENANT_ROOM, (data: { tenantId: string }) => {
-      socket.leave(`tenant:${data.tenantId}`);
+      void socket.leave(`tenant:${data.tenantId}`);
     });
 
     // Handle disconnect
     socket.on("disconnect", (reason) => {
-      console.log(`Socket disconnected: ${socket.id} (Reason: ${reason})`);
+      console.info(`Socket disconnected: ${socket.id} (Reason: ${reason})`);
     });
 
     // Handle errors
@@ -114,7 +115,7 @@ async function setupRedisAdapter(io: SocketIOServer): Promise<void> {
     await Promise.all([pubClient.connect(), subClient.connect()]);
 
     io.adapter(createAdapter(pubClient, subClient));
-    console.log("✅ Socket.io Redis adapter initialized");
+    console.info("✅ Socket.io Redis adapter initialized");
   } catch (error) {
     console.error("Failed to setup Redis adapter for Socket.io:", error);
     // Continue without Redis adapter (single-instance mode)

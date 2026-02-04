@@ -1,10 +1,10 @@
 import type { FastifyInstance } from "fastify";
 import { AUTH_CONSTANTS } from "@washwise/config";
 import {
-  LoginRequestSchema,
-  RegisterRequestSchema,
   type LoginRequest,
+  LoginRequestSchema,
   type RegisterRequest,
+  RegisterRequestSchema,
 } from "@washwise/types";
 import { AuthService } from "../services/auth.service.js";
 import env from "../config/env.js";

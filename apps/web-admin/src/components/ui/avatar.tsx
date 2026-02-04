@@ -66,7 +66,6 @@ export function Avatar({
   const renderContent = () => {
     if (src && !imageError) {
       return (
-        // eslint-disable-next-line @next/next/no-img-element
         <img
           src={src}
           alt={alt || name || "Avatar"}
@@ -175,11 +174,11 @@ export function AvatarWithBadge({
 // ============================================================================
 
 interface AvatarGroupProps {
-  avatars: Array<{
+  avatars: {
     src?: string | null;
     name?: string;
     alt?: string;
-  }>;
+  }[];
   max?: number;
   size?: AvatarSize;
   className?: string;

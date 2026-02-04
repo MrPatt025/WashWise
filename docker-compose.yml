@@ -141,4 +141,3 @@ networks:
   washwise-network:
     name: washwise-network
     driver: bridge
-

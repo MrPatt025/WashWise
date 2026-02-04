@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 /**
  * Debounce a value - delays updating until after delay ms of no changes
@@ -160,7 +160,7 @@ export function useThrottle<T>(value: T, delay: number): T {
       setThrottledValue(value);
       return undefined;
     }
-    
+
     const timer = setTimeout(() => {
       lastRunRef.current = Date.now();
       setThrottledValue(value);

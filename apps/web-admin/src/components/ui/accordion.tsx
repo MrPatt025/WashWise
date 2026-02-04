@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Plus, Minus } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronDown, Minus, Plus } from "lucide-react";
 
 // ============================================================================
 // Types
@@ -478,7 +478,9 @@ export function Collapsible({
   const isOpen = isControlled ? controlledOpen : uncontrolledOpen;
 
   const toggle = () => {
-    if (disabled) return;
+    if (disabled) {
+      return;
+    }
 
     const newState = !isOpen;
     if (!isControlled) {

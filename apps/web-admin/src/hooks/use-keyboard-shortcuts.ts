@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 /**
  * Keyboard shortcut definition
@@ -39,9 +39,9 @@ function parseKeys(keys: string): {
     alt: parts.includes("alt") || parts.includes("option"),
     meta: parts.includes("meta") || parts.includes("cmd") || parts.includes("command"),
     key:
-      parts.filter(
+      parts.find(
         (p) => !["ctrl", "control", "shift", "alt", "option", "meta", "cmd", "command"].includes(p)
-      )[0] || "",
+      ) ?? "",
   };
 }
 
@@ -51,14 +51,21 @@ function parseKeys(keys: string): {
 function matchesShortcut(event: KeyboardEvent, shortcut: KeyboardShortcut): boolean {
   const parsed = parseKeys(shortcut.keys);
 
+  // Guard against undefined event.key or event.code
+  if (!event.key && !event.code) {
+    return false;
+  }
+
   // Handle special keys
-  const eventKey = event.key.toLowerCase();
+  const eventKey = (event.key || "").toLowerCase();
+  const eventCode = (event.code || "").toLowerCase();
   const matchesKey =
     eventKey === parsed.key ||
-    event.code.toLowerCase() === `key${parsed.key}` ||
+    eventCode === `key${parsed.key}` ||
     (parsed.key === "escape" && eventKey === "escape") ||
     (parsed.key === "enter" && eventKey === "enter") ||
-    (parsed.key === "space" && eventKey === " ");
+    (parsed.key === "space" && eventKey === " ") ||
+    (parsed.key === "delete" && (eventKey === "delete" || eventKey === "backspace"));
 
   return (
     matchesKey &&
@@ -93,7 +100,9 @@ export function useKeyboardShortcuts(
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
-      if (!enabled) return;
+      if (!enabled) {
+        return;
+      }
 
       // Ignore if user is typing in an input
       const target = event.target as HTMLElement;
@@ -103,7 +112,9 @@ export function useKeyboardShortcuts(
         target.contentEditable === "true";
 
       for (const shortcut of shortcutsRef.current) {
-        if (shortcut.disabled) continue;
+        if (shortcut.disabled) {
+          continue;
+        }
 
         // Check scope
         if (shortcut.scope && shortcut.scope !== "global" && shortcut.scope !== scope) {
@@ -191,7 +202,7 @@ export function useEscapeKey(handler: () => void, enabled = true): void {
 /**
  * Registry to display all available shortcuts in a help menu
  */
-const shortcutRegistry: Map<string, KeyboardShortcut> = new Map();
+const shortcutRegistry = new Map<string, KeyboardShortcut>();
 
 export function registerShortcut(shortcut: KeyboardShortcut): void {
   shortcutRegistry.set(shortcut.id, shortcut);

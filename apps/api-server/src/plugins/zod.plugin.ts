@@ -1,6 +1,6 @@
 import type { FastifyInstance } from "fastify";
 import fp from "fastify-plugin";
-import { ZodSchema } from "zod";
+import { type ZodSchema } from "zod";
 
 /**
  * Zod validation plugin for Fastify

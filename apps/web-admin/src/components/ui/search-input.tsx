@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Search, X, Loader2 } from "lucide-react";
+import { Loader2, Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -169,7 +169,9 @@ export function SearchWithSuggestions({
 
   // Filter suggestions based on current value
   const filteredSuggestions = React.useMemo(() => {
-    if (!value) return recentSearches.slice(0, maxSuggestions);
+    if (!value) {
+      return recentSearches.slice(0, maxSuggestions);
+    }
 
     const lowerValue = value.toLowerCase();
     return suggestions.filter((s) => s.toLowerCase().includes(lowerValue)).slice(0, maxSuggestions);
@@ -224,7 +226,9 @@ export function SearchWithSuggestions({
                 className="cursor-pointer px-3 py-2 text-sm hover:bg-accent"
                 onClick={() => handleSelect(suggestion)}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") handleSelect(suggestion);
+                  if (e.key === "Enter") {
+                    handleSelect(suggestion);
+                  }
                 }}
                 tabIndex={0}
               >

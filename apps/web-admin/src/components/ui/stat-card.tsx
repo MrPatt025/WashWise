@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { TrendingUp, TrendingDown, Minus, ArrowUpRight, ArrowDownRight, Info } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, Info, Minus, TrendingDown, TrendingUp } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 /**
@@ -84,7 +84,9 @@ const variantStyles = {
  * Format a number for display
  */
 function formatValue(value: string | number, format: StatCardProps["format"] = "number"): string {
-  if (typeof value === "string") return value;
+  if (typeof value === "string") {
+    return value;
+  }
 
   switch (format) {
     case "currency":
@@ -137,18 +139,29 @@ export function StatCard({
 
   // Calculate trend if not provided but previousValue is
   const calculatedTrend = React.useMemo(() => {
-    if (trend) return trend;
-    if (previousValue === undefined || typeof value !== "number") return undefined;
+    if (trend) {
+      return trend;
+    }
+    if (previousValue === undefined || typeof value !== "number") {
+      return undefined;
+    }
 
-    if (value > previousValue) return "up";
-    if (value < previousValue) return "down";
+    if (value > previousValue) {
+      return "up";
+    }
+    if (value < previousValue) {
+      return "down";
+    }
     return "neutral";
   }, [trend, value, previousValue]);
 
   const calculatedTrendValue = React.useMemo(() => {
-    if (trendValue !== undefined) return trendValue;
-    if (previousValue === undefined || typeof value !== "number" || previousValue === 0)
+    if (trendValue !== undefined) {
+      return trendValue;
+    }
+    if (previousValue === undefined || typeof value !== "number" || previousValue === 0) {
       return undefined;
+    }
 
     return ((value - previousValue) / previousValue) * 100;
   }, [trendValue, value, previousValue]);
@@ -420,11 +433,11 @@ export function StatsGrid({ children, columns = 4, className }: StatsGridProps) 
  * Simple bar chart for inline data visualization
  */
 export interface SimpleBarChartProps {
-  data: Array<{
+  data: {
     label: string;
     value: number;
     color?: string;
-  }>;
+  }[];
   height?: number;
   showLabels?: boolean;
   showValues?: boolean;
@@ -477,11 +490,11 @@ export function SimpleBarChart({
  * Legend for charts
  */
 export interface LegendProps {
-  items: Array<{
+  items: {
     label: string;
     color: string;
     value?: string | number;
-  }>;
+  }[];
   direction?: "horizontal" | "vertical";
   className?: string;
 }

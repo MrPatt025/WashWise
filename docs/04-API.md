@@ -1075,7 +1075,528 @@ Authorization: Bearer <access_token>
 
 ---
 
-## 10. OpenAPI Specification Structure
+## 10. Analytics API
+
+Business intelligence and analytics endpoints for real-time insights, machine performance tracking, revenue analysis, and usage patterns.
+
+### 10.1 Dashboard Analytics
+
+Get comprehensive dashboard metrics including overview, machine status, revenue, and utilization.
+
+```http
+GET /api/v1/analytics/dashboard
+Authorization: Bearer <access_token>
+```
+
+**Query Parameters:**
+| Parameter  | Type | Description                      |
+| ---------- | ---- | -------------------------------- |
+| `period`   | enum | DAY, WEEK, MONTH (default: WEEK) |
+| `branchId` | uuid | Filter by branch (optional)      |
+
+**Response (200 OK):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "overview": {
+      "totalMachines": 24,
+      "activeMachines": 18,
+      "totalBranches": 3,
+      "totalUsers": 156,
+      "healthScore": 92.5,
+      "uptime": 99.2
+    },
+    "machineStats": {
+      "byStatus": {
+        "AVAILABLE": 12,
+        "BUSY": 6,
+        "MAINTENANCE": 4,
+        "OFFLINE": 2
+      },
+      "byType": {
+        "WASHER": 14,
+        "DRYER": 10
+      },
+      "healthScore": 92.5
+    },
+    "revenueMetrics": {
+      "today": 4500.00,
+      "todayTrend": 12.5,
+      "thisWeek": 28500.00,
+      "weekTrend": 8.3,
+      "thisMonth": 125000.00,
+      "monthTrend": 15.2,
+      "currency": "THB"
+    },
+    "utilizationMetrics": {
+      "currentRate": 75.0,
+      "averageDaily": 68.5,
+      "peakHours": ["10:00", "14:00", "18:00"],
+      "lowHours": ["06:00", "22:00"]
+    }
+  }
+}
+```
+
+### 10.2 Machine Statistics
+
+Get detailed machine status distribution and health metrics.
+
+```http
+GET /api/v1/analytics/machines/stats
+Authorization: Bearer <access_token>
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "byStatus": {
+      "AVAILABLE": 12,
+      "BUSY": 6,
+      "MAINTENANCE": 4,
+      "OFFLINE": 2
+    },
+    "byType": {
+      "WASHER": 14,
+      "DRYER": 10
+    },
+    "healthScore": 92.5
+  }
+}
+```
+
+### 10.3 Utilization Metrics
+
+Get machine utilization rates, peak hours, and capacity analysis.
+
+```http
+GET /api/v1/analytics/utilization
+Authorization: Bearer <access_token>
+```
+
+**Query Parameters:**
+| Parameter | Type | Description                      |
+| --------- | ---- | -------------------------------- |
+| `period`  | enum | DAY, WEEK, MONTH (default: WEEK) |
+
+**Response (200 OK):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "currentRate": 75.0,
+    "averageDaily": 68.5,
+    "peakHours": ["10:00", "14:00", "18:00"],
+    "lowHours": ["06:00", "22:00"],
+    "hourlyDistribution": [
+      { "hour": 6, "rate": 15.0 },
+      { "hour": 7, "rate": 25.0 },
+      { "hour": 8, "rate": 45.0 },
+      { "hour": 9, "rate": 65.0 },
+      { "hour": 10, "rate": 85.0 }
+    ]
+  }
+}
+```
+
+### 10.4 Revenue Metrics
+
+Get revenue analytics with trend analysis across different time periods.
+
+```http
+GET /api/v1/analytics/revenue
+Authorization: Bearer <access_token>
+```
+
+**Query Parameters:**
+| Parameter  | Type | Description                             |
+| ---------- | ---- | --------------------------------------- |
+| `period`   | enum | DAY, WEEK, MONTH, YEAR (default: MONTH) |
+| `branchId` | uuid | Filter by branch (optional)             |
+
+**Response (200 OK):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "today": 4500.00,
+    "todayTrend": 12.5,
+    "thisWeek": 28500.00,
+    "weekTrend": 8.3,
+    "thisMonth": 125000.00,
+    "monthTrend": 15.2,
+    "thisYear": 1450000.00,
+    "yearTrend": 22.8,
+    "currency": "THB",
+    "breakdown": {
+      "byMachineType": {
+        "WASHER": 85000.00,
+        "DRYER": 40000.00
+      },
+      "byBranch": [
+        { "branchId": "uuid", "name": "Sukhumvit", "revenue": 65000.00 },
+        { "branchId": "uuid", "name": "Silom", "revenue": 60000.00 }
+      ]
+    }
+  }
+}
+```
+
+### 10.5 Performance Metrics
+
+Get machine performance, uptime statistics, and error rates.
+
+```http
+GET /api/v1/analytics/performance
+Authorization: Bearer <access_token>
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "uptime": 99.2,
+    "avgCycleTime": 42.5,
+    "errorRate": 0.8,
+    "mtbf": 720.5,
+    "maintenanceCompliance": 95.0,
+    "customerSatisfaction": 4.7
+  }
+}
+```
+
+### 10.6 Machine Rankings
+
+Get top-performing or problematic machines ranked by various metrics.
+
+```http
+GET /api/v1/analytics/machines/rankings
+Authorization: Bearer <access_token>
+```
+
+**Query Parameters:**
+| Parameter | Type    | Description                                |
+| --------- | ------- | ------------------------------------------ |
+| `metric`  | enum    | REVENUE, CYCLES, ERRORS (default: REVENUE) |
+| `limit`   | integer | Number of results (default: 10, max: 50)   |
+| `order`   | enum    | ASC, DESC (default: DESC)                  |
+
+**Response (200 OK):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "rankings": [
+      {
+        "rank": 1,
+        "machine": {
+          "id": "uuid",
+          "label": "Washer 1",
+          "type": "WASHER",
+          "branchName": "Sukhumvit Branch"
+        },
+        "value": 45000.00,
+        "trend": 15.2
+      },
+      {
+        "rank": 2,
+        "machine": {
+          "id": "uuid",
+          "label": "Washer 3",
+          "type": "WASHER",
+          "branchName": "Silom Branch"
+        },
+        "value": 42500.00,
+        "trend": 8.7
+      }
+    ],
+    "metric": "REVENUE",
+    "currency": "THB"
+  }
+}
+```
+
+### 10.7 Usage Patterns
+
+Get hourly and daily usage pattern analysis for capacity planning.
+
+```http
+GET /api/v1/analytics/usage-pattern
+Authorization: Bearer <access_token>
+```
+
+**Query Parameters:**
+| Parameter | Type | Description                      |
+| --------- | ---- | -------------------------------- |
+| `period`  | enum | DAY, WEEK, MONTH (default: WEEK) |
+
+**Response (200 OK):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "hourlyPattern": [
+      { "hour": 0, "avgUsage": 5.2, "peakUsage": 12.0 },
+      { "hour": 1, "avgUsage": 3.1, "peakUsage": 8.0 },
+      { "hour": 6, "avgUsage": 15.5, "peakUsage": 28.0 },
+      { "hour": 10, "avgUsage": 85.2, "peakUsage": 98.0 },
+      { "hour": 14, "avgUsage": 78.5, "peakUsage": 95.0 },
+      { "hour": 18, "avgUsage": 82.3, "peakUsage": 96.0 }
+    ],
+    "dailyPattern": [
+      { "day": "Monday", "avgUsage": 65.0 },
+      { "day": "Tuesday", "avgUsage": 58.5 },
+      { "day": "Wednesday", "avgUsage": 62.3 },
+      { "day": "Thursday", "avgUsage": 60.8 },
+      { "day": "Friday", "avgUsage": 72.5 },
+      { "day": "Saturday", "avgUsage": 88.2 },
+      { "day": "Sunday", "avgUsage": 82.7 }
+    ],
+    "recommendations": [
+      "Consider extending hours on Saturday - high demand detected",
+      "Peak hours identified: 10:00-12:00 and 17:00-20:00",
+      "Low utilization between 01:00-05:00 - consider reduced hours"
+    ]
+  }
+}
+```
+
+---
+
+## 11. Reports API
+
+Advanced reporting and export endpoints with multiple formats for comprehensive business analysis.
+
+### 11.1 Revenue Report
+
+Generate comprehensive revenue reports with breakdowns by time period, branch, and payment method.
+
+```http
+GET /api/v1/reports/revenue
+Authorization: Bearer <access_token>
+```
+
+**Query Parameters:**
+| Parameter   | Type | Description                                                                               |
+| ----------- | ---- | ----------------------------------------------------------------------------------------- |
+| `period`    | enum | today, yesterday, last7days, last30days, thisWeek, thisMonth, lastMonth, thisYear, custom |
+| `startDate` | date | Start date for custom period (required if period=custom)                                  |
+| `endDate`   | date | End date for custom period (required if period=custom)                                    |
+| `branchId`  | uuid | Filter by branch (optional)                                                               |
+| `groupBy`   | enum | day, week, month (default: day)                                                           |
+| `format`    | enum | json, csv (default: json)                                                                 |
+
+**Response (200 OK):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "summary": {
+      "totalRevenue": 125000.00,
+      "transactionCount": 2450,
+      "avgTransactionValue": 51.02,
+      "growth": 15.2,
+      "period": {
+        "start": "2025-01-01T00:00:00Z",
+        "end": "2025-01-31T23:59:59Z"
+      }
+    },
+    "breakdown": [
+      {
+        "date": "2025-01-01",
+        "totalRevenue": 4250.00,
+        "transactionCount": 85,
+        "avgTransactionValue": 50.00,
+        "byPaymentMethod": { "PROMPTPAY": 2500, "CASH": 1750 },
+        "byMachineType": { "WASHER": 2800, "DRYER": 1450 }
+      }
+    ],
+    "byBranch": [
+      { "branchId": "uuid", "branchName": "Sukhumvit", "revenue": 65000, "transactions": 1200 }
+    ],
+    "byPaymentMethod": { "PROMPTPAY": 75000, "CASH": 35000, "CREDIT_CARD": 15000 }
+  }
+}
+```
+
+### 11.2 Machine Utilization Report
+
+Generate machine utilization reports showing performance metrics for each machine.
+
+```http
+GET /api/v1/reports/utilization
+Authorization: Bearer <access_token>
+```
+
+**Query Parameters:**
+| Parameter   | Type | Description                  |
+| ----------- | ---- | ---------------------------- |
+| `period`    | enum | Same as revenue report       |
+| `startDate` | date | Start date for custom period |
+| `endDate`   | date | End date for custom period   |
+| `branchId`  | uuid | Filter by branch (optional)  |
+
+**Response (200 OK):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "summary": {
+      "totalMachines": 24,
+      "avgUtilization": 68.5,
+      "totalCycles": 4850,
+      "totalRevenue": 125000.00,
+      "topPerformers": [...],
+      "underutilized": [...]
+    },
+    "machines": [
+      {
+        "machineId": "uuid",
+        "machineName": "Washer-01",
+        "machineType": "WASHER",
+        "branchName": "Sukhumvit",
+        "totalCycles": 285,
+        "totalRuntime": 12825,
+        "utilizationRate": 78.5,
+        "revenue": 8550.00,
+        "avgCycleDuration": 45
+      }
+    ]
+  }
+}
+```
+
+### 11.3 Maintenance Report
+
+Generate maintenance and downtime reports for fleet management.
+
+```http
+GET /api/v1/reports/maintenance
+Authorization: Bearer <access_token>
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "summary": {
+      "totalMachines": 24,
+      "machinesNeedingMaintenance": 4,
+      "totalMaintenanceCost": 12500.00,
+      "avgDowntimePerMachine": 45
+    },
+    "machines": [
+      {
+        "machineId": "uuid",
+        "machineName": "Washer-05",
+        "maintenanceCount": 2,
+        "totalDowntime": 180,
+        "avgRepairTime": 90,
+        "maintenanceCosts": 2500.00,
+        "lastMaintenanceDate": "2025-01-15T10:00:00Z",
+        "issueCategories": { "Routine Maintenance": 1, "Belt Replacement": 1 }
+      }
+    ]
+  }
+}
+```
+
+### 11.4 Customer Insights Report
+
+Generate customer behavior analytics and insights.
+
+```http
+GET /api/v1/reports/customer-insights
+Authorization: Bearer <access_token>
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "summary": {
+      "totalCustomers": 1250,
+      "avgSpendPerCustomer": 100.00,
+      "totalTransactions": 4850,
+      "peakHour": "18:00",
+      "peakDay": "Saturday"
+    },
+    "topSpenders": [
+      { "customerId": "id", "transactionCount": 45, "totalSpent": 2250.00 }
+    ],
+    "frequentUsers": [
+      { "customerId": "id", "transactionCount": 62, "totalSpent": 1860.00 }
+    ],
+    "timeAnalysis": {
+      "hourlyDistribution": { "10": 245, "18": 385, "20": 312 },
+      "dayOfWeekDistribution": { "0": 580, "6": 720 }
+    }
+  }
+}
+```
+
+### 11.5 Operational Performance Report
+
+Generate operational metrics and branch performance comparisons.
+
+```http
+GET /api/v1/reports/operational
+Authorization: Bearer <access_token>
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "summary": {
+      "totalMachines": 24,
+      "fleetHealth": 92.5,
+      "throughputPerHour": 6.8,
+      "revenuePerMachine": 5208.33,
+      "totalRevenue": 125000.00,
+      "totalTransactions": 4850
+    },
+    "machineStatus": {
+      "available": 12,
+      "inUse": 6,
+      "maintenance": 4,
+      "offline": 2
+    },
+    "branchPerformance": [
+      {
+        "branchId": "uuid",
+        "branchName": "Sukhumvit",
+        "machines": 10,
+        "revenue": 65000.00,
+        "transactions": 1200
+      }
+    ]
+  }
+}
+```
+
+---
+
+## 12. OpenAPI Specification Structure
 
 ```yaml
 openapi: 3.1.0
@@ -1101,6 +1622,8 @@ tags:
     description: Payment processing
   - name: Notifications
     description: Notification management
+  - name: Analytics
+    description: Business intelligence and analytics
   - name: AI
     description: AI-powered features
   - name: Admin
@@ -1159,7 +1682,7 @@ security:
 
 ---
 
-## 11. Versioning Strategy
+## 13. Versioning Strategy
 
 ### Current: v1
 

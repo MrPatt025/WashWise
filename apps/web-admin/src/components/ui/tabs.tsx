@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 // ============================================================================
 // Types
@@ -118,7 +118,9 @@ export function TabList({ children, className, "aria-label": ariaLabel }: TabLis
     const tabs = listRef.current?.querySelectorAll<HTMLButtonElement>(
       '[role="tab"]:not([disabled])'
     );
-    if (!tabs?.length) return;
+    if (!tabs?.length) {
+      return;
+    }
 
     const currentIndex = Array.from(tabs).findIndex((tab) => tab === document.activeElement);
 
@@ -412,7 +414,9 @@ export function ScrollableTabs({
 
   const checkScroll = React.useCallback(() => {
     const el = scrollRef.current;
-    if (!el) return;
+    if (!el) {
+      return;
+    }
 
     setShowLeftArrow(el.scrollLeft > 0);
     setShowRightArrow(el.scrollLeft < el.scrollWidth - el.clientWidth - 1);
@@ -426,7 +430,9 @@ export function ScrollableTabs({
 
   const scroll = (direction: "left" | "right") => {
     const el = scrollRef.current;
-    if (!el) return;
+    if (!el) {
+      return;
+    }
 
     const amount = direction === "left" ? -200 : 200;
     el.scrollBy({ left: amount, behavior: "smooth" });
@@ -491,12 +497,12 @@ export function ScrollableTabs({
 // ============================================================================
 
 interface IconTabsProps {
-  tabs: Array<{
+  tabs: {
     id: string;
     icon: React.ReactNode;
     label: string;
     content?: React.ReactNode;
-  }>;
+  }[];
   defaultTab?: string;
   activeTab?: string;
   onTabChange?: (tabId: string) => void;

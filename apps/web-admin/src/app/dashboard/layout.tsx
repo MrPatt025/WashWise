@@ -10,18 +10,18 @@ import { ThemeToggle } from "@/components/ui/theme-provider";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import {
-  WashingMachine,
+  Bell,
+  ChevronRight,
+  HelpCircle,
   LayoutDashboard,
-  Settings,
   LogOut,
   Menu,
-  X,
+  Settings,
   User,
-  ChevronRight,
-  Bell,
-  HelpCircle,
+  WashingMachine,
+  X,
 } from "lucide-react";
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 
 interface NavItem {
   name: string;
@@ -88,7 +88,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             {/* Logo */}
             <div className="flex h-16 items-center justify-between border-b px-4">
               <Link href="/dashboard" className="flex items-center space-x-2">
-                <div className="rounded-lg bg-primary p-2">
+                <div className="rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 p-2">
                   <WashingMachine className="h-5 w-5 text-white" />
                 </div>
                 <span className="text-xl font-bold">WashWise</span>
@@ -113,7 +113,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                         className={cn(
                           "flex items-center space-x-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150",
                           isActive
-                            ? "bg-primary text-primary-foreground shadow-sm"
+                            ? "bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-md"
                             : "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
                         )}
                         aria-current={isActive ? "page" : undefined}

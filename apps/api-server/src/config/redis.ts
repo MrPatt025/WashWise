@@ -15,10 +15,10 @@ export function getRedis(): Redis {
     });
 
     redis.on("connect", () => {
-      console.log("✅ Connected to Redis");
+      console.info("✅ Connected to Redis");
     });
   }
-  return redis!;
+  return redis;
 }
 
 export async function closeRedis(): Promise<void> {

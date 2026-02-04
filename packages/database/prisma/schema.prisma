@@ -161,7 +161,7 @@ model Machine {
   cycleDurationMins Int           @default(45) @map("cycle_duration_mins")
   
   // Status & Health
-  status            MachineStatus @default(AVAILABLE)
+  status            MachineStatus @default(IDLE)
   isActive          Boolean       @default(true) @map("is_active")
   
   // Health monitoring
@@ -230,11 +230,14 @@ enum MachineType {
 }
 
 enum MachineStatus {
-  AVAILABLE
-  BUSY
-  OFFLINE
+  IDLE
+  RESERVED
+  RUNNING
   MAINTENANCE
+  OUT_OF_ORDER
   ERROR
+  OFFLINE
+  DISABLED
 }
 
 // ============================================

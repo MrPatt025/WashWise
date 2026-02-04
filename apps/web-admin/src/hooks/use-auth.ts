@@ -3,13 +3,13 @@ import { useRouter } from "next/navigation";
 import api, { validateResponse } from "@/lib/api";
 import { useAuthStore } from "@/stores/auth.store";
 import { queryKeys, staleTimes } from "@/lib/query";
-import { showSuccessToast, showErrorToast } from "@/lib/errors";
+import { showErrorToast, showSuccessToast } from "@/lib/errors";
 import {
-  AuthResponseSchema,
-  RefreshResponseSchema,
-  type LoginRequest,
-  type RegisterRequest,
   type AuthResponse,
+  AuthResponseSchema,
+  type LoginRequest,
+  RefreshResponseSchema,
+  type RegisterRequest,
 } from "@washwise/types";
 import { disconnectSocket, reconnectSocket } from "@/lib/socket";
 

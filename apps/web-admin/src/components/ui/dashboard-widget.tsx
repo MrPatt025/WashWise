@@ -4,14 +4,14 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import {
+  ChevronDown,
+  ExternalLink,
+  GripVertical,
+  Maximize2,
   MoreVertical,
   RefreshCw,
-  Maximize2,
-  ExternalLink,
-  ChevronDown,
-  GripVertical,
 } from "lucide-react";
-import { Menu, MenuTrigger, MenuContent, MenuItem } from "./menu";
+import { Menu, MenuContent, MenuItem, MenuTrigger } from "./menu";
 
 // ============================================================================
 // Types
@@ -69,7 +69,9 @@ export function DashboardWidget({
   const [isRefreshing, setIsRefreshing] = React.useState(false);
 
   const handleRefresh = async () => {
-    if (!onRefresh) return;
+    if (!onRefresh) {
+      return;
+    }
     setIsRefreshing(true);
     await onRefresh();
     setIsRefreshing(false);
@@ -357,10 +359,18 @@ export function ActivityFeedWidget({
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
 
-    if (minutes < 1) return "Just now";
-    if (minutes < 60) return `${minutes}m ago`;
-    if (hours < 24) return `${hours}h ago`;
-    if (days < 7) return `${days}d ago`;
+    if (minutes < 1) {
+      return "Just now";
+    }
+    if (minutes < 60) {
+      return `${minutes}m ago`;
+    }
+    if (hours < 24) {
+      return `${hours}h ago`;
+    }
+    if (days < 7) {
+      return `${days}d ago`;
+    }
     return date.toLocaleDateString();
   };
 
@@ -497,7 +507,9 @@ export function NotificationWidget({
     error: "text-red-800 dark:text-red-200",
   };
 
-  if (notifications.length === 0) return null;
+  if (notifications.length === 0) {
+    return null;
+  }
 
   return (
     <div className={cn("space-y-3", className)}>

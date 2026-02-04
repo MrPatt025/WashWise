@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { CheckCircle, XCircle, AlertTriangle, Info, X, Loader2 } from "lucide-react";
+import { AlertTriangle, CheckCircle, Info, Loader2, X, XCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -177,7 +177,9 @@ function ToastContainer({
     | "bottom-center";
 }) {
   const context = React.useContext(ToastContext);
-  if (!context) return null;
+  if (!context) {
+    return null;
+  }
 
   const { toasts, removeToast } = context;
 

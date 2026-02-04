@@ -131,7 +131,9 @@ export function FocusContainer({
   const previousFocusRef = React.useRef<HTMLElement | null>(null);
 
   React.useEffect(() => {
-    if (!active) return;
+    if (!active) {
+      return;
+    }
 
     // Store current focus
     previousFocusRef.current = document.activeElement as HTMLElement;

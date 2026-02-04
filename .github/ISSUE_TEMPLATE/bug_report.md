@@ -44,7 +44,7 @@ If applicable, add screenshots to help explain your problem.
 - [ ] @washwise/database
 - [ ] @washwise/types
 - [ ] @washwise/config
-- [ ] Other: ******\_\_\_******
+- [ ] Other: **\*\***\_\_\_**\*\***
 
 ## 📋 Additional Context
 

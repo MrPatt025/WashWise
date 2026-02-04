@@ -25,12 +25,42 @@ export * from "./timeline";
 
 // Charts & Stats
 export * from "./chart";
+export * from "./metrics-card";
+
+// Activity Feed (explicit exports to avoid conflicts)
+export {
+  ActivityFeed,
+  ActivityItemCard,
+  CompactActivityList,
+  type ActivityItem,
+  type ActivityType,
+} from "./activity-feed";
+
+// Status Indicator (explicit exports to avoid conflicts)
+export {
+  StatusIndicator,
+  MachineStatusBadge,
+  ConnectionStatus,
+  MachineStatusCard,
+  StatusOverview,
+} from "./status-indicator";
+
+// Data Visualization (explicit exports to avoid conflicts)
+export {
+  ProgressRing as DataProgressRing,
+  DonutChart as DataDonutChart,
+  StatComparison,
+  MiniBarChart,
+  GaugeChart,
+  HeatMap,
+} from "./data-visualization";
+
 export {
   Stat,
   StatWithSparkline,
   StatGrid,
   ComparisonStat,
-  AnimatedCounter,
+  AnimatedCounter as StatAnimatedCounter,
   GoalStat,
   StatList,
 } from "./stat";
@@ -104,3 +134,9 @@ export * from "./animations";
 
 // Dashboard Widgets
 export * from "./dashboard-widget";
+
+// World-Class UI Components
+export * from "./notification-center";
+export * from "./stat-showcase";
+export * from "./glassmorphism-card";
+export * from "./advanced-select";

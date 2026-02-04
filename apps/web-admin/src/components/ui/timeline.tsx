@@ -3,7 +3,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Check, Circle, Clock, AlertCircle } from "lucide-react";
+import { AlertCircle, Check, Circle, Clock } from "lucide-react";
 
 // ============================================================================
 // Types
@@ -232,7 +232,6 @@ export function ActivityTimeline({ items, className }: ActivityTimelineProps) {
             <div className="flex-shrink-0">
               <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
                 {item.user.avatar ? (
-                  // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={item.user.avatar}
                     alt={item.user.name}
@@ -422,10 +421,10 @@ export function OrderTrackingTimeline({ steps, className }: OrderTrackingTimelin
 interface ChangeLogEntry {
   version: string;
   date: string | Date;
-  changes: Array<{
+  changes: {
     type: "added" | "changed" | "fixed" | "removed" | "security";
     description: string;
-  }>;
+  }[];
 }
 
 interface ChangeLogTimelineProps {

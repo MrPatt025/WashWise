@@ -10,8 +10,14 @@ import { API_CONSTANTS } from "@washwise/config";
 import type { Server as SocketIOServer } from "socket.io";
 
 import { env } from "./config/index.js";
-import { authPlugin, zodPlugin } from "./plugins/index.js";
-import { authRoutes, machineRoutes, simulationRoutes } from "./routes/index.js";
+import { authPlugin, securityPlugin, zodPlugin } from "./plugins/index.js";
+import {
+  analyticsRoutes,
+  authRoutes,
+  branchRoutes,
+  machineRoutes,
+  simulationRoutes,
+} from "./routes/index.js";
 
 // Extend Fastify types for Socket.io
 declare module "fastify" {
@@ -47,12 +53,49 @@ export async function buildApp() {
     contentSecurityPolicy: false, // Disabled for API
   });
 
-  // CORS
+  // CORS - Allow specific origins for security
+  // Explicitly handle preflight (OPTIONS) requests
   await fastify.register(cors, {
-    origin: env.CORS_ORIGIN,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (mobile apps, Postman, curl, etc.)
+      if (!origin) {
+        callback(null, true);
+        return;
+      }
+      // Parse allowed origins from environment
+      const allowedOrigins = Array.isArray(env.CORS_ORIGIN)
+        ? env.CORS_ORIGIN
+        : env.CORS_ORIGIN.split(",").map((o) => o.trim());
+
+      // Check if origin is in allowed list
+      if (allowedOrigins.includes(origin) || allowedOrigins.includes("*")) {
+        callback(null, true);
+        return;
+      }
+      // In development, allow all localhost variants (any port)
+      if (env.NODE_ENV === "development" && /^https?:\/\/localhost(:\d+)?$/.test(origin)) {
+        callback(null, true);
+        return;
+      }
+      // Reject other origins
+      callback(new Error(`Origin ${origin} not allowed by CORS`), false);
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "X-Requested-With",
+      "X-Tenant-Id",
+      "Accept",
+      "Origin",
+    ],
+    exposedHeaders: ["X-Total-Count", "X-Page", "X-Per-Page"],
+    // Preflight OPTIONS request caching
+    maxAge: 86400, // 24 hours
+    // Ensure preflight succeeds
+    preflight: true,
+    strictPreflight: false,
   });
 
   // Cookie parsing
@@ -92,6 +135,7 @@ export async function buildApp() {
       tags: [
         { name: "Auth", description: "Authentication endpoints" },
         { name: "Machines", description: "Machine management endpoints" },
+        { name: "Analytics", description: "Business intelligence and analytics endpoints" },
         { name: "Simulation", description: "IoT simulation endpoints" },
       ],
     },
@@ -108,6 +152,7 @@ export async function buildApp() {
   // Custom plugins
   await fastify.register(zodPlugin);
   await fastify.register(authPlugin);
+  await fastify.register(securityPlugin);
 
   // Health check
   fastify.get("/health", async () => ({
@@ -123,10 +168,18 @@ export async function buildApp() {
   await fastify.register(machineRoutes, {
     prefix: `${API_CONSTANTS.PREFIX}/machines`,
   });
+  await fastify.register(branchRoutes, {
+    prefix: `${API_CONSTANTS.PREFIX}/branches`,
+  });
 
   // Simulation routes (will use fastify.io if available)
   await fastify.register(simulationRoutes, {
     prefix: `${API_CONSTANTS.PREFIX}/simulation`,
+  });
+
+  // Analytics routes for business intelligence
+  await fastify.register(analyticsRoutes, {
+    prefix: `${API_CONSTANTS.PREFIX}/analytics`,
   });
 
   // Global error handler

@@ -3,25 +3,25 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import {
-  CommandProvider,
   CommandDialog,
   type CommandGroup,
   type CommandItem,
+  CommandProvider,
 } from "@/components/ui/command";
 import { useAuthStore } from "@/stores/auth.store";
 import { useLogout } from "@/hooks/use-auth";
 import { hasPermission } from "@/components/auth-guard";
 import {
+  HelpCircle,
   LayoutDashboard,
-  WashingMachine,
-  Settings,
-  User,
   LogOut,
   Moon,
-  Sun,
   Plus,
-  HelpCircle,
   RefreshCw,
+  Settings,
+  Sun,
+  User,
+  WashingMachine,
 } from "lucide-react";
 import { useTheme } from "@/components/ui/theme-provider";
 

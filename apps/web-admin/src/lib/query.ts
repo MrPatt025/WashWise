@@ -1,4 +1,4 @@
-import { QueryClient, QueryCache, MutationCache } from "@tanstack/react-query";
+import { MutationCache, QueryCache, QueryClient } from "@tanstack/react-query";
 import { parseError, showErrorToast } from "./errors";
 
 /**
@@ -151,18 +151,18 @@ export const prefetch = {
  */
 export const invalidate = {
   machines: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.machines.all });
+    void queryClient.invalidateQueries({ queryKey: queryKeys.machines.all });
   },
 
   machineStats: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.machines.stats() });
+    void queryClient.invalidateQueries({ queryKey: queryKeys.machines.stats() });
   },
 
   auth: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.auth.all });
+    void queryClient.invalidateQueries({ queryKey: queryKeys.auth.all });
   },
 
   all: (queryClient: QueryClient) => {
-    queryClient.invalidateQueries();
+    void queryClient.invalidateQueries();
   },
 };

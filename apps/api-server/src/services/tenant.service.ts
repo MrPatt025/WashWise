@@ -1,5 +1,5 @@
 import { prisma } from "@washwise/database";
-import type { Tenant, CreateTenant } from "@washwise/types";
+import type { CreateTenant, Tenant } from "@washwise/types";
 
 /**
  * Tenant Service - Handles tenant-related operations

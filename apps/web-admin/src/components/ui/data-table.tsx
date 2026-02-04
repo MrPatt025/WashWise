@@ -2,14 +2,14 @@
 
 import * as React from "react";
 import {
+  Check,
   ChevronDown,
-  ChevronUp,
   ChevronsUpDown,
+  ChevronUp,
   MoreHorizontal,
   Search,
   Settings2,
   X,
-  Check,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -202,7 +202,9 @@ export function DataTable<T>({
 
   // Handle sort
   const handleSort = (columnId: string) => {
-    if (!onSortChange) return;
+    if (!onSortChange) {
+      return;
+    }
 
     if (sort?.column === columnId) {
       if (sort.direction === "asc") {
@@ -217,7 +219,9 @@ export function DataTable<T>({
 
   // Handle select all
   const handleSelectAll = () => {
-    if (!onSelectionChange) return;
+    if (!onSelectionChange) {
+      return;
+    }
 
     if (selectedKeys.size === data.length) {
       onSelectionChange(new Set());
@@ -229,7 +233,9 @@ export function DataTable<T>({
 
   // Handle row select
   const handleRowSelect = (key: string | number) => {
-    if (!onSelectionChange) return;
+    if (!onSelectionChange) {
+      return;
+    }
 
     const newSelected = new Set(selectedKeys);
     if (newSelected.has(key)) {
@@ -255,7 +261,9 @@ export function DataTable<T>({
 
   // Render sort indicator
   const renderSortIndicator = (column: DataTableColumn<T>) => {
-    if (!sortable || !column.sortable) return null;
+    if (!sortable || !column.sortable) {
+      return null;
+    }
 
     const isSorted = sort?.column === column.id;
     const direction = sort?.direction;
@@ -631,10 +639,14 @@ export const TableCell = {
     value: Date | string | number | null | undefined;
     format?: "short" | "long" | "relative";
   }) => {
-    if (!value) return <span className="text-muted-foreground">—</span>;
+    if (!value) {
+      return <span className="text-muted-foreground">—</span>;
+    }
 
     const date = new Date(value);
-    if (isNaN(date.getTime())) return <span className="text-muted-foreground">—</span>;
+    if (isNaN(date.getTime())) {
+      return <span className="text-muted-foreground">—</span>;
+    }
 
     let formatted: string;
     if (format === "relative") {
@@ -642,10 +654,15 @@ export const TableCell = {
       const diff = now.getTime() - date.getTime();
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
 
-      if (days === 0) formatted = "Today";
-      else if (days === 1) formatted = "Yesterday";
-      else if (days < 7) formatted = `${days} days ago`;
-      else formatted = date.toLocaleDateString();
+      if (days === 0) {
+        formatted = "Today";
+      } else if (days === 1) {
+        formatted = "Yesterday";
+      } else if (days < 7) {
+        formatted = `${days} days ago`;
+      } else {
+        formatted = date.toLocaleDateString();
+      }
     } else if (format === "long") {
       formatted = date.toLocaleDateString("en-US", {
         year: "numeric",
@@ -742,7 +759,6 @@ export const TableCell = {
           )}
         >
           {src ? (
-            // eslint-disable-next-line @next/next/no-img-element
             <img src={src} alt={name} className="h-full w-full rounded-full object-cover" />
           ) : (
             initials

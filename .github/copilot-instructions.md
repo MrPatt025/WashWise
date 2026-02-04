@@ -20,7 +20,7 @@ Every database query MUST include `tenantId` filter from JWT context:
 ```typescript
 // ✅ CORRECT - Always filter by tenantId from request context
 const machines = await prisma.machine.findMany({
-  where: { tenantId: request.user!.tenantId, ...filters }
+  where: { tenantId: request.user!.tenantId, ...filters },
 });
 
 // ❌ WRONG - Never query without tenant isolation
@@ -112,7 +112,7 @@ Use Conventional Commits with scopes: `feat(api-server):`, `fix(web-admin):`, `d
 interface ApiResponse<T> {
   success: boolean;
   data?: T;
-  error?: { code: string; message: string; };
+  error?: { code: string; message: string };
 }
 ```
 

@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
-import { X, AlertCircle, CheckCircle, Info, AlertTriangle, Bell, ChevronRight } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { AlertCircle, AlertTriangle, Bell, CheckCircle, ChevronRight, Info, X } from "lucide-react";
 
 // ============================================================================
 // Types
@@ -459,7 +459,9 @@ interface CookieBannerProps {
 export function CookieBanner({ onAccept, onDecline, onSettings, className }: CookieBannerProps) {
   const [visible, setVisible] = React.useState(true);
 
-  if (!visible) return null;
+  if (!visible) {
+    return null;
+  }
 
   return (
     <motion.div

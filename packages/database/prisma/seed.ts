@@ -1,29 +1,65 @@
 import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import pg from "pg";
 import { hash } from "argon2";
 
-const prisma = new PrismaClient();
+// Create connection pool for seeding
+const pool = new pg.Pool({
+  connectionString:
+    process.env.DATABASE_URL || "postgresql://washwise:washwise@localhost:5432/washwise",
+});
+
+// Create adapter
+const adapter = new PrismaPg(pool);
+
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   console.log("🌱 Seeding database...");
 
   // Create demo tenant
   const demoTenant = await prisma.tenant.upsert({
-    where: { id: "00000000-0000-0000-0000-000000000001" },
+    where: { slug: "demo" },
     update: {},
     create: {
       id: "00000000-0000-0000-0000-000000000001",
+      slug: "demo",
       name: "Demo Laundromat",
       plan: "PRO",
+      email: "contact@demo-laundromat.com",
     },
   });
 
-  console.log(`✅ Created tenant: ${demoTenant.name}`);
+  console.log(`✅ Created tenant: ${demoTenant.name} (slug: ${demoTenant.slug})`);
+
+  // Create demo branch
+  const demoBranch = await prisma.branch.upsert({
+    where: {
+      tenantId_code: {
+        tenantId: demoTenant.id,
+        code: "MAIN",
+      },
+    },
+    update: {},
+    create: {
+      id: "00000000-0000-0000-0000-000000000010",
+      tenantId: demoTenant.id,
+      name: "Main Branch",
+      code: "MAIN",
+      address: "123 Laundry Street, Bangkok",
+    },
+  });
+
+  console.log(`✅ Created branch: ${demoBranch.name}`);
 
   // Create demo owner user
   const hashedPassword = await hash("Owner123!");
   const ownerUser = await prisma.user.upsert({
     where: {
-      email: "owner@demo.com",
+      tenantId_email: {
+        tenantId: demoTenant.id,
+        email: "owner@demo.com",
+      },
     },
     update: {},
     create: {
@@ -46,9 +82,8 @@ async function main() {
       label: "Washer 1",
       type: "WASHER" as const,
       capacityKg: 8,
-      status: "AVAILABLE" as const,
+      status: "IDLE" as const,
       pricePerCycle: 3.5,
-      location: "Row A",
     },
     {
       id: "00000000-0000-0000-0000-000000000102",
@@ -56,9 +91,8 @@ async function main() {
       label: "Washer 2",
       type: "WASHER" as const,
       capacityKg: 12,
-      status: "BUSY" as const,
+      status: "RUNNING" as const,
       pricePerCycle: 5,
-      location: "Row A",
     },
     {
       id: "00000000-0000-0000-0000-000000000103",
@@ -66,9 +100,8 @@ async function main() {
       label: "Dryer 1",
       type: "DRYER" as const,
       capacityKg: 10,
-      status: "AVAILABLE" as const,
+      status: "IDLE" as const,
       pricePerCycle: 2.5,
-      location: "Row B",
     },
     {
       id: "00000000-0000-0000-0000-000000000104",
@@ -78,7 +111,6 @@ async function main() {
       capacityKg: 15,
       status: "OFFLINE" as const,
       pricePerCycle: 3.5,
-      location: "Row B",
     },
   ];
 
@@ -94,6 +126,7 @@ async function main() {
       create: {
         ...machine,
         tenantId: demoTenant.id,
+        branchId: demoBranch.id,
       },
     });
   }
@@ -102,18 +135,38 @@ async function main() {
 
   // Create a second tenant for IDOR testing
   const testTenant = await prisma.tenant.upsert({
-    where: { id: "00000000-0000-0000-0000-000000000099" },
+    where: { slug: "test-idor" },
     update: {},
     create: {
       id: "00000000-0000-0000-0000-000000000099",
+      slug: "test-idor",
       name: "Test Tenant (IDOR)",
       plan: "FREE",
     },
   });
 
+  const testBranch = await prisma.branch.upsert({
+    where: {
+      tenantId_code: {
+        tenantId: testTenant.id,
+        code: "MAIN",
+      },
+    },
+    update: {},
+    create: {
+      id: "00000000-0000-0000-0000-000000000090",
+      tenantId: testTenant.id,
+      name: "Test Branch",
+      code: "MAIN",
+    },
+  });
+
   const _testUser = await prisma.user.upsert({
     where: {
-      email: "test@other.com",
+      tenantId_email: {
+        tenantId: testTenant.id,
+        email: "test@other.com",
+      },
     },
     update: {},
     create: {
@@ -140,9 +193,10 @@ async function main() {
       label: "Other Tenant Machine",
       type: "WASHER",
       capacityKg: 8,
-      status: "AVAILABLE",
+      status: "IDLE",
       pricePerCycle: 3,
       tenantId: testTenant.id,
+      branchId: testBranch.id,
     },
   });
 

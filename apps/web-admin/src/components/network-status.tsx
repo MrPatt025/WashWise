@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect, useSyncExternalStore } from "react";
-import { WifiOff, Loader2, AlertTriangle, CheckCircle } from "lucide-react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { AlertTriangle, CheckCircle, Loader2, WifiOff } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { isSocketConnected, getSocketState, configureSocketCallbacks } from "@/lib/socket";
+import { configureSocketCallbacks, getSocketState, isSocketConnected } from "@/lib/socket";
 
 /**
  * Network status
@@ -233,7 +233,9 @@ export function NetworkStatusIndicator({
 export function OfflineBanner() {
   const { isOnline } = useNetworkStatus();
 
-  if (isOnline) return null;
+  if (isOnline) {
+    return null;
+  }
 
   return (
     <div
@@ -268,7 +270,9 @@ export function useSlowNetwork(): boolean {
       }
     ).connection;
 
-    if (!connection) return;
+    if (!connection) {
+      return;
+    }
 
     const checkConnection = () => {
       // 2g or slow-2g are considered slow

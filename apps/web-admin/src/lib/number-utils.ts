@@ -148,7 +148,9 @@ export function formatBytes(
     return "—";
   }
 
-  if (bytes === 0) return "0 Bytes";
+  if (bytes === 0) {
+    return "0 Bytes";
+  }
 
   const { decimals = 2, locale = "en-US" } = options;
   const k = 1024;
@@ -227,7 +229,9 @@ export function formatPhone(
  * Parse currency string to number
  */
 export function parseCurrency(value: string): number | null {
-  if (!value) return null;
+  if (!value) {
+    return null;
+  }
 
   // Remove currency symbols, spaces, and grouping separators
   const cleaned = value
@@ -249,7 +253,7 @@ export function clamp(value: number, min: number, max: number): number {
 /**
  * Round to specific decimal places
  */
-export function round(value: number, decimals: number = 0): number {
+export function round(value: number, decimals = 0): number {
   const factor = Math.pow(10, decimals);
   return Math.round(value * factor) / factor;
 }
@@ -258,7 +262,9 @@ export function round(value: number, decimals: number = 0): number {
  * Calculate percentage
  */
 export function percentage(value: number, total: number): number {
-  if (total === 0) return 0;
+  if (total === 0) {
+    return 0;
+  }
   return (value / total) * 100;
 }
 
@@ -266,7 +272,9 @@ export function percentage(value: number, total: number): number {
  * Calculate percentage change
  */
 export function percentageChange(current: number, previous: number): number {
-  if (previous === 0) return current > 0 ? 100 : 0;
+  if (previous === 0) {
+    return current > 0 ? 100 : 0;
+  }
   return ((current - previous) / previous) * 100;
 }
 
@@ -301,7 +309,9 @@ export function sum(values: number[]): number {
  * Calculate average
  */
 export function average(values: number[]): number {
-  if (values.length === 0) return 0;
+  if (values.length === 0) {
+    return 0;
+  }
   return sum(values) / values.length;
 }
 
@@ -309,7 +319,9 @@ export function average(values: number[]): number {
  * Calculate median
  */
 export function median(values: number[]): number {
-  if (values.length === 0) return 0;
+  if (values.length === 0) {
+    return 0;
+  }
 
   const sorted = [...values].sort((a, b) => a - b);
   const mid = Math.floor(sorted.length / 2);
@@ -321,7 +333,9 @@ export function median(values: number[]): number {
  * Find min and max
  */
 export function minMax(values: number[]): { min: number; max: number } | null {
-  if (values.length === 0) return null;
+  if (values.length === 0) {
+    return null;
+  }
   return {
     min: Math.min(...values),
     max: Math.max(...values),
@@ -350,10 +364,16 @@ export function formatRange(
   max: number | null,
   options: NumberFormatOptions = {}
 ): string {
-  if (min === null && max === null) return "—";
-  if (min !== null && max === null) return `${formatNumber(min, options)}+`;
-  if (min === null && max !== null) return `Up to ${formatNumber(max, options)}`;
-  return `${formatNumber(min!, options)} – ${formatNumber(max!, options)}`;
+  if (min === null && max === null) {
+    return "—";
+  }
+  if (min !== null && max === null) {
+    return `${formatNumber(min, options)}+`;
+  }
+  if (min === null && max !== null) {
+    return `Up to ${formatNumber(max, options)}`;
+  }
+  return `${formatNumber(min, options)} – ${formatNumber(max, options)}`;
 }
 
 /**
@@ -387,11 +407,19 @@ export function formatPriceRange(
   max: number | null,
   options: CurrencyFormatOptions = {}
 ): string {
-  if (min === null && max === null) return "Free";
-  if (min !== null && max === null) return `From ${formatCurrency(min, options)}`;
-  if (min === null && max !== null) return `Up to ${formatCurrency(max, options)}`;
-  if (min === max) return formatCurrency(min!, options);
-  return `${formatCurrency(min!, options)} – ${formatCurrency(max!, options)}`;
+  if (min === null && max === null) {
+    return "Free";
+  }
+  if (min !== null && max === null) {
+    return `From ${formatCurrency(min, options)}`;
+  }
+  if (min === null && max !== null) {
+    return `Up to ${formatCurrency(max, options)}`;
+  }
+  if (min === max) {
+    return formatCurrency(min, options);
+  }
+  return `${formatCurrency(min, options)} – ${formatCurrency(max, options)}`;
 }
 
 /**

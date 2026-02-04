@@ -96,7 +96,9 @@ export function DropdownMenuContent({
 
   // Close on outside click
   React.useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      return;
+    }
 
     const handleClickOutside = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
@@ -118,7 +120,9 @@ export function DropdownMenuContent({
     };
   }, [open, setOpen]);
 
-  if (!open) return null;
+  if (!open) {
+    return null;
+  }
 
   const alignmentClasses = {
     start: "left-0",
@@ -160,7 +164,9 @@ export function DropdownMenuItem({
   const { setOpen } = useDropdownMenu();
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (disabled) return;
+    if (disabled) {
+      return;
+    }
     onClick?.(e);
     setOpen(false);
   };

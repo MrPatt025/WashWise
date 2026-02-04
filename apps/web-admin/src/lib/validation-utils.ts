@@ -82,15 +82,29 @@ export function getPasswordStrength(password: string): PasswordStrength {
   let score = 0;
 
   // Length scoring
-  if (password.length >= 8) score += 20;
-  if (password.length >= 12) score += 10;
-  if (password.length >= 16) score += 10;
+  if (password.length >= 8) {
+    score += 20;
+  }
+  if (password.length >= 12) {
+    score += 10;
+  }
+  if (password.length >= 16) {
+    score += 10;
+  }
 
   // Character variety scoring
-  if (/[a-z]/.test(password)) score += 10;
-  if (/[A-Z]/.test(password)) score += 15;
-  if (/\d/.test(password)) score += 15;
-  if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) score += 20;
+  if (/[a-z]/.test(password)) {
+    score += 10;
+  }
+  if (/[A-Z]/.test(password)) {
+    score += 15;
+  }
+  if (/\d/.test(password)) {
+    score += 15;
+  }
+  if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+    score += 20;
+  }
 
   // Bonus for mixed characters
   const hasLower = /[a-z]/.test(password);
@@ -99,14 +113,26 @@ export function getPasswordStrength(password: string): PasswordStrength {
   const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
   const varietyCount = [hasLower, hasUpper, hasNumber, hasSpecial].filter(Boolean).length;
 
-  if (varietyCount >= 3) score += 10;
-  if (varietyCount === 4) score += 10;
+  if (varietyCount >= 3) {
+    score += 10;
+  }
+  if (varietyCount === 4) {
+    score += 10;
+  }
 
   // Penalty for common patterns
-  if (/^[a-z]+$/i.test(password)) score -= 10;
-  if (/^\d+$/.test(password)) score -= 20;
-  if (/(.)\1{2,}/.test(password)) score -= 10; // Repeated characters
-  if (/12345|qwerty|password|admin/i.test(password)) score -= 30;
+  if (/^[a-z]+$/i.test(password)) {
+    score -= 10;
+  }
+  if (/^\d+$/.test(password)) {
+    score -= 20;
+  }
+  if (/(.)\1{2,}/.test(password)) {
+    score -= 10;
+  } // Repeated characters
+  if (/12345|qwerty|password|admin/i.test(password)) {
+    score -= 30;
+  }
 
   score = Math.max(0, Math.min(100, score));
 
@@ -239,7 +265,7 @@ export function validateRange(value: number, options: RangeOptions): ValidationR
 /**
  * Validate positive number
  */
-export function validatePositive(value: number, allowZero: boolean = false): ValidationResult {
+export function validatePositive(value: number, allowZero = false): ValidationResult {
   return validateRange(value, {
     min: 0,
     minInclusive: allowZero,
@@ -287,7 +313,7 @@ export function validateLength(value: string, options: LengthOptions): Validatio
 export function validatePattern(
   value: string,
   pattern: RegExp,
-  errorMessage: string = "Invalid format"
+  errorMessage = "Invalid format"
 ): ValidationResult {
   if (!pattern.test(value)) {
     return { valid: false, error: errorMessage };
@@ -298,10 +324,7 @@ export function validatePattern(
 /**
  * Validate required field
  */
-export function validateRequired(
-  value: unknown,
-  fieldName: string = "This field"
-): ValidationResult {
+export function validateRequired(value: unknown, fieldName = "This field"): ValidationResult {
   if (value === null || value === undefined) {
     return { valid: false, error: `${fieldName} is required` };
   }
@@ -423,11 +446,11 @@ export const commonSchemas = {
 export function createRefinedSchema<T extends z.ZodTypeAny>(
   schema: T,
   validator: (value: z.infer<T>) => ValidationResult
-): z.ZodEffects<T> {
+): z.ZodEffects<T, z.output<T>, z.input<T>> {
   return schema.refine(
-    (val) => validator(val).valid,
-    (val) => ({ message: validator(val).error || "Invalid value" })
-  );
+    (val: z.infer<T>) => validator(val).valid,
+    (val: z.infer<T>) => ({ message: validator(val).error || "Invalid value" })
+  ) as z.ZodEffects<T, z.output<T>, z.input<T>>;
 }
 
 // ============================================================================
@@ -446,7 +469,7 @@ export function validateForm<T extends Record<string, unknown>>(
 
   for (const [field, validator] of Object.entries(validators)) {
     if (validator) {
-      const result = (validator as ValidatorFn)(data[field as keyof T]);
+      const result = validator(data[field as keyof T]);
       if (!result.valid) {
         errors[field as keyof T] = result.error;
         isValid = false;
@@ -463,7 +486,7 @@ export function validateForm<T extends Record<string, unknown>>(
 export function createFieldValidator(rules: FieldRule[]): ValidatorFn {
   return (value: unknown) => {
     for (const rule of rules) {
-      if (rule.required && validateRequired(value).valid === false) {
+      if (rule.required && !validateRequired(value).valid) {
         return { valid: false, error: rule.message || "This field is required" };
       }
 

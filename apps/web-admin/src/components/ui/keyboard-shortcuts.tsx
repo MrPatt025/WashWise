@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
-import { X, Keyboard } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Keyboard, X } from "lucide-react";
 
 // ============================================================================
 // Types
@@ -237,7 +237,9 @@ export function useKeyboardShortcut(
   }, [callback]);
 
   React.useEffect(() => {
-    if (!enabled || !target) return;
+    if (!enabled || !target) {
+      return;
+    }
 
     const handleKeyDown = (event: KeyboardEvent) => {
       // Parse the keys
@@ -248,8 +250,12 @@ export function useKeyboardShortcut(
       if (event.ctrlKey || event.metaKey) {
         pressedKeys.push(event.metaKey && navigator.platform.includes("Mac") ? "mod" : "ctrl");
       }
-      if (event.altKey) pressedKeys.push("alt");
-      if (event.shiftKey) pressedKeys.push("shift");
+      if (event.altKey) {
+        pressedKeys.push("alt");
+      }
+      if (event.shiftKey) {
+        pressedKeys.push("shift");
+      }
 
       // Add the main key
       const mainKey = event.key.toLowerCase();
@@ -343,7 +349,9 @@ export function KeyboardShortcutsProvider({
   const unregisterShortcut = React.useCallback((groupName: string, keys: string[]) => {
     setShortcuts((prev) => {
       const groupIndex = prev.findIndex((g) => g.name === groupName);
-      if (groupIndex === -1) return prev;
+      if (groupIndex === -1) {
+        return prev;
+      }
 
       const newGroups = [...prev];
       newGroups[groupIndex] = {

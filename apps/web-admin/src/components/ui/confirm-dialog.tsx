@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { AlertTriangle, Trash2, Info, CheckCircle } from "lucide-react";
+import { AlertTriangle, CheckCircle, Info, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -120,7 +120,9 @@ export function ConfirmDialog({
   };
 
   const handleCancel = () => {
-    if (loading) return;
+    if (loading) {
+      return;
+    }
     onCancel?.();
     onOpenChange(false);
   };
@@ -261,11 +263,15 @@ export function DangerousActionDialog({
   const isConfirmEnabled = inputValue === confirmationText;
 
   React.useEffect(() => {
-    if (!open) setInputValue("");
+    if (!open) {
+      setInputValue("");
+    }
   }, [open]);
 
   const handleConfirm = async () => {
-    if (!isConfirmEnabled) return;
+    if (!isConfirmEnabled) {
+      return;
+    }
     await onConfirm();
     onOpenChange(false);
   };

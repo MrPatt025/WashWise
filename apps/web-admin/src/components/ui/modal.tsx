@@ -101,7 +101,9 @@ export function useModal() {
 function ModalContainer() {
   const { modals } = useModal();
 
-  if (modals.length === 0) return null;
+  if (modals.length === 0) {
+    return null;
+  }
 
   return (
     <>
@@ -364,7 +366,9 @@ export function Sheet({
     };
   }, [open]);
 
-  if (!open) return null;
+  if (!open) {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 z-50">
@@ -501,7 +505,9 @@ export function AlertModal({
   confirmLabel = "OK",
   variant = "info",
 }: AlertModalProps) {
-  if (!open) return null;
+  if (!open) {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -548,7 +554,9 @@ export function FullscreenModal({ open, onClose, children, title }: FullscreenMo
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [open, onClose]);
 
-  if (!open) return null;
+  if (!open) {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 z-50 bg-white duration-200 animate-in fade-in dark:bg-gray-950">

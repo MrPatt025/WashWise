@@ -424,7 +424,9 @@ interface LoadingButtonProps {
 }
 
 export function LoadingContent({ isLoading, loadingText, children }: LoadingButtonProps) {
-  if (!isLoading) return <>{children}</>;
+  if (!isLoading) {
+    return <>{children}</>;
+  }
 
   return (
     <>

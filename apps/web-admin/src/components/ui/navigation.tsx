@@ -4,16 +4,16 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
+  Bell,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  Menu,
-  X,
-  Search,
-  Bell,
   LogOut,
+  Menu,
+  Search,
+  X,
 } from "lucide-react";
 
 // ============================================================================
@@ -397,7 +397,6 @@ export function SidebarUser({ user, onSignOut, className }: SidebarUserProps) {
     <div className={cn("flex items-center gap-3 p-4", !showLabel && "justify-center", className)}>
       <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
         {user.avatar ? (
-          // eslint-disable-next-line @next/next/no-img-element
           <img src={user.avatar} alt={user.name} className="h-full w-full object-cover" />
         ) : (
           <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
@@ -530,7 +529,6 @@ export function TopNav({
             <div className="flex items-center gap-3 border-l border-gray-200 pl-2 dark:border-gray-700">
               <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
                 {user.avatar ? (
-                  // eslint-disable-next-line @next/next/no-img-element
                   <img src={user.avatar} alt={user.name} className="h-full w-full object-cover" />
                 ) : (
                   <span className="text-xs font-medium text-gray-600 dark:text-gray-300">

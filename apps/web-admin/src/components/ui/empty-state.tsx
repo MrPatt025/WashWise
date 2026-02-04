@@ -1,14 +1,14 @@
 import { cn } from "@/lib/utils";
 import { Button } from "./button";
 import {
-  WashingMachine,
-  Users,
-  CreditCard,
-  Settings,
-  Search,
   AlertCircle,
+  CreditCard,
   FolderOpen,
   type LucideIcon,
+  Search,
+  Settings,
+  Users,
+  WashingMachine,
 } from "lucide-react";
 
 interface EmptyStateProps {

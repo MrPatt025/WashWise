@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, Check, Circle, type LucideIcon } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Check, ChevronRight, Circle, type LucideIcon } from "lucide-react";
 
 // ============================================================================
 // Types
@@ -277,7 +277,9 @@ export function MenuItem({
   const { closeMenu } = useMenuContext();
 
   const handleClick = () => {
-    if (disabled) return;
+    if (disabled) {
+      return;
+    }
     onClick?.();
     closeMenu();
   };
@@ -398,7 +400,9 @@ export function MenuCheckboxItem({
   className,
 }: MenuCheckboxItemProps) {
   const handleClick = () => {
-    if (disabled) return;
+    if (disabled) {
+      return;
+    }
     onCheckedChange?.(!checked);
   };
 
@@ -481,7 +485,9 @@ export function MenuRadioItem({
   const isSelected = context?.value === value;
 
   const handleClick = () => {
-    if (disabled) return;
+    if (disabled) {
+      return;
+    }
     context?.onValueChange?.(value);
   };
 

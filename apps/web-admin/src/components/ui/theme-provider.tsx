@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Moon, Sun, Monitor, Check } from "lucide-react";
+import { Check, Monitor, Moon, Sun } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -36,7 +36,9 @@ const THEME_STORAGE_KEY = "washwise-theme";
  * Get system theme preference
  */
 function getSystemTheme(): "light" | "dark" {
-  if (typeof window === "undefined") return "light";
+  if (typeof window === "undefined") {
+    return "light";
+  }
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
@@ -69,12 +71,16 @@ export function ThemeProvider({
   disableTransitionOnChange = true,
 }: ThemeProviderProps) {
   const [theme, setThemeState] = React.useState<Theme>(() => {
-    if (typeof window === "undefined") return defaultTheme;
+    if (typeof window === "undefined") {
+      return defaultTheme;
+    }
     return (localStorage.getItem(storageKey) as Theme) || defaultTheme;
   });
 
   const [resolvedTheme, setResolvedTheme] = React.useState<"light" | "dark">(() => {
-    if (theme === "system") return getSystemTheme();
+    if (theme === "system") {
+      return getSystemTheme();
+    }
     return theme;
   });
 
@@ -119,7 +125,9 @@ export function ThemeProvider({
 
   // Listen for system theme changes
   React.useEffect(() => {
-    if (!enableSystem) return;
+    if (!enableSystem) {
+      return;
+    }
 
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 

@@ -58,10 +58,10 @@ export interface ProgressEvent {
 export class ApiClient {
   private readonly baseUrl: string;
   private readonly defaultHeaders: Record<string, string>;
-  private readonly cache: Map<string, CacheEntry<unknown>> = new Map();
+  private readonly cache = new Map<string, CacheEntry<unknown>>();
   private readonly requestInterceptors: RequestInterceptor[] = [];
   private readonly responseInterceptors: ResponseInterceptor[] = [];
-  private readonly pendingRequests: Map<string, Promise<unknown>> = new Map();
+  private readonly pendingRequests = new Map<string, Promise<unknown>>();
 
   constructor(config: ApiClientConfig = {}) {
     this.baseUrl = config.baseUrl || "";
@@ -142,7 +142,7 @@ export class ApiClient {
       if (cached) {
         // Stale-while-revalidate
         if (config.cacheConfig?.staleWhileRevalidate && this.isCacheStale(cacheKey)) {
-          this.revalidateCache(cacheKey, url, config);
+          void this.revalidateCache(cacheKey, url, config);
         }
         return cached;
       }
@@ -292,7 +292,9 @@ export class ApiClient {
 
   private getFromCache<T>(key: string, config?: CacheConfig): ApiResponse<T> | null {
     const entry = this.cache.get(key);
-    if (!entry) return null;
+    if (!entry) {
+      return null;
+    }
 
     const now = Date.now();
     if (now > entry.expiresAt) {
@@ -315,7 +317,9 @@ export class ApiClient {
 
   private isCacheStale(key: string): boolean {
     const entry = this.cache.get(key);
-    if (!entry) return true;
+    if (!entry) {
+      return true;
+    }
     return Date.now() > entry.expiresAt;
   }
 
@@ -352,7 +356,9 @@ export class ApiClient {
   ): string {
     const fullUrl = url.startsWith("http") ? url : `${this.baseUrl}${url}`;
 
-    if (!params) return fullUrl;
+    if (!params) {
+      return fullUrl;
+    }
 
     const searchParams = new URLSearchParams();
     for (const [key, value] of Object.entries(params)) {
@@ -407,11 +413,11 @@ export class ApiClient {
   // ---------------------------------------------------------------------------
 
   setAuthToken(token: string): void {
-    this.defaultHeaders["Authorization"] = `Bearer ${token}`;
+    this.defaultHeaders.Authorization = `Bearer ${token}`;
   }
 
   clearAuthToken(): void {
-    delete this.defaultHeaders["Authorization"];
+    delete this.defaultHeaders.Authorization;
   }
 }
 
@@ -447,7 +453,7 @@ export function isApiError(error: unknown): error is ApiError {
     error !== null &&
     typeof error === "object" &&
     "isApiError" in error &&
-    (error as ApiError).isApiError === true
+    (error as ApiError).isApiError
   );
 }
 
@@ -504,7 +510,7 @@ export function createApiClient(baseUrl: string): ApiClient {
  * Batch multiple requests
  */
 export async function batchRequests<T>(
-  requests: Array<() => Promise<T>>,
+  requests: (() => Promise<T>)[],
   options: {
     maxConcurrent?: number;
     onProgress?: (completed: number, total: number) => void;
@@ -654,7 +660,9 @@ export async function downloadFile(
     while (true) {
       const { done, value } = await reader.read();
 
-      if (done) break;
+      if (done) {
+        break;
+      }
 
       chunks.push(value);
       loaded += value.length;

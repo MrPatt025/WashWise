@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Download, FileSpreadsheet, FileJson, FileText, Loader2 } from "lucide-react";
+import { Download, FileJson, FileSpreadsheet, FileText, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -52,7 +52,7 @@ export interface ExportOptions<T> {
 /**
  * Get nested value from object using dot notation
  */
-function getNestedValue<T>(obj: T, path: string): unknown {
+function getNestedValue(obj: unknown, path: string): unknown {
   return path.split(".").reduce<unknown>((acc, part) => {
     if (acc && typeof acc === "object" && part in acc) {
       return (acc as Record<string, unknown>)[part];
@@ -65,7 +65,9 @@ function getNestedValue<T>(obj: T, path: string): unknown {
  * Format value for CSV (escape quotes and commas)
  */
 function formatCSVValue(value: unknown): string {
-  if (value === null || value === undefined) return "";
+  if (value === null || value === undefined) {
+    return "";
+  }
 
   const stringValue = String(value);
 
@@ -384,9 +386,13 @@ export const columnFormatters = {
   /** Format date value */
   date: (format: "short" | "long" | "iso" = "short") => {
     return (value: unknown) => {
-      if (!value) return "";
+      if (!value) {
+        return "";
+      }
       const date = new Date(value as string | number | Date);
-      if (isNaN(date.getTime())) return "";
+      if (isNaN(date.getTime())) {
+        return "";
+      }
 
       switch (format) {
         case "iso":
@@ -406,16 +412,22 @@ export const columnFormatters = {
 
   /** Format datetime value */
   datetime: (value: unknown) => {
-    if (!value) return "";
+    if (!value) {
+      return "";
+    }
     const date = new Date(value as string | number | Date);
-    if (isNaN(date.getTime())) return "";
+    if (isNaN(date.getTime())) {
+      return "";
+    }
     return date.toLocaleString();
   },
 
   /** Format currency value */
   currency: (currency = "THB", locale = "th-TH") => {
     return (value: unknown) => {
-      if (value === null || value === undefined) return "";
+      if (value === null || value === undefined) {
+        return "";
+      }
       return new Intl.NumberFormat(locale, {
         style: "currency",
         currency,
@@ -426,9 +438,13 @@ export const columnFormatters = {
   /** Format number with locale */
   number: (decimals?: number) => {
     return (value: unknown) => {
-      if (value === null || value === undefined) return "";
+      if (value === null || value === undefined) {
+        return "";
+      }
       const num = Number(value);
-      if (isNaN(num)) return "";
+      if (isNaN(num)) {
+        return "";
+      }
       return decimals !== undefined ? num.toFixed(decimals) : num.toLocaleString();
     };
   },
@@ -436,7 +452,9 @@ export const columnFormatters = {
   /** Format percentage */
   percent: (decimals = 1) => {
     return (value: unknown) => {
-      if (value === null || value === undefined) return "";
+      if (value === null || value === undefined) {
+        return "";
+      }
       return `${Number(value).toFixed(decimals)}%`;
     };
   },
@@ -449,7 +467,9 @@ export const columnFormatters = {
   /** Format array as comma-separated string */
   array: (separator = ", ") => {
     return (value: unknown) => {
-      if (!Array.isArray(value)) return "";
+      if (!Array.isArray(value)) {
+        return "";
+      }
       return value.join(separator);
     };
   },
@@ -457,7 +477,9 @@ export const columnFormatters = {
   /** Truncate long text */
   truncate: (maxLength: number) => {
     return (value: unknown) => {
-      if (!value) return "";
+      if (!value) {
+        return "";
+      }
       const str = String(value);
       return str.length > maxLength ? `${str.slice(0, maxLength)}...` : str;
     };

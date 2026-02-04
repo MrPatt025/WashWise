@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useMemo } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/auth.store";
 import { useCheckAuth } from "@/hooks/use-auth";
-import { Loader2, WashingMachine, ShieldAlert } from "lucide-react";
+import { Loader2, ShieldAlert, WashingMachine } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 /**
@@ -26,7 +26,9 @@ const ROLE_HIERARCHY: Record<UserRole, number> = {
  * Check if a user role has sufficient permissions
  */
 export function hasPermission(userRole: string | undefined, requiredRole: UserRole): boolean {
-  if (!userRole) return false;
+  if (!userRole) {
+    return false;
+  }
   const userLevel = ROLE_HIERARCHY[userRole as UserRole] ?? 0;
   const requiredLevel = ROLE_HIERARCHY[requiredRole];
   return userLevel >= requiredLevel;
@@ -134,7 +136,9 @@ export function AuthGuard({
 
   // Memoize permission check
   const hasRequiredPermission = useMemo(() => {
-    if (!requiredRole) return true;
+    if (!requiredRole) {
+      return true;
+    }
     return hasPermission(user?.role, requiredRole);
   }, [requiredRole, user?.role]);
 

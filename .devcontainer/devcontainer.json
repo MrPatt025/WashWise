@@ -2,18 +2,18 @@
   "name": "WashWise Development",
   "dockerComposeFile": ["../docker-compose.yml", "docker-compose.devcontainer.yml"],
   "service": "devcontainer",
-"workspaceFolder": "/workspace",
+  "workspaceFolder": "/workspace",
 
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
-    "version": "22"
+      "version": "22"
     },
     "ghcr.io/devcontainers/features/git:1": {
-        "version": "latest"
+      "version": "latest"
     },
     "ghcr.io/devcontainers/features/github-cli:1": {},
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
-        "version": "latest"
+      "version": "latest"
     }
   },
 
@@ -37,45 +37,38 @@
         "yzhang.markdown-all-in-one",
         "rangav.vscode-thunder-client"
       ],
-    "settings": {
+      "settings": {
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.codeActionsOnSave": {
-            "source.fixAll.eslint": "explicit",
-            "source.organizeImports": "explicit"
+          "source.fixAll.eslint": "explicit",
+          "source.organizeImports": "explicit"
         },
         "typescript.preferences.importModuleSpecifier": "relative",
         "typescript.updateImportsOnFileMove.enabled": "always",
         "files.associations": {
-            "*.css": "tailwindcss"
+          "*.css": "tailwindcss"
         },
         "[prisma]": {
-            "editor.defaultFormatter": "Prisma.prisma"
+          "editor.defaultFormatter": "Prisma.prisma"
         }
       }
     }
   },
 
-"forwardPorts": [
-    3000,
-    3001,
-    5432,
-    6379,
-    9090,
-    3000
-],
+  "forwardPorts": [3000, 3001, 5432, 6379, 9090, 3000],
 
   "postCreateCommand": "pnpm install && pnpm db:generate",
 
-"postStartCommand": "git config --global --add safe.directory /workspace",
+  "postStartCommand": "git config --global --add safe.directory /workspace",
 
   "remoteUser": "node",
 
-"mounts": [
+  "mounts": [
     "source=${localWorkspaceFolder}/.git,target=/workspace/.git,type=bind",
     "source=washwise-node-modules,target=/workspace/node_modules,type=volume"
-],
-"containerEnv": {
+  ],
+  "containerEnv": {
     "NODE_ENV": "development",
     "DATABASE_URL": "postgresql://washwise:washwise@postgres:5432/washwise",
     "REDIS_URL": "redis://redis:6379"

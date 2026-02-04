@@ -1,9 +1,9 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 /**
  * Serialize value to string for storage
  */
-function serialize<T>(value: T): string {
+function serialize(value: unknown): string {
   try {
     return JSON.stringify(value);
   } catch {
@@ -16,7 +16,9 @@ function serialize<T>(value: T): string {
  * Deserialize string from storage to value
  */
 function deserialize<T>(value: string | null, fallback: T): T {
-  if (value === null) return fallback;
+  if (value === null) {
+    return fallback;
+  }
 
   try {
     return JSON.parse(value) as T;
@@ -121,7 +123,9 @@ export function useLocalStorage<T>(
 
   // Remove from localStorage
   const removeValue = useCallback(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined") {
+      return;
+    }
 
     try {
       localStorage.removeItem(key);
@@ -140,17 +144,23 @@ export function useLocalStorage<T>(
 
   // Sync across tabs
   useEffect(() => {
-    if (!syncTabs || typeof window === "undefined") return;
+    if (!syncTabs || typeof window === "undefined") {
+      return;
+    }
 
     const handleStorageChange = (event: StorageEvent) => {
-      if (event.key !== key) return;
+      if (event.key !== key) {
+        return;
+      }
 
       const newValue = event.newValue ? deserializer(event.newValue) : initialValue;
       setStoredValue(newValue);
     };
 
     const handleCustomEvent = (event: CustomEvent<{ key: string; value: T | null }>) => {
-      if (event.detail.key !== key) return;
+      if (event.detail.key !== key) {
+        return;
+      }
       setStoredValue(event.detail.value ?? initialValue);
     };
 
@@ -183,7 +193,9 @@ export function useSessionStorage<T>(
   const isFirstRender = useRef(true);
 
   const readValue = useCallback((): T => {
-    if (typeof window === "undefined") return initialValue;
+    if (typeof window === "undefined") {
+      return initialValue;
+    }
 
     try {
       const item = sessionStorage.getItem(key);
@@ -206,7 +218,9 @@ export function useSessionStorage<T>(
 
   const setValue = useCallback(
     (value: T | ((prev: T) => T)) => {
-      if (typeof window === "undefined") return;
+      if (typeof window === "undefined") {
+        return;
+      }
 
       try {
         const valueToStore = value instanceof Function ? value(storedValue) : value;
@@ -221,7 +235,9 @@ export function useSessionStorage<T>(
   );
 
   const removeValue = useCallback(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined") {
+      return;
+    }
 
     try {
       sessionStorage.removeItem(key);

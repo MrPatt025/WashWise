@@ -2,16 +2,16 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
-  Search,
-  Command,
-  ArrowUp,
   ArrowDown,
-  CornerDownLeft,
-  X,
-  Clock,
+  ArrowUp,
   ChevronRight,
+  Clock,
+  Command,
+  CornerDownLeft,
+  Search,
+  X,
 } from "lucide-react";
 import { createPortal } from "react-dom";
 
@@ -172,7 +172,9 @@ export function CommandProvider({
 
   const executeItem = React.useCallback(
     (item: CommandItem) => {
-      if (item.disabled) return;
+      if (item.disabled) {
+        return;
+      }
 
       addToRecent(item);
       item.onSelect?.();
@@ -188,7 +190,9 @@ export function CommandProvider({
 
   // Keyboard navigation
   React.useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      return;
+    }
 
     const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.key) {
@@ -257,7 +261,9 @@ export function CommandDialog({ className }: CommandDialogProps) {
     }
   }, [open]);
 
-  if (!mounted) return null;
+  if (!mounted) {
+    return null;
+  }
 
   return createPortal(
     <AnimatePresence>
@@ -552,7 +558,9 @@ export function SpotlightSearch({
 
   // Filter items
   const filteredItems = React.useMemo(() => {
-    if (!query.trim()) return items;
+    if (!query.trim()) {
+      return items;
+    }
 
     const lowerQuery = query.toLowerCase();
     return items.filter((item) => {
@@ -570,7 +578,9 @@ export function SpotlightSearch({
 
   // Keyboard navigation
   React.useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      return;
+    }
 
     const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.key) {
@@ -604,7 +614,9 @@ export function SpotlightSearch({
     }
   }, [open]);
 
-  if (!mounted) return null;
+  if (!mounted) {
+    return null;
+  }
 
   return createPortal(
     <AnimatePresence>

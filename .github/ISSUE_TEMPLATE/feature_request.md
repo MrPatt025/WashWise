@@ -37,7 +37,7 @@ If applicable, add mockups or wireframes to help explain your feature request.
 - [ ] @washwise/database
 - [ ] @washwise/types
 - [ ] @washwise/config
-- [ ] Other: ******\_\_\_******
+- [ ] Other: **\*\***\_\_\_**\*\***
 
 ## 📋 Additional Context
 

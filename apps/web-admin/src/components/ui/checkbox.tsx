@@ -124,12 +124,12 @@ interface CheckboxGroupProps {
   /** Callback when values change */
   onValueChange?: (value: string[]) => void;
   /** Checkbox options */
-  options: Array<{
+  options: {
     value: string;
     label: string;
     description?: string;
     disabled?: boolean;
-  }>;
+  }[];
   /** Orientation */
   orientation?: "horizontal" | "vertical";
   /** Additional className */
@@ -147,7 +147,9 @@ export function CheckboxGroup({
   disabled,
 }: CheckboxGroupProps) {
   const handleChange = (optionValue: string, checked: boolean) => {
-    if (!onValueChange) return;
+    if (!onValueChange) {
+      return;
+    }
 
     if (checked) {
       onValueChange([...value, optionValue]);

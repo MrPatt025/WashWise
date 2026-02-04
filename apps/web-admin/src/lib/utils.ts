@@ -1,4 +1,4 @@
-import { clsx, type ClassValue } from "clsx";
+import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 /**
@@ -11,11 +11,7 @@ export function cn(...inputs: ClassValue[]) {
 /**
  * Format currency with locale support
  */
-export function formatCurrency(
-  amount: number,
-  currency: string = "USD",
-  locale: string = "en-US"
-): string {
+export function formatCurrency(amount: number, currency = "USD", locale = "en-US"): string {
   return new Intl.NumberFormat(locale, {
     style: "currency",
     currency,
@@ -114,7 +110,9 @@ export function titleCase(text: string): string {
  * Truncate text with ellipsis
  */
 export function truncate(text: string, maxLength: number): string {
-  if (text.length <= maxLength) return text;
+  if (text.length <= maxLength) {
+    return text;
+  }
   return text.slice(0, maxLength - 3) + "...";
 }
 
@@ -138,6 +136,6 @@ export function sleep(ms: number): Promise<void> {
 /**
  * Generate a random ID (for UI keys, not secure IDs)
  */
-export function generateId(prefix: string = "id"): string {
-  return `${prefix}_${Math.random().toString(36).substr(2, 9)}`;
+export function generateId(prefix = "id"): string {
+  return `${prefix}_${Math.random().toString(36).slice(2, 11)}`;
 }

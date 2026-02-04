@@ -69,7 +69,7 @@ export const CreateMachineSchema = z.object({
   manufacturer: z.string().max(100).optional(),
   serialNumber: z.string().max(100).optional(),
   iotDeviceId: z.string().max(100).optional(),
-  branchId: z.string().uuid().optional(),
+  branchId: z.string().uuid("Branch is required"),
 });
 
 export const UpdateMachineSchema = z.object({

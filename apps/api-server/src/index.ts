@@ -1,6 +1,6 @@
 import { buildApp } from "./app.js";
 import { setupSocketIO } from "./socket/index.js";
-import { env, closeRedis } from "./config/index.js";
+import { closeRedis, env } from "./config/index.js";
 import { prisma } from "@washwise/database";
 
 async function main() {
@@ -10,8 +10,8 @@ async function main() {
 
     // Setup Socket.io on Fastify's underlying server
     const io = setupSocketIO(app.server);
-    console.log("✅ Socket.io initialized");
-    console.log("✅ Fastify initialized");
+    console.info("✅ Socket.io initialized");
+    console.info("✅ Fastify initialized");
 
     // Store io reference for routes that need it
     app.decorate("io", io);
@@ -19,14 +19,14 @@ async function main() {
     // Start listening
     await app.listen({ port: env.PORT, host: "0.0.0.0" });
 
-    console.log(`
+    console.info(`
 ╔═══════════════════════════════════════════════════════════╗
 ║                                                           ║
 ║   🧺 WashWise API Server                                  ║
 ║                                                           ║
-║   HTTP:    http://localhost:${env.PORT}                        ║
-║   WS:      ws://localhost:${env.PORT}                          ║
-║   Docs:    http://localhost:${env.PORT}/docs                   ║
+║   HTTP:    http://localhost:${String(env.PORT)}                        ║
+║   WS:      ws://localhost:${String(env.PORT)}                          ║
+║   Docs:    http://localhost:${String(env.PORT)}/docs                   ║
 ║                                                           ║
 ║   Environment: ${env.NODE_ENV.padEnd(10)}                           ║
 ║                                                           ║
@@ -35,10 +35,10 @@ async function main() {
 
     // Graceful shutdown
     const shutdown = async (signal: string) => {
-      console.log(`\n${signal} received. Shutting down gracefully...`);
+      console.info(`\n${signal} received. Shutting down gracefully...`);
 
       // Close Socket.io
-      io.close();
+      await new Promise<void>((resolve) => io.close(() => resolve()));
 
       // Close Fastify
       await app.close();
@@ -49,16 +49,16 @@ async function main() {
       // Close Prisma
       await prisma.$disconnect();
 
-      console.log("✅ Server shutdown complete");
+      console.info("✅ Server shutdown complete");
       process.exit(0);
     };
 
-    process.on("SIGTERM", () => shutdown("SIGTERM"));
-    process.on("SIGINT", () => shutdown("SIGINT"));
+    process.on("SIGTERM", () => void shutdown("SIGTERM"));
+    process.on("SIGINT", () => void shutdown("SIGINT"));
   } catch (error) {
     console.error("❌ Failed to start server:", error);
     process.exit(1);
   }
 }
 
-main();
+void main();

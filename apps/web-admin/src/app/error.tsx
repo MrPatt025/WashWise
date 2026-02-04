@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { AlertTriangle, RefreshCw, Home, Bug } from "lucide-react";
+import { AlertTriangle, Bug, Home, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -30,7 +30,7 @@ export default function Error({
       // Sentry.captureException(error);
     }
     // Development logging
-    // eslint-disable-next-line no-console
+
     console.error("[Route Error]", {
       message: error.message,
       digest: error.digest,
@@ -39,12 +39,19 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-background to-muted/20 px-4">
-      <Card className="w-full max-w-lg">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-b from-slate-50 to-white px-4 dark:from-slate-950 dark:to-slate-900">
+      {/* Background decoration */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute left-1/3 top-1/3 h-96 w-96 rounded-full bg-red-400/10 blur-3xl" />
+        <div className="absolute bottom-1/3 right-1/3 h-96 w-96 rounded-full bg-orange-400/10 blur-3xl" />
+      </div>
+
+      <Card className="w-full max-w-lg border-0 bg-white/80 shadow-xl backdrop-blur-sm dark:bg-slate-900/80">
+        <div className="h-1 bg-gradient-to-r from-red-500 via-orange-500 to-amber-500" />
         <CardHeader className="text-center">
           {/* Animated error icon */}
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10">
-            <AlertTriangle className="h-8 w-8 animate-pulse text-destructive" />
+          <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-red-500/20 to-orange-500/20">
+            <AlertTriangle className="h-10 w-10 animate-pulse text-red-500" />
           </div>
           <CardTitle className="text-2xl">Something went wrong</CardTitle>
           <CardDescription className="text-base">
@@ -55,26 +62,26 @@ export default function Error({
         <CardContent className="space-y-4">
           {/* Error details (development only) */}
           {process.env.NODE_ENV === "development" && (
-            <details className="rounded-lg border bg-muted/50 p-4">
+            <details className="rounded-xl border bg-slate-50 p-4 dark:bg-slate-800/50">
               <summary className="cursor-pointer text-sm font-medium text-muted-foreground hover:text-foreground">
                 <Bug className="mr-2 inline h-4 w-4" />
                 Technical Details
               </summary>
               <div className="mt-3 space-y-2">
-                <div className="rounded bg-background p-2">
+                <div className="rounded-lg bg-white p-2 dark:bg-slate-900">
                   <p className="text-xs font-medium text-muted-foreground">Error Message</p>
-                  <p className="font-mono text-sm text-destructive">
+                  <p className="font-mono text-sm text-red-500">
                     {error.message || "Unknown error"}
                   </p>
                 </div>
                 {error.digest && (
-                  <div className="rounded bg-background p-2">
+                  <div className="rounded-lg bg-white p-2 dark:bg-slate-900">
                     <p className="text-xs font-medium text-muted-foreground">Error Digest</p>
                     <p className="font-mono text-xs text-muted-foreground">{error.digest}</p>
                   </div>
                 )}
                 {error.stack && (
-                  <div className="rounded bg-background p-2">
+                  <div className="rounded-lg bg-white p-2 dark:bg-slate-900">
                     <p className="text-xs font-medium text-muted-foreground">Stack Trace</p>
                     <pre className="max-h-40 overflow-auto whitespace-pre-wrap font-mono text-xs text-muted-foreground">
                       {error.stack}
@@ -86,7 +93,7 @@ export default function Error({
           )}
 
           {/* User-friendly tips */}
-          <div className="rounded-lg border bg-muted/30 p-4">
+          <div className="rounded-xl border bg-slate-50 p-4 dark:bg-slate-800/50">
             <p className="text-sm font-medium">What you can try:</p>
             <ul className="mt-2 list-inside list-disc space-y-1 text-sm text-muted-foreground">
               <li>Refresh the page and try again</li>
@@ -98,13 +105,16 @@ export default function Error({
         </CardContent>
 
         <CardFooter className="flex flex-col gap-2 sm:flex-row">
-          <Button className="w-full sm:w-auto" onClick={reset}>
+          <Button
+            className="w-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 sm:w-auto"
+            onClick={reset}
+          >
             <RefreshCw className="mr-2 h-4 w-4" />
             Try Again
           </Button>
           <Button
             variant="outline"
-            className="w-full sm:w-auto"
+            className="w-full hover:border-violet-300 hover:bg-violet-50 sm:w-auto"
             onClick={() => window.location.reload()}
           >
             Reload Page

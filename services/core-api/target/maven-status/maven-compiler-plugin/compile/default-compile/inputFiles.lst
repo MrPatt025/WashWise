@@ -13,6 +13,7 @@ C:\Users\PATTANAKORN\WASHWISE\services\core-api\src\main\java\io\washwise\dto\pa
 C:\Users\PATTANAKORN\WASHWISE\services\core-api\src\main\java\io\washwise\dto\user\UserResponse.java
 C:\Users\PATTANAKORN\WASHWISE\services\core-api\src\main\java\io\washwise\repository\MachineRepository.java
 C:\Users\PATTANAKORN\WASHWISE\services\core-api\src\main\java\io\washwise\dto\dashboard\MachineUtilization.java
+C:\Users\PATTANAKORN\WASHWISE\services\core-api\src\main\java\io\washwise\config\AppProperties.java
 C:\Users\PATTANAKORN\WASHWISE\services\core-api\src\main\java\io\washwise\dto\auth\RegisterRequest.java
 C:\Users\PATTANAKORN\WASHWISE\services\core-api\src\main\java\io\washwise\dto\payment\PaymentProviderResponse.java
 C:\Users\PATTANAKORN\WASHWISE\services\core-api\src\main\java\io\washwise\domain\user\User.java

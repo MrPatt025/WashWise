@@ -2,18 +2,18 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
+  Check,
   ChevronDown,
-  ChevronUp,
   ChevronsUpDown,
-  Search,
-  X,
+  ChevronUp,
   Download,
-  Settings2,
   Filter,
   MoreVertical,
-  Check,
+  Search,
+  Settings2,
+  X,
 } from "lucide-react";
 
 // ============================================================================
@@ -42,9 +42,7 @@ export interface SortState {
   direction: SortDirection;
 }
 
-export interface FilterState {
-  [key: string]: string;
-}
+export type FilterState = Record<string, string>;
 
 // ============================================================================
 // Table Context
@@ -233,7 +231,9 @@ export function TableHeaderRow({ children, selectable, className }: TableHeaderR
             type="checkbox"
             checked={allSelected}
             ref={(el) => {
-              if (el) el.indeterminate = someSelected;
+              if (el) {
+                el.indeterminate = someSelected;
+              }
             }}
             onChange={handleSelectAll}
             className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600"
@@ -271,7 +271,9 @@ export function TableHeaderCell({
   const currentDirection = isCurrentSort ? sortState.direction : null;
 
   const handleSort = () => {
-    if (!sortable) return;
+    if (!sortable) {
+      return;
+    }
 
     let newDirection: SortDirection = "asc";
     if (currentDirection === "asc") {
@@ -375,7 +377,9 @@ export function TableRow({
   const isExpanded = index !== undefined && expandedRows.has(index);
 
   const handleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (index === undefined) return;
+    if (index === undefined) {
+      return;
+    }
 
     const newSelected = new Set(selectedRows);
     if (e.target.checked) {
@@ -387,7 +391,9 @@ export function TableRow({
   };
 
   const handleExpand = () => {
-    if (index === undefined) return;
+    if (index === undefined) {
+      return;
+    }
 
     const newExpanded = new Set(expandedRows);
     if (isExpanded) {
@@ -723,12 +729,12 @@ export function ExportButton({
 // ============================================================================
 
 interface FilterPanelProps {
-  filters: Array<{
+  filters: {
     id: string;
     label: string;
     type: "text" | "select" | "date" | "number";
-    options?: Array<{ value: string; label: string }>;
-  }>;
+    options?: { value: string; label: string }[];
+  }[];
   onFilter: (filters: FilterState) => void;
   className?: string;
 }
@@ -834,13 +840,13 @@ export function FilterPanel({ filters, onFilter, className }: FilterPanelProps) 
 // ============================================================================
 
 interface RowActionsProps {
-  actions: Array<{
+  actions: {
     label: string;
     onClick: () => void;
     icon?: React.ReactNode;
     destructive?: boolean;
     disabled?: boolean;
-  }>;
+  }[];
   className?: string;
 }
 

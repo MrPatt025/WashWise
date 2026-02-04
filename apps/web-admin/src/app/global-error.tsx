@@ -18,7 +18,7 @@ export default function GlobalError({
     if (typeof reportError === "function") {
       reportError(error);
     }
-    // eslint-disable-next-line no-console
+
     console.error("[Global Error]", error);
   }, [error]);
 

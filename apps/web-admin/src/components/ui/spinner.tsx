@@ -62,7 +62,9 @@ interface LoadingOverlayProps {
 }
 
 const LoadingOverlay: React.FC<LoadingOverlayProps> = ({ isLoading = true, message, branded }) => {
-  if (!isLoading) return null;
+  if (!isLoading) {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">

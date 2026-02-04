@@ -1,0 +1,112 @@
+{
+  "groups": [
+    {
+      "name": "app",
+      "type": "io.washwise.config.AppProperties",
+      "sourceType": "io.washwise.config.AppProperties"
+    },
+    {
+      "name": "app.security",
+      "type": "io.washwise.config.AppProperties$Security",
+      "sourceType": "io.washwise.config.AppProperties"
+    },
+    {
+      "name": "app.security.jwt",
+      "type": "io.washwise.config.AppProperties$Security$Jwt",
+      "sourceType": "io.washwise.config.AppProperties"
+    },
+    {
+      "name": "app.security.jwt.access-token",
+      "type": "io.washwise.config.AppProperties$Security$Jwt$Token",
+      "sourceType": "io.washwise.config.AppProperties"
+    },
+    {
+      "name": "app.security.jwt.refresh-token",
+      "type": "io.washwise.config.AppProperties$Security$Jwt$Token",
+      "sourceType": "io.washwise.config.AppProperties"
+    },
+    {
+      "name": "app.security.cors",
+      "type": "io.washwise.config.AppProperties$Security$Cors",
+      "sourceType": "io.washwise.config.AppProperties"
+    },
+    {
+      "name": "app.ai-worker",
+      "type": "io.washwise.config.AppProperties$AiWorker",
+      "sourceType": "io.washwise.config.AppProperties"
+    },
+    {
+      "name": "app.rate-limit",
+      "type": "io.washwise.config.AppProperties$RateLimit",
+      "sourceType": "io.washwise.config.AppProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "app.security.jwt.access-token.secret",
+      "type": "java.lang.String",
+      "description": "Secret key for signing access tokens"
+    },
+    {
+      "name": "app.security.jwt.access-token.expiration",
+      "type": "java.lang.Long",
+      "description": "Access token expiration time in milliseconds"
+    },
+    {
+      "name": "app.security.jwt.refresh-token.secret",
+      "type": "java.lang.String",
+      "description": "Secret key for signing refresh tokens"
+    },
+    {
+      "name": "app.security.jwt.refresh-token.expiration",
+      "type": "java.lang.Long",
+      "description": "Refresh token expiration time in milliseconds"
+    },
+    {
+      "name": "app.security.cors.allowed-origins",
+      "type": "java.lang.String",
+      "description": "Comma-separated list of allowed CORS origins"
+    },
+    {
+      "name": "app.security.cors.allowed-methods",
+      "type": "java.lang.String",
+      "description": "Comma-separated list of allowed HTTP methods"
+    },
+    {
+      "name": "app.security.cors.allowed-headers",
+      "type": "java.lang.String",
+      "description": "Comma-separated list of allowed headers"
+    },
+    {
+      "name": "app.security.cors.allow-credentials",
+      "type": "java.lang.Boolean",
+      "description": "Whether to allow credentials in CORS requests"
+    },
+    {
+      "name": "app.ai-worker.url",
+      "type": "java.lang.String",
+      "description": "URL of the AI Worker service"
+    },
+    {
+      "name": "app.ai-worker.timeout",
+      "type": "java.lang.Integer",
+      "description": "Timeout for AI Worker requests in milliseconds"
+    },
+    {
+      "name": "app.rate-limit.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether rate limiting is enabled"
+    },
+    {
+      "name": "app.rate-limit.requests-per-minute",
+      "type": "java.lang.Integer",
+      "description": "Maximum requests per minute"
+    },
+    {
+      "name": "app.rate-limit.burst-capacity",
+      "type": "java.lang.Integer",
+      "description": "Burst capacity for rate limiting"
+    }
+  ],
+  "hints": []
+}

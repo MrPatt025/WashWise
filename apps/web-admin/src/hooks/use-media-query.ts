@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 
 /**
  * Common breakpoints matching Tailwind CSS defaults
@@ -39,7 +39,9 @@ function getWindowWidth(): number {
  */
 export function useMediaQuery(query: string): boolean {
   const getMatches = useCallback((): boolean => {
-    if (typeof window === "undefined") return false;
+    if (typeof window === "undefined") {
+      return false;
+    }
     return window.matchMedia(query).matches;
   }, [query]);
 
@@ -154,8 +156,12 @@ export function usePrefersColorScheme(): "light" | "dark" | "no-preference" {
   const prefersDark = useMediaQuery("(prefers-color-scheme: dark)");
   const prefersLight = useMediaQuery("(prefers-color-scheme: light)");
 
-  if (prefersDark) return "dark";
-  if (prefersLight) return "light";
+  if (prefersDark) {
+    return "dark";
+  }
+  if (prefersLight) {
+    return "light";
+  }
   return "no-preference";
 }
 

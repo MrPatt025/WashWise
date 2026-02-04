@@ -1,17 +1,18 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  useMachines,
   useCreateMachine,
   useDeleteMachine,
+  useMachines,
   useSimulateStatus,
 } from "@/hooks/use-machines";
+import { useBranches } from "@/hooks/use-branches";
 import { useDebouncedState } from "@/hooks/use-debounce";
 import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcuts";
-import { CreateMachineSchema, type CreateMachine, type MachineQuery } from "@washwise/types";
+import { type CreateMachine, CreateMachineSchema, type MachineQuery } from "@washwise/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -38,7 +39,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus, WashingMachine, Loader2, Trash2, Zap, Filter, X, RefreshCw } from "lucide-react";
+import { Filter, Loader2, Plus, RefreshCw, Trash2, WashingMachine, X, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -83,6 +84,7 @@ export default function MachinesPage() {
 
   // Data fetching
   const { data, isLoading, isFetching, refetch } = useMachines(query);
+  const { data: branches = [], isLoading: branchesLoading } = useBranches();
   const createMutation = useCreateMachine();
   const deleteMutation = useDeleteMachine();
   const simulateMutation = useSimulateStatus();
@@ -108,10 +110,12 @@ export default function MachinesPage() {
     defaultValues: {
       type: "WASHER",
       pricePerCycle: 5,
+      branchId: "",
     },
   });
 
   const machineType = watch("type");
+  const selectedBranchId = watch("branchId");
 
   // Keyboard shortcuts
   useKeyboardShortcut("ctrl+n", () => setIsCreateOpen(true), {
@@ -177,7 +181,9 @@ export default function MachinesPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Machines</h1>
+          <h1 className="bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-3xl font-bold tracking-tight text-transparent">
+            Machines
+          </h1>
           <p className="text-muted-foreground">
             Manage your laundromat machines with real-time status updates
           </p>
@@ -189,18 +195,23 @@ export default function MachinesPage() {
             onClick={() => refetch()}
             disabled={isFetching}
             title="Refresh"
+            className="hover:border-violet-300 hover:bg-violet-50 dark:hover:border-violet-700 dark:hover:bg-violet-950"
           >
             <RefreshCw className={cn("h-4 w-4", isFetching && "animate-spin")} />
           </Button>
           <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
             <DialogTrigger asChild>
-              <Button>
+              <Button className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700">
                 <Plus className="mr-2 h-4 w-4" />
                 Add Machine
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <form onSubmit={handleSubmit(onCreateSubmit)}>
+              <form
+                id="create-machine-form"
+                name="create-machine-form"
+                onSubmit={handleSubmit(onCreateSubmit)}
+              >
                 <DialogHeader>
                   <DialogTitle>Add New Machine</DialogTitle>
                   <DialogDescription>
@@ -213,11 +224,36 @@ export default function MachinesPage() {
                     <Input
                       id="name"
                       placeholder="e.g., Washer 1, Large Dryer"
-                      {...register("name")}
                       autoFocus
+                      {...register("name")}
                     />
                     {errors.name && (
                       <p className="text-sm text-destructive">{errors.name.message}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Branch *</Label>
+                    <Select
+                      value={selectedBranchId || ""}
+                      onValueChange={(value) => setValue("branchId", value)}
+                      disabled={branchesLoading}
+                    >
+                      <SelectTrigger>
+                        <SelectValue
+                          placeholder={branchesLoading ? "Loading branches..." : "Select branch"}
+                        />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {branches.map((branch) => (
+                          <SelectItem key={branch.id} value={branch.id}>
+                            {branch.name} {branch.code ? `(${branch.code})` : ""}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {errors.branchId && (
+                      <p className="text-sm text-destructive">{errors.branchId.message}</p>
                     )}
                   </div>
 
@@ -292,7 +328,11 @@ export default function MachinesPage() {
                   >
                     Cancel
                   </Button>
-                  <Button type="submit" disabled={createMutation.isPending}>
+                  <Button
+                    type="submit"
+                    disabled={createMutation.isPending}
+                    className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700"
+                  >
                     {createMutation.isPending ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -430,20 +470,24 @@ export default function MachinesPage() {
               <Card
                 key={machine.id}
                 className={cn(
-                  "relative overflow-hidden transition-all duration-200",
-                  "hover:scale-[1.02] hover:shadow-lg",
-                  "focus-within:ring-2 focus-within:ring-primary/50"
+                  "group relative overflow-hidden transition-all duration-300",
+                  "hover:-translate-y-1 hover:shadow-xl",
+                  "focus-within:ring-2 focus-within:ring-violet-500/50",
+                  "border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-900/80"
                 )}
               >
+                {/* Gradient accent line */}
+                <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-violet-500 via-indigo-500 to-cyan-500 opacity-0 transition-opacity group-hover:opacity-100" />
+
                 <CardHeader className="pb-2">
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex min-w-0 items-center gap-3">
                       <div
                         className={cn(
-                          "flex-shrink-0 rounded-full p-2",
+                          "flex-shrink-0 rounded-xl p-2.5 transition-transform group-hover:scale-110",
                           machine.type === "WASHER"
-                            ? "bg-blue-100 dark:bg-blue-950"
-                            : "bg-orange-100 dark:bg-orange-950"
+                            ? "bg-gradient-to-br from-blue-500/20 to-cyan-500/20 dark:from-blue-500/30 dark:to-cyan-500/30"
+                            : "bg-gradient-to-br from-orange-500/20 to-red-500/20 dark:from-orange-500/30 dark:to-red-500/30"
                         )}
                       >
                         <WashingMachine
@@ -456,8 +500,10 @@ export default function MachinesPage() {
                         />
                       </div>
                       <div className="min-w-0">
-                        <CardTitle className="truncate text-base">{machine.name}</CardTitle>
-                        <CardDescription className="truncate">
+                        <CardTitle className="truncate text-base font-semibold">
+                          {machine.name}
+                        </CardTitle>
+                        <CardDescription className="truncate text-xs">
                           {machine.serialNumber || machine.machineNumber || "No serial"}
                         </CardDescription>
                       </div>
@@ -496,7 +542,7 @@ export default function MachinesPage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="flex-1"
+                      className="flex-1 hover:border-violet-300 hover:bg-violet-50 dark:hover:border-violet-700 dark:hover:bg-violet-950"
                       onClick={() => handleSimulate(machine.id, machine.status)}
                       disabled={simulatingId === machine.id}
                       title="Simulate status change"
@@ -505,14 +551,15 @@ export default function MachinesPage() {
                         <Loader2 className="h-4 w-4 animate-spin" />
                       ) : (
                         <>
-                          <Zap className="mr-1 h-4 w-4" />
+                          <Zap className="mr-1 h-4 w-4 text-amber-500" />
                           Simulate
                         </>
                       )}
                     </Button>
                     <Button
-                      variant="destructive"
+                      variant="outline"
                       size="sm"
+                      className="hover:border-red-300 hover:bg-red-50 hover:text-red-600 dark:hover:border-red-700 dark:hover:bg-red-950"
                       onClick={() => handleDelete(machine.id, machine.name)}
                       disabled={deleteMutation.isPending}
                       title="Delete machine"

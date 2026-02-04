@@ -25,10 +25,10 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-        default_schema: public
+        "[format_sql]": true
+        "[default_schema]": public
         jdbc:
-          time_zone: UTC
+          "[time_zone]": UTC
 
   # Flyway Migration
   flyway:
@@ -72,21 +72,29 @@ server:
     include-binding-errors: always
 
 # ===========================================
-# Security Configuration
+# Security Configuration (custom app properties)
 # ===========================================
-security:
-  jwt:
-    access-token:
-      secret: ${JWT_ACCESS_SECRET:your-256-bit-secret-key-for-access-tokens-min-32-chars}
-      expiration: 900000 # 15 minutes
-    refresh-token:
-      secret: ${JWT_REFRESH_SECRET:your-256-bit-secret-key-for-refresh-tokens-min-32-chars}
-      expiration: 604800000 # 7 days
-  cors:
-    allowed-origins: ${CORS_ORIGINS:http://localhost:3000}
-    allowed-methods: GET,POST,PUT,PATCH,DELETE,OPTIONS
-    allowed-headers: "*"
-    allow-credentials: true
+app:
+  security:
+    jwt:
+      access-token:
+        secret: ${JWT_ACCESS_SECRET:your-256-bit-secret-key-for-access-tokens-min-32-chars}
+        expiration: 900000 # 15 minutes
+      refresh-token:
+        secret: ${JWT_REFRESH_SECRET:your-256-bit-secret-key-for-refresh-tokens-min-32-chars}
+        expiration: 604800000 # 7 days
+    cors:
+      allowed-origins: ${CORS_ORIGINS:http://localhost:3000}
+      allowed-methods: GET,POST,PUT,PATCH,DELETE,OPTIONS
+      allowed-headers: "*"
+      allow-credentials: true
+  ai-worker:
+    url: ${AI_WORKER_URL:http://localhost:8081}
+    timeout: 30000
+  rate-limit:
+    enabled: true
+    requests-per-minute: 100
+    burst-capacity: 20
 
 # ===========================================
 # Management & Observability
@@ -102,18 +110,19 @@ management:
       show-details: when_authorized
       probes:
         enabled: true
-  metrics:
-    export:
-      prometheus:
+  prometheus:
+    metrics:
+      export:
         enabled: true
+  metrics:
     tags:
       application: ${spring.application.name}
       environment: ${ENVIRONMENT:development}
     distribution:
       percentiles-histogram:
-        http.server.requests: true
+        "[http.server.requests]": true
       percentiles:
-        http.server.requests: 0.5, 0.9, 0.95, 0.99
+        "[http.server.requests]": 0.5, 0.9, 0.95, 0.99
   tracing:
     sampling:
       probability: ${TRACING_SAMPLE_RATE:1.0}
@@ -128,10 +137,8 @@ springdoc:
     path: /docs/swagger
     operations-sorter: method
     tags-sorter: alpha
-  info:
-    title: WashWise Core API
-    version: 1.0.0
-    description: Enterprise API for Smart Laundromat Management
+
+# OpenAPI Info is configured via @OpenAPIDefinition annotation in code
 
 # ===========================================
 # Logging Configuration
@@ -139,25 +146,12 @@ springdoc:
 logging:
   level:
     root: INFO
-    io.washwise: DEBUG
-    org.springframework.security: INFO
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    "[io.washwise]": DEBUG
+    "[org.springframework.security]": INFO
+    "[org.hibernate.SQL]": DEBUG
+    "[org.hibernate.type.descriptor.sql.BasicBinder]": TRACE
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%X{traceId:-}] %-5level %logger{36} - %msg%n"
-
-# ===========================================
-# Application-Specific Configuration
-# ===========================================
-washwise:
-  ai-worker:
-    url: ${AI_WORKER_URL:http://localhost:8081}
-    timeout: 30000
-
-  rate-limit:
-    enabled: true
-    requests-per-minute: 100
-    burst-capacity: 20
 
 ---
 # ===========================================
@@ -182,7 +176,7 @@ spring:
 logging:
   level:
     root: WARN
-    io.washwise: DEBUG
+    "[io.washwise]": DEBUG
 
 ---
 # ===========================================
@@ -199,8 +193,8 @@ spring:
 logging:
   level:
     root: WARN
-    io.washwise: INFO
-    org.hibernate.SQL: WARN
+    "[io.washwise]": INFO
+    "[org.hibernate.SQL]": WARN
 
 management:
   tracing:

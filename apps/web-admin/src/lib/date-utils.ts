@@ -72,8 +72,12 @@ const THAI_DAYS_FULL = [
  * Parse date from various inputs
  */
 export function parseDate(value: Date | string | number | null | undefined): Date | null {
-  if (!value) return null;
-  if (value instanceof Date) return isNaN(value.getTime()) ? null : value;
+  if (!value) {
+    return null;
+  }
+  if (value instanceof Date) {
+    return isNaN(value.getTime()) ? null : value;
+  }
 
   const date = new Date(value);
   return isNaN(date.getTime()) ? null : date;
@@ -85,10 +89,12 @@ export function parseDate(value: Date | string | number | null | undefined): Dat
 export function formatDate(
   value: Date | string | number | null | undefined,
   format: DateFormat = "medium",
-  locale: string = "en-US"
+  locale = "en-US"
 ): string {
   const date = parseDate(value);
-  if (!date) return "—";
+  if (!date) {
+    return "—";
+  }
 
   switch (format) {
     case "short":
@@ -148,10 +154,12 @@ export function formatDate(
 export function formatTime(
   value: Date | string | number | null | undefined,
   format: TimeFormat = "short",
-  locale: string = "en-US"
+  locale = "en-US"
 ): string {
   const date = parseDate(value);
-  if (!date) return "—";
+  if (!date) {
+    return "—";
+  }
 
   switch (format) {
     case "short":
@@ -196,10 +204,12 @@ export function formatDateTime(
   value: Date | string | number | null | undefined,
   dateFormat: DateFormat = "medium",
   timeFormat: TimeFormat = "short",
-  locale: string = "en-US"
+  locale = "en-US"
 ): string {
   const date = parseDate(value);
-  if (!date) return "—";
+  if (!date) {
+    return "—";
+  }
 
   return `${formatDate(date, dateFormat, locale)} ${formatTime(date, timeFormat, locale)}`;
 }
@@ -236,7 +246,9 @@ export function formatRelativeTime(
   const { addSuffix = true, locale = "en-US", baseDate = new Date(), maxUnit } = options;
 
   const date = parseDate(value);
-  if (!date) return "—";
+  if (!date) {
+    return "—";
+  }
 
   const diff = date.getTime() - baseDate.getTime();
   const absDiff = Math.abs(diff);
@@ -331,7 +343,9 @@ export function formatDuration(
  */
 export function isToday(value: Date | string | number | null | undefined): boolean {
   const date = parseDate(value);
-  if (!date) return false;
+  if (!date) {
+    return false;
+  }
 
   const today = new Date();
   return (
@@ -346,7 +360,9 @@ export function isToday(value: Date | string | number | null | undefined): boole
  */
 export function isYesterday(value: Date | string | number | null | undefined): boolean {
   const date = parseDate(value);
-  if (!date) return false;
+  if (!date) {
+    return false;
+  }
 
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
@@ -363,7 +379,9 @@ export function isYesterday(value: Date | string | number | null | undefined): b
  */
 export function isTomorrow(value: Date | string | number | null | undefined): boolean {
   const date = parseDate(value);
-  if (!date) return false;
+  if (!date) {
+    return false;
+  }
 
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
@@ -380,7 +398,9 @@ export function isTomorrow(value: Date | string | number | null | undefined): bo
  */
 export function isPast(value: Date | string | number | null | undefined): boolean {
   const date = parseDate(value);
-  if (!date) return false;
+  if (!date) {
+    return false;
+  }
   return date.getTime() < Date.now();
 }
 
@@ -389,7 +409,9 @@ export function isPast(value: Date | string | number | null | undefined): boolea
  */
 export function isFuture(value: Date | string | number | null | undefined): boolean {
   const date = parseDate(value);
-  if (!date) return false;
+  if (!date) {
+    return false;
+  }
   return date.getTime() > Date.now();
 }
 
@@ -398,7 +420,9 @@ export function isFuture(value: Date | string | number | null | undefined): bool
  */
 export function startOfDay(value: Date | string | number | null | undefined): Date | null {
   const date = parseDate(value);
-  if (!date) return null;
+  if (!date) {
+    return null;
+  }
 
   const result = new Date(date);
   result.setHours(0, 0, 0, 0);
@@ -410,7 +434,9 @@ export function startOfDay(value: Date | string | number | null | undefined): Da
  */
 export function endOfDay(value: Date | string | number | null | undefined): Date | null {
   const date = parseDate(value);
-  if (!date) return null;
+  if (!date) {
+    return null;
+  }
 
   const result = new Date(date);
   result.setHours(23, 59, 59, 999);
@@ -425,7 +451,9 @@ export function startOfWeek(
   weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6 = 0
 ): Date | null {
   const date = parseDate(value);
-  if (!date) return null;
+  if (!date) {
+    return null;
+  }
 
   const result = new Date(date);
   const day = result.getDay();
@@ -441,7 +469,9 @@ export function startOfWeek(
  */
 export function startOfMonth(value: Date | string | number | null | undefined): Date | null {
   const date = parseDate(value);
-  if (!date) return null;
+  if (!date) {
+    return null;
+  }
 
   const result = new Date(date);
   result.setDate(1);
@@ -458,7 +488,9 @@ export function addTime(
   unit: "second" | "minute" | "hour" | "day" | "week" | "month" | "year"
 ): Date | null {
   const date = parseDate(value);
-  if (!date) return null;
+  if (!date) {
+    return null;
+  }
 
   const result = new Date(date);
 
@@ -499,7 +531,9 @@ export function dateDiff(
 ): number | null {
   const startDate = parseDate(start);
   const endDate = parseDate(end);
-  if (!startDate || !endDate) return null;
+  if (!startDate || !endDate) {
+    return null;
+  }
 
   const diff = endDate.getTime() - startDate.getTime();
 
@@ -537,7 +571,9 @@ export function smartFormatDate(
 ): string {
   const { showTime = true, locale = "en-US" } = options;
   const date = parseDate(value);
-  if (!date) return "—";
+  if (!date) {
+    return "—";
+  }
 
   if (isToday(date)) {
     return showTime ? `Today at ${formatTime(date, "short", locale)}` : "Today";
@@ -570,9 +606,9 @@ export function smartFormatDate(
  * Get time slots for scheduling
  */
 export function generateTimeSlots(
-  startHour: number = 0,
-  endHour: number = 24,
-  intervalMinutes: number = 30
+  startHour = 0,
+  endHour = 24,
+  intervalMinutes = 30
 ): { value: string; label: string }[] {
   const slots: { value: string; label: string }[] = [];
 

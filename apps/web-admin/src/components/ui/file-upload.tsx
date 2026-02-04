@@ -2,21 +2,21 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
-  Upload,
-  File,
-  Image,
-  FileText,
-  FileArchive,
-  FileAudio,
-  FileVideo,
-  X,
   AlertCircle,
   CheckCircle,
+  Eye,
+  File,
+  FileArchive,
+  FileAudio,
+  FileText,
+  FileVideo,
+  Image,
   Loader2,
   Trash2,
-  Eye,
+  Upload,
+  X,
 } from "lucide-react";
 
 // ============================================================================
@@ -50,7 +50,9 @@ function generateId(): string {
 }
 
 function formatFileSize(bytes: number): string {
-  if (bytes === 0) return "0 Bytes";
+  if (bytes === 0) {
+    return "0 Bytes";
+  }
   const k = 1024;
   const sizes = ["Bytes", "KB", "MB", "GB"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
@@ -60,11 +62,21 @@ function formatFileSize(bytes: number): string {
 function getFileIcon(file: File) {
   const type = file.type;
 
-  if (type.startsWith("image/")) return Image;
-  if (type.startsWith("video/")) return FileVideo;
-  if (type.startsWith("audio/")) return FileAudio;
-  if (type === "application/pdf") return FileText;
-  if (type.includes("zip") || type.includes("rar")) return FileArchive;
+  if (type.startsWith("image/")) {
+    return Image;
+  }
+  if (type.startsWith("video/")) {
+    return FileVideo;
+  }
+  if (type.startsWith("audio/")) {
+    return FileAudio;
+  }
+  if (type === "application/pdf") {
+    return FileText;
+  }
+  if (type.includes("zip") || type.includes("rar")) {
+    return FileArchive;
+  }
   return File;
 }
 
@@ -98,7 +110,9 @@ export function FileDropzone({
 
   const processFiles = React.useCallback(
     (fileList: FileList | null) => {
-      if (!fileList) return;
+      if (!fileList) {
+        return;
+      }
 
       const filesArray = Array.from(fileList).slice(0, maxFiles);
       const processedFiles: FileWithPreview[] = filesArray
@@ -147,7 +161,9 @@ export function FileDropzone({
       e.stopPropagation();
       setIsDragActive(false);
 
-      if (disabled) return;
+      if (disabled) {
+        return;
+      }
       processFiles(e.dataTransfer.files);
     },
     [disabled, processFiles]
@@ -163,7 +179,9 @@ export function FileDropzone({
   );
 
   const openFilePicker = () => {
-    if (disabled) return;
+    if (disabled) {
+      return;
+    }
     inputRef.current?.click();
   };
 
@@ -263,7 +281,6 @@ export function FilePreview({
       {/* Preview/Icon */}
       <div className="flex-shrink-0">
         {isImage && file.preview ? (
-          // eslint-disable-next-line @next/next/no-img-element
           <img src={file.preview} alt={file.name} className="h-12 w-12 rounded-md object-cover" />
         ) : (
           <div className="flex h-12 w-12 items-center justify-center rounded-md bg-gray-200 dark:bg-gray-700">
@@ -347,7 +364,9 @@ export function FileList({
   showProgress = true,
   className,
 }: FileListProps) {
-  if (files.length === 0) return null;
+  if (files.length === 0) {
+    return null;
+  }
 
   return (
     <div className={cn("space-y-2", className)}>
@@ -467,7 +486,6 @@ export function AvatarUpload({
         onClick={() => !disabled && inputRef.current?.click()}
       >
         {preview ? (
-          // eslint-disable-next-line @next/next/no-img-element
           <img src={preview} alt={name || "Avatar"} className="h-full w-full object-cover" />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
@@ -579,7 +597,6 @@ export function ImageGalleryUpload({
                 exit={{ opacity: 0, scale: 0.8 }}
                 className="group relative aspect-square overflow-hidden rounded-lg"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={file.preview} alt={file.name} className="h-full w-full object-cover" />
 
                 {/* Overlay */}

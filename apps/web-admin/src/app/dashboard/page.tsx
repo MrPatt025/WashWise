@@ -1,21 +1,21 @@
 "use client";
 
-import { useMachineStats, useMachines } from "@/hooks/use-machines";
+import { useMachines, useMachineStats } from "@/hooks/use-machines";
 import { useAuthStore } from "@/stores/auth.store";
 
 export const dynamic = "force-dynamic";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
 import { SkeletonStat } from "@/components/ui/skeleton";
-import { StatCard, StatsGrid, CircularProgress, ProgressBar } from "@/components/ui/stat-card";
+import { CircularProgress, ProgressBar, StatCard, StatsGrid } from "@/components/ui/stat-card";
 import {
-  WashingMachine,
+  Activity,
+  AlertTriangle,
   CheckCircle,
   Clock,
-  AlertTriangle,
-  Wrench,
-  Activity,
   TrendingUp,
+  WashingMachine,
+  Wrench,
 } from "lucide-react";
 
 export default function DashboardPage() {
@@ -36,13 +36,15 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Dashboard</h1>
+          <h1 className="bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-3xl font-bold text-transparent">
+            Dashboard
+          </h1>
           <p className="text-muted-foreground">
             Welcome back, {user?.firstName ?? user?.fullName ?? "User"}! Here&apos;s your laundromat
             overview.
           </p>
         </div>
-        <div className="hidden items-center gap-2 rounded-lg bg-green-50 px-4 py-2 text-green-700 dark:bg-green-950 dark:text-green-300 md:flex">
+        <div className="hidden items-center gap-2 rounded-xl bg-green-50 px-4 py-2 text-green-700 dark:bg-green-950 dark:text-green-300 md:flex">
           <TrendingUp className="h-4 w-4" />
           <span className="text-sm font-medium">All systems operational</span>
         </div>
@@ -99,8 +101,9 @@ export default function DashboardPage() {
       )}
 
       {/* Utilization Overview */}
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card>
+      <div className="grid gap-6 md:grid-cols-3">
+        <Card className="relative overflow-hidden border-0 bg-white/80 shadow-lg backdrop-blur-sm dark:bg-slate-900/80">
+          <div className="absolute left-0 top-0 h-1 w-full bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500" />
           <CardHeader className="pb-2">
             <CardTitle className="text-base">Availability Rate</CardTitle>
             <CardDescription>Machines ready for use</CardDescription>
@@ -110,7 +113,8 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="relative overflow-hidden border-0 bg-white/80 shadow-lg backdrop-blur-sm dark:bg-slate-900/80">
+          <div className="absolute left-0 top-0 h-1 w-full bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-500" />
           <CardHeader className="pb-2">
             <CardTitle className="text-base">Utilization Rate</CardTitle>
             <CardDescription>Current machine usage</CardDescription>
@@ -120,7 +124,8 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="relative overflow-hidden border-0 bg-white/80 shadow-lg backdrop-blur-sm dark:bg-slate-900/80">
+          <div className="absolute left-0 top-0 h-1 w-full bg-gradient-to-r from-violet-500 via-indigo-500 to-cyan-500" />
           <CardHeader className="pb-2">
             <CardTitle className="text-base">Machine Status Overview</CardTitle>
             <CardDescription>Status distribution</CardDescription>
@@ -152,11 +157,14 @@ export default function DashboardPage() {
       </div>
 
       {/* Recent Activity */}
-      <div className="grid gap-4 lg:grid-cols-2">
-        <Card>
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Card className="relative overflow-hidden border-0 bg-white/80 shadow-lg backdrop-blur-sm dark:bg-slate-900/80">
+          <div className="absolute left-0 top-0 h-1 w-full bg-gradient-to-r from-violet-500 via-indigo-500 to-cyan-500" />
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Activity className="h-5 w-5" />
+              <div className="rounded-lg bg-gradient-to-br from-violet-500/10 to-indigo-500/10 p-1.5">
+                <Activity className="h-5 w-5 text-violet-600" />
+              </div>
               Recent Machines
             </CardTitle>
             <CardDescription>Latest machine status from your laundromat</CardDescription>
@@ -177,11 +185,11 @@ export default function DashboardPage() {
                 {(machines.items ?? []).map((machine) => (
                   <div
                     key={machine.id}
-                    className="flex items-center justify-between rounded-lg border p-4 transition-colors hover:bg-muted/50"
+                    className="flex items-center justify-between rounded-xl border p-4 transition-all hover:bg-muted/50 hover:shadow-sm"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="rounded-full bg-primary/10 p-2">
-                        <WashingMachine className="h-5 w-5 text-primary" />
+                      <div className="rounded-xl bg-gradient-to-br from-violet-500/10 to-indigo-500/10 p-2">
+                        <WashingMachine className="h-5 w-5 text-violet-600" />
                       </div>
                       <div>
                         <p className="font-medium">{machine.name ?? machine.label}</p>
@@ -199,18 +207,24 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="relative overflow-hidden border-0 bg-white/80 shadow-lg backdrop-blur-sm dark:bg-slate-900/80">
+          <div className="absolute left-0 top-0 h-1 w-full bg-gradient-to-r from-blue-500 via-cyan-500 to-teal-500" />
           <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <div className="rounded-lg bg-gradient-to-br from-blue-500/10 to-cyan-500/10 p-1.5">
+                <WashingMachine className="h-5 w-5 text-blue-600" />
+              </div>
+              Quick Actions
+            </CardTitle>
             <CardDescription>Common tasks for managing your laundromat</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <a
               href="/dashboard/machines"
-              className="flex items-center gap-4 rounded-lg border p-4 transition-colors hover:bg-muted/50"
+              className="flex items-center gap-4 rounded-xl border p-4 transition-all hover:bg-muted/50 hover:shadow-sm"
             >
-              <div className="rounded-full bg-blue-100 p-2">
-                <WashingMachine className="h-5 w-5 text-blue-500" />
+              <div className="rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 p-2">
+                <WashingMachine className="h-5 w-5 text-white" />
               </div>
               <div>
                 <p className="font-medium">Manage Machines</p>
@@ -219,10 +233,10 @@ export default function DashboardPage() {
             </a>
             <a
               href="/dashboard/machines"
-              className="flex items-center gap-4 rounded-lg border p-4 transition-colors hover:bg-muted/50"
+              className="flex items-center gap-4 rounded-xl border p-4 transition-all hover:bg-muted/50 hover:shadow-sm"
             >
-              <div className="rounded-full bg-green-100 p-2">
-                <Activity className="h-5 w-5 text-green-500" />
+              <div className="rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 p-2">
+                <Activity className="h-5 w-5 text-white" />
               </div>
               <div>
                 <p className="font-medium">Monitor Status</p>

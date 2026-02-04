@@ -7,7 +7,9 @@
  * Capitalize the first letter of a string
  */
 export function capitalize(str: string): string {
-  if (!str) return "";
+  if (!str) {
+    return "";
+  }
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
@@ -15,7 +17,9 @@ export function capitalize(str: string): string {
  * Capitalize the first letter of each word
  */
 export function titleCase(str: string): string {
-  if (!str) return "";
+  if (!str) {
+    return "";
+  }
   return str
     .toLowerCase()
     .split(" ")
@@ -27,15 +31,19 @@ export function titleCase(str: string): string {
  * Convert string to camelCase
  */
 export function camelCase(str: string): string {
-  if (!str) return "";
-  return str.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (_, chr) => chr.toUpperCase());
+  if (!str) {
+    return "";
+  }
+  return str.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (_, chr: string) => chr.toUpperCase());
 }
 
 /**
  * Convert string to kebab-case
  */
 export function kebabCase(str: string): string {
-  if (!str) return "";
+  if (!str) {
+    return "";
+  }
   return str
     .replace(/([a-z])([A-Z])/g, "$1-$2")
     .replace(/[\s_]+/g, "-")
@@ -46,7 +54,9 @@ export function kebabCase(str: string): string {
  * Convert string to snake_case
  */
 export function snakeCase(str: string): string {
-  if (!str) return "";
+  if (!str) {
+    return "";
+  }
   return str
     .replace(/([a-z])([A-Z])/g, "$1_$2")
     .replace(/[\s-]+/g, "_")
@@ -56,16 +66,20 @@ export function snakeCase(str: string): string {
 /**
  * Truncate string to a maximum length
  */
-export function truncate(str: string, maxLength: number, suffix: string = "..."): string {
-  if (!str || str.length <= maxLength) return str;
+export function truncate(str: string, maxLength: number, suffix = "..."): string {
+  if (!str || str.length <= maxLength) {
+    return str;
+  }
   return str.slice(0, maxLength - suffix.length) + suffix;
 }
 
 /**
  * Truncate string in the middle (useful for file paths, IDs)
  */
-export function truncateMiddle(str: string, maxLength: number, separator: string = "..."): string {
-  if (!str || str.length <= maxLength) return str;
+export function truncateMiddle(str: string, maxLength: number, separator = "..."): string {
+  if (!str || str.length <= maxLength) {
+    return str;
+  }
 
   const charsToShow = maxLength - separator.length;
   const frontChars = Math.ceil(charsToShow / 2);
@@ -78,7 +92,9 @@ export function truncateMiddle(str: string, maxLength: number, separator: string
  * Remove extra whitespace from a string
  */
 export function normalizeWhitespace(str: string): string {
-  if (!str) return "";
+  if (!str) {
+    return "";
+  }
   return str.replace(/\s+/g, " ").trim();
 }
 
@@ -86,7 +102,9 @@ export function normalizeWhitespace(str: string): string {
  * Strip HTML tags from a string
  */
 export function stripHtml(str: string): string {
-  if (!str) return "";
+  if (!str) {
+    return "";
+  }
   return str.replace(/<[^>]*>/g, "");
 }
 
@@ -94,7 +112,9 @@ export function stripHtml(str: string): string {
  * Escape HTML special characters
  */
 export function escapeHtml(str: string): string {
-  if (!str) return "";
+  if (!str) {
+    return "";
+  }
   const htmlEscapes: Record<string, string> = {
     "&": "&amp;",
     "<": "&lt;",
@@ -109,7 +129,9 @@ export function escapeHtml(str: string): string {
  * Generate a slug from a string
  */
 export function slugify(str: string): string {
-  if (!str) return "";
+  if (!str) {
+    return "";
+  }
   return str
     .toLowerCase()
     .trim()
@@ -166,7 +188,9 @@ export function isThaiPhoneNumber(str: string): boolean {
  */
 export function isThaiIdCard(str: string): boolean {
   const cleaned = str.replace(/\D/g, "");
-  if (cleaned.length !== 13) return false;
+  if (cleaned.length !== 13) {
+    return false;
+  }
 
   // Checksum validation
   let sum = 0;
@@ -196,7 +220,9 @@ export function formatThaiPhone(str: string): string {
  */
 export function formatThaiIdCard(str: string): string {
   const cleaned = str.replace(/\D/g, "");
-  if (cleaned.length !== 13) return str;
+  if (cleaned.length !== 13) {
+    return str;
+  }
   return `${cleaned[0]}-${cleaned.slice(1, 5)}-${cleaned.slice(5, 10)}-${cleaned.slice(10, 12)}-${cleaned[12]}`;
 }
 
@@ -212,7 +238,9 @@ export function mask(
   } = {}
 ): string {
   const { start = 3, end = 3, char = "*" } = options;
-  if (!str || str.length <= start + end) return str;
+  if (!str || str.length <= start + end) {
+    return str;
+  }
 
   const maskLength = str.length - start - end;
   return str.slice(0, start) + char.repeat(maskLength) + str.slice(-end);
@@ -222,9 +250,13 @@ export function mask(
  * Mask email address
  */
 export function maskEmail(email: string): string {
-  if (!email || !email.includes("@")) return email;
+  if (!email?.includes("@")) {
+    return email;
+  }
 
-  const [local, domain] = email.split("@");
+  const parts = email.split("@");
+  const local = parts[0];
+  const domain = parts[1];
   const maskedLocal = mask(local, { start: 2, end: 1 });
   return `${maskedLocal}@${domain}`;
 }
@@ -232,8 +264,10 @@ export function maskEmail(email: string): string {
 /**
  * Generate initials from a name
  */
-export function getInitials(name: string, maxLength: number = 2): string {
-  if (!name) return "";
+export function getInitials(name: string, maxLength = 2): string {
+  if (!name) {
+    return "";
+  }
 
   return name
     .split(" ")
@@ -248,7 +282,9 @@ export function getInitials(name: string, maxLength: number = 2): string {
  * Pluralize a word based on count
  */
 export function pluralize(count: number, singular: string, plural?: string): string {
-  if (count === 1) return singular;
+  if (count === 1) {
+    return singular;
+  }
   return plural || `${singular}s`;
 }
 
@@ -279,12 +315,22 @@ export function randomString(
   } = options;
 
   let chars = "";
-  if (includeNumbers) chars += "0123456789";
-  if (includeUppercase) chars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  if (includeLowercase) chars += "abcdefghijklmnopqrstuvwxyz";
-  if (includeSymbols) chars += "!@#$%^&*()_+-=[]{}|;:,.<>?";
+  if (includeNumbers) {
+    chars += "0123456789";
+  }
+  if (includeUppercase) {
+    chars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  }
+  if (includeLowercase) {
+    chars += "abcdefghijklmnopqrstuvwxyz";
+  }
+  if (includeSymbols) {
+    chars += "!@#$%^&*()_+-=[]{}|;:,.<>?";
+  }
 
-  if (!chars) chars = "abcdefghijklmnopqrstuvwxyz";
+  if (!chars) {
+    chars = "abcdefghijklmnopqrstuvwxyz";
+  }
 
   let result = "";
   for (let i = 0; i < length; i++) {
@@ -312,7 +358,9 @@ export function highlight(
   searchTerm: string,
   wrapFn: (match: string) => string = (m) => `<mark>${m}</mark>`
 ): string {
-  if (!text || !searchTerm) return text;
+  if (!text || !searchTerm) {
+    return text;
+  }
 
   const regex = new RegExp(`(${escapeRegExp(searchTerm)})`, "gi");
   return text.replace(regex, (match) => wrapFn(match));
@@ -343,7 +391,9 @@ export function includesIgnoreCase(str: string, searchString: string): boolean {
  * Count occurrences of a substring
  */
 export function countOccurrences(str: string, searchString: string): number {
-  if (!str || !searchString) return 0;
+  if (!str || !searchString) {
+    return 0;
+  }
   return (str.match(new RegExp(escapeRegExp(searchString), "g")) || []).length;
 }
 
@@ -353,10 +403,12 @@ export function countOccurrences(str: string, searchString: string): number {
 export function pad(
   str: string,
   length: number,
-  char: string = " ",
+  char = " ",
   position: "start" | "end" | "both" = "end"
 ): string {
-  if (str.length >= length) return str;
+  if (str.length >= length) {
+    return str;
+  }
 
   const padLength = length - str.length;
 

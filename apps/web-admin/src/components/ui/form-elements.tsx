@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Eye, EyeOff, Search, X, Calendar, Clock, Upload, AlertCircle, Check } from "lucide-react";
+import { AlertCircle, Calendar, Check, Clock, Eye, EyeOff, Search, Upload, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // ============================================================================
@@ -103,11 +103,21 @@ export const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputPro
 
     const calculateStrength = (password: string): number => {
       let score = 0;
-      if (password.length >= 8) score += 25;
-      if (/[a-z]/.test(password)) score += 15;
-      if (/[A-Z]/.test(password)) score += 20;
-      if (/\d/.test(password)) score += 20;
-      if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) score += 20;
+      if (password.length >= 8) {
+        score += 25;
+      }
+      if (/[a-z]/.test(password)) {
+        score += 15;
+      }
+      if (/[A-Z]/.test(password)) {
+        score += 20;
+      }
+      if (/\d/.test(password)) {
+        score += 20;
+      }
+      if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+        score += 20;
+      }
       return Math.min(100, score);
     };
 
@@ -119,16 +129,28 @@ export const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputPro
     };
 
     const getStrengthColor = () => {
-      if (strength < 30) return "bg-red-500";
-      if (strength < 60) return "bg-yellow-500";
-      if (strength < 80) return "bg-blue-500";
+      if (strength < 30) {
+        return "bg-red-500";
+      }
+      if (strength < 60) {
+        return "bg-yellow-500";
+      }
+      if (strength < 80) {
+        return "bg-blue-500";
+      }
       return "bg-green-500";
     };
 
     const getStrengthLabel = () => {
-      if (strength < 30) return "Weak";
-      if (strength < 60) return "Fair";
-      if (strength < 80) return "Good";
+      if (strength < 30) {
+        return "Weak";
+      }
+      if (strength < 60) {
+        return "Fair";
+      }
+      if (strength < 80) {
+        return "Good";
+      }
       return "Strong";
     };
 
@@ -560,7 +582,9 @@ export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
     React.useImperativeHandle(ref, () => inputRef.current!);
 
     const handleFiles = (files: FileList | null) => {
-      if (!files) return;
+      if (!files) {
+        return;
+      }
 
       const fileArray = Array.from(files);
 
@@ -891,7 +915,9 @@ export function FormGroup({ children, label, description, className }: FormGroup
 // ============================================================================
 
 function formatFileSize(bytes: number): string {
-  if (bytes === 0) return "0 Bytes";
+  if (bytes === 0) {
+    return "0 Bytes";
+  }
   const k = 1024;
   const sizes = ["Bytes", "KB", "MB", "GB"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));

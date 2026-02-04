@@ -1,15 +1,22 @@
-import type { FastifyInstance } from "fastify";
-import { z } from "zod";
+import type { FastifyInstance, FastifyRequest } from "fastify";
 import {
-  CreateMachineSchema,
-  UpdateMachineSchema,
-  MachineQuerySchema,
-  IdParamSchema,
   type CreateMachine,
-  type UpdateMachine,
+  CreateMachineSchema,
+  IdParamSchema,
   type MachineQuery,
+  MachineQuerySchema,
+  type UpdateMachine,
+  UpdateMachineSchema,
 } from "@washwise/types";
 import { MachineService } from "../services/machine.service.js";
+
+// Helper to safely get tenantId from authenticated request
+function getTenantId(request: FastifyRequest): string {
+  if (!request.user?.tenantId) {
+    throw new Error("Unauthorized: No tenant context");
+  }
+  return request.user.tenantId;
+}
 
 /**
  * Machine management routes
@@ -39,7 +46,16 @@ export async function machineRoutes(fastify: FastifyInstance) {
             type: { type: "string", enum: ["WASHER", "DRYER"] },
             status: {
               type: "string",
-              enum: ["AVAILABLE", "BUSY", "OFFLINE", "MAINTENANCE"],
+              enum: [
+                "IDLE",
+                "RESERVED",
+                "RUNNING",
+                "MAINTENANCE",
+                "OUT_OF_ORDER",
+                "ERROR",
+                "OFFLINE",
+                "DISABLED",
+              ],
             },
             page: { type: "number", minimum: 1 },
             limit: { type: "number", minimum: 1, maximum: 100 },
@@ -49,8 +65,9 @@ export async function machineRoutes(fastify: FastifyInstance) {
       },
     },
     async (request, reply) => {
+      const tenantId = getTenantId(request);
       const query = MachineQuerySchema.parse(request.query);
-      const result = await machineService.list(request.user!.tenantId, query);
+      const result = await machineService.list(tenantId, query);
       return reply.send(result);
     }
   );
@@ -69,7 +86,8 @@ export async function machineRoutes(fastify: FastifyInstance) {
       },
     },
     async (request, reply) => {
-      const stats = await machineService.getStats(request.user!.tenantId);
+      const tenantId = getTenantId(request);
+      const stats = await machineService.getStats(tenantId);
       return reply.send(stats);
     }
   );
@@ -96,8 +114,9 @@ export async function machineRoutes(fastify: FastifyInstance) {
       },
     },
     async (request, reply) => {
+      const tenantId = getTenantId(request);
       const { id } = IdParamSchema.parse(request.params);
-      const machine = await machineService.getById(request.user!.tenantId, id);
+      const machine = await machineService.getById(tenantId, id);
 
       if (!machine) {
         // ANTI-IDOR: Return 404 for both not found AND wrong tenant
@@ -119,7 +138,7 @@ export async function machineRoutes(fastify: FastifyInstance) {
   fastify.post<{ Body: CreateMachine & { branchId: string } }>(
     "/",
     {
-      preHandler: [fastify.requireRole(["ADMIN", "MANAGER"])],
+      preHandler: [fastify.requireRole(["SUPER_ADMIN", "OWNER"])],
       schema: {
         description: "Create a new machine",
         tags: ["Machines"],
@@ -144,12 +163,11 @@ export async function machineRoutes(fastify: FastifyInstance) {
       },
     },
     async (request, reply) => {
-      const { branchId, ...data } = CreateMachineSchema.extend({
-        branchId: z.string().uuid(),
-      }).parse(request.body);
+      const tenantId = getTenantId(request);
+      const data = CreateMachineSchema.parse(request.body);
 
       try {
-        const machine = await machineService.create(request.user!.tenantId, branchId, data);
+        const machine = await machineService.create(tenantId, data);
         return reply.status(201).send(machine);
       } catch (error) {
         if (error instanceof Error && error.message.includes("already exists")) {
@@ -171,7 +189,7 @@ export async function machineRoutes(fastify: FastifyInstance) {
   fastify.patch<{ Params: { id: string }; Body: UpdateMachine }>(
     "/:id",
     {
-      preHandler: [fastify.requireRole(["ADMIN", "MANAGER"])],
+      preHandler: [fastify.requireRole(["SUPER_ADMIN", "OWNER"])],
       schema: {
         description: "Update a machine",
         tags: ["Machines"],
@@ -189,7 +207,16 @@ export async function machineRoutes(fastify: FastifyInstance) {
             label: { type: "string", minLength: 1, maxLength: 100 },
             status: {
               type: "string",
-              enum: ["AVAILABLE", "BUSY", "OFFLINE", "MAINTENANCE"],
+              enum: [
+                "IDLE",
+                "RESERVED",
+                "RUNNING",
+                "MAINTENANCE",
+                "OUT_OF_ORDER",
+                "ERROR",
+                "OFFLINE",
+                "DISABLED",
+              ],
             },
             pricePerCycle: { type: "number", minimum: 0 },
             location: { type: "string", maxLength: 200 },
@@ -198,10 +225,11 @@ export async function machineRoutes(fastify: FastifyInstance) {
       },
     },
     async (request, reply) => {
+      const tenantId = getTenantId(request);
       const { id } = IdParamSchema.parse(request.params);
       const data = UpdateMachineSchema.parse(request.body);
 
-      const machine = await machineService.update(request.user!.tenantId, id, data);
+      const machine = await machineService.update(tenantId, id, data);
 
       if (!machine) {
         return reply.status(404).send({
@@ -222,7 +250,7 @@ export async function machineRoutes(fastify: FastifyInstance) {
   fastify.delete<{ Params: { id: string } }>(
     "/:id",
     {
-      preHandler: [fastify.requireRole(["ADMIN"])],
+      preHandler: [fastify.requireRole(["SUPER_ADMIN", "OWNER"])],
       schema: {
         description: "Delete a machine",
         tags: ["Machines"],
@@ -237,9 +265,10 @@ export async function machineRoutes(fastify: FastifyInstance) {
       },
     },
     async (request, reply) => {
+      const tenantId = getTenantId(request);
       const { id } = IdParamSchema.parse(request.params);
 
-      const deleted = await machineService.delete(request.user!.tenantId, id);
+      const deleted = await machineService.delete(tenantId, id);
 
       if (!deleted) {
         return reply.status(404).send({

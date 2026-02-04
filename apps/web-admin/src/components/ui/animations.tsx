@@ -63,7 +63,9 @@ export function Fade({
     }
   };
 
-  if (!shouldRender) return null;
+  if (!shouldRender) {
+    return null;
+  }
 
   return (
     <div
@@ -124,7 +126,9 @@ export function Slide({
     }
   };
 
-  if (!shouldRender) return null;
+  if (!shouldRender) {
+    return null;
+  }
 
   return (
     <div
@@ -178,7 +182,9 @@ export function Scale({
     }
   };
 
-  if (!shouldRender) return null;
+  if (!shouldRender) {
+    return null;
+  }
 
   return (
     <div
@@ -251,7 +257,9 @@ export function Collapse({ show, children, duration = TIMING.normal, className }
 
   React.useEffect(() => {
     const content = contentRef.current;
-    if (!content) return;
+    if (!content) {
+      return;
+    }
 
     if (show) {
       // Expanding
@@ -329,7 +337,9 @@ export function AnimatePresence({
     }
   };
 
-  if (!shouldRender) return null;
+  if (!shouldRender) {
+    return null;
+  }
 
   const animationClasses = {
     fade: {
