@@ -932,7 +932,115 @@ rotation_rules { automatically_after_days = 30 } }
 
 ---
 
-## 7. CORS Configuration
+## 7. API Server Security Plugin (Node.js/Fastify)
+
+The WashWise API Server implements comprehensive security measures through an enterprise-grade security plugin that adheres to OWASP, NIST, and ISO 27001 standards.
+
+### 7.1 Security Configuration
+
+```typescript
+const SECURITY_CONFIG = {
+  // Rate limiting thresholds
+  SUSPICIOUS_THRESHOLD: 100,      // Requests per minute
+  BRUTE_FORCE_THRESHOLD: 5,       // Failed attempts before lockout
+  LOCKOUT_DURATION: 900000,       // 15 minute lockout
+
+  // Security events for SIEM integration
+  SECURITY_EVENTS: {
+    BRUTE_FORCE_DETECTED: "BRUTE_FORCE_DETECTED",
+    TENANT_VIOLATION: "TENANT_VIOLATION",
+    SQL_INJECTION_ATTEMPT: "SQL_INJECTION_ATTEMPT",
+    XSS_ATTEMPT: "XSS_ATTEMPT",
+    COMMAND_INJECTION_ATTEMPT: "COMMAND_INJECTION_ATTEMPT",
+    PATH_TRAVERSAL_ATTEMPT: "PATH_TRAVERSAL_ATTEMPT",
+    CSRF_VIOLATION: "CSRF_VIOLATION",
+  },
+};
+```
+
+### 7.2 Security Headers
+
+| Header                           | Value                           | Purpose                        |
+| -------------------------------- | ------------------------------- | ------------------------------ |
+| **X-Content-Type-Options**       | nosniff                         | Prevent MIME sniffing          |
+| **X-Frame-Options**              | DENY                            | Prevent clickjacking           |
+| **X-XSS-Protection**             | 1; mode=block                   | XSS protection (legacy)        |
+| **Referrer-Policy**              | strict-origin-when-cross-origin | Control referrer leakage       |
+| **Content-Security-Policy**      | Comprehensive directives        | Prevent code injection         |
+| **Permissions-Policy**           | Restrict all features           | Limit browser capabilities     |
+| **Cross-Origin-Embedder-Policy** | require-corp                    | Cross-origin isolation         |
+| **Cross-Origin-Opener-Policy**   | same-origin                     | Prevent window references      |
+| **Cache-Control**                | no-store, no-cache              | Prevent sensitive data caching |
+| **Clear-Site-Data**              | "cache", "storage"              | Clear browser data             |
+
+### 7.3 Attack Pattern Detection
+
+The security plugin detects and blocks the following attack types:
+
+| Attack Type           | Detection Patterns                                               |
+| --------------------- | ---------------------------------------------------------------- |
+| **XSS**               | script tags, javascript:, event handlers, data: URLs, svg onload |
+| **SQL Injection**     | UNION SELECT, DROP TABLE, DELETE FROM, OR '1'='1, waitfor delay  |
+| **NoSQL Injection**   | $where, $ne, $gt, $regex, $or operators                          |
+| **Command Injection** | cat, ls, rm, wget, curl, backticks, $()                          |
+| **Path Traversal**    | ../, ..%2f, ..%5c, encoded traversal sequences                   |
+| **LDAP Injection**    | Special characters (),                                           | , *, \\ |
+| **Header Injection**  | CRLF sequences \\r\\n, %0d%0a                                    |
+
+### 7.4 Brute Force Protection
+
+```typescript
+// Track failed authentication attempts
+fastify.trackFailedAuth(identifier);
+
+// Check if user is locked out
+if (fastify.isLockedOut(identifier)) {
+  return reply.status(429).send({ message: "Too many attempts" });
+}
+
+// Clear on successful auth
+fastify.clearFailedAttempts(identifier);
+```
+
+### 7.5 Security Event Logging
+
+All security events are logged with structured data for SIEM integration:
+
+```typescript
+fastify.securityEvent(
+  "TENANT_VIOLATION",
+  request,
+  {
+    attemptedTenantId: resourceTenantId,
+    actualTenantId: request.user.tenantId,
+    severity: "critical"
+  }
+);
+```
+
+### 7.6 CSRF Protection
+
+```typescript
+// Generate CSRF token
+const csrfToken = fastify.generateCsrfToken();
+reply.cookie("csrf-token", csrfToken, { httpOnly: false, secure: true });
+
+// Verify on state-changing requests
+await fastify.verifyCsrfToken(request, reply);
+```
+
+### 7.7 Tenant Isolation Verification
+
+Anti-IDOR protection with detailed logging:
+
+```typescript
+// Verify tenant access - returns 404 to prevent enumeration
+await fastify.verifyTenantAccess(request, reply, resourceTenantId);
+```
+
+---
+
+## 8. CORS Configuration
 
 ```java
 @Configuration
@@ -958,7 +1066,7 @@ public class CorsConfig implements WebMvcConfigurer {
 
 ---
 
-## 8. Security Checklist
+## 9. Security Checklist
 
 ### Pre-Deployment
 

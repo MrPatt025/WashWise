@@ -11,10 +11,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-22-green.svg)](https://nodejs.org/)
-[![pnpm](https://img.shields.io/badge/pnpm-9.15-orange.svg)](https://pnpm.io/)
+[![pnpm](https://img.shields.io/badge/pnpm-10.28-orange.svg)](https://pnpm.io/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[Demo](https://demo.washwise.io) • [Documentation](docs/) • [API Reference](docs/04-API.md) • [Contributing](CONTRIBUTING.md)
+[Demo](https://demo.washwise.io) • [Documentation](docs/) • [API Reference](docs/04-API.md) •
+[Contributing](CONTRIBUTING.md)
 
 </div>
 
@@ -41,14 +42,88 @@ operations through intelligent automation and AI-powered customer experiences.
 
 ### Key Features
 
-| Feature                    | Description                                                          |
-| -------------------------- | -------------------------------------------------------------------- |
+| Feature                   | Description                                                          |
+| ------------------------- | -------------------------------------------------------------------- |
 | 🏢 **Multi-Tenant**        | Full tenant isolation with separate data, billing, and customization |
 | 🤖 **AI-Powered**          | Natural language chatbot, demand forecasting, anomaly detection      |
 | 📱 **Real-Time**           | WebSocket-based live machine status and notifications                |
 | 💳 **Payments**            | PromptPay, credit card, and wallet integration                       |
-| 📊 **Analytics**           | Revenue insights, usage patterns, and custom reports                 |
+| 📊 **Advanced Analytics**  | 7 comprehensive API endpoints for business intelligence and insights |
+| 📈 **Data Visualization**  | Interactive charts, gauges, heatmaps, and progress rings             |
+| 🎯 **Activity Tracking**   | Real-time activity feeds with priority badges and animations         |
+| 🔄 **Status Monitoring**   | Live machine status indicators with pulse animations                 |
 | 🔒 **Enterprise Security** | OAuth2/OIDC, RBAC/ABAC, OWASP Top 10 compliant                       |
+| 📑 **Advanced Reports**    | Revenue, utilization, maintenance, and customer insights reports     |
+
+### UI Component Library
+
+Our world-class component library built with **Framer Motion** animations:
+
+| Component              | Description                                                       |
+| ---------------------- | ----------------------------------------------------------------- |
+| **MetricsCard**        | Animated KPI cards with trends, sparklines, and actions           |
+| **ActivityFeed**       | Real-time activity tracking with user avatars and badges          |
+| **StatusIndicator**    | Machine status with pulse animations and connection status        |
+| **DataVisualization**  | Charts, gauges, heatmaps, and progress rings                      |
+| **NotificationCenter** | Toast notifications with animated bell dropdown and progress bars |
+| **StatShowcase**       | Animated counters, hero stats, and live counters                  |
+| **GlassmorphismCard**  | Frosted glass effect cards with 3D tilt and glow effects          |
+| **AdvancedSelect**     | Multi-select with search, groups, and tags                        |
+
+### World-Class Landing Page Components (NEW v4.0)
+
+Premium landing page components with ultra-premium, enterprise-grade animations:
+
+#### Animated Background Components
+
+| Component            | Description                                              |
+| -------------------- | -------------------------------------------------------- |
+| **AuroraBackground** | Animated northern lights effect with customizable colors |
+| **GradientMesh**     | Fluid gradient blob animations with multi-color support  |
+| **Spotlight**        | Cursor-following spotlight effect with glow              |
+| **ParticleField**    | Floating particle animation with configurable density    |
+| **CursorGlow**       | Mouse-following gradient glow effect                     |
+| **MorphingBlob**     | Organic shape-shifting blob animation                    |
+| **GradientText**     | Animated gradient text with color cycling                |
+
+#### Micro-Interaction Components
+
+| Component                   | Description                                        |
+| --------------------------- | -------------------------------------------------- |
+| **TiltCard**                | 3D tilt effect based on mouse position with depth  |
+| **MagneticButton**          | Button that attracts to cursor within proximity    |
+| **RevealText**              | Text that reveals character by character on scroll |
+| **AnimatedCounterAdvanced** | Smooth number counting with easing and formatting  |
+| **StaggerChildren**         | Orchestrated staggered reveal for child elements   |
+| **GlassCard**               | Enhanced glass morphism with gradient border       |
+| **RippleEffect**            | Material Design ripple on click                    |
+| **BorderGradient**          | Animated gradient border effect                    |
+| **Typewriter**              | Multi-word typewriter effect with cursor           |
+
+#### Scroll Animation Components
+
+| Component              | Description                                    |
+| ---------------------- | ---------------------------------------------- |
+| **ScrollProgress**     | Fixed progress bar showing scroll position     |
+| **ScrollReveal**       | Reveal animation triggered by scroll into view |
+| **ParallaxSection**    | Section with parallax background effect        |
+| **ScrollFade**         | Fade in/out based on scroll position           |
+| **ScaleOnScroll**      | Scale transformation linked to scroll progress |
+| **TextRevealOnScroll** | Text that reveals line by line on scroll       |
+| **PerspectiveScroll**  | 3D perspective effect on scroll                |
+| **ZoomParallax**       | Zoom effect combined with parallax             |
+
+#### Landing Page Sections
+
+| Component               | Description                                                     |
+| ----------------------- | --------------------------------------------------------------- |
+| **HeroSection**         | Animated gradient orbs, typewriter effect, 3D dashboard preview |
+| **FeaturesSection**     | 3D hover cards with bento grid layout and gradient icons        |
+| **PricingSection**      | Monthly/yearly toggle with animated price transitions           |
+| **TestimonialsSection** | Auto-advancing carousel with quote animations and star ratings  |
+| **FAQSection**          | Animated accordion with category filters and smooth transitions |
+| **CTASection**          | Full-width gradient CTA with floating particle animations       |
+| **Footer**              | Newsletter signup, social links, comprehensive site navigation  |
 
 ---
 
@@ -57,7 +132,7 @@ operations through intelligent automation and AI-powered customer experiences.
 ### Prerequisites
 
 - **Node.js** 22+ ([Download](https://nodejs.org/))
-- **pnpm** 9+ (`corepack enable && corepack prepare pnpm@9 --activate`)
+- **pnpm** 10+ (`corepack enable && corepack prepare pnpm@10 --activate`)
 - **Docker** & Docker Compose ([Download](https://docs.docker.com/get-docker/))
 - **Git** ([Download](https://git-scm.com/))
 
@@ -96,13 +171,13 @@ pnpm dev
 
 ### Access Points
 
-| Service        | URL                                       |
-| -------------- | ----------------------------------------- |
-| 🌐 Web Admin   | [http://localhost:3000](http://localhost:3000) |
-| 🚀 API Server  | [http://localhost:3001](http://localhost:3001) |
-| 📚 API Docs    | [http://localhost:3001/docs](http://localhost:3001/docs) |
-| 🗄️ DB Studio   | [http://localhost:5555](http://localhost:5555) |
-| 📊 Adminer     | [http://localhost:8080](http://localhost:8080) (with `--profile tools`) |
+| Service      | URL                                                                     |
+| ------------ | ----------------------------------------------------------------------- |
+| 🌐 Web Admin  | [http://localhost:3000](http://localhost:3000)                          |
+| 🚀 API Server | [http://localhost:3001](http://localhost:3001)                          |
+| 📚 API Docs   | [http://localhost:3001/docs](http://localhost:3001/docs)                |
+| 🗄️ DB Studio  | [http://localhost:5555](http://localhost:5555)                          |
+| 📊 Adminer    | [http://localhost:8080](http://localhost:8080) (with `--profile tools`) |
 
 ---
 
@@ -125,15 +200,15 @@ pnpm dev
 
 | Layer          | Technology                                         |
 | -------------- | -------------------------------------------------- |
-| **Monorepo**   | Turborepo v2 + pnpm v9                             |
+| **Monorepo**   | Turborepo v2.8 + pnpm v10                          |
 | **Frontend**   | Next.js 16 (App Router), React 19, TypeScript 5.9+ |
 | **State**      | TanStack Query v5 (Server), Zustand v5 (Client)    |
 | **UI**         | Tailwind CSS v4, Shadcn UI, Lucide React           |
-| **Backend**    | Node.js 22 LTS, Fastify v5                         |
+| **Backend**    | Node.js 22 LTS, Fastify v5.7                       |
 | **Validation** | Zod v3.25                                          |
 | **Real-time**  | Socket.io v4 + Redis 7                             |
-| **Database**   | PostgreSQL 17 + Prisma v7                          |
-| **Testing**    | Vitest v3 + Playwright + Testcontainers            |
+| **Database**   | PostgreSQL 17 + Prisma v7.3                        |
+| **Testing**    | Vitest v3.2 + Playwright + Testcontainers          |
 
 ### Repository Structure
 
@@ -200,6 +275,7 @@ docker-compose down               # Stop services
 ### VS Code Workspace
 
 Open `washwise.code-workspace` for the best development experience with:
+
 - Pre-configured launch configurations
 - Recommended extensions
 - Custom tasks
@@ -425,6 +501,18 @@ pnpm dev --filter api-server
 | POST   | `/api/simulation/machine/:id/start`    | Start wash cycle |
 | POST   | `/api/simulation/machine/:id/complete` | Complete cycle   |
 | POST   | `/api/simulation/machine/:id/error`    | Simulate error   |
+
+### Analytics (Business Intelligence)
+
+| Method | Endpoint                              | Description                          |
+| ------ | ------------------------------------- | ------------------------------------ |
+| GET    | `/api/v1/analytics/dashboard`         | Comprehensive dashboard metrics      |
+| GET    | `/api/v1/analytics/machines/stats`    | Machine status distribution & health |
+| GET    | `/api/v1/analytics/utilization`       | Utilization rates & peak hours       |
+| GET    | `/api/v1/analytics/revenue`           | Revenue metrics with trends          |
+| GET    | `/api/v1/analytics/performance`       | Uptime, error rates, MTBF            |
+| GET    | `/api/v1/analytics/machines/rankings` | Top machines by revenue/cycles       |
+| GET    | `/api/v1/analytics/usage-pattern`     | Hourly/daily usage patterns          |
 
 ## 🔌 Real-Time Events
 
