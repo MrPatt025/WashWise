@@ -2,10 +2,32 @@ import { type Socket, Server as SocketIOServer } from "socket.io";
 import type { Server as HTTPServer } from "http";
 import { createAdapter } from "@socket.io/redis-adapter";
 import jwt from "jsonwebtoken";
-import type { TokenPayload } from "@washwise/types";
 import { SOCKET_EVENTS } from "@washwise/types";
 import { getRedis } from "../config/redis.js";
 import env from "../config/env.js";
+
+// Runtime type guard for JWT payload validation
+interface ValidatedTokenPayload {
+  sub: string;
+  email: string;
+  tenantId: string;
+  role: string;
+}
+
+function isValidTokenPayload(payload: unknown): payload is ValidatedTokenPayload {
+  return (
+    typeof payload === "object" &&
+    payload !== null &&
+    "sub" in payload &&
+    "email" in payload &&
+    "tenantId" in payload &&
+    "role" in payload &&
+    typeof (payload as ValidatedTokenPayload).sub === "string" &&
+    typeof (payload as ValidatedTokenPayload).email === "string" &&
+    typeof (payload as ValidatedTokenPayload).tenantId === "string" &&
+    typeof (payload as ValidatedTokenPayload).role === "string"
+  );
+}
 
 // Extend Socket with user data
 interface AuthenticatedSocket extends Socket {
@@ -37,7 +59,9 @@ export function setupSocketIO(httpServer: HTTPServer): SocketIOServer {
 
   // Authentication middleware
   io.use((socket: AuthenticatedSocket, next) => {
-    const token = socket.handshake.auth.token as string | undefined;
+    const authData = socket.handshake.auth as Record<string, unknown> | undefined;
+    const authToken: unknown = authData?.token;
+    const token = typeof authToken === "string" ? authToken : undefined;
 
     if (!token) {
       next(new Error("Authentication required"));
@@ -45,7 +69,11 @@ export function setupSocketIO(httpServer: HTTPServer): SocketIOServer {
     }
 
     try {
-      const payload = jwt.verify(token, env.JWT_ACCESS_SECRET) as TokenPayload;
+      const payload: unknown = jwt.verify(token, env.JWT_ACCESS_SECRET);
+
+      if (!isValidTokenPayload(payload)) {
+        throw new Error("Invalid token payload structure");
+      }
 
       socket.user = {
         userId: payload.sub,

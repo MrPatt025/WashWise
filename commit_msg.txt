@@ -1,0 +1,8 @@
+fix: resolve TypeScript ESLint errors and normalize line endings
+
+- Fix TenantService using Prisma.TenantGetPayload for proper types
+- Add isValidPlan type guard for safe tenant plan validation
+- Fix Socket.io authentication with runtime type guards for JWT payload
+- Add ValidatedTokenPayload interface and isValidTokenPayload guard
+- Remove unsafe type assertions from socket auth middleware
+- Fix line endings (CRLF to LF) across entire codebase

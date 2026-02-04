@@ -1,5 +1,15 @@
-import { prisma } from "@washwise/database";
-import type { CreateTenant, Tenant } from "@washwise/types";
+import { prisma, type Prisma } from "@washwise/database";
+import type { CreateTenant, Tenant, TenantPlan } from "@washwise/types";
+
+// Use Prisma's generated type for Tenant model
+type PrismaTenant = Prisma.TenantGetPayload<Record<string, never>>;
+
+// Valid tenant plans for type guard
+const VALID_PLANS: readonly TenantPlan[] = ["FREE", "BASIC", "PRO", "ENTERPRISE"] as const;
+
+function isValidPlan(plan: string): plan is TenantPlan {
+  return VALID_PLANS.includes(plan as TenantPlan);
+}
 
 /**
  * Tenant Service - Handles tenant-related operations
@@ -31,17 +41,12 @@ export class TenantService {
   /**
    * Map Prisma model to domain type
    */
-  private mapToTenant(tenant: {
-    id: string;
-    name: string;
-    plan: string;
-    createdAt: Date;
-    updatedAt: Date;
-  }): Tenant {
+  private mapToTenant(tenant: PrismaTenant): Tenant {
+    const plan = isValidPlan(tenant.plan) ? tenant.plan : "FREE";
     return {
       id: tenant.id,
       name: tenant.name,
-      plan: tenant.plan as "FREE" | "BASIC" | "PRO" | "ENTERPRISE",
+      plan,
       createdAt: tenant.createdAt,
       updatedAt: tenant.updatedAt,
     };
