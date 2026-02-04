@@ -4,16 +4,10 @@ import { hash, verify } from "argon2";
 import jwt from "jsonwebtoken";
 
 import { AUTH_CONSTANTS } from "@washwise/config";
-import { prisma, type Tenant, type User, PrismaClient } from "@washwise/database";
+import { prisma, type Prisma } from "@washwise/database";
 import type { AuthResponse, LoginRequest, RegisterRequest, TokenPayload } from "@washwise/types";
 
 import env from "../config/env.js";
-
-// Transaction client type
-type TransactionClient = Omit<
-  PrismaClient,
-  "$connect" | "$disconnect" | "$on" | "$transaction" | "$use" | "$extends"
->;
 
 // Helper to hash refresh token for storage
 function hashToken(token: string): string {
@@ -25,9 +19,10 @@ interface TokenPair {
   refreshToken: string;
 }
 
-interface UserWithTenant extends User {
-  tenant: Tenant;
-}
+// Use Prisma's type utility for User with Tenant relation
+type UserWithTenant = Prisma.UserGetPayload<{
+  include: { tenant: true };
+}>;
 
 export class AuthService {
   /**
@@ -47,7 +42,7 @@ export class AuthService {
     const hashedPassword = await hash(data.password);
 
     // Create tenant and user in transaction
-    const result = await prisma.$transaction(async (tx: TransactionClient) => {
+    const result = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       // Generate slug from tenant name
       const baseSlug =
         data.tenantSlug ||

@@ -3,25 +3,25 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     }
   },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "postinstall": "prisma generate",
-    "build": "tsc",
+    "build": "prisma generate && tsc",
+    "clean": "rm -rf dist .turbo",
     "dev": "tsc --watch",
     "generate": "prisma generate",
-    "migrate:dev": "prisma migrate dev",
+    "postinstall": "prisma generate",
     "migrate:deploy": "prisma migrate deploy",
+    "migrate:dev": "prisma migrate dev",
     "push": "prisma db push",
-    "studio": "prisma studio",
     "seed": "tsx prisma/seed.ts",
-    "clean": "rm -rf dist .turbo"
+    "studio": "prisma studio"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.3.0",
