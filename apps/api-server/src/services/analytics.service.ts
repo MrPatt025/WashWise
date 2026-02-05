@@ -1,6 +1,40 @@
 import { prisma } from "@washwise/database";
 import type { MachineStatus, MachineType } from "@washwise/types";
 
+// Type definitions for Prisma select query results
+interface UtilizationMachine {
+  id: string;
+  status: string;
+  type: string;
+  totalCycles: number;
+  lastHeartbeat: Date | null;
+}
+
+interface RevenueMachine {
+  totalCycles: number;
+  pricePerCycle: number;
+}
+
+interface PerformanceMachine {
+  id: string;
+  status: string;
+  errorCount: number;
+  lastMaintenanceAt: Date | null;
+  totalCycles: number;
+  createdAt: Date;
+}
+
+interface RankingMachine {
+  id: string;
+  label: string;
+  serialNumber: string;
+  type: string;
+  pricePerCycle: number;
+  totalCycles: number;
+  errorCount: number;
+  status: string;
+}
+
 /**
  * Analytics Service - Provides comprehensive business intelligence
  * Handles machine utilization, revenue analytics, and performance metrics
@@ -100,7 +134,7 @@ export class AnalyticsService {
    * Get utilization metrics
    */
   async getUtilizationMetrics(tenantId: string): Promise<UtilizationMetrics> {
-    const machines = await prisma.machine.findMany({
+    const machines: UtilizationMachine[] = await prisma.machine.findMany({
       where: { tenantId },
       select: {
         id: true,
@@ -113,7 +147,7 @@ export class AnalyticsService {
 
     const totalMachines = machines.length;
     const activeMachines = machines.filter(
-      (m) => m.status === "RUNNING" || m.status === "RESERVED"
+      (m: UtilizationMachine) => m.status === "RUNNING" || m.status === "RESERVED"
     ).length;
 
     // Calculate current utilization rate
@@ -121,7 +155,10 @@ export class AnalyticsService {
       totalMachines > 0 ? Math.round((activeMachines / totalMachines) * 100) : 0;
 
     // Calculate average cycles per machine
-    const totalCycles = machines.reduce((sum, m) => sum + (m.totalCycles || 0), 0);
+    const totalCycles = machines.reduce(
+      (sum: number, m: UtilizationMachine) => sum + (m.totalCycles || 0),
+      0
+    );
     const avgCyclesPerMachine = totalMachines > 0 ? Math.round(totalCycles / totalMachines) : 0;
 
     // Calculate peak hours (simulated for demo)
@@ -130,7 +167,7 @@ export class AnalyticsService {
     // Recently used machines (within last 24 hours based on heartbeat)
     const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
     const recentlyUsed = machines.filter(
-      (m) => m.lastHeartbeat && m.lastHeartbeat > oneDayAgo
+      (m: UtilizationMachine) => m.lastHeartbeat && m.lastHeartbeat > oneDayAgo
     ).length;
 
     return {
@@ -138,7 +175,7 @@ export class AnalyticsService {
       avgCyclesPerMachine,
       peakHours,
       recentlyUsedCount: recentlyUsed,
-      idleCount: machines.filter((m) => m.status === "IDLE").length,
+      idleCount: machines.filter((m: UtilizationMachine) => m.status === "IDLE").length,
       utilizationTrend: this.calculateTrend(),
     };
   }
@@ -148,7 +185,7 @@ export class AnalyticsService {
    */
   async getRevenueMetrics(tenantId: string): Promise<RevenueMetrics> {
     // Get revenue data from machine metrics aggregated data
-    const machines = await prisma.machine.findMany({
+    const machines: RevenueMachine[] = await prisma.machine.findMany({
       where: { tenantId },
       select: {
         totalCycles: true,
@@ -157,11 +194,15 @@ export class AnalyticsService {
     });
 
     // Calculate revenue from cycles * price
-    const totalRevenue = machines.reduce((sum, m) => sum + m.totalCycles * m.pricePerCycle, 0);
-    const totalCycles = machines.reduce((sum, m) => sum + m.totalCycles, 0);
+    const totalRevenue = machines.reduce(
+      (sum: number, m: RevenueMachine) => sum + m.totalCycles * m.pricePerCycle,
+      0
+    );
+    const totalCycles = machines.reduce((sum: number, m: RevenueMachine) => sum + m.totalCycles, 0);
     const avgPricePerCycle =
       machines.length > 0
-        ? machines.reduce((sum, m) => sum + m.pricePerCycle, 0) / machines.length
+        ? machines.reduce((sum: number, m: RevenueMachine) => sum + m.pricePerCycle, 0) /
+          machines.length
         : 0;
 
     // Calculate daily average (simulated - in real app, would use transactions table)
@@ -185,7 +226,7 @@ export class AnalyticsService {
    * Get performance metrics
    */
   async getPerformanceMetrics(tenantId: string): Promise<PerformanceMetrics> {
-    const machines = await prisma.machine.findMany({
+    const machines: PerformanceMachine[] = await prisma.machine.findMany({
       where: { tenantId },
       select: {
         id: true,
@@ -198,13 +239,20 @@ export class AnalyticsService {
     });
 
     // Calculate error rate
-    const totalErrors = machines.reduce((sum, m) => sum + (m.errorCount || 0), 0);
-    const totalCycles = machines.reduce((sum, m) => sum + (m.totalCycles || 0), 0);
+    const totalErrors = machines.reduce(
+      (sum: number, m: PerformanceMachine) => sum + (m.errorCount || 0),
+      0
+    );
+    const totalCycles = machines.reduce(
+      (sum: number, m: PerformanceMachine) => sum + (m.totalCycles || 0),
+      0
+    );
     const errorRate = totalCycles > 0 ? Math.round((totalErrors / totalCycles) * 10000) / 100 : 0;
 
     // Calculate uptime
     const workingMachines = machines.filter(
-      (m) => m.status !== "ERROR" && m.status !== "OUT_OF_ORDER" && m.status !== "OFFLINE"
+      (m: PerformanceMachine) =>
+        m.status !== "ERROR" && m.status !== "OUT_OF_ORDER" && m.status !== "OFFLINE"
     ).length;
     const uptime =
       machines.length > 0 ? Math.round((workingMachines / machines.length) * 10000) / 100 : 100;
@@ -212,7 +260,7 @@ export class AnalyticsService {
     // Machines needing maintenance (not maintained in 30 days)
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
     const needsMaintenance = machines.filter(
-      (m) => !m.lastMaintenanceAt || m.lastMaintenanceAt < thirtyDaysAgo
+      (m: PerformanceMachine) => !m.lastMaintenanceAt || m.lastMaintenanceAt < thirtyDaysAgo
     ).length;
 
     // Mean time between failures (simulated)
@@ -259,7 +307,7 @@ export class AnalyticsService {
       take: limit,
     });
 
-    return machines.map((m, index) => ({
+    return (machines as RankingMachine[]).map((m: RankingMachine, index: number) => ({
       rank: index + 1,
       id: m.id,
       name: m.label,

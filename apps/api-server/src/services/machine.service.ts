@@ -108,7 +108,7 @@ export class MachineService {
     const totalPages = Math.ceil(total / limit);
 
     return {
-      items: items.map((m) => this.mapToMachine(m)),
+      items: items.map((m: PrismaMachine) => this.mapToMachine(m)),
       total,
       page,
       limit,
