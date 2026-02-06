@@ -1,3 +1,10 @@
+## [1.1.4](https://github.com/washwise/washwise/compare/v1.1.3...v1.1.4) (2026-02-06)
+
+### Bug Fixes
+
+- **ci:** resolve integration test and eslint errors
+  ([fb7dbc2](https://github.com/washwise/washwise/commit/fb7dbc20d370b37f291746c14292ea42311ec483))
+
 ## [1.1.3](https://github.com/washwise/washwise/compare/v1.1.2...v1.1.3) (2026-02-06)
 
 ### Bug Fixes
