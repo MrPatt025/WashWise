@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/washwise/washwise/compare/v1.1.2...v1.1.3) (2026-02-06)
+
+### Bug Fixes
+
+- **deploy:** add vercel.json for output directory config
+  ([cfed453](https://github.com/washwise/washwise/commit/cfed4537b6432c3459dbd12d17b8c3b038beb580))
+
 ## [1.1.2](https://github.com/washwise/washwise/compare/v1.1.1...v1.1.2) (2026-02-06)
 
 ### Bug Fixes
