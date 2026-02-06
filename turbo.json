@@ -10,10 +10,7 @@
         ".next/**",
         "!.next/cache/**",
         "dist/**",
-        "dist/*.js",
-        "dist/*.d.ts",
-        "dist/**/*.js",
-        "dist/**/*.d.ts"
+        "tsconfig.tsbuildinfo"
       ]
     },
     "dev": {
