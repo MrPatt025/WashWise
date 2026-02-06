@@ -1,4 +1,11 @@
-## 1.1.0 (2026-02-06)
+## [1.1.1](https://github.com/washwise/washwise/compare/v1.1.0...v1.1.1) (2026-02-06)
+
+### Bug Fixes
+
+- **security:** resolve all 8 audit vulnerabilities
+  ([e93391b](https://github.com/washwise/washwise/commit/e93391b5c759733f1aa302e0a5bd46aa60621970))
+
+## [1.1.0](https://github.com/washwise/washwise/compare/601133aaaffbd6e178a9b20bd829dff0a030eb4a...v1.1.0) (2026-02-06)
 
 ### Features
 
