@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/washwise/washwise/compare/v1.1.1...v1.1.2) (2026-02-06)
+
+### Bug Fixes
+
+- add .gitattributes and normalize line endings for CI compatibility
+  ([c53077b](https://github.com/washwise/washwise/commit/c53077ba842d253b569d476e5370762a1806acd5))
+
 ## [1.1.1](https://github.com/washwise/washwise/compare/v1.1.0...v1.1.1) (2026-02-06)
 
 ### Bug Fixes
