@@ -1,17 +1,26 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": ["**/.env.*local", "**/.env"],
+  "globalEnv": [
+    "NODE_ENV",
+    "PORT",
+    "DATABASE_URL",
+    "REDIS_URL",
+    "JWT_ACCESS_SECRET",
+    "JWT_REFRESH_SECRET",
+    "ACCESS_TOKEN_EXPIRES_IN",
+    "REFRESH_TOKEN_EXPIRES_IN",
+    "CORS_ORIGIN",
+    "COOKIE_SECURE",
+    "NEXT_PUBLIC_API_URL",
+    "NEXT_PUBLIC_WS_URL"
+  ],
   "ui": "stream",
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**",
-        "dist/**",
-        "tsconfig.tsbuildinfo"
-      ]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**", "tsconfig.tsbuildinfo"]
     },
     "dev": {
       "cache": false,
