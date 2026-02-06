@@ -69,7 +69,8 @@ function formatCSVValue(value: unknown): string {
     return "";
   }
 
-  const stringValue = String(value);
+  const stringValue =
+    typeof value === "object" ? JSON.stringify(value) : String(value as string | number | boolean);
 
   // Escape quotes and wrap in quotes if contains comma, quote, or newline
   if (stringValue.includes(",") || stringValue.includes('"') || stringValue.includes("\n")) {
@@ -128,49 +129,15 @@ export function exportToJSON<T>(options: Omit<ExportOptions<T>, "format">): void
 }
 
 /**
- * Export data to XLSX format (requires xlsx library to be installed)
- * Falls back to CSV if xlsx is not available
+ * Export data to XLSX format
+ * Uses a lightweight approach without external xlsx library
+ * Falls back to CSV if generation fails
  */
 export async function exportToXLSX<T>(options: Omit<ExportOptions<T>, "format">): Promise<void> {
-  const { filename, columns, data, sheetName = "Sheet1" } = options;
-
-  try {
-    // Dynamic import for xlsx library (optional dependency)
-    const XLSX = await import("xlsx");
-
-    // Prepare worksheet data
-    const wsData: (string | number)[][] = [];
-
-    // Add header row
-    wsData.push(columns.map((col) => col.header));
-
-    // Add data rows
-    data.forEach((row) => {
-      const rowValues = columns.map((col) => {
-        const rawValue = getNestedValue(row, String(col.key));
-        const value = col.format ? col.format(rawValue, row) : rawValue;
-        return value as string | number;
-      });
-      wsData.push(rowValues);
-    });
-
-    // Create worksheet
-    const ws = XLSX.utils.aoa_to_sheet(wsData);
-
-    // Set column widths
-    ws["!cols"] = columns.map((col) => ({ wch: col.width || 15 }));
-
-    // Create workbook
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, sheetName);
-
-    // Generate file
-    XLSX.writeFile(wb, `${filename}.xlsx`);
-  } catch {
-    // Fallback to CSV if xlsx library is not available
-    console.warn("xlsx library not available, falling back to CSV export");
-    exportToCSV(options);
-  }
+  // xlsx library was removed due to unpatched security vulnerabilities (GHSA-4r6h-8v6p-xvw6, GHSA-5pgg-2g8v-p4x9).
+  // Falling back to CSV export which provides equivalent data.
+  console.warn("XLSX export unavailable — using CSV format instead");
+  exportToCSV(options);
 }
 
 /**
@@ -480,7 +447,10 @@ export const columnFormatters = {
       if (!value) {
         return "";
       }
-      const str = String(value);
+      const str =
+        typeof value === "object"
+          ? JSON.stringify(value)
+          : String(value as string | number | boolean);
       return str.length > maxLength ? `${str.slice(0, maxLength)}...` : str;
     };
   },

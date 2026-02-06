@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3000",
     "build": "next build",
-    "start": "next start",
+    "clean": "rimraf .next .turbo",
+    "dev": "next dev --port 3000",
     "lint": "eslint src",
-    "clean": "rimraf .next .turbo"
+    "start": "next start"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -35,7 +35,6 @@
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.3.0",
     "tailwindcss-animate": "^1.0.7",
-    "xlsx": "^0.18.5",
     "zod": "^3.25.76",
     "zustand": "^5.0.11"
   },
