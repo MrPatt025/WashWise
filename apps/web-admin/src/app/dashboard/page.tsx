@@ -182,7 +182,7 @@ export default function DashboardPage() {
               </p>
             ) : (
               <div className="space-y-4">
-                {(machines.items ?? []).map((machine) => (
+                {machines.items.map((machine) => (
                   <div
                     key={machine.id}
                     className="flex items-center justify-between rounded-xl border p-4 transition-all hover:bg-muted/50 hover:shadow-sm"
@@ -192,7 +192,7 @@ export default function DashboardPage() {
                         <WashingMachine className="h-5 w-5 text-violet-600" />
                       </div>
                       <div>
-                        <p className="font-medium">{machine.name ?? machine.label}</p>
+                        <p className="font-medium">{machine.name || machine.label}</p>
                         <p className="text-sm text-muted-foreground">
                           {machine.serialNumber ?? machine.machineNumber ?? "No serial"} •{" "}
                           {machine.type}

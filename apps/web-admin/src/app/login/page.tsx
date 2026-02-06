@@ -30,16 +30,35 @@ type LoginErrorCode =
   | "ACCOUNT_LOCKED"
   | "UNKNOWN";
 
+interface ApiErrorResponse {
+  code?: string;
+  message?: string;
+}
+
+interface ApiError {
+  response?: {
+    data?: ApiErrorResponse;
+  };
+}
+
 /**
  * Map API error codes to user-friendly messages
  */
-function mapLoginError(error: any): {
+function mapLoginError(error: unknown): {
   message: string;
   code: LoginErrorCode;
   focusField?: string;
 } {
-  const code = (error?.response?.data?.code as LoginErrorCode) || "UNKNOWN";
-  const serverMessage = error?.response?.data?.message;
+  const apiError = error as ApiError | undefined;
+  const rawCode = apiError?.response?.data?.code;
+  const code: LoginErrorCode =
+    rawCode === "INVALID_CREDENTIALS" ||
+    rawCode === "MULTIPLE_TENANTS" ||
+    rawCode === "TENANT_NOT_FOUND" ||
+    rawCode === "ACCOUNT_LOCKED"
+      ? rawCode
+      : "UNKNOWN";
+  const serverMessage = apiError?.response?.data?.message;
 
   switch (code) {
     case "MULTIPLE_TENANTS":
@@ -101,7 +120,7 @@ export default function LoginPage() {
     setError(null);
     try {
       await loginMutation.mutateAsync(data);
-    } catch (err: any) {
+    } catch (err: unknown) {
       const mappedError = mapLoginError(err);
       setError({ message: mappedError.message, code: mappedError.code });
 
@@ -241,7 +260,7 @@ export default function LoginPage() {
                   {...register("tenantSlug")}
                   ref={(e) => {
                     register("tenantSlug").ref(e);
-                    (slugInputRef as React.MutableRefObject<HTMLInputElement | null>).current = e;
+                    slugInputRef.current = e;
                   }}
                   className={
                     error?.code === "MULTIPLE_TENANTS" || error?.code === "TENANT_NOT_FOUND"
@@ -269,7 +288,7 @@ export default function LoginPage() {
                   {...register("email")}
                   ref={(e) => {
                     register("email").ref(e);
-                    (emailInputRef as React.MutableRefObject<HTMLInputElement | null>).current = e;
+                    emailInputRef.current = e;
                   }}
                   className={
                     error?.code === "INVALID_CREDENTIALS"

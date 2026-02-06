@@ -140,7 +140,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   <p className="truncate text-sm font-medium">
                     {user?.fullName || `${user?.firstName} ${user?.lastName}`}
                   </p>
-                  <p className="truncate text-xs text-muted-foreground">{user?.tenant?.name}</p>
+                  <p className="truncate text-xs text-muted-foreground">{user?.tenant.name}</p>
                 </div>
               </div>
               <Button

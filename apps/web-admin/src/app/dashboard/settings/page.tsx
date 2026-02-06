@@ -137,11 +137,11 @@ export default function SettingsPage() {
                   <label className="text-xs font-medium text-muted-foreground">
                     Laundromat Name
                   </label>
-                  <p className="font-semibold">{user?.tenant?.name}</p>
+                  <p className="font-semibold">{user?.tenant.name}</p>
                 </div>
                 <div className="space-y-1">
                   <label className="text-xs font-medium text-muted-foreground">Tenant ID</label>
-                  <p className="font-mono text-xs text-muted-foreground">{user?.tenant?.id}</p>
+                  <p className="font-mono text-xs text-muted-foreground">{user?.tenant.id}</p>
                 </div>
               </div>
               <div className="rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 p-4 dark:from-slate-800 dark:to-slate-900">

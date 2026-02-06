@@ -3,6 +3,7 @@ import { PostgreSqlContainer, StartedPostgreSqlContainer } from "@testcontainers
 import { hash } from "argon2";
 import type { FastifyInstance } from "fastify";
 import { execSync } from "node:child_process";
+import path from "node:path";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 
 /**
@@ -43,10 +44,10 @@ describe("WashWise API Integration Tests", () => {
 
     // Push schema to database (creates tables without migrations)
     console.log("📦 Pushing Prisma schema...");
-    execSync("npx prisma db push --skip-generate --accept-data-loss", {
-      cwd: "../../packages/database",
+    const schemaPath = path.resolve(process.cwd(), "../../packages/database/prisma/schema.prisma");
+    execSync(`npx prisma db push --skip-generate --accept-data-loss --schema="${schemaPath}"`, {
       env: { ...process.env, DATABASE_URL: databaseUrl },
-      stdio: "inherit",
+      stdio: "pipe",
     });
 
     // Initialize Prisma client
@@ -65,9 +66,9 @@ describe("WashWise API Integration Tests", () => {
   }, 120000); // 2 minutes timeout for container startup
 
   afterAll(async () => {
-    await app.close();
-    await prisma.$disconnect();
-    await container.stop();
+    await app?.close();
+    await prisma?.$disconnect();
+    await container?.stop();
     console.log("🧹 Test environment cleaned up");
   });
 
