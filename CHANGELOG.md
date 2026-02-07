@@ -1,3 +1,10 @@
+## [1.1.9](https://github.com/washwise/washwise/compare/v1.1.8...v1.1.9) (2026-02-07)
+
+### Bug Fixes
+
+- **api-server:** clean up debug logging in integration test
+  ([bd2c330](https://github.com/washwise/washwise/commit/bd2c330255c4a604f61d05280ec457c3b5aa682b))
+
 ## [1.1.8](https://github.com/washwise/washwise/compare/v1.1.7...v1.1.8) (2026-02-07)
 
 ### Bug Fixes
@@ -27,10 +34,3 @@
 
 - **api-server:** remove unsupported --skip-generate from prisma db push
   ([60e59f7](https://github.com/washwise/washwise/commit/60e59f7dde0e347b53989653cb0eb9ea518243a1))
-
-## [1.1.4](https://github.com/washwise/washwise/compare/v1.1.3...v1.1.4) (2026-02-06)
-
-### Bug Fixes
-
-- **ci:** resolve integration test and eslint errors
-  ([fb7dbc2](https://github.com/washwise/washwise/commit/fb7dbc20d370b37f291746c14292ea42311ec483))
