@@ -44,8 +44,9 @@ describe("WashWise API Integration Tests", () => {
 
     // Push schema to database (creates tables without migrations)
     console.log("📦 Pushing Prisma schema...");
-    const schemaPath = path.resolve(process.cwd(), "../../packages/database/prisma/schema.prisma");
-    execSync(`npx prisma db push --accept-data-loss --schema="${schemaPath}"`, {
+    const dbPkgPath = path.resolve(process.cwd(), "../../packages/database");
+    execSync("npx prisma db push --accept-data-loss", {
+      cwd: dbPkgPath,
       env: { ...process.env, DATABASE_URL: databaseUrl },
       stdio: "pipe",
     });
