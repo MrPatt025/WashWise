@@ -28,31 +28,15 @@ export async function authRoutes(fastify: FastifyInstance) {
         tags: ["Auth"],
         body: {
           type: "object",
-          required: ["email", "password", "name", "tenantName"],
+          required: ["email", "password", "firstName", "lastName", "tenantName"],
           properties: {
             email: { type: "string", format: "email" },
             password: { type: "string", minLength: 8 },
-            name: { type: "string", minLength: 2 },
+            firstName: { type: "string", minLength: 1 },
+            lastName: { type: "string", minLength: 1 },
             tenantName: { type: "string", minLength: 2 },
-          },
-        },
-        response: {
-          201: {
-            type: "object",
-            properties: {
-              accessToken: { type: "string" },
-              user: {
-                type: "object",
-                properties: {
-                  id: { type: "string" },
-                  email: { type: "string" },
-                  name: { type: "string" },
-                  role: { type: "string" },
-                  tenantId: { type: "string" },
-                  tenantName: { type: "string" },
-                },
-              },
-            },
+            tenantSlug: { type: "string" },
+            phone: { type: "string" },
           },
         },
       },

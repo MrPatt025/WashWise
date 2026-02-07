@@ -93,7 +93,8 @@ describe("WashWise API Integration Tests", () => {
         payload: {
           email: "test@example.com",
           password: "SecurePass123!",
-          name: "Test User",
+          firstName: "Test",
+          lastName: "User",
           tenantName: "Test Laundromat",
         },
       });
@@ -102,7 +103,7 @@ describe("WashWise API Integration Tests", () => {
       const body = JSON.parse(response.body);
       expect(body.accessToken).toBeDefined();
       expect(body.user.email).toBe("test@example.com");
-      expect(body.user.tenantName).toBe("Test Laundromat");
+      expect(body.user.tenant.name).toBe("Test Laundromat");
     });
 
     it("should login and receive tokens", async () => {
@@ -127,6 +128,7 @@ describe("WashWise API Integration Tests", () => {
         payload: {
           email: "login@test.com",
           password: "TestPass123!",
+          tenantSlug: "login-test-tenant",
         },
       });
 
@@ -164,6 +166,7 @@ describe("WashWise API Integration Tests", () => {
         payload: {
           email: "refresh@test.com",
           password: "TestPass123!",
+          tenantSlug: "refresh-test-tenant",
         },
       });
 
@@ -212,6 +215,7 @@ describe("WashWise API Integration Tests", () => {
         payload: {
           email: "reuse@test.com",
           password: "TestPass123!",
+          tenantSlug: "reuse-test-tenant",
         },
       });
 
@@ -328,14 +332,14 @@ describe("WashWise API Integration Tests", () => {
       const loginA = await app.inject({
         method: "POST",
         url: "/api/v1/auth/login",
-        payload: { email: "admin@tenant-a.com", password: "PassA123!" },
+        payload: { email: "admin@tenant-a.com", password: "PassA123!", tenantSlug: "tenant-a" },
       });
       userAToken = JSON.parse(loginA.body).accessToken;
 
       const loginB = await app.inject({
         method: "POST",
         url: "/api/v1/auth/login",
-        payload: { email: "admin@tenant-b.com", password: "PassB123!" },
+        payload: { email: "admin@tenant-b.com", password: "PassB123!", tenantSlug: "tenant-b" },
       });
       _userBToken = JSON.parse(loginB.body).accessToken;
     });
@@ -446,7 +450,7 @@ describe("WashWise API Integration Tests", () => {
       const login = await app.inject({
         method: "POST",
         url: "/api/v1/auth/login",
-        payload: { email: "crud@test.com", password: "CrudPass123!" },
+        payload: { email: "crud@test.com", password: "CrudPass123!", tenantSlug: "crud-test-tenant" },
       });
       testToken = JSON.parse(login.body).accessToken;
     });
@@ -457,18 +461,18 @@ describe("WashWise API Integration Tests", () => {
         url: "/api/v1/machines",
         headers: { Authorization: `Bearer ${testToken}` },
         payload: {
+          name: "New Washer",
           serialNumber: "NEW-001",
-          label: "New Washer",
           type: "WASHER",
           capacityKg: 12,
           pricePerCycle: 6.5,
-          location: "Row C",
+          branchId: testBranchId,
         },
       });
 
       expect(response.statusCode).toBe(201);
       const body = JSON.parse(response.body);
-      expect(body.serialNumber).toBe("NEW-001");
+      expect(body.name).toBe("New Washer");
       expect(body.type).toBe("WASHER");
       expect(body.status).toBe("IDLE");
     });
@@ -480,11 +484,12 @@ describe("WashWise API Integration Tests", () => {
         url: "/api/v1/machines",
         headers: { Authorization: `Bearer ${testToken}` },
         payload: {
+          name: "First Machine",
           serialNumber: "DUP-001",
-          label: "First Machine",
           type: "WASHER",
           capacityKg: 8,
           pricePerCycle: 4,
+          branchId: testBranchId,
         },
       });
 
@@ -494,44 +499,46 @@ describe("WashWise API Integration Tests", () => {
         url: "/api/v1/machines",
         headers: { Authorization: `Bearer ${testToken}` },
         payload: {
+          name: "Duplicate Machine",
           serialNumber: "DUP-001",
-          label: "Duplicate Machine",
           type: "DRYER",
           capacityKg: 10,
           pricePerCycle: 3,
+          branchId: testBranchId,
         },
       });
 
       expect(response.statusCode).toBe(409);
     });
 
-    it("should update machine status", async () => {
+    it("should update machine details", async () => {
       // Create machine
       const createResponse = await app.inject({
         method: "POST",
         url: "/api/v1/machines",
         headers: { Authorization: `Bearer ${testToken}` },
         payload: {
+          name: "Update Test",
           serialNumber: "UPD-001",
-          label: "Update Test",
           type: "DRYER",
           capacityKg: 15,
           pricePerCycle: 3.5,
+          branchId: testBranchId,
         },
       });
       const machineId = JSON.parse(createResponse.body).id;
 
-      // Update status
+      // Update name
       const updateResponse = await app.inject({
         method: "PATCH",
         url: `/api/v1/machines/${machineId}`,
         headers: { Authorization: `Bearer ${testToken}` },
-        payload: { status: "RUNNING" },
+        payload: { name: "Updated Machine" },
       });
 
       expect(updateResponse.statusCode).toBe(200);
       const body = JSON.parse(updateResponse.body);
-      expect(body.status).toBe("RUNNING");
+      expect(body.name).toBe("Updated Machine");
     });
 
     it("should get machine statistics", async () => {
@@ -571,8 +578,8 @@ describe("WashWise API Integration Tests", () => {
       const body = JSON.parse(response.body);
       expect(body.total).toBe(4);
       expect(body.idle).toBe(2);
-      expect(body.running).toBe(1);
-      expect(body.offline).toBe(1);
+      expect(body.inUse).toBe(1);
+      expect(body.error).toBe(1);
     });
   });
 });

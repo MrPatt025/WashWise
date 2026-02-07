@@ -78,18 +78,31 @@ function generateSlugSuggestions(baseSlug: string): string[] {
   return suggestions.slice(0, 4);
 }
 
+interface ApiErrorResponseData {
+  code?: string;
+  message?: string;
+  field?: string;
+}
+
+interface ApiError {
+  response?: {
+    data?: ApiErrorResponseData;
+  };
+}
+
 /**
  * Map API error codes to user-friendly messages and UI actions
  */
-function mapApiError(error: any): {
+function mapApiError(error: unknown): {
   message: string;
   code: ApiErrorCode;
   suggestions?: string[];
   focusField?: string;
 } {
-  const code = (error?.response?.data?.code as ApiErrorCode) || "UNKNOWN";
-  const serverMessage = error?.response?.data?.message;
-  const field = error?.response?.data?.field;
+  const apiError = error as ApiError | undefined;
+  const code = (apiError?.response?.data?.code as ApiErrorCode) || "UNKNOWN";
+  const serverMessage = apiError?.response?.data?.message;
+  const field = apiError?.response?.data?.field;
 
   switch (code) {
     case "MULTIPLE_TENANTS":
@@ -201,7 +214,7 @@ export default function RegisterPage() {
 
     try {
       await registerMutation.mutateAsync(payload);
-    } catch (err: any) {
+    } catch (err: unknown) {
       const mappedError = mapApiError(err);
       setError({ message: mappedError.message, code: mappedError.code });
 
