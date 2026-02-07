@@ -1,3 +1,10 @@
+## [1.1.10](https://github.com/washwise/washwise/compare/v1.1.9...v1.1.10) (2026-02-07)
+
+### Bug Fixes
+
+- **api-server:** align integration test types with prisma schema
+  ([daca13e](https://github.com/washwise/washwise/commit/daca13e79bfe2f034e383f56c4650f68e4be487d))
+
 ## [1.1.9](https://github.com/washwise/washwise/compare/v1.1.8...v1.1.9) (2026-02-07)
 
 ### Bug Fixes
@@ -27,10 +34,3 @@
   ([4b16235](https://github.com/washwise/washwise/commit/4b1623580de8de731f7e543edcba8d8d94dbce11))
 - **database:** revert url from schema.prisma, use cwd for prisma db push
   ([44b5f82](https://github.com/washwise/washwise/commit/44b5f827a665a08360b9082a84e693eae3a85f5f))
-
-## [1.1.5](https://github.com/washwise/washwise/compare/v1.1.4...v1.1.5) (2026-02-06)
-
-### Bug Fixes
-
-- **api-server:** remove unsupported --skip-generate from prisma db push
-  ([60e59f7](https://github.com/washwise/washwise/commit/60e59f7dde0e347b53989653cb0eb9ea518243a1))
