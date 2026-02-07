@@ -1,3 +1,12 @@
+## [1.1.6](https://github.com/washwise/washwise/compare/v1.1.5...v1.1.6) (2026-02-07)
+
+### Bug Fixes
+
+- **database:** add datasource url to schema for prisma db push compatibility
+  ([4b16235](https://github.com/washwise/washwise/commit/4b1623580de8de731f7e543edcba8d8d94dbce11))
+- **database:** revert url from schema.prisma, use cwd for prisma db push
+  ([44b5f82](https://github.com/washwise/washwise/commit/44b5f827a665a08360b9082a84e693eae3a85f5f))
+
 ## [1.1.5](https://github.com/washwise/washwise/compare/v1.1.4...v1.1.5) (2026-02-06)
 
 ### Bug Fixes
@@ -25,10 +34,3 @@
 
 - add .gitattributes and normalize line endings for CI compatibility
   ([c53077b](https://github.com/washwise/washwise/commit/c53077ba842d253b569d476e5370762a1806acd5))
-
-## [1.1.1](https://github.com/washwise/washwise/compare/v1.1.0...v1.1.1) (2026-02-06)
-
-### Bug Fixes
-
-- **security:** resolve all 8 audit vulnerabilities
-  ([e93391b](https://github.com/washwise/washwise/commit/e93391b5c759733f1aa302e0a5bd46aa60621970))
