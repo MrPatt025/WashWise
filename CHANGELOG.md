@@ -1,3 +1,10 @@
+## [1.1.8](https://github.com/washwise/washwise/compare/v1.1.7...v1.1.8) (2026-02-07)
+
+### Bug Fixes
+
+- **api-server:** use pg adapter for PrismaClient in integration tests
+  ([8a1ccf7](https://github.com/washwise/washwise/commit/8a1ccf7144d282a8618611733acb1f62671910f2))
+
 ## [1.1.7](https://github.com/washwise/washwise/compare/v1.1.6...v1.1.7) (2026-02-07)
 
 ### Bug Fixes
@@ -27,10 +34,3 @@
 
 - **ci:** resolve integration test and eslint errors
   ([fb7dbc2](https://github.com/washwise/washwise/commit/fb7dbc20d370b37f291746c14292ea42311ec483))
-
-## [1.1.3](https://github.com/washwise/washwise/compare/v1.1.2...v1.1.3) (2026-02-06)
-
-### Bug Fixes
-
-- **deploy:** add vercel.json for output directory config
-  ([cfed453](https://github.com/washwise/washwise/commit/cfed4537b6432c3459dbd12d17b8c3b038beb580))
