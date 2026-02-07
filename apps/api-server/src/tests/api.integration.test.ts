@@ -51,10 +51,8 @@ describe("WashWise API Integration Tests", () => {
       stdio: "pipe",
     });
 
-    // Initialize Prisma client
-    prisma = new PrismaClient({
-      datasources: { db: { url: databaseUrl } },
-    });
+    // Initialize Prisma client (DATABASE_URL already set in process.env above)
+    prisma = new PrismaClient();
 
     // Dynamically import buildApp AFTER env vars are set
     const { buildApp } = await import("../app.js");
