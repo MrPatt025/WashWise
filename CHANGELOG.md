@@ -1,3 +1,10 @@
+## [1.1.7](https://github.com/washwise/washwise/compare/v1.1.6...v1.1.7) (2026-02-07)
+
+### Bug Fixes
+
+- **api-server:** remove deprecated datasources from PrismaClient constructor
+  ([24f8cda](https://github.com/washwise/washwise/commit/24f8cdaaa5542dcb69294ab6b3e5a426b92054fd))
+
 ## [1.1.6](https://github.com/washwise/washwise/compare/v1.1.5...v1.1.6) (2026-02-07)
 
 ### Bug Fixes
@@ -27,10 +34,3 @@
 
 - **deploy:** add vercel.json for output directory config
   ([cfed453](https://github.com/washwise/washwise/commit/cfed4537b6432c3459dbd12d17b8c3b038beb580))
-
-## [1.1.2](https://github.com/washwise/washwise/compare/v1.1.1...v1.1.2) (2026-02-06)
-
-### Bug Fixes
-
-- add .gitattributes and normalize line endings for CI compatibility
-  ([c53077b](https://github.com/washwise/washwise/commit/c53077ba842d253b569d476e5370762a1806acd5))
