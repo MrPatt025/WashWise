@@ -143,6 +143,9 @@ importers:
         specifier: ^3.25.76
         version: 3.25.76
     devDependencies:
+      '@prisma/adapter-pg':
+        specifier: ^7.3.0
+        version: 7.3.0
       '@prisma/client':
         specifier: ^7.3.0
         version: 7.3.0(prisma@7.3.0(@types/react@19.2.10)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3))(typescript@5.9.3)
@@ -155,6 +158,12 @@ importers:
       '@types/node':
         specifier: ^25.2.0
         version: 25.2.0
+      '@types/pg':
+        specifier: ^8.15.4
+        version: 8.16.0
+      pg:
+        specifier: ^8.16.3
+        version: 8.18.0
       testcontainers:
         specifier: ^11.11.0
         version: 11.11.0

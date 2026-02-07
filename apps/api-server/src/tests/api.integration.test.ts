@@ -1,9 +1,11 @@
 import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
 import { PostgreSqlContainer, StartedPostgreSqlContainer } from "@testcontainers/postgresql";
 import { hash } from "argon2";
 import type { FastifyInstance } from "fastify";
 import { execSync } from "node:child_process";
 import path from "node:path";
+import pg from "pg";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 
 /**
@@ -51,8 +53,10 @@ describe("WashWise API Integration Tests", () => {
       stdio: "pipe",
     });
 
-    // Initialize Prisma client (DATABASE_URL already set in process.env above)
-    prisma = new PrismaClient();
+    // Initialize Prisma client with pg adapter (Prisma 7.x requires adapter)
+    const pool = new pg.Pool({ connectionString: databaseUrl });
+    const adapter = new PrismaPg(pool);
+    prisma = new PrismaClient({ adapter });
 
     // Dynamically import buildApp AFTER env vars are set
     const { buildApp } = await import("../app.js");
