@@ -52,6 +52,7 @@ describe("WashWise API Integration Tests", () => {
       env: { ...process.env, DATABASE_URL: databaseUrl },
       stdio: "pipe",
     });
+    console.log("✅ Schema pushed");
 
     // Initialize Prisma client with pg adapter (Prisma 7.x requires adapter)
     const pool = new pg.Pool({ connectionString: databaseUrl });
