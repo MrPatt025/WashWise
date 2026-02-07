@@ -1,3 +1,10 @@
+## [1.1.11](https://github.com/washwise/washwise/compare/v1.1.10...v1.1.11) (2026-02-07)
+
+### Bug Fixes
+
+- align test payloads with zod schemas and fix register route
+  ([0421caa](https://github.com/washwise/washwise/commit/0421caab3963f57fd1bf80866f26e56ceb254206))
+
 ## [1.1.10](https://github.com/washwise/washwise/compare/v1.1.9...v1.1.10) (2026-02-07)
 
 ### Bug Fixes
@@ -25,12 +32,3 @@
 
 - **api-server:** remove deprecated datasources from PrismaClient constructor
   ([24f8cda](https://github.com/washwise/washwise/commit/24f8cdaaa5542dcb69294ab6b3e5a426b92054fd))
-
-## [1.1.6](https://github.com/washwise/washwise/compare/v1.1.5...v1.1.6) (2026-02-07)
-
-### Bug Fixes
-
-- **database:** add datasource url to schema for prisma db push compatibility
-  ([4b16235](https://github.com/washwise/washwise/commit/4b1623580de8de731f7e543edcba8d8d94dbce11))
-- **database:** revert url from schema.prisma, use cwd for prisma db push
-  ([44b5f82](https://github.com/washwise/washwise/commit/44b5f827a665a08360b9082a84e693eae3a85f5f))
