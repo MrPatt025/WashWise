@@ -81,6 +81,7 @@ describe("WashWise API Integration Tests", () => {
     await prisma.refreshToken.deleteMany();
     await prisma.machine.deleteMany();
     await prisma.user.deleteMany();
+    await prisma.branch.deleteMany();
     await prisma.tenant.deleteMany();
   });
 
@@ -107,14 +108,14 @@ describe("WashWise API Integration Tests", () => {
     it("should login and receive tokens", async () => {
       // Setup: Create user
       const tenant = await prisma.tenant.create({
-        data: { name: "Login Test Tenant", plan: "FREE" },
+        data: { name: "Login Test Tenant", slug: "login-test-tenant", plan: "FREE" },
       });
       await prisma.user.create({
         data: {
           email: "login@test.com",
           password: await hash("TestPass123!"),
           name: "Login User",
-          role: "ADMIN",
+          role: "OWNER",
           tenantId: tenant.id,
         },
       });
@@ -145,14 +146,14 @@ describe("WashWise API Integration Tests", () => {
     it("should refresh tokens with rotation", async () => {
       // Setup: Create user and login
       const tenant = await prisma.tenant.create({
-        data: { name: "Refresh Test Tenant", plan: "FREE" },
+        data: { name: "Refresh Test Tenant", slug: "refresh-test-tenant", plan: "FREE" },
       });
       await prisma.user.create({
         data: {
           email: "refresh@test.com",
           password: await hash("TestPass123!"),
           name: "Refresh User",
-          role: "ADMIN",
+          role: "OWNER",
           tenantId: tenant.id,
         },
       });
@@ -193,14 +194,14 @@ describe("WashWise API Integration Tests", () => {
     it("should detect and prevent token reuse (theft detection)", async () => {
       // Setup: Create user and login
       const tenant = await prisma.tenant.create({
-        data: { name: "Reuse Test Tenant", plan: "FREE" },
+        data: { name: "Reuse Test Tenant", slug: "reuse-test-tenant", plan: "FREE" },
       });
       await prisma.user.create({
         data: {
           email: "reuse@test.com",
           password: await hash("TestPass123!"),
           name: "Reuse User",
-          role: "ADMIN",
+          role: "OWNER",
           tenantId: tenant.id,
         },
       });
@@ -256,14 +257,22 @@ describe("WashWise API Integration Tests", () => {
     beforeEach(async () => {
       // Create two tenants with users and machines
       const tenantA = await prisma.tenant.create({
-        data: { name: "Tenant A", plan: "PRO" },
+        data: { name: "Tenant A", slug: "tenant-a", plan: "PRO" },
       });
       _tenantAId = tenantA.id;
 
+      const branchA = await prisma.branch.create({
+        data: { name: "Branch A", code: "BR-A", tenantId: tenantA.id },
+      });
+
       const tenantB = await prisma.tenant.create({
-        data: { name: "Tenant B", plan: "FREE" },
+        data: { name: "Tenant B", slug: "tenant-b", plan: "FREE" },
       });
       _tenantBId = tenantB.id;
+
+      const branchB = await prisma.branch.create({
+        data: { name: "Branch B", code: "BR-B", tenantId: tenantB.id },
+      });
 
       // Create users
       await prisma.user.create({
@@ -271,7 +280,7 @@ describe("WashWise API Integration Tests", () => {
           email: "admin@tenant-a.com",
           password: await hash("PassA123!"),
           name: "Admin A",
-          role: "ADMIN",
+          role: "OWNER",
           tenantId: tenantA.id,
         },
       });
@@ -281,7 +290,7 @@ describe("WashWise API Integration Tests", () => {
           email: "admin@tenant-b.com",
           password: await hash("PassB123!"),
           name: "Admin B",
-          role: "ADMIN",
+          role: "OWNER",
           tenantId: tenantB.id,
         },
       });
@@ -293,9 +302,10 @@ describe("WashWise API Integration Tests", () => {
           label: "Tenant A Washer",
           type: "WASHER",
           capacityKg: 10,
-          status: "AVAILABLE",
+          status: "IDLE",
           pricePerCycle: 5,
           tenantId: tenantA.id,
+          branchId: branchA.id,
         },
       });
       machineAId = machineA.id;
@@ -306,9 +316,10 @@ describe("WashWise API Integration Tests", () => {
           label: "Tenant B Washer",
           type: "WASHER",
           capacityKg: 8,
-          status: "AVAILABLE",
+          status: "IDLE",
           pricePerCycle: 4,
           tenantId: tenantB.id,
+          branchId: branchB.id,
         },
       });
       machineBId = machineB.id;
@@ -409,19 +420,25 @@ describe("WashWise API Integration Tests", () => {
   describe("Machine CRUD Operations", () => {
     let testToken: string;
     let testTenantId: string;
+    let testBranchId: string;
 
     beforeEach(async () => {
       const tenant = await prisma.tenant.create({
-        data: { name: "CRUD Test Tenant", plan: "PRO" },
+        data: { name: "CRUD Test Tenant", slug: "crud-test-tenant", plan: "PRO" },
       });
       testTenantId = tenant.id;
+
+      const branch = await prisma.branch.create({
+        data: { name: "CRUD Branch", code: "CRUD-BR", tenantId: tenant.id },
+      });
+      testBranchId = branch.id;
 
       await prisma.user.create({
         data: {
           email: "crud@test.com",
           password: await hash("CrudPass123!"),
           name: "CRUD User",
-          role: "ADMIN",
+          role: "OWNER",
           tenantId: tenant.id,
         },
       });
@@ -453,7 +470,7 @@ describe("WashWise API Integration Tests", () => {
       const body = JSON.parse(response.body);
       expect(body.serialNumber).toBe("NEW-001");
       expect(body.type).toBe("WASHER");
-      expect(body.status).toBe("AVAILABLE");
+      expect(body.status).toBe("IDLE");
     });
 
     it("should prevent duplicate serial numbers within tenant", async () => {
@@ -509,23 +526,23 @@ describe("WashWise API Integration Tests", () => {
         method: "PATCH",
         url: `/api/v1/machines/${machineId}`,
         headers: { Authorization: `Bearer ${testToken}` },
-        payload: { status: "BUSY" },
+        payload: { status: "RUNNING" },
       });
 
       expect(updateResponse.statusCode).toBe(200);
       const body = JSON.parse(updateResponse.body);
-      expect(body.status).toBe("BUSY");
+      expect(body.status).toBe("RUNNING");
     });
 
     it("should get machine statistics", async () => {
       // Create machines with different statuses
       const machines: Array<{
         serialNumber: string;
-        status: "AVAILABLE" | "BUSY" | "OFFLINE" | "MAINTENANCE";
+        status: "IDLE" | "RUNNING" | "OFFLINE" | "MAINTENANCE";
       }> = [
-        { serialNumber: "STAT-001", status: "AVAILABLE" },
-        { serialNumber: "STAT-002", status: "AVAILABLE" },
-        { serialNumber: "STAT-003", status: "BUSY" },
+        { serialNumber: "STAT-001", status: "IDLE" },
+        { serialNumber: "STAT-002", status: "IDLE" },
+        { serialNumber: "STAT-003", status: "RUNNING" },
         { serialNumber: "STAT-004", status: "OFFLINE" },
       ];
 
@@ -539,6 +556,7 @@ describe("WashWise API Integration Tests", () => {
             capacityKg: 10,
             pricePerCycle: 5,
             tenantId: testTenantId,
+            branchId: testBranchId,
           },
         });
       }
@@ -552,8 +570,8 @@ describe("WashWise API Integration Tests", () => {
       expect(response.statusCode).toBe(200);
       const body = JSON.parse(response.body);
       expect(body.total).toBe(4);
-      expect(body.available).toBe(2);
-      expect(body.busy).toBe(1);
+      expect(body.idle).toBe(2);
+      expect(body.running).toBe(1);
       expect(body.offline).toBe(1);
     });
   });
