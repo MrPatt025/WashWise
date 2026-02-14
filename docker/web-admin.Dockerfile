@@ -2,7 +2,7 @@
 # Multi-stage build for Next.js 15
 
 # Stage 1: Dependencies
-FROM node:22-alpine AS deps
+FROM node:25-alpine AS deps
 
 WORKDIR /app
 
@@ -15,7 +15,7 @@ COPY apps/web-admin/package.json ./apps/web-admin/
 RUN pnpm install --frozen-lockfile
 
 # Stage 2: Build
-FROM node:22-alpine AS builder
+FROM node:25-alpine AS builder
 
 WORKDIR /app
 
@@ -39,7 +39,7 @@ COPY apps/web-admin ./apps/web-admin
 RUN pnpm turbo build --filter=@washwise/web-admin...
 
 # Stage 3: Production
-FROM node:22-alpine AS runner
+FROM node:25-alpine AS runner
 
 WORKDIR /app
 
