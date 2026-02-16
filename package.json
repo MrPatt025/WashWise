@@ -63,7 +63,7 @@
     "@commitlint/cli": "^20.4.1",
     "@commitlint/config-conventional": "^20.4.1",
     "@eslint/js": "^9.28.0",
-    "@types/node": "^25.2.0",
+    "@types/node": "^25.2.3",
     "conventional-changelog-conventionalcommits": "^9.0.0",
     "eslint": "^9.28.0",
     "eslint-config-prettier": "^10.1.8",
@@ -78,7 +78,7 @@
     "sort-package-json": "^3.0.0",
     "turbo": "^2.8.2",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.33.1"
+    "typescript-eslint": "^8.55.0"
   },
   "packageManager": "pnpm@10.28.2",
   "engines": {
