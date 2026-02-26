@@ -27,7 +27,7 @@
     "@prisma/adapter-pg": "^7.3.0",
     "@prisma/client": "^7.3.0",
     "argon2": "^0.44.0",
-    "pg": "^8.18.0"
+    "pg": "^8.19.0"
   },
   "devDependencies": {
     "@types/pg": "^8.16.0",
